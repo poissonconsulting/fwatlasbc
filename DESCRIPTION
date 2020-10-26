@@ -13,3 +13,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
     covr
+Imports: 
+    fwapgr
+Depends: 
+    R (>= 2.10)
