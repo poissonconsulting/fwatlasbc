@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • fwatlasbc</title>
+<title>Search Streams — fwa_search_streams • fwatlasbc</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Search Streams — fwa_search_streams" />
+<meta property="og:description" content="Get stream names that match regular expression." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -94,60 +95,41 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Search Streams</h1>
+    
+    <div class="hidden name"><code>fwa_search_streams.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Get stream names that match regular expression.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>fwa_search_streams</span><span class='op'>(</span>stream_name <span class='op'>=</span> <span class='st'>".*"</span>, ignore_case <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="fwa_rkm.html">fwa_rkm()</a></code> </p>
-        </td>
-        <td><p>FWA rkm</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fwa_search_streams.html">fwa_search_streams()</a></code> </p>
-        </td>
-        <td><p>Search Streams</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fwa_stream_gnis.html">fwa_stream_gnis()</a></code> </p>
-        </td>
-        <td><p>FWA stream network</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fwa_stream_to_blue_line_keys.html">fwa_stream_to_blue_line_keys()</a></code> </p>
-        </td>
-        <td><p>Blue Line Key from Stream</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>stream_name</th>
+      <td><p>A string of a regular expression.
+By default returns all values.</p></td>
+    </tr>
+    <tr>
+      <th>ignore_case</th>
+      <td><p>A flag indicating whether to ignore case when matching the regular expression.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A character vector of the stream names.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>fwa_search_streams</span><span class='op'>(</span><span class='st'>"sangan"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "Sangan River"</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
