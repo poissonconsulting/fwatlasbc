@@ -1,6 +1,8 @@
-named_streams <- fwapgr::fwa_collection("fwa_named_streams")
+named_streams <- fwapgr::fwa_collection("whse_basemapping.fwa_named_streams")
 
-named_streams <- sf::st_set_geometry(named_streams, NULL)
 named_streams <- tibble::as_tibble(named_streams)
+named_streams$geometry <- NULL
 
-usethis::use_data(named_streams, overwrite = TRUE)
+chk::check_key(named_streams, c("blue_line_key", "gnis_name"))
+
+usethis::use_data(named_streams, overwrite = TRUE, internal = TRUE)
