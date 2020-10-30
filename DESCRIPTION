@@ -12,8 +12,14 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
-    covr
+    covr,
+    testthat
 Imports: 
-    fwapgr
+    fwapgr,
+    httptest,
+    glue,
+    chk,
+    lifecycle,
+    sf
 Depends: 
     R (>= 2.10)
