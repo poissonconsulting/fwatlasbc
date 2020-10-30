@@ -13,13 +13,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-# freshwateratlasbc
+# fwatlasbc
 
 <!-- badges: start -->
   [![R build status](https://github.com/poissonconsulting/freshwateratlasbc/workflows/R-CMD-check/badge.svg)](https://github.com/poissonconsulting/freshwateratlasbc/actions)
 <!-- badges: end -->
 
-The goal of freshwateratlasbc is to ...
+The goal of fwatlasbc is to ...
 
 ## Installation
 

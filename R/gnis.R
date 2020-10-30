@@ -12,8 +12,8 @@
 fwa_list_gnis_streams <- function(gnis_name = ".*", ignore_case = TRUE){
   chk_string(gnis_name)
   chk_flag(ignore_case)
-  i <- grep(gnis_name, freshwateratlasbc::named_streams$gnis_name, ignore.case = ignore_case)
-  freshwateratlasbc::named_streams[i,]
+  i <- grep(gnis_name, fwatlasbc::named_streams$gnis_name, ignore.case = ignore_case)
+  fwatlasbc::named_streams[i,]
 }
 
 #' FWA Search Named streams
@@ -30,7 +30,7 @@ fwa_list_gnis_streams <- function(gnis_name = ".*", ignore_case = TRUE){
 fwa_search_gnis_streams <- function(gnis_name = ".*", ignore_case = TRUE){
   chk_string(gnis_name)
   chk_flag(ignore_case)
-  x <- unique(as.character(freshwateratlasbc::named_streams$gnis_name))
+  x <- unique(as.character(fwatlasbc::named_streams$gnis_name))
   i <- grep(gnis_name, x, ignore.case = ignore_case)
   x[i]
 }

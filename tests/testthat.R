@@ -1,4 +1,4 @@
 library(testthat)
-library(freshwateratlasbc)
+library(fwatlasbc)
 
-test_check("freshwateratlasbc")
+test_check("fwatlasbc")
