@@ -1,2 +1,2 @@
-#' @import chk
+#' @import chk lifecycle glue fwapgr
 NULL
