@@ -4,14 +4,20 @@
 \alias{fwa_rkm}
 \title{FWA rkm}
 \usage{
-fwa_rkm(blue_line_key, interval = 1000, start = 0, epsg = 4326, limit = 500)
+fwa_rkm(
+  blue_line_key,
+  interval = 1000,
+  distance_upstream = 0,
+  epsg = 4326,
+  limit = 500
+)
 }
 \arguments{
 \item{blue_line_key}{An integer of the stream blue line key.}
 
 \item{interval}{An integer of the interval distance in meters.}
 
-\item{start}{An integer of the distance in meters upstream from the river mouth to start from.}
+\item{distance_upstream}{An integer of the distance in meters upstream from the river mouth to start from.}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
 
