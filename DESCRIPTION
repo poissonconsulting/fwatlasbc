@@ -16,7 +16,6 @@ Suggests:
     testthat
 Imports: 
     fwapgr,
-    httptest,
     glue,
     chk,
     lifecycle,
