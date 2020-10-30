@@ -9,8 +9,6 @@ fwa_stream_gnis(gnis_name, columns = NULL, bbox = NULL, epsg = 4326)
 \arguments{
 \item{gnis_name}{A character string of the gnis_name.}
 
-\item{columns}{A vector of strings of the column names to include. If NULL (default), all columns are retained.}
-
 \item{bbox}{A vector of numbers indicating bounding box to limit output
 features to, e.g. \code{c(minLon, minLat, maxLon, maxLat)}.}
 

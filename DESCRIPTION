@@ -20,5 +20,7 @@ Imports:
     chk,
     lifecycle,
     sf
+Remotes:
+    poissonconsulting/fwapgr
 Depends: 
     R (>= 2.10)
