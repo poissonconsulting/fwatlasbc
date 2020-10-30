@@ -106,7 +106,13 @@
     <p>Provided a blue_line_key and starting distance upstream from river mouth, return Rkm points along an interval.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fwa_rkm</span><span class='op'>(</span><span class='va'>blue_line_key</span>, interval <span class='op'>=</span> <span class='fl'>1000</span>, start <span class='op'>=</span> <span class='fl'>0</span>, epsg <span class='op'>=</span> <span class='fl'>4326</span>, limit <span class='op'>=</span> <span class='fl'>500</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>fwa_rkm</span><span class='op'>(</span>
+  <span class='va'>blue_line_key</span>,
+  interval <span class='op'>=</span> <span class='fl'>1000</span>,
+  distance_upstream <span class='op'>=</span> <span class='fl'>0</span>,
+  epsg <span class='op'>=</span> <span class='fl'>4326</span>,
+  limit <span class='op'>=</span> <span class='fl'>500</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -120,7 +126,7 @@
       <td><p>An integer of the interval distance in meters.</p></td>
     </tr>
     <tr>
-      <th>start</th>
+      <th>distance_upstream</th>
       <td><p>An integer of the distance in meters upstream from the river mouth to start from.</p></td>
     </tr>
     <tr>
