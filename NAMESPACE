@@ -2,7 +2,6 @@
 
 export(fwa_rkm)
 export(fwa_search_streams)
-export(fwa_stream_gnis)
 export(fwa_stream_to_blue_line_keys)
 import(chk)
 import(fwapgr)
