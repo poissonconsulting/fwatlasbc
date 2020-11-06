@@ -30,9 +30,14 @@ test_that("watershed functions work", {
   drm <- 10
   wshed <- fwa_blue_line_key_to_watershed(blue_line_key = blk,
                                           distance_from_mouth = drm)
-
   expect_is(wshed, "sf")
   expect_identical(nrow(wshed), 1L)
   expect_identical(names(wshed), c("blue_line_key", "distance_from_mouth", "geometry"))
+
+  # test when error if 0
+  blk <- 356528119
+  drm <- 0
+  expect_chk_error(fwa_blue_line_key_to_watershed(blue_line_key = blk,
+                                          distance_from_mouth = drm))
 
 })

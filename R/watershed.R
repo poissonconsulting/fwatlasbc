@@ -4,7 +4,7 @@
 #'
 #' @param point A single row sf object or sfc object of the point (sfc geometry must inherit from sfc_POINT).
 #' @return A sf object
-#' @seealso \code{\link[fwapgr]{fwa_watershed_at_measure}} and \code{\link[fwapgr]{fwa_indexpoint}}.
+#' @seealso \code{\link[fwapgr]{fwa_watershed_at_measure}} and \code{\link[fwapgr]{fwa_index_point}}.
 #' @export
 #' @examples
 #' \dontrun{
@@ -28,7 +28,7 @@ fwa_point_to_watershed <- function(point) {
 #' @param x A number of the x coordinate.
 #' @param y A number of the y coordinate.
 #' @return A sf object
-#' @seealso \code{\link[fwapgr]{fwa_watershed_at_measure}} and \code{\link[fwapgr]{fwa_indexpoint}}.
+#' @seealso \code{\link[fwapgr]{fwa_watershed_at_measure}} and \code{\link[fwapgr]{fwa_index_point}}.
 #' @export
 #' @examples
 #' \dontrun{
@@ -60,16 +60,21 @@ fwa_xy_to_watershed <- function(x, y, epsg = getOption("fwa.epsg", 3005)) {
 #' \dontrun{
 #' fwa_blue_line_key_to_watershed(356308001)
 #' }
-fwa_blue_line_key_to_watershed <- function(blue_line_key, distance_from_mouth = 0,
+fwa_blue_line_key_to_watershed <- function(blue_line_key,
+                                           distance_from_mouth = 0,
                                            epsg = getOption("fwa.epsg", 3005)) {
   chk_whole_number(blue_line_key)
   chk_gt(blue_line_key)
   chk_whole_number(distance_from_mouth)
   chk_gte(distance_from_mouth)
 
-  wshed <- fwa_watershed_at_measure(blue_line_key = blue_line_key,
+  wshed <- try(fwa_watershed_at_measure(blue_line_key = blue_line_key,
                             downstream_route_measure = distance_from_mouth,
-                            epsg = epsg)
+                            epsg = epsg), silent = TRUE)
+
+  if(is_try_error(wshed) && distance_from_mouth == 0)
+    abort_chk("Unable to retrieve requested watershed. Try a non-zero `distance_from_mouth` value.")
+
   wshed$blue_line_key <- blue_line_key
   wshed$distance_from_mouth <- distance_from_mouth
   wshed[c("blue_line_key", "distance_from_mouth", "geometry")]
