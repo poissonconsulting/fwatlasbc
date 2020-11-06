@@ -164,26 +164,6 @@ fwa_get_wetlands <- function(watershed,
           collection_id = "whse_basemapping.fwa_wetlands_poly")
 }
 
-#' FWA get wetlands
-#'
-#' Get wetland features within watershed.
-#'
-#' @inheritParams fwa_get
-#' @return A sf object
-#' @seealso \code{\link[fwapgr]{fwa_collection}}.
-#' @export
-#' @examples
-#' \dontrun{
-#' watershed <- fwa_blue_line_key_to_watershed(356308001)
-#' fwa_get_wetlands(watershed)
-#' }
-fwa_get_wetlands <- function(watershed,
-                             limit = getOption("fwa.limit", 1000)) {
-  fwa_get(watershed,
-          limit = limit,
-          collection_id = "whse_basemapping.fwa_wetlands_poly")
-}
-
 #' FWA get railway tracks
 #'
 #' Get railway track features within watershed.
@@ -242,26 +222,6 @@ fwa_get_obstructions <- function(watershed,
   fwa_get(watershed,
           limit = limit,
           collection_id = "whse_basemapping.fwa_obstructions_sp")
-}
-
-#' FWA get rivers
-#'
-#' Get river features within watershed.
-#'
-#' @inheritParams fwa_get
-#' @return A sf object
-#' @seealso \code{\link[fwapgr]{fwa_collection}}.
-#' @export
-#' @examples
-#' \dontrun{
-#' watershed <- fwa_blue_line_key_to_watershed(356308001)
-#' fwa_get_rivers(watershed)
-#' }
-fwa_get_rivers <- function(watershed,
-                           limit = getOption("fwa.limit", 1000)) {
-  fwa_get(watershed,
-          limit = limit,
-          collection_id = "whse_basemapping.fwa_rivers_poly")
 }
 
 #' FWA get rivers

@@ -5,8 +5,6 @@
 \title{FWA get rivers}
 \usage{
 fwa_get_rivers(watershed, limit = getOption("fwa.limit", 1000))
-
-fwa_get_rivers(watershed, limit = getOption("fwa.limit", 1000))
 }
 \arguments{
 \item{watershed}{A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).}
@@ -15,12 +13,8 @@ fwa_get_rivers(watershed, limit = getOption("fwa.limit", 1000))
 }
 \value{
 A sf object
-
-A sf object
 }
 \description{
-Get river features within watershed.
-
 Get river features within watershed.
 }
 \examples{
@@ -28,13 +22,7 @@ Get river features within watershed.
 watershed <- fwa_blue_line_key_to_watershed(356308001)
 fwa_get_rivers(watershed)
 }
-\dontrun{
-watershed <- fwa_blue_line_key_to_watershed(356308001)
-fwa_get_rivers(watershed)
-}
 }
 \seealso{
-\code{\link[fwapgr]{fwa_collection}}.
-
 \code{\link[fwapgr]{fwa_collection}}.
 }
