@@ -7,7 +7,7 @@ test_that("watershed functions work", {
   wshed <- fwa_xy_to_watershed(x = x, y = y, epsg = epsg)
   expect_is(wshed, "sf")
   expect_identical(nrow(wshed), 1L)
-  expect_identical(names(wshed), "geometry")
+  expect_identical(names(wshed), c("area_ha", "geometry"))
 
   ### point to watershed
   sfc <- sf::st_as_sfc(glue::glue("POINT({x} {y})"), crs = 4326)
@@ -18,12 +18,12 @@ test_that("watershed functions work", {
   wshed <- fwa_point_to_watershed(sfc)
   expect_is(wshed, "sf")
   expect_identical(nrow(wshed), 1L)
-  expect_identical(names(wshed), "geometry")
+  expect_identical(names(wshed), c("area_ha", "geometry"))
 
   wshed <- fwa_point_to_watershed(sf)
   expect_is(wshed, "sf")
   expect_identical(nrow(wshed), 1L)
-  expect_identical(names(wshed), "geometry")
+  expect_identical(names(wshed), c("area_ha", "geometry"))
 
   ### blk to watershed
   blk <- 356308001
@@ -32,7 +32,7 @@ test_that("watershed functions work", {
                                           distance_from_mouth = drm)
   expect_is(wshed, "sf")
   expect_identical(nrow(wshed), 1L)
-  expect_identical(names(wshed), c("blue_line_key", "distance_from_mouth", "geometry"))
+  expect_identical(names(wshed), c("blue_line_key", "distance_from_mouth", "area_ha", "geometry"))
 
   # test when error if 0
   blk <- 356528119

@@ -44,7 +44,7 @@ fwa_xy_to_watershed <- function(x, y, epsg = getOption("fwa.epsg", 3005)) {
   wshed <- fwa_watershed_at_measure(blue_line_key = index$blue_line_key,
                            downstream_route_measure = index$downstream_route_measure,
                            epsg = epsg)
-  wshed["geometry"]
+  wshed[c("area_ha", "geometry")]
 }
 
 #' FWA blue_line_key to watershed
@@ -77,5 +77,5 @@ fwa_blue_line_key_to_watershed <- function(blue_line_key,
 
   wshed$blue_line_key <- blue_line_key
   wshed$distance_from_mouth <- distance_from_mouth
-  wshed[c("blue_line_key", "distance_from_mouth", "geometry")]
+  wshed[c("blue_line_key", "distance_from_mouth", "area_ha", "geometry")]
 }
