@@ -22,5 +22,5 @@ fwa_point_to_watershed(sf_point)
 }
 }
 \seealso{
-\code{\link[fwapgr]{fwa_watershed_at_measure}} and \code{\link[fwapgr]{fwa_indexpoint}}.
+\code{\link[fwapgr]{fwa_watershed_at_measure}} and \code{\link[fwapgr]{fwa_index_point}}.
 }

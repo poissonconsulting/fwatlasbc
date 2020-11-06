@@ -26,5 +26,5 @@ fwa_xy_to_watershed(x = -131.927, y = 54.032, epsg = 4326)
 }
 }
 \seealso{
-\code{\link[fwapgr]{fwa_watershed_at_measure}} and \code{\link[fwapgr]{fwa_indexpoint}}.
+\code{\link[fwapgr]{fwa_watershed_at_measure}} and \code{\link[fwapgr]{fwa_index_point}}.
 }
