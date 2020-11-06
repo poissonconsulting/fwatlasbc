@@ -10,7 +10,7 @@ test_that("watershed functions work", {
   expect_identical(names(wshed), "geometry")
 
   ### point to watershed
-  sfc <- sf::st_as_sfc(glue::glue("POINT({x} {y})")) %>% sf::st_set_crs(epsg)
+  sfc <- sf::st_as_sfc(glue::glue("POINT({x} {y})"), crs = 4326)
   sf <- sf::st_as_sf(sfc)
 
   epsg <- sf::st_crs(sf, parameters = TRUE)
