@@ -32,5 +32,7 @@ fwa_streams_to_blue_line_keys <- function(stream_name){
   chk_character(stream_name)
   index <- named_streams$gnis_name %in% stream_name
   df <- named_streams[index,]
-  df[c("gnis_name", "blue_line_key", "watershed_group_code")]
+  df <- df[c("gnis_name", "blue_line_key", "watershed_group_code")]
+  names(df)[names(df) == "gnis_name"] <- "stream_name"
+  df
 }
