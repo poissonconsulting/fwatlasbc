@@ -7,7 +7,12 @@ test_that("fwa_search_streams", {
 })
 
 test_that("fwa_stream_to_blue_line_keys", {
-  expect_identical(fwa_stream_to_blue_line_keys("sangan"), integer(0))
-  expect_identical(fwa_stream_to_blue_line_keys("Sangan River"), 360879896L)
-  expect_identical(fwa_stream_to_blue_line_keys("3 Mile Creek"), c(356328957L, 359538484L))
+  expect_identical(nrow(fwa_streams_to_blue_line_keys("sangan")), 0L)
+  x <- fwa_streams_to_blue_line_keys("Sangan River")
+  expect_is(x, "data.frame")
+  expect_identical(names(x), c("gnis_name", "blue_line_key", "watershed_group_code"))
+  expect_identical(x$blue_line_key, 360879896L)
+
+  x <- fwa_streams_to_blue_line_keys("3 Mile Creek")
+  expect_identical(x$blue_line_key, c(356328957L, 359538484L))
 })
