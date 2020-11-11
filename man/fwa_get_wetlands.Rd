@@ -4,7 +4,7 @@
 \alias{fwa_get_wetlands}
 \title{FWA get wetlands}
 \usage{
-fwa_get_wetlands(watershed, limit = getOption("fwa.limit", 1000))
+fwa_get_wetlands(watershed, limit = getOption("fwa.limit", 10000))
 }
 \arguments{
 \item{watershed}{A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).}
