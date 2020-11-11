@@ -35,5 +35,6 @@ fwa_nearest_rkm <- function(x, rkm) {
                                 rkm = 1))
   index <- sf::st_nearest_feature(x, rkm)
   x$rkm <- rkm$rkm[index]
+  x$distance_to_rkm <- sf::st_distance(x, rkm[index,], by_element = TRUE)
   x
 }

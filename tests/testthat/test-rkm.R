@@ -18,5 +18,8 @@ test_that("fwa_nearest_rkm works", {
 
   y <- fwa_nearest_rkm(x, rkm)
   x$rkm <- c(1,3,4,4,8)
+  expect_is(y$distance_to_rkm, "units")
+  expect_true(vld_gt(as.numeric(y$distance_to_rkm), 500))
+  y$distance_to_rkm <- NULL
   expect_identical(y, x)
 })
