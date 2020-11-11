@@ -8,8 +8,8 @@ fwa_rkm(
   blue_line_key,
   interval = 1000,
   distance_upstream = 0,
-  epsg = 4326,
-  limit = 500
+  epsg = getOption("fwa.epsg", 3005),
+  limit = getOption("fwa.limit", 1000)
 )
 }
 \arguments{
