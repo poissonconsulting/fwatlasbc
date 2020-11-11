@@ -9,3 +9,14 @@ test_that("rkm functions work", {
   expect_identical(names(x), c("blue_line_key", "rkm", "geometry"))
   expect_is(x$blue_line_key, "integer")
 })
+
+test_that("fwa_nearest_rkm works", {
+  blk <- 356308001
+  rkm <- fwa_rkm(blue_line_key = 356308001, interval = 1000)
+  x <- rkm[rkm$rkm %in% c(0, 2, 5, 6, 7),]
+  rkm <- rkm[!rkm$rkm %in% c(0, 2, 5, 6, 7),]
+
+  y <- fwa_nearest_rkm(x, rkm)
+  x$rkm <- c(1,3,4,4,8)
+  expect_identical(y, x)
+})

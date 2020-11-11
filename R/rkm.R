@@ -22,3 +22,18 @@ fwa_rkm <- function(blue_line_key, interval = 1000, distance_upstream = 0, epsg 
   x$blue_line_key <- as.integer(blue_line_key)
   x[c("blue_line_key", "rkm", "geometry")]
 }
+
+
+fwa_nearest_rkm <- function(x, rkm) {
+  chk::chk_s3_class(x, "sf")
+  chk::chk_s3_class(rkm, "sf")
+
+  if(is.null(x$blue_line_key)) x$blue_line_key <- NA_integer_
+
+  check_data(x, values = list(blue_line_key = c(1L, .Machine$integer.max, NA)))
+  check_data(rkm, values = list(blue_line_key = c(1L, .Machine$integer.max),
+                                rkm = 1))
+  index <- sf::st_nearest_feature(x, rkm)
+  x$rkm <- rkm$rkm[index]
+  x
+}
