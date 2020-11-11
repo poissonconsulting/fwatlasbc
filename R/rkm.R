@@ -25,6 +25,6 @@ fwa_rkm <- function(blue_line_key, interval = 1000, distance_upstream = 0,
                                  epsg = epsg,
                                  limit = limit)
   x$rkm <- x$index*interval/1000
-  x$blue_line_key <- blue_line_key
+  x$blue_line_key <- as.integer(blue_line_key)
   x[c("blue_line_key", "rkm", "geometry")]
 }
