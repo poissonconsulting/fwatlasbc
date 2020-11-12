@@ -1,13 +1,10 @@
 test_that("rkm functions work", {
 
-  blk <- 356308001
-  drm <- 0
-  drm2 <- 10000
-
-  x <- fwa_rkm(blue_line_key = blk, interval = 100, distance_upstream = drm2)
+  x <- fwa_rkm(blue_line_key = 356308001L, interval = 100, distance_upstream = 10000)
   expect_is(x, "sf")
   expect_identical(names(x), c("blue_line_key", "rkm", "geometry"))
   expect_is(x$blue_line_key, "integer")
+  expect_equal(x$rkm, seq(10, 19.2, by = 0.1))
 })
 
 test_that("fwa_nearest_rkm works", {
