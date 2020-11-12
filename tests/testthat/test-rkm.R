@@ -16,22 +16,21 @@ test_that("fwa_nearest_rkm works", {
   x <- rkm[rkm$rkm %in% c(0, 2, 5, 6, 7),]
   rkm <- rkm[!rkm$rkm %in% c(0, 2, 5, 6, 7),]
   y <- fwa_nearest_rkm(x, rkm)
-  expect_is(y$distance_to_rkm, "numeric")
-  expect_true(vld_gt(as.numeric(y$distance_to_rkm), 500))
-  y$distance_to_rkm <- NULL
-  x$rkm <- c(1,3,4,4,8)
-  expect_identical(y, x)
-
+  ey <- x
+  ey$rkm <- c(1,3,4,4,8)
+  ey$distance_to_rkm <- c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
+                          514.952511361304)
+  expect_equal(y, ey)
 
   rkm$blue_line_key[rkm$rkm == 8] <- 2L
   x2 <- x
   x2$blue_line_key[1:2] <- NA_integer_
   y <- fwa_nearest_rkm(x2, rkm)
-  expect_is(y$distance_to_rkm, "numeric")
-  expect_true(vld_gt(as.numeric(y$distance_to_rkm), 500))
-  y$distance_to_rkm <- NULL
-  x$rkm <- c(1,3,4,4,9)
-  expect_identical(y, x)
+  ey <- x
+  ey$rkm <- c(1,3,4,4,9)
+  ey$distance_to_rkm <- c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
+                          645.410842257104)
+  expect_equal(y, ey[c("blue_line_key", "rkm", "distance_to_rkm")])
 })
 
 test_that("fwa_add_columns_to_rkm adds no columns", {
