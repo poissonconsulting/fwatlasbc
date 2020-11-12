@@ -91,3 +91,44 @@ fwa_nearest_rkm <- function(x, rkm) {
   x$..fwatlasbc.id <- NULL
   x
 }
+
+#' Add Columns to Rkm
+#'
+#' Adds columns to rkm based on end river kilometers in y.
+#'
+#' @param rkm A data frame with columns blue_line_key and rkm.
+#' @param y A data frame with columns blue_line_key, rkm and additional columns
+#' to add to rkm.
+#'
+#' @return An ordered version of rkm with additional columns from y.
+#' @export
+fwa_add_columns_to_rkm <- function(rkm, y) {
+  check_data(rkm, values = list(blue_line_key = c(1L, .Machine$integer.max),
+                                rkm = 1), key = c("blue_line_key", "rkm"))
+  check_data(y, values = list(blue_line_key = c(1L, .Machine$integer.max),
+                              rkm = 1), key = c("blue_line_key", "rkm"))
+
+  rkm <- rkm[order(rkm$blue_line_key, rkm$rkm),]
+
+  colnames <- colnames(y)
+  colnames <- colnames[!colnames %in% c("blue_line_key", "rkm")]
+
+  if(!length(colnames)) return(rkm)
+
+  rkm <- rkm[!colnames(rkm) %in% colnames]
+
+  if(!nrow(rkm)) {
+    y <- y[0, colnames, drop = FALSE]
+    rkm <- cbind(rkm, y)
+    return(rkm)
+  }
+  if(!nrow(y)) {
+    y <- y[colnames]
+    y <- lapply(y, function(x) {is.na(x) <- TRUE; x})
+    y <- as.data.frame(y)
+    rkm <- cbind(rkm, y)
+    return(rkm)
+  }
+  .NotYetImplemented()
+  rkm
+}

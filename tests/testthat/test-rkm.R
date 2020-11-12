@@ -33,3 +33,36 @@ test_that("fwa_nearest_rkm works", {
   x$rkm <- c(1,3,4,4,9)
   expect_identical(y, x)
 })
+
+test_that("fwa_add_columns_to_rkm adds no columns", {
+
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9))
+
+  expect_identical(fwa_add_columns_to_rkm(rkm, x), rkm)
+})
+
+test_that("fwa_add_columns_to_rkm reorders", {
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9))
+
+  erkm <- rkm
+  rkm <- rkm[rev(order(rkm$rkm)),]
+
+  expect_identical(fwa_add_columns_to_rkm(rkm, x), erkm)
+})
+
+test_that("fwa_add_columns_to_rkm adds missing values if zero length", {
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = 2)
+  rkm$new <- NA_real_
+  expect_identical(fwa_add_columns_to_rkm(rkm, x[0,]), rkm)
+})
+
+test_that("fwa_add_columns_to_rkm adds zero length", {
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = 2)
+  erkm <- rkm[0,]
+  erkm$new <- erkm$new <- numeric(0)
+  expect_identical(fwa_add_columns_to_rkm(rkm[0,], x), erkm)
+})
