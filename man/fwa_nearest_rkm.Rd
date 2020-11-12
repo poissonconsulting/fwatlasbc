@@ -12,7 +12,7 @@ fwa_nearest_rkm(x, rkm)
 \item{rkm}{An sf data frame of spatial point with blue_line_key and rkm columns.}
 }
 \value{
-An updated version of x with column rkm and distance_to_rkm of units "m".
+An updated version of x with column rkm and distance_to_rkm in m.
 }
 \description{
 Assigns spatial points to river kilometre with matching blue_line_key.

@@ -16,7 +16,7 @@ test_that("fwa_nearest_rkm works", {
   x <- rkm[rkm$rkm %in% c(0, 2, 5, 6, 7),]
   rkm <- rkm[!rkm$rkm %in% c(0, 2, 5, 6, 7),]
   y <- fwa_nearest_rkm(x, rkm)
-  expect_is(y$distance_to_rkm, "units")
+  expect_is(y$distance_to_rkm, "numeric")
   expect_true(vld_gt(as.numeric(y$distance_to_rkm), 500))
   y$distance_to_rkm <- NULL
   x$rkm <- c(1,3,4,4,8)
@@ -27,7 +27,7 @@ test_that("fwa_nearest_rkm works", {
   x2 <- x
   x2$blue_line_key[1:2] <- NA_integer_
   y <- fwa_nearest_rkm(x2, rkm)
-  expect_is(y$distance_to_rkm, "units")
+  expect_is(y$distance_to_rkm, "numeric")
   expect_true(vld_gt(as.numeric(y$distance_to_rkm), 500))
   y$distance_to_rkm <- NULL
   x$rkm <- c(1,3,4,4,9)

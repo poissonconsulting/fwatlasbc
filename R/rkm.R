@@ -29,6 +29,7 @@ nearest_rkm <- function(x, rkm) {
   x$blue_line_key <- rkm$blue_line_key[index]
   x$rkm <- rkm$rkm[index]
   x$distance_to_rkm <- sf::st_distance(x, rkm[index,], by_element = TRUE)
+  x$distance_to_rkm <- as.numeric(x$distance_to_rkm)
   x
 }
 
@@ -50,7 +51,7 @@ blue_line_key_nearest_rkm <- function(blue_line_key, x, rkm) {
 #' @param x An sf data frame of spatial points with optional blue_line_key column.
 #' @param rkm An sf data frame of spatial point with blue_line_key and rkm columns.
 #'
-#' @return An updated version of x with column rkm and distance_to_rkm of units "m".
+#' @return An updated version of x with column rkm and distance_to_rkm in m.
 #' @family rkm
 #' @export
 #' @examples
@@ -70,12 +71,12 @@ fwa_nearest_rkm <- function(x, rkm) {
 
   if(!nrow(x)) {
     x$rkm <- numeric(0)
-    x$distance_to_rkm <- units::as_units(numeric(0), "m")
+    x$distance_to_rkm <- numeric(0)
     return(x)
   }
   if(!nrow(rkm)) {
     x$rkm <- NA_real_
-    x$distance_to_rkm <- units::as_units(NA_real_, "m")
+    x$distance_to_rkm <- NA_real_
     return(x)
   }
   blue_line_keys <- unique(x$blue_line_key)
