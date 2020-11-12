@@ -19,6 +19,7 @@ Imports:
     glue,
     chk,
     lifecycle,
+    units,
     sf
 Remotes:
     poissonconsulting/fwapgr

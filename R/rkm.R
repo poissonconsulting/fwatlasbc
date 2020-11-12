@@ -23,6 +23,24 @@ fwa_rkm <- function(blue_line_key, interval = 1000, distance_upstream = 0, epsg 
   x[c("blue_line_key", "rkm", "geometry")]
 }
 
+nearest_rkm <- function(x, rkm) {
+  index <- sf::st_nearest_feature(x, rkm)
+  x$blue_line_key <- rkm$blue_line_key[index]
+  x$rkm <- rkm$rkm[index]
+  x$distance_to_rkm <- sf::st_distance(x, rkm[index,], by_element = TRUE)
+  x
+}
+
+blue_line_key_nearest_rkm <- function(blue_line_key, x, rkm) {
+  if(is.na(blue_line_key)) {
+    x <- x[is.na(x$blue_line_key),]
+  } else {
+    x <- x[!is.na(x$blue_line_key) & x$blue_line_key == blue_line_key,]
+    rkm <- rkm[rkm$blue_line_key == blue_line_key,]
+  }
+  print(x)
+  nearest_rkm(x, rkm)
+}
 
 fwa_nearest_rkm <- function(x, rkm) {
   chk::chk_s3_class(x, "sf")
@@ -33,8 +51,26 @@ fwa_nearest_rkm <- function(x, rkm) {
   check_data(x, values = list(blue_line_key = c(1L, .Machine$integer.max, NA)))
   check_data(rkm, values = list(blue_line_key = c(1L, .Machine$integer.max),
                                 rkm = 1))
-  index <- sf::st_nearest_feature(x, rkm)
-  x$rkm <- rkm$rkm[index]
-  x$distance_to_rkm <- sf::st_distance(x, rkm[index,], by_element = TRUE)
+
+  if(!nrow(x)) {
+    x$rkm <- numeric(0)
+    x$distance_to_rkm <- units::as_units(numeric(0), "m")
+    return(x)
+  }
+  if(!nrow(rkm)) {
+    x$rkm <- NA_real_
+    x$distance_to_rkm <- units::as_units(NA_real_, "m")
+    return(x)
+  }
+  blue_line_keys <- unique(x$blue_line_key)
+  if(length(blue_line_keys) == 1L) {
+    return(nearest_rkm(blue_line_keys))
+  }
+
+  x$..fwatlasbc.id <- 1:nrow(x)
+  x <- lapply(blue_line_keys, blue_line_key_nearest_rkm, x, rkm)
+  x <- do.call("rbind", x)
+  x <- x[order(x$..fwatlasbc.id),]
+  x$..fwatlasbc.id <- NULL
   x
 }
