@@ -2,7 +2,7 @@
 % Please edit documentation in R/rkm.R
 \name{fwa_rkm}
 \alias{fwa_rkm}
-\title{FWA rkm}
+\title{Get Rkm}
 \usage{
 fwa_rkm(
   blue_line_key,
@@ -27,8 +27,13 @@ fwa_rkm(
 A sf object
 }
 \description{
-Provided a blue_line_key and starting distance upstream from river mouth, return Rkm points along an interval.
+Provided a blue_line_key and starting distance upstream from river mouth, return river kilometre  points along an interval.
 }
 \examples{
 fwa_rkm(356308001)
 }
+\seealso{
+Other rkm: 
+\code{\link{fwa_nearest_rkm}()}
+}
+\concept{rkm}
