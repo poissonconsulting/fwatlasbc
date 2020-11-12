@@ -25,8 +25,10 @@ fwa_rkm <- function(blue_line_key, interval = 1000, distance_upstream = 0, epsg 
 }
 
 nearest_rkm <- function(x, rkm) {
+  blk <- x$blue_line_key
   index <- sf::st_nearest_feature(x, rkm)
   x$blue_line_key <- rkm$blue_line_key[index]
+  x$blue_line_key[is.na(x$blue_line_key)] <- blk[is.na(x$blue_line_key)]
   x$rkm <- rkm$rkm[index]
   x$distance_to_rkm <- sf::st_distance(x, rkm[index,], by_element = TRUE)
   x$distance_to_rkm <- as.numeric(x$distance_to_rkm)

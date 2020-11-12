@@ -31,6 +31,26 @@ test_that("fwa_nearest_rkm works", {
   ey$distance_to_rkm <- c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
                           645.410842257104)
   expect_equal(y, ey[c("blue_line_key", "rkm", "distance_to_rkm")])
+
+  x2 <- sf::st_zm(x2)
+  is.na(x2$geometry[x2$rkm == 6]) <- TRUE
+  y <- fwa_nearest_rkm(x2, rkm)
+  ey <- sf::st_zm(x)
+  is.na(ey$geometry[ey$rkm == 6]) <- TRUE
+  ey$rkm <- c(1,3,4,NA,9)
+  ey$distance_to_rkm <- c(873.50885850392, 535.63765010454, 754.230245890789, NA,
+                          645.410842257104)
+  y
+
+  expect_equal(y, ey[c("blue_line_key", "rkm", "distance_to_rkm")])
+
+  is.na(x2$blue_line_key) <- TRUE
+  y <- fwa_nearest_rkm(x2, rkm)
+
+  expect_identical(y$blue_line_key, c(356308001L, 356308001L, 356308001L, NA, 2L))
+  expect_identical(y$rkm, c(1, 3, 4, NA, 8))
+  expect_equal(y$distance_to_rkm, c(873.50885850392, 535.63765010454, 754.230245890789, NA,
+                                      514.952511361304))
 })
 
 test_that("fwa_add_columns_to_rkm adds no columns", {
