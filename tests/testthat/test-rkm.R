@@ -62,7 +62,37 @@ test_that("fwa_add_columns_to_rkm adds missing values if zero length", {
 test_that("fwa_add_columns_to_rkm adds zero length", {
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = 2)
+
   erkm <- rkm[0,]
   erkm$new <- erkm$new <- numeric(0)
   expect_identical(fwa_add_columns_to_rkm(rkm[0,], x), erkm)
+})
+
+test_that("fwa_add_columns_to_rkm simple example", {
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  y <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = c(3, 7.5, 10))
+
+  erkm <- rkm
+  erkm$new <- c(3, 3, 3, 7.5, 7.5, 7.5, 7.5, 10, 10, NA)
+  expect_identical(fwa_add_columns_to_rkm(rkm, y), erkm)
+})
+
+test_that("fwa_add_columns_to_rkm with missing values", {
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  y <- data.frame(blue_line_key = 1L, rkm = c(2, 3, 7.5, 9), new = c(NA, 3, 7.5, 10))
+
+  erkm <- rkm
+  erkm$new <- c(NA, NA, 3, 7.5, 7.5, 7.5, 7.5, 10, 10, NA)
+  expect_identical(fwa_add_columns_to_rkm(rkm, y), erkm)
+})
+
+test_that("fwa_add_columns_to_rkm with more than one column", {
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  y <- data.frame(blue_line_key = 1L, rkm = c(2, 3, 7.5, 9), new2 = c(10, 7.5, 3, NA),
+                  new = c(NA, 3, 7.5, 10))
+
+  erkm <- rkm
+  erkm$new2 <- c(10, 10, 7.5, 3, 3, 3, 3, NA, NA, NA)
+  erkm$new <- c(NA, NA, 3, 7.5, 7.5, 7.5, 7.5, 10, 10, NA)
+  expect_identical(fwa_add_columns_to_rkm(rkm, y), erkm)
 })

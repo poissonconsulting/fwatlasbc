@@ -108,6 +108,9 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
   check_data(y, values = list(blue_line_key = c(1L, .Machine$integer.max),
                               rkm = 1), key = c("blue_line_key", "rkm"))
 
+  rkm <- as.data.frame(rkm, stringsAsFactors = FALSE)
+  y <- as.data.frame(y, stringsAsFactors = FALSE)
+
   rkm <- rkm[order(rkm$blue_line_key, rkm$rkm),]
 
   colnames <- colnames(y)
@@ -122,6 +125,7 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
     rkm <- cbind(rkm, y)
     return(rkm)
   }
+  y <- y[y$blue_line_key %in% rkm$blue_line_key,,drop = FALSE]
   if(!nrow(y)) {
     y <- y[colnames]
     y <- lapply(y, function(x) {is.na(x) <- TRUE; x})
@@ -129,6 +133,35 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
     rkm <- cbind(rkm, y)
     return(rkm)
   }
-  .NotYetImplemented()
+
+  y <- y[order(y$blue_line_key, y$rkm),,drop = FALSE]
+
+  y_max <- split(y, y$blue_line_key)
+  y_max <- lapply(y_max, function(x) data.frame(
+    blue_line_key = x$blue_line_key[1],
+    .fwatlasbc.y.max.. = max(x$rkm)))
+  y_max <- do.call("rbind", y_max)
+
+  rkm <- merge(rkm, y_max, by = "blue_line_key", all.x = TRUE)
+  out <- is.na(rkm$.fwatlasbc.y.max..) | rkm$.fwatlasbc.y.max.. < rkm$rkm
+  rkm$.fwatlasbc.y.max..<- NULL
+  rkm_out <- rkm[out,,drop = FALSE]
+  rkm <- rkm[!out,,drop = FALSE]
+
+  rkm_out <- fwa_add_columns_to_rkm(rkm_out, y[0,])
+
+  y$.fwatlasbc.y.rkm.. <- y$rkm
+  y$rkm <- NULL
+  rkm <- merge(rkm, y, by = "blue_line_key", all.x = TRUE)
+  rkm$.fwatlasbc.y.rkm.. <- rkm$.fwatlasbc.y.rkm.. - rkm$rkm
+  rkm <- rkm[rkm$.fwatlasbc.y.rkm.. >= 0,, drop = FALSE]
+  rkm <- split(rkm, list(rkm$blue_line_key, rkm$rkm))
+  rkm <- lapply(rkm, function(x) x[which.min(x$.fwatlasbc.y.rkm..),,drop = FALSE])
+  rkm <- do.call("rbind", rkm)
+  rkm$.fwatlasbc.y.rkm.. <- NULL
+
+  rkm <- rbind(rkm, rkm_out)
+  rkm <- rkm[order(rkm$blue_line_key, rkm$rkm),,drop = FALSE]
+  row.names(rkm) <- NULL
   rkm
 }
