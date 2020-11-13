@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Rkm — fwa_rkm • fwatlasbc</title>
+<title>Add Columns to Rkm — fwa_add_columns_to_rkm • fwatlasbc</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Get Rkm — fwa_rkm" />
-<meta property="og:description" content="Provided a blue_line_key and starting distance upstream from river mouth, return river kilometre  points along an interval." />
+<meta property="og:title" content="Add Columns to Rkm — fwa_add_columns_to_rkm" />
+<meta property="og:description" content="Adds columns to rkm based on end river kilometers in y." />
 
 
 
@@ -97,76 +97,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Rkm</h1>
+    <h1>Add Columns to Rkm</h1>
     
-    <div class="hidden name"><code>fwa_rkm.Rd</code></div>
+    <div class="hidden name"><code>fwa_add_columns_to_rkm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Provided a blue_line_key and starting distance upstream from river mouth, return river kilometre  points along an interval.</p>
+    <p>Adds columns to rkm based on end river kilometers in y.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fwa_rkm</span><span class='op'>(</span>
-  <span class='va'>blue_line_key</span>,
-  interval <span class='op'>=</span> <span class='fl'>1000</span>,
-  distance_upstream <span class='op'>=</span> <span class='fl'>0</span>,
-  epsg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.epsg"</span>, <span class='fl'>3005</span><span class='op'>)</span>,
-  limit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.limit"</span>, <span class='fl'>10000</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>fwa_add_columns_to_rkm</span><span class='op'>(</span><span class='va'>rkm</span>, <span class='va'>y</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>blue_line_key</th>
-      <td><p>An integer of the stream blue line key.</p></td>
+      <th>rkm</th>
+      <td><p>A data frame with columns blue_line_key and rkm.</p></td>
     </tr>
     <tr>
-      <th>interval</th>
-      <td><p>An integer of the interval distance in meters.</p></td>
-    </tr>
-    <tr>
-      <th>distance_upstream</th>
-      <td><p>An integer of the distance in meters upstream from the river mouth to start from.</p></td>
-    </tr>
-    <tr>
-      <th>epsg</th>
-      <td><p>A positive whole number of the epsg to transform features to.</p></td>
-    </tr>
-    <tr>
-      <th>limit</th>
-      <td><p>A positive whole number of the maximum number of features to return.</p></td>
+      <th>y</th>
+      <td><p>A data frame with columns blue_line_key, rkm and additional columns
+to add to rkm.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A sf object</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>An ordered version of rkm with additional columns from y.</p>
 
-    <div class='dont-index'><p>Other rkm: 
-<code><a href='fwa_nearest_rkm.html'>fwa_nearest_rkm</a>()</code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>fwa_rkm</span><span class='op'>(</span><span class='fl'>356308001</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Simple feature collection with 20 features and 2 fields
-#&gt; geometry type:  POINT
-#&gt; dimension:      XYZ
-#&gt; bbox:           xmin: 1290725 ymin: 464161.2 xmax: 1301656 ymax: 469483.5
-#&gt; z_range:        zmin: 7.5 zmax: 209.8951
-#&gt; projected CRS:  NAD83 / BC Albers
-#&gt; First 10 features:
-#&gt;    blue_line_key rkm                       geometry
-#&gt; 1      356308001   0 POINT Z (1290725 469483.5 9...
-#&gt; 2      356308001   1 POINT Z (1291542 469173.9 1...
-#&gt; 3      356308001   2 POINT Z (1292439 468922.9 7.5)
-#&gt; 4      356308001   3 POINT Z (1292909 468665.1 9...
-#&gt; 5      356308001   4 POINT Z (1293268 467977.4 9...
-#&gt; 6      356308001   5 POINT Z (1293158 467231.2 9...
-#&gt; 7      356308001   6 POINT Z (1293794 467668.3 9...
-#&gt; 8      356308001   7 POINT Z (1294079 467938.4 9...
-#&gt; 9      356308001   8  POINT Z (1294497 468239.5 10)
-#&gt; 10     356308001   9 POINT Z (1294708 468081.9 1...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
