@@ -4,7 +4,7 @@
 \alias{fwa_get_cultural_points}
 \title{FWA get cultural points}
 \usage{
-fwa_get_cultural_points(watershed, limit = getOption("fwa.limit", 1000))
+fwa_get_cultural_points(watershed, limit = getOption("fwa.limit", 10000))
 }
 \arguments{
 \item{watershed}{A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).}

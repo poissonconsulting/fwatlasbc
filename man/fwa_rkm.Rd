@@ -9,7 +9,7 @@ fwa_rkm(
   interval = 1000,
   distance_upstream = 0,
   epsg = getOption("fwa.epsg", 3005),
-  limit = getOption("fwa.limit", 1000)
+  limit = getOption("fwa.limit", 10000)
 )
 }
 \arguments{

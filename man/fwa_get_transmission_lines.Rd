@@ -4,7 +4,7 @@
 \alias{fwa_get_transmission_lines}
 \title{FWA get transmission lines}
 \usage{
-fwa_get_transmission_lines(watershed, limit = getOption("fwa.limit", 1000))
+fwa_get_transmission_lines(watershed, limit = getOption("fwa.limit", 10000))
 }
 \arguments{
 \item{watershed}{A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).}

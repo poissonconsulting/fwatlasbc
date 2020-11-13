@@ -4,7 +4,7 @@
 \alias{fwa_get_transport_lines}
 \title{FWA get transport lines}
 \usage{
-fwa_get_transport_lines(watershed, limit = getOption("fwa.limit", 1000))
+fwa_get_transport_lines(watershed, limit = getOption("fwa.limit", 10000))
 }
 \arguments{
 \item{watershed}{A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).}

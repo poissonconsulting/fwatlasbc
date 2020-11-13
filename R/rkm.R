@@ -12,14 +12,21 @@
 #' @export
 #' @examples
 #' fwa_rkm(356308001)
-fwa_rkm <- function(blue_line_key, interval = 1000, distance_upstream = 0, epsg = getOption("fwa.epsg", 3005), limit = getOption("fwa.limit", 1000)){
+fwa_rkm <- function(blue_line_key, interval = 1000, distance_upstream = 0,
+                    epsg = getOption("fwa.epsg", 3005),
+                    limit = getOption("fwa.limit", 10000)){
   chk_whole_number(blue_line_key)
   chk_whole_number(interval)
   chk_whole_number(distance_upstream)
   chk_whole_number(epsg)
 
-  x <- fwa_locate_along_interval(blue_line_key, interval_length = interval, start = distance_upstream, epsg = epsg, limit = limit)
-  x$rkm <- (x$index*interval + distance_upstream)/1000
+  x <- fwa_locate_along_interval(blue_line_key,
+                                 interval_length = interval,
+                                 start = distance_upstream,
+                                 epsg = epsg,
+                                 limit = limit)
+x$rkm <- (x$index*interval + distance_upstream)/1000
+
   x$blue_line_key <- as.integer(blue_line_key)
   x[c("blue_line_key", "rkm", "geometry")]
 }

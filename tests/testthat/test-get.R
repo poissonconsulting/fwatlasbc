@@ -2,7 +2,7 @@ test_that("get functions work", {
   blk <- 356308001
   wshed <- fwa_blue_line_key_to_watershed(blue_line_key = blk)
 
-  x <- fwa_get_stream_network(wshed)
+  x <- fwa_get_stream_network(wshed, limit = 1000)
   expect_is(x, "sf")
   expect_is(x$geometry, "sfc_LINESTRING")
   expect_identical(nrow(x), 89L)
