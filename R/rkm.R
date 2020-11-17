@@ -130,15 +130,16 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
   rkm <- rkm[!colnames(rkm) %in% colnames]
 
   if(!nrow(rkm)) {
-    y <- y[0, colnames, drop = FALSE]
+    y <- dplyr::select(y, colnames)
+    y <- dplyr::slice(y, 0)
     rkm <- dplyr::bind_cols(rkm, y)
     return(rkm)
   }
   y <- y[y$blue_line_key %in% rkm$blue_line_key,,drop = FALSE]
   if(!nrow(y)) {
-    y <- y[colnames]
+    y <- dplyr::select(y, colnames)
     y <- lapply(y, function(x) {is.na(x) <- TRUE; x})
-    y <- as.data.frame(y)
+    y <- dplyr::as_tibble(y)
     rkm <- dplyr::bind_cols(rkm, y)
     return(rkm)
   }
@@ -153,24 +154,23 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
 
   rkm <- dplyr::left_join(rkm, y_max, by = "blue_line_key")
   out <- is.na(rkm$.fwatlasbc.y.max..) | rkm$.fwatlasbc.y.max.. < rkm$rkm
-  rkm$.fwatlasbc.y.max..<- NULL
-  rkm_out <- rkm[out,,drop = FALSE]
-  rkm <- rkm[!out,,drop = FALSE]
+  rkm <- dplyr::select(rkm, -.data$.fwatlasbc.y.max..)
+  rkm_out <- dplyr::filter(rkm, out)
+  rkm <- dplyr::filter(rkm, !out)
 
   rkm_out <- fwa_add_columns_to_rkm(rkm_out, y[0,])
 
-  y$.fwatlasbc.y.rkm.. <- y$rkm
-  y$rkm <- NULL
+  y <- dplyr::mutate(y, .fwatlasbc.y.rkm.. = .data$rkm)
+  y <- dplyr::select(y, -.data$rkm)
   rkm <- dplyr::left_join(rkm, y, by = "blue_line_key")
   rkm <- dplyr::mutate(rkm, .fwatlasbc.y.rkm.. = .data$.fwatlasbc.y.rkm.. - .data$rkm)
   rkm <- dplyr::filter(rkm, .data$.fwatlasbc.y.rkm.. >= 0)
   rkm <- split(rkm, list(rkm$blue_line_key, rkm$rkm))
   rkm <- lapply(rkm, function(x) x[which.min(x$.fwatlasbc.y.rkm..),,drop = FALSE])
   rkm <- dplyr::bind_rows(rkm)
-  rkm$.fwatlasbc.y.rkm.. <- NULL
+  rkm <- dplyr::select(rkm, -.data$.fwatlasbc.y.rkm..)
 
   rkm <- dplyr::bind_rows(rkm, rkm_out)
   rkm <- dplyr::arrange(rkm, .data$blue_line_key, .data$rkm)
-  row.names(rkm) <- NULL
   rkm
 }
