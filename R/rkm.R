@@ -120,7 +120,7 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
   rkm <- as.data.frame(rkm, stringsAsFactors = FALSE)
   y <- as.data.frame(y, stringsAsFactors = FALSE)
 
-  rkm <- rkm[order(rkm$blue_line_key, rkm$rkm),]
+  rkm <- dplyr::arrange(rkm, .data$blue_line_key, .data$rkm)
 
   colnames <- colnames(y)
   colnames <- colnames[!colnames %in% c("blue_line_key", "rkm")]
@@ -131,7 +131,7 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
 
   if(!nrow(rkm)) {
     y <- y[0, colnames, drop = FALSE]
-    rkm <- cbind(rkm, y)
+    rkm <- dplyr::bind_cols(rkm, y)
     return(rkm)
   }
   y <- y[y$blue_line_key %in% rkm$blue_line_key,,drop = FALSE]
@@ -139,19 +139,19 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
     y <- y[colnames]
     y <- lapply(y, function(x) {is.na(x) <- TRUE; x})
     y <- as.data.frame(y)
-    rkm <- cbind(rkm, y)
+    rkm <- dplyr::bind_cols(rkm, y)
     return(rkm)
   }
 
-  y <- y[order(y$blue_line_key, y$rkm),,drop = FALSE]
+  y <- dplyr::arrange(y, .data$blue_line_key, .data$rkm)
 
-  y_max <- split(y, y$blue_line_key)
+  y_max <- dplyr::group_split(y, "blue_line_key")
   y_max <- lapply(y_max, function(x) data.frame(
     blue_line_key = x$blue_line_key[1],
     .fwatlasbc.y.max.. = max(x$rkm)))
-  y_max <- do.call("rbind", y_max)
+  y_max <- dplyr::bind_rows(y_max)
 
-  rkm <- merge(rkm, y_max, by = "blue_line_key", all.x = TRUE)
+  rkm <- dplyr::left_join(rkm, y_max, by = "blue_line_key")
   out <- is.na(rkm$.fwatlasbc.y.max..) | rkm$.fwatlasbc.y.max.. < rkm$rkm
   rkm$.fwatlasbc.y.max..<- NULL
   rkm_out <- rkm[out,,drop = FALSE]
@@ -161,16 +161,16 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
 
   y$.fwatlasbc.y.rkm.. <- y$rkm
   y$rkm <- NULL
-  rkm <- merge(rkm, y, by = "blue_line_key", all.x = TRUE)
+  rkm <- dplyr::left_join(rkm, y, by = "blue_line_key")
   rkm$.fwatlasbc.y.rkm.. <- rkm$.fwatlasbc.y.rkm.. - rkm$rkm
   rkm <- rkm[rkm$.fwatlasbc.y.rkm.. >= 0,, drop = FALSE]
   rkm <- split(rkm, list(rkm$blue_line_key, rkm$rkm))
   rkm <- lapply(rkm, function(x) x[which.min(x$.fwatlasbc.y.rkm..),,drop = FALSE])
-  rkm <- do.call("rbind", rkm)
+  rkm <- dplyr::bind_rows(rkm)
   rkm$.fwatlasbc.y.rkm.. <- NULL
 
-  rkm <- rbind(rkm, rkm_out)
-  rkm <- rkm[order(rkm$blue_line_key, rkm$rkm),,drop = FALSE]
+  rkm <- dplyr::bind_rows(rkm, rkm_out)
+  rkm <- dplyr::arrange(rkm, .data$blue_line_key, .data$rkm)
   row.names(rkm) <- NULL
   rkm
 }
