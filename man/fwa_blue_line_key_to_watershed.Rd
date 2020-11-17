@@ -11,7 +11,7 @@ fwa_blue_line_key_to_watershed(
 )
 }
 \arguments{
-\item{blue_line_key}{A positive whole number of the stream blue line key.}
+\item{blue_line_key}{An integer of the stream blue line key.}
 
 \item{distance_from_mouth}{A positive whole number of the distance in meters upstream from the river mouth.}
 

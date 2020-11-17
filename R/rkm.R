@@ -25,7 +25,7 @@ fwa_rkm <- function(blue_line_key, interval = 1000, distance_upstream = 0,
                                  start = distance_upstream,
                                  epsg = epsg,
                                  limit = limit)
-x$rkm <- (x$index*interval + distance_upstream)/1000
+  x$rkm <- (x$index*interval + distance_upstream)/1000
 
   x$blue_line_key <- as.integer(blue_line_key)
   x[c("blue_line_key", "rkm", "geometry")]
@@ -145,11 +145,11 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
 
   y <- dplyr::arrange(y, .data$blue_line_key, .data$rkm)
 
-  y_max <- dplyr::group_split(y, "blue_line_key")
-  y_max <- lapply(y_max, function(x) data.frame(
-    blue_line_key = x$blue_line_key[1],
-    .fwatlasbc.y.max.. = max(x$rkm)))
-  y_max <- dplyr::bind_rows(y_max)
+  y_max <- dplyr::group_by(y, .data$blue_line_key)
+  y_max <- dplyr::summarise(y_max,
+                            blue_line_key = dplyr::first(.data$blue_line_key),
+                            .fwatlasbc.y.max.. = max(.data$rkm))
+  y_max <- dplyr::ungroup(y_max)
 
   rkm <- dplyr::left_join(rkm, y_max, by = "blue_line_key")
   out <- is.na(rkm$.fwatlasbc.y.max..) | rkm$.fwatlasbc.y.max.. < rkm$rkm
@@ -162,8 +162,8 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
   y$.fwatlasbc.y.rkm.. <- y$rkm
   y$rkm <- NULL
   rkm <- dplyr::left_join(rkm, y, by = "blue_line_key")
-  rkm$.fwatlasbc.y.rkm.. <- rkm$.fwatlasbc.y.rkm.. - rkm$rkm
-  rkm <- rkm[rkm$.fwatlasbc.y.rkm.. >= 0,, drop = FALSE]
+  rkm <- dplyr::mutate(rkm, .fwatlasbc.y.rkm.. = .data$.fwatlasbc.y.rkm.. - .data$rkm)
+  rkm <- dplyr::filter(rkm, .data$.fwatlasbc.y.rkm.. >= 0)
   rkm <- split(rkm, list(rkm$blue_line_key, rkm$rkm))
   rkm <- lapply(rkm, function(x) x[which.min(x$.fwatlasbc.y.rkm..),,drop = FALSE])
   rkm <- dplyr::bind_rows(rkm)
