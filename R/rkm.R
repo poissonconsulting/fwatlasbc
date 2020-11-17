@@ -165,7 +165,7 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
   rkm <- dplyr::left_join(rkm, y, by = "blue_line_key")
   rkm <- dplyr::mutate(rkm, .fwatlasbc.y.rkm.. = .data$.fwatlasbc.y.rkm.. - .data$rkm)
   rkm <- dplyr::filter(rkm, .data$.fwatlasbc.y.rkm.. >= 0)
-  rkm <- split(rkm, list(rkm$blue_line_key, rkm$rkm))
+  rkm <- dplyr::group_split(rkm, .data$blue_line_key, .data$rkm)
   rkm <- lapply(rkm, function(x) x[which.min(x$.fwatlasbc.y.rkm..),,drop = FALSE])
   rkm <- dplyr::bind_rows(rkm)
   rkm <- dplyr::select(rkm, -.data$.fwatlasbc.y.rkm..)
