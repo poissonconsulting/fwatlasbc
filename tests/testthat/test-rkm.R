@@ -55,7 +55,7 @@ test_that("fwa_add_columns_to_rkm adds no columns", {
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9))
 
-  expect_identical(fwa_add_columns_to_rkm(rkm, x), rkm)
+  expect_identical(fwa_add_columns_to_rkm(rkm, x), dplyr::as_tibble(rkm))
 })
 
 test_that("fwa_add_columns_to_rkm reorders", {
@@ -65,14 +65,14 @@ test_that("fwa_add_columns_to_rkm reorders", {
   erkm <- rkm
   rkm <- rkm[rev(order(rkm$rkm)),]
 
-  expect_identical(fwa_add_columns_to_rkm(rkm, x), erkm)
+  expect_identical(fwa_add_columns_to_rkm(rkm, x), dplyr::as_tibble(erkm))
 })
 
 test_that("fwa_add_columns_to_rkm adds missing values if zero length", {
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = 2)
   rkm$new <- NA_real_
-  expect_identical(fwa_add_columns_to_rkm(rkm, x[0,]), rkm)
+  expect_identical(fwa_add_columns_to_rkm(rkm, x[0,]), dplyr::as_tibble(rkm))
 })
 
 test_that("fwa_add_columns_to_rkm adds zero length", {
@@ -81,7 +81,7 @@ test_that("fwa_add_columns_to_rkm adds zero length", {
 
   erkm <- rkm[0,]
   erkm$new <- erkm$new <- numeric(0)
-  expect_identical(fwa_add_columns_to_rkm(rkm[0,], x), erkm)
+  expect_identical(fwa_add_columns_to_rkm(rkm[0,], x), dplyr::as_tibble(erkm))
 })
 
 test_that("fwa_add_columns_to_rkm simple example", {
@@ -90,7 +90,7 @@ test_that("fwa_add_columns_to_rkm simple example", {
 
   erkm <- rkm
   erkm$new <- c(3, 3, 3, 7.5, 7.5, 7.5, 7.5, 10, 10, NA)
-  expect_identical(fwa_add_columns_to_rkm(rkm, y), erkm)
+  expect_identical(fwa_add_columns_to_rkm(rkm, y), dplyr::as_tibble(erkm))
 })
 
 test_that("fwa_add_columns_to_rkm with missing values", {
@@ -99,7 +99,7 @@ test_that("fwa_add_columns_to_rkm with missing values", {
 
   erkm <- rkm
   erkm$new <- c(NA, NA, 3, 7.5, 7.5, 7.5, 7.5, 10, 10, NA)
-  expect_identical(fwa_add_columns_to_rkm(rkm, y), erkm)
+  expect_identical(fwa_add_columns_to_rkm(rkm, y), dplyr::as_tibble(erkm))
 })
 
 test_that("fwa_add_columns_to_rkm with more than one column", {
@@ -110,5 +110,5 @@ test_that("fwa_add_columns_to_rkm with more than one column", {
   erkm <- rkm
   erkm$new2 <- c(10, 10, 7.5, 3, 3, 3, 3, NA, NA, NA)
   erkm$new <- c(NA, NA, 3, 7.5, 7.5, 7.5, 7.5, 10, 10, NA)
-  expect_identical(fwa_add_columns_to_rkm(rkm, y), erkm)
+  expect_identical(fwa_add_columns_to_rkm(rkm, y), dplyr::as_tibble(erkm))
 })

@@ -117,8 +117,8 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
   check_data(y, values = list(blue_line_key = c(1L, .Machine$integer.max),
                               rkm = 1), key = c("blue_line_key", "rkm"))
 
-  rkm <- as.data.frame(rkm, stringsAsFactors = FALSE)
-  y <- as.data.frame(y, stringsAsFactors = FALSE)
+  rkm <- dplyr::as_tibble(rkm)
+  y <- dplyr::as_tibble(y)
 
   rkm <- dplyr::arrange(rkm, .data$blue_line_key, .data$rkm)
 
