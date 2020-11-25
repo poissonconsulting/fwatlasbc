@@ -7,7 +7,8 @@
 fwa_rkm(
   blue_line_key,
   interval = 1000,
-  distance_upstream = 0,
+  start = 0,
+  end = NULL,
   epsg = getOption("fwa.epsg", 3005),
   limit = getOption("fwa.limit", 10000)
 )
@@ -17,7 +18,9 @@ fwa_rkm(
 
 \item{interval}{An integer of the interval distance in meters.}
 
-\item{distance_upstream}{An integer of the distance in meters upstream from the river mouth to start from.}
+\item{start}{An integer of the distance in meters upstream from the river mouth to start from.}
+
+\item{end}{An integer of the distance in meters upstream from the river mouth to start from.}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
 
@@ -27,7 +30,8 @@ fwa_rkm(
 A sf object
 }
 \description{
-Provided a blue_line_key and starting distance upstream from river mouth, return river kilometre  points along an interval.
+Provided a blue_line_key and start and possibly end distance upstream from
+river mouth, return river kilometre points at regular intervals.
 }
 \examples{
 fwa_rkm(356308001)

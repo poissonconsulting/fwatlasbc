@@ -1,6 +1,6 @@
 test_that("rkm functions work", {
 
-  x <- fwa_rkm(blue_line_key = 356308001L, interval = 100, distance_upstream = 10000)
+  x <- fwa_rkm(blue_line_key = 356308001L, interval = 100, start = 10000)
   expect_is(x, "sf")
   expect_identical(names(x), c("blue_line_key", "rkm", "geometry"))
   expect_is(x$blue_line_key, "integer")
