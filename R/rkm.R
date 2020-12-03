@@ -245,14 +245,14 @@ blue_line_key_nearest_feature <- function(blue_line_key, rkm, y, id, max_distanc
 
 #' Add Nearest ID to Rkm
 #'
-#' Adds positive integer id to simple features rkm data frame based on
+#' Adds id to simple features rkm data frame based on
 #' nearest feature in sf data frame and blue_line_key if present.
 #' Rows which are further than the maximum distance from any feature are assigned a missing value.
-#' Missing values are permitted for the blue_line_key for x but not y.
+#' Missing values are permitted for the blue_line_key for x but not y (if present).
 #'
 #' @param rkm A sf data frame with sfc and rkm column and optionally blue_line_key
 #' @param y A sf data frame with sfc and id column and optionally blue_line_key.
-#' @param id A string of the name of the positive integer column in y.
+#' @param id A string of the name of the id column in y.
 #' @param max_distance A number of the maximum distance in m to allow a match.
 #' @param max_end_distance A number of the maximum distance in m to allow a match
 #' for the end rkm for each blue_line_key. Applied recursively to trim the ends.
@@ -269,8 +269,7 @@ fwa_add_nearest_id_to_rkm <- function(rkm, y, id = "id", max_distance = 10,
   check_dim(id, nchar, TRUE)
   chk_gt(max_distance)
   chk_gt(max_end_distance)
-
-  check_data(y, values = stats::setNames(list(c(1L, .Machine$integer.max)), id))
+  check_names(y, id)
 
   if(!is.null(y$blue_line_key)) {
     check_data(y, values = list(blue_line_key = c(1L, .Machine$integer.max)))
@@ -282,10 +281,12 @@ fwa_add_nearest_id_to_rkm <- function(rkm, y, id = "id", max_distance = 10,
 
   }
   if(!nrow(rkm)) {
-    rkm[[id]] <- integer(0)
+    rkm[[id]] <- y[[id]][0]
     return(rkm)
   }
-  rkm[[id]] <- NA_integer_
+  na <- y[[id]][1]
+  is.na(na) <- TRUE
+  rkm[[id]] <- na
   if(!nrow(y)) {
     return(rkm)
   }
