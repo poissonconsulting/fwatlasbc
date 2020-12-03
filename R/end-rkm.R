@@ -15,7 +15,7 @@ fwa_add_end_id_to_rkm <- function(rkm, y, id = "id") {
                                 rkm = 1), key = c("blue_line_key", "rkm"))
   check_data(y, values = list(blue_line_key = c(1L, .Machine$integer.max),
                               rkm = 1), key = c("blue_line_key", "rkm"))
-#  check_key(y, c("blue_line_key", "rkm"))
+  check_key(y, c("blue_line_key", "rkm"))
   chk_string(id)
   check_dim(id, nchar, TRUE)
   chk_not_subset(id, c("blue_line_key", "rkm"))
@@ -37,9 +37,7 @@ fwa_add_end_id_to_rkm <- function(rkm, y, id = "id") {
 
   y <- y[y$blue_line_key %in% rkm$blue_line_key,,drop = FALSE]
   if(!nrow(y)) {
-    na <- y[[id]][1]
-    is.na(na) <- TRUE
-    rkm[[id]] <- na
+    rkm[[id]] <- y[[id]][1]
     return(rkm)
   }
 
