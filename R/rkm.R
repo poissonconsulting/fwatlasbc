@@ -229,6 +229,7 @@ blue_line_key_nearest_feature <- function(blue_line_key, rkm, y, id, max_distanc
     rkm <- rkm[!is.na(rkm$blue_line_key) & rkm$blue_line_key == blue_line_key,]
     y <- y[y$blue_line_key == blue_line_key,]
   }
+  if(!nrow(y)) return(rkm)
   nearest_feature(rkm, y, id = id, max_distance = max_distance,
                   max_end_distance)
 }
@@ -283,7 +284,6 @@ fwa_add_nearest_id_to_rkm <- function(rkm, y, id = "id", max_distance = 10,
     return(nearest_feature(rkm, y, id = id, max_distance = max_distance, max_end_distance = Inf))
   }
   blue_line_keys <- unique(rkm$blue_line_key)
-  blue_line_keys <- blue_line_keys[is.na(blue_line_keys) | blue_line_keys %in% y$blue_line_key]
   rkm$..fwatlasbc.id <- 1:nrow(rkm)
   rkm <- lapply(blue_line_keys, blue_line_key_nearest_feature, rkm, y, id = id, max_distance = max_distance,
                 max_end_distance = max_end_distance)

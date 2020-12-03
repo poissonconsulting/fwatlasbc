@@ -149,4 +149,10 @@ test_that("fwa_add_nearest_id_to_rkm", {
   expect_identical(fwa_add_nearest_id_to_rkm(x, y , id = "new", max_distance = 100, max_end_distance = 10),
                    dplyr::select(dplyr::mutate(x, new = c(NA, NA, NA, 3L, 3L, 5L, 2L, NA, NA, NA)),
                                  blue_line_key, rkm, new))
+
+  # not drop blue line keys that unrecognized!
+  x$blue_line_key[6] <- 2L
+  expect_identical(fwa_add_nearest_id_to_rkm(x, y , id = "new", max_distance = 100, max_end_distance = 10),
+                   dplyr::select(dplyr::mutate(x, new = c(NA, NA, NA, 3L, 3L, NA, 2L, NA, NA, NA)),
+                                 blue_line_key, rkm, new))
 })
