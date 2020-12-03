@@ -40,10 +40,10 @@
 
 
 <meta property="og:title" content="Add Nearest ID to Rkm — fwa_add_nearest_id_to_rkm" />
-<meta property="og:description" content="Adds positive integer id to simple features rkm data frame based on
+<meta property="og:description" content="Adds id to simple features rkm data frame based on
 nearest feature in sf data frame and blue_line_key if present.
 Rows which are further than the maximum distance from any feature are assigned a missing value.
-Missing values are permitted for the blue_line_key for x but not y." />
+Missing values are permitted for the blue_line_key for x but not y (if present)." />
 
 
 
@@ -109,10 +109,10 @@ Missing values are permitted for the blue_line_key for x but not y." />
     </div>
 
     <div class="ref-description">
-    <p>Adds positive integer id to simple features rkm data frame based on
+    <p>Adds id to simple features rkm data frame based on
 nearest feature in sf data frame and blue_line_key if present.
 Rows which are further than the maximum distance from any feature are assigned a missing value.
-Missing values are permitted for the blue_line_key for x but not y.</p>
+Missing values are permitted for the blue_line_key for x but not y (if present).</p>
     </div>
 
     <pre class="usage"><span class='fu'>fwa_add_nearest_id_to_rkm</span><span class='op'>(</span>
@@ -136,7 +136,7 @@ Missing values are permitted for the blue_line_key for x but not y.</p>
     </tr>
     <tr>
       <th>id</th>
-      <td><p>A string of the name of the positive integer column in y.</p></td>
+      <td><p>A string of the name of the id column in y.</p></td>
     </tr>
     <tr>
       <th>max_distance</th>
