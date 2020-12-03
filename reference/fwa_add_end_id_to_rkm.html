@@ -42,7 +42,7 @@
 <meta property="og:title" content="Add End ID to Rkm — fwa_add_end_id_to_rkm" />
 <meta property="og:description" content="Adds id column to rkm based on end river kilometers in y.
 All rkms up to and including the end but before the previous end
-are assigned the positive integer id (which can be a missing value)" />
+are assigned the id (which can be a missing value)" />
 
 
 
@@ -110,7 +110,7 @@ are assigned the positive integer id (which can be a missing value)" />
     <div class="ref-description">
     <p>Adds id column to rkm based on end river kilometers in y.
 All rkms up to and including the end but before the previous end
-are assigned the positive integer id (which can be a missing value)</p>
+are assigned the id (which can be a missing value)</p>
     </div>
 
     <pre class="usage"><span class='fu'>fwa_add_end_id_to_rkm</span><span class='op'>(</span><span class='va'>rkm</span>, <span class='va'>y</span>, id <span class='op'>=</span> <span class='st'>"id"</span><span class='op'>)</span></pre>
@@ -128,13 +128,13 @@ are assigned the positive integer id (which can be a missing value)</p>
     </tr>
     <tr>
       <th>id</th>
-      <td><p>A string of the name of the positive integer column in y (can include missing values).</p></td>
+      <td><p>A string of the name of the column in y (can include missing values).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An ordered version of rkm with additional columns from y.</p>
+    <p>An ordered version of rkm with id columns from y.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
