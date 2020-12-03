@@ -51,13 +51,23 @@ test_that("fwa_add_end_id_to_rkm with missing values", {
   expect_identical(fwa_add_end_id_to_rkm(rkm, y), dplyr::as_tibble(erkm))
 })
 
-test_that("fwa_add_end_id_to_rkm simple example", {
+test_that("fwa_add_end_id_to_rkm doesn't grab extra column", {
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   y <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = c(3L, 7L, 10L),
                   extra = c("x", "y", "x"))
 
   erkm <- rkm
   erkm$new <- c(3L, 3L, 3L, 7L, 7L, 7L, 7L, 10L, 10L, NA)
+  expect_identical(fwa_add_end_id_to_rkm(rkm, y, id = "new"), dplyr::as_tibble(erkm))
+})
+
+test_that("fwa_add_end_id_to_rkm can handle non-integer columns", {
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  y <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = c("3", "7", "10"),
+                  extra = c("x", "y", "x"))
+
+  erkm <- rkm
+  erkm$new <- c("3", "3", "3", "7", "7", "7", "7", "10", "10", NA)
   expect_identical(fwa_add_end_id_to_rkm(rkm, y, id = "new"), dplyr::as_tibble(erkm))
 })
 

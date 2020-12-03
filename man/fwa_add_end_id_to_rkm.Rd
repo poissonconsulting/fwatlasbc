@@ -11,13 +11,13 @@ fwa_add_end_id_to_rkm(rkm, y, id = "id")
 
 \item{y}{A data frame with columns blue_line_key, rkm and and id column to add.}
 
-\item{id}{A string of the name of the positive integer column in y (can include missing values).}
+\item{id}{A string of the name of the column in y (can include missing values).}
 }
 \value{
-An ordered version of rkm with additional columns from y.
+An ordered version of rkm with id columns from y.
 }
 \description{
 Adds id column to rkm based on end river kilometers in y.
 All rkms up to and including the end but before the previous end
-are assigned the positive integer id (which can be a missing value)
+are assigned the id (which can be a missing value)
 }
