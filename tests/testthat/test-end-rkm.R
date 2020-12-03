@@ -50,3 +50,14 @@ test_that("fwa_add_end_id_to_rkm with missing values", {
   erkm$id <- c(NA, NA, 3L, 7L, 7L, 7L, 7L, 10L, 10L, NA)
   expect_identical(fwa_add_end_id_to_rkm(rkm, y), dplyr::as_tibble(erkm))
 })
+
+test_that("fwa_add_end_id_to_rkm simple example", {
+  rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
+  y <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = c(3L, 7L, 10L),
+                  extra = c("x", "y", "x"))
+
+  erkm <- rkm
+  erkm$new <- c(3L, 3L, 3L, 7L, 7L, 7L, 7L, 10L, 10L, NA)
+  expect_identical(fwa_add_end_id_to_rkm(rkm, y, id = "new"), dplyr::as_tibble(erkm))
+})
+

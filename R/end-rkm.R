@@ -2,14 +2,15 @@
 #'
 #' Adds id column to rkm based on end river kilometers in y.
 #' All rkms up to and including the end but before the previous end
-#' are assigned the positive integer id (which can be a missing value)
+#' are assigned the id (which can be a missing value)
 #'
 #' @param rkm A data frame with columns blue_line_key and rkm.
 #' @param y A data frame with columns blue_line_key, rkm and and id column to add.
-#' @param id A string of the name of the positive integer column in y (can include missing values).
-#' @return An ordered version of rkm with additional columns from y.
+#' @param id A string of the name of the column in y (can include missing values).
+#' @return An ordered version of rkm with id columns from y.
 #' @export
 fwa_add_end_id_to_rkm <- function(rkm, y, id = "id") {
+
   check_data(rkm, values = list(blue_line_key = c(1L, .Machine$integer.max),
                                 rkm = 1), key = c("blue_line_key", "rkm"))
   check_data(y, values = list(blue_line_key = c(1L, .Machine$integer.max),
@@ -17,11 +18,14 @@ fwa_add_end_id_to_rkm <- function(rkm, y, id = "id") {
 
   chk_string(id)
   check_dim(id, nchar, TRUE)
+  chk_not_subset(id, c("blue_line_key", "rkm"))
 
   check_data(y, values = stats::setNames(list(c(NA, 1L, .Machine$integer.max)), id))
 
   rkm <- dplyr::as_tibble(rkm)
   y <- dplyr::as_tibble(y)
+
+  y <- y[c("blue_line_key", "rkm", id)]
 
   if(!is.null(rkm[[id]])) rkm[[id]] <- NULL
 
