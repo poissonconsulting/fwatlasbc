@@ -63,6 +63,7 @@ fwa_add_nearest_id <- function(x, y, id = "id", max_distance = 10) {
     return(nearest_feature(x, y, id = id, max_distance = max_distance))
   }
   blue_line_keys <- unique(x$blue_line_key)
+  blue_line_keys <- blue_line_keys[is.na(blue_line_keys) | blue_line_keys %in% y$blue_line_key]
   x$..fwatlasbc.id <- 1:nrow(x)
   x <- lapply(blue_line_keys, blue_line_key_nearest_feature, x, y, id = id, max_distance = max_distance)
   x <- do.call("rbind", x)
