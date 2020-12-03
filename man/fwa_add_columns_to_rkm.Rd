@@ -18,3 +18,7 @@ An ordered version of rkm with additional columns from y.
 \description{
 Adds columns to rkm based on end river kilometers in y.
 }
+\details{
+\ifelse{html}{\figure{lifecycle-soft-deprecated.svg}{options: alt='Soft-deprecated lifecycle'}}{\strong{Soft-deprecated}} for \code{\link{fwa_add_end_id_to_rkm}()}
+which adds one column at a time.
+}

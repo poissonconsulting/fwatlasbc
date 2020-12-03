@@ -132,13 +132,22 @@ fwa_nearest_rkm <- function(x, rkm) {
 #'
 #' Adds columns to rkm based on end river kilometers in y.
 #'
+#' `r lifecycle::badge('soft-deprecated')` for \code{\link{fwa_add_end_id_to_rkm}()}
+#' which adds one column at a time.
+#'
 #' @param rkm A data frame with columns blue_line_key and rkm.
 #' @param y A data frame with columns blue_line_key, rkm and additional columns
 #' to add to rkm.
 #'
+#'
+#'
 #' @return An ordered version of rkm with additional columns from y.
 #' @export
 fwa_add_columns_to_rkm <- function(rkm, y) {
+
+  lifecycle::deprecate_soft("0.0.0.9001", "fwa_add_columns_to_rkm()",
+                            "fwa_add_end_id_to_rkm()")
+
   check_data(rkm, values = list(blue_line_key = c(1L, .Machine$integer.max),
                                 rkm = 1), key = c("blue_line_key", "rkm"))
   check_data(y, values = list(blue_line_key = c(1L, .Machine$integer.max),

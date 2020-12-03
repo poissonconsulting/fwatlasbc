@@ -28,6 +28,7 @@ Imports:
     sf
 Suggests: 
     covr,
+    rlang,
     testthat
 Remotes:
     poissonconsulting/fwapgr

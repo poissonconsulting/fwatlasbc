@@ -51,6 +51,7 @@ test_that("fwa_nearest_rkm works", {
 })
 
 test_that("fwa_add_columns_to_rkm adds no columns", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
 
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9))
@@ -59,6 +60,8 @@ test_that("fwa_add_columns_to_rkm adds no columns", {
 })
 
 test_that("fwa_add_columns_to_rkm reorders", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9))
 
@@ -69,6 +72,8 @@ test_that("fwa_add_columns_to_rkm reorders", {
 })
 
 test_that("fwa_add_columns_to_rkm adds missing values if zero length", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = 2)
   rkm$new <- NA_real_
@@ -76,6 +81,8 @@ test_that("fwa_add_columns_to_rkm adds missing values if zero length", {
 })
 
 test_that("fwa_add_columns_to_rkm adds zero length", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = 2)
 
@@ -85,6 +92,8 @@ test_that("fwa_add_columns_to_rkm adds zero length", {
 })
 
 test_that("fwa_add_columns_to_rkm simple example", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   y <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = c(3, 7.5, 10))
 
@@ -94,6 +103,8 @@ test_that("fwa_add_columns_to_rkm simple example", {
 })
 
 test_that("fwa_add_columns_to_rkm with missing values", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   y <- data.frame(blue_line_key = 1L, rkm = c(2, 3, 7.5, 9), new = c(NA, 3, 7.5, 10))
 
@@ -103,6 +114,8 @@ test_that("fwa_add_columns_to_rkm with missing values", {
 })
 
 test_that("fwa_add_columns_to_rkm with more than one column", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   y <- data.frame(blue_line_key = 1L, rkm = c(2, 3, 7.5, 9), new2 = c(10, 7.5, 3, NA),
                   new = c(NA, 3, 7.5, 10))
