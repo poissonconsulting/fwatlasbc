@@ -202,22 +202,35 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
   rkm
 }
 
-nearest_feature <- function (rkm, y, id, max_distance) {
+nearest_feature <- function (rkm, y, id, max_distance, max_end_distance) {
+  max_distance <- units::as_units(max_distance, "m")
+  max_end_distance <- units::as_units(max_end_distance, "m")
+
   index <- sf::st_nearest_feature(rkm, y)
   rkm[[id]] <- y[[id]][index]
   distance <- sf::st_distance(rkm, y[index,], by_element = TRUE)
   rkm[[id]][distance > max_distance] <- NA_integer_
+  if(max_end_distance < max_distance) {
+    within <- distance <= max_end_distance
+    if(any(within)) {
+      end <- max(rkm$rkm[distance <= max_end_distance])
+      rkm[[id]][rkm$rkm > end] <- NA_integer_
+    }
+  }
   rkm
 }
 
-blue_line_key_nearest_feature <- function(blue_line_key, rkm, y, id, max_distance) {
+blue_line_key_nearest_feature <- function(blue_line_key, rkm, y, id, max_distance,
+                                          max_end_distance) {
   if(is.na(blue_line_key)) {
     rkm <- rkm[is.na(rkm$blue_line_key),]
+    max_end_distance <- Inf
   } else {
     rkm <- rkm[!is.na(rkm$blue_line_key) & rkm$blue_line_key == blue_line_key,]
     y <- y[y$blue_line_key == blue_line_key,]
   }
-  nearest_feature(rkm, y, id = id, max_distance = max_distance)
+  nearest_feature(rkm, y, id = id, max_distance = max_distance,
+                  max_end_distance)
 }
 
 #' Add Nearest ID to Rkm
@@ -230,17 +243,22 @@ blue_line_key_nearest_feature <- function(blue_line_key, rkm, y, id, max_distanc
 #' @param rkm A sf data frame with sfc and rkm column and optionally blue_line_key
 #' @param y A sf data frame with sfc and id column and optionally blue_line_key.
 #' @param id A string of the name of the positive integer column in y.
-#' @param max_distance A number of the maximum distance to allow a match.
+#' @param max_distance A number of the maximum distance in m to allow a match.
+#' @param max_end_distance A number of the maximum distance in m to allow a match
+#' for the end rkm for each blue_line_key. Applied recursively to trim the ends.
 #' @return An copy of rkm with additional id column from y.
 #' @export
-fwa_add_nearest_id_to_rkm <- function(rkm, y, id = "id", max_distance = 10) {
+fwa_add_nearest_id_to_rkm <- function(rkm, y, id = "id", max_distance = 10,
+                                      max_end_distance = Inf) {
   chk_s3_class(rkm, "sf")
   chk_s3_class(y, "sf")
   chk_string(id)
   chk_number(max_distance)
+  chk_number(max_end_distance)
 
   check_dim(id, nchar, TRUE)
   chk_gt(max_distance)
+  chk_gt(max_end_distance)
 
   check_data(y, values = stats::setNames(list(c(1L, .Machine$integer.max)), id))
 
@@ -261,14 +279,14 @@ fwa_add_nearest_id_to_rkm <- function(rkm, y, id = "id", max_distance = 10) {
   if(!nrow(y)) {
     return(rkm)
   }
-  max_distance <- units::as_units(max_distance, "m")
   if(is.null(y$blue_line_key)) {
-    return(nearest_feature(rkm, y, id = id, max_distance = max_distance))
+    return(nearest_feature(rkm, y, id = id, max_distance = max_distance, max_end_distance = Inf))
   }
   blue_line_keys <- unique(rkm$blue_line_key)
   blue_line_keys <- blue_line_keys[is.na(blue_line_keys) | blue_line_keys %in% y$blue_line_key]
   rkm$..fwatlasbc.id <- 1:nrow(rkm)
-  rkm <- lapply(blue_line_keys, blue_line_key_nearest_feature, rkm, y, id = id, max_distance = max_distance)
+  rkm <- lapply(blue_line_keys, blue_line_key_nearest_feature, rkm, y, id = id, max_distance = max_distance,
+                max_end_distance = max_end_distance)
   rkm <- do.call("rbind", rkm)
   rkm <- rkm[order(rkm$..fwatlasbc.id),]
   rkm$..fwatlasbc.id <- NULL

@@ -4,7 +4,13 @@
 \alias{fwa_add_nearest_id_to_rkm}
 \title{Add Nearest ID to Rkm}
 \usage{
-fwa_add_nearest_id_to_rkm(rkm, y, id = "id", max_distance = 10)
+fwa_add_nearest_id_to_rkm(
+  rkm,
+  y,
+  id = "id",
+  max_distance = 10,
+  max_end_distance = Inf
+)
 }
 \arguments{
 \item{rkm}{A sf data frame with sfc and rkm column and optionally blue_line_key}
@@ -13,7 +19,10 @@ fwa_add_nearest_id_to_rkm(rkm, y, id = "id", max_distance = 10)
 
 \item{id}{A string of the name of the positive integer column in y.}
 
-\item{max_distance}{A number of the maximum distance to allow a match.}
+\item{max_distance}{A number of the maximum distance in m to allow a match.}
+
+\item{max_end_distance}{A number of the maximum distance in m to allow a match
+for the end rkm for each blue_line_key. Applied recursively to trim the ends.}
 }
 \value{
 An copy of rkm with additional id column from y.
