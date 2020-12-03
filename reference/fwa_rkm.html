@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Get Rkm — fwa_rkm" />
-<meta property="og:description" content="Provided a blue_line_key and starting distance upstream from river mouth, return river kilometre  points along an interval." />
+<meta property="og:description" content="Provided a blue_line_key and start and possibly end distance upstream from
+river mouth, return river kilometre points at regular intervals." />
 
 
 
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fwatlasbc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -80,6 +81,9 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -103,13 +107,15 @@
     </div>
 
     <div class="ref-description">
-    <p>Provided a blue_line_key and starting distance upstream from river mouth, return river kilometre  points along an interval.</p>
+    <p>Provided a blue_line_key and start and possibly end distance upstream from
+river mouth, return river kilometre points at regular intervals.</p>
     </div>
 
     <pre class="usage"><span class='fu'>fwa_rkm</span><span class='op'>(</span>
   <span class='va'>blue_line_key</span>,
   interval <span class='op'>=</span> <span class='fl'>1000</span>,
-  distance_upstream <span class='op'>=</span> <span class='fl'>0</span>,
+  start <span class='op'>=</span> <span class='fl'>0</span>,
+  end <span class='op'>=</span> <span class='cn'>NULL</span>,
   epsg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.epsg"</span>, <span class='fl'>3005</span><span class='op'>)</span>,
   limit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.limit"</span>, <span class='fl'>10000</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
@@ -126,7 +132,11 @@
       <td><p>An integer of the interval distance in meters.</p></td>
     </tr>
     <tr>
-      <th>distance_upstream</th>
+      <th>start</th>
+      <td><p>An integer of the distance in meters upstream from the river mouth to start from.</p></td>
+    </tr>
+    <tr>
+      <th>end</th>
       <td><p>An integer of the distance in meters upstream from the river mouth to start from.</p></td>
     </tr>
     <tr>
@@ -178,7 +188,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Sebastian Dalgarno, Poisson Consulting.</p>
+  <p>Developed by Sebastian Dalgarno, Joe Thorley, Poisson Consulting.</p>
 </div>
 
 <div class="pkgdown">
