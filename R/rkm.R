@@ -117,6 +117,8 @@ fwa_nearest_rkm <- function(x, rkm) {
   }
   blue_line_keys <- unique(x$blue_line_key)
   if(length(blue_line_keys) == 1L) {
+    if(!is.na(blue_line_keys))
+      rkm <- rkm[rkm$blue_line_key == blue_line_keys,]
     return(nearest_rkm(x, rkm))
   }
 
