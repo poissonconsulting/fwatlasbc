@@ -37,7 +37,7 @@ test_that("watershed functions work", {
   # test when error if 0
   blk <- 356528119
   drm <- 0
-  expect_chk_error(fwa_blue_line_key_to_watershed(blue_line_key = blk,
+  expect_error(fwa_blue_line_key_to_watershed(blue_line_key = blk,
                                           distance_from_mouth = drm))
 
 })
