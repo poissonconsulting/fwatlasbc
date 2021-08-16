@@ -59,9 +59,6 @@ river mouth, return river kilometre points at regular intervals." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -122,14 +119,14 @@ river mouth, return river kilometre points at regular intervals." />
 river mouth, return river kilometre points at regular intervals.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fwa_rkm</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fwa_rkm</span><span class='op'>(</span>
   <span class='va'>blue_line_key</span>,
   interval <span class='op'>=</span> <span class='fl'>1000</span>,
   start <span class='op'>=</span> <span class='fl'>0</span>,
   end <span class='op'>=</span> <span class='cn'>NULL</span>,
   epsg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.epsg"</span>, <span class='fl'>3005</span><span class='op'>)</span>,
   limit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.limit"</span>, <span class='fl'>10000</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,25 +166,26 @@ river mouth, return river kilometre points at regular intervals.</p>
 <code><a href='fwa_nearest_rkm.html'>fwa_nearest_rkm</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>fwa_rkm</span><span class='op'>(</span><span class='fl'>356308001</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Simple feature collection with 20 features and 2 fields
-#&gt; Geometry type: POINT
-#&gt; Dimension:     XYZ
-#&gt; Bounding box:  xmin: 1290725 ymin: 464161.2 xmax: 1301656 ymax: 469483.5
-#&gt; z_range:       zmin: 7.5 zmax: 209.8951
-#&gt; Projected CRS: NAD83 / BC Albers
-#&gt; First 10 features:
-#&gt;    blue_line_key rkm                       geometry
-#&gt; 1      356308001   0 POINT Z (1290725 469483.5 9...
-#&gt; 2      356308001   1 POINT Z (1291542 469173.9 1...
-#&gt; 3      356308001   2 POINT Z (1292439 468922.9 7.5)
-#&gt; 4      356308001   3 POINT Z (1292909 468665.1 9...
-#&gt; 5      356308001   4 POINT Z (1293268 467977.4 9...
-#&gt; 6      356308001   5 POINT Z (1293158 467231.2 9...
-#&gt; 7      356308001   6 POINT Z (1293794 467668.3 9...
-#&gt; 8      356308001   7 POINT Z (1294079 467938.4 9...
-#&gt; 9      356308001   8  POINT Z (1294497 468239.5 10)
-#&gt; 10     356308001   9 POINT Z (1294708 468081.9 1...</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'>fwa_rkm</span><span class='op'>(</span><span class='fl'>356308001</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Simple feature collection with 20 features and 2 fields</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Geometry type: POINT</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Dimension:     XYZ</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Bounding box:  xmin: 1290725 ymin: 464161.2 xmax: 1301656 ymax: 469483.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> z_range:       zmin: 7.5 zmax: 209.8951</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Projected CRS: NAD83 / BC Albers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> First 10 features:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    blue_line_key rkm                       geometry</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      356308001   0 POINT Z (1290725 469483.5 9...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      356308001   1 POINT Z (1291542 469173.9 1...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3      356308001   2 POINT Z (1292439 468922.9 7.5)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      356308001   3 POINT Z (1292909 468665.1 9...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5      356308001   4 POINT Z (1293268 467977.4 9...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6      356308001   5 POINT Z (1293158 467231.2 9...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7      356308001   6 POINT Z (1293794 467668.3 9...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8      356308001   7 POINT Z (1294079 467938.4 9...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9      356308001   8  POINT Z (1294497 468239.5 10)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10     356308001   9 POINT Z (1294708 468081.9 1...</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
