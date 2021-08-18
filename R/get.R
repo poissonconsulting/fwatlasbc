@@ -21,25 +21,30 @@ fwa_get <- function(watershed,
 
   chk_null_or(limit, chk_whole_number)
   chk_string(collection_id)
-  bbox <- NULL
-  epsg <- getOption("fwa.epsg", 3005)
 
-  if(!is.null(watershed)){
-    chk_sf_sfc(watershed)
-    watershed <- sf::st_geometry(watershed)
-    chk_sfc_polygon(watershed)
-    epsg <- get_epsg(watershed)
-    watershed_bbox <- watershed
-    if(epsg != 4326){
-      watershed_bbox <- sf::st_transform(watershed, 4326)
-    }
-    bbox <- sf::st_bbox(watershed_bbox)
+  if(is.null(watershed)) {
+    return(
+      fwapgr::fwa_collection(
+        collection_id,
+        limit = limit,
+        epsg = getOption("fwa.epsg", 3005))
+    )
   }
+
+  chk_sf_sfc(watershed)
+  watershed <- sf::st_geometry(watershed)
+  chk_sfc_polygon(watershed)
+  watershed <- sf::st_make_valid(watershed)
+  watershed_bbox <- sf::st_transform(watershed, 4326)
+  bbox <- sf::st_bbox(watershed_bbox)
+
 
   x <- fwapgr::fwa_collection(collection_id,
                               bbox = bbox,
-                              limit = limit,
-                              epsg = epsg)
+                              limit = limit)
+
+  x <- sf::st_transform(x, sf::st_crs(watershed)$input)
+  x <- sf::st_make_valid(x)
   # eliminates features inside bbox but outside watershed
   x[sf::st_intersects(x, watershed, sparse = FALSE)[,1],]
 }

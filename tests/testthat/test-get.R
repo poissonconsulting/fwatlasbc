@@ -1,6 +1,7 @@
 test_that("get functions work", {
   blk <- 356308001
   wshed <- fwa_blue_line_key_to_watershed(blue_line_key = blk)
+  expect_identical(sf::st_crs(wshed)$epsg, 3005L)
 
   x <- fwa_get_stream_network(wshed, limit = 1000)
   expect_is(x, "sf")
@@ -162,4 +163,36 @@ test_that("get functions work", {
   # expect_is(x$geometry, "sfc_LINESTRING")
   # expect_identical(nrow(x), 6L)
   # expect_identical(sf::st_crs(x)$epsg, 3005L)
+})
+
+test_that("test get functions deal with other projections", {
+  blk <- 356308001
+  wshed <- fwa_blue_line_key_to_watershed(blue_line_key = blk)
+
+  expect_identical(sf::st_crs(wshed)$epsg, 3005L)
+  x3005 <- fwa_get_stream_network(wshed, limit = 1000)
+
+  wshed <- sf::st_transform(wshed, 4326)
+
+  expect_identical(sf::st_crs(wshed)$epsg, 4326L)
+  x <- fwa_get_stream_network(wshed, limit = 1000)
+
+  expect_is(x, "sf")
+  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_identical(nrow(x), nrow(x3005))
+  expect_identical(sf::st_crs(x)$epsg, 4326L)
+  expect_identical(
+    colnames(x), colnames(x3005))
+
+  wshed <- sf::st_transform(wshed, "+proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs")
+
+  expect_identical(sf::st_crs(wshed)$epsg, NA_integer_)
+  x <- fwa_get_stream_network(wshed, limit = 1000)
+
+  expect_is(x, "sf")
+  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_identical(nrow(x), nrow(x3005))
+  expect_identical(sf::st_crs(x)$epsg, NA_integer_)
+  expect_identical(
+    colnames(x), colnames(x3005))
 })
