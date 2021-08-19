@@ -170,15 +170,35 @@ test_that("test get functions deal with other projections and intersect", {
   blk <- 356308001
   wshed <- fwa_blue_line_key_to_watershed(blue_line_key = blk)
 
-  expect_identical(sf::st_crs(wshed)$epsg, 3005L)
-  x3005 <- fwa_get_stream_network(wshed,)
+  colnames <- c("id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
+    "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
+    "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
+    "linear_feature_id", "local_watershed_code", "localcode_ltree",
+    "stream_magnitude", "stream_order", "upstream_area_ha", "upstream_route_measure",
+    "waterbody_key", "watershed_code_50k", "watershed_group_code",
+    "watershed_group_code_50k", "watershed_group_id", "watershed_key",
+    "watershed_key_50k", "wscode_ltree", "geometry")
+
+  x <- fwa_get_stream_network(wshed)
+
+  expect_is(x, "sf")
+  expect_identical(sf::st_crs(x)$epsg, 3005L)
+  expect_gte(nrow(x), 88L)
+  expect_lte(nrow(x), 89L)
+  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_identical(
+    colnames(x), colnames)
 
   wshed <- sf::st_transform(wshed, 4326)
 
-  expect_identical(sf::st_crs(wshed)$epsg, 4326L)
   x <- fwa_get_stream_network(wshed)
-
-  expect_identical(x, x3005)
+  expect_is(x, "sf")
+  expect_identical(sf::st_crs(x)$epsg, 3005L)
+  expect_gte(nrow(x), 88L)
+  expect_lte(nrow(x), 89L)
+  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_identical(
+    colnames(x), colnames)
 
   x <- fwa_get_stream_network(wshed, epsg = 4326)
 
@@ -188,20 +208,26 @@ test_that("test get functions deal with other projections and intersect", {
   expect_lte(nrow(x), 89L)
   expect_is(x$geometry, "sfc_LINESTRING")
   expect_identical(
-    colnames(x), colnames(x3005))
+    colnames(x), colnames)
 
   wshed <- sf::st_transform(wshed, "+proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs")
 
-  expect_identical(sf::st_crs(wshed)$epsg, NA_integer_)
-  x2 <- fwa_get_stream_network(wshed, epsg = 4326)
-  expect_identical(x2, x)
-
-  x3 <- fwa_get_stream_network(wshed, epsg = 4326, intersect = TRUE)
+  x <- fwa_get_stream_network(wshed, epsg = 4326)
   expect_is(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 4326L)
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
   expect_is(x$geometry, "sfc_LINESTRING")
   expect_identical(
-    colnames(x), colnames(x3005))
+    colnames(x), colnames)
+
+  x <- fwa_get_stream_network(wshed, epsg = 4326, intersect = TRUE)
+
+  expect_is(x, "sf")
+  expect_identical(sf::st_crs(x)$epsg, 4326L)
+  expect_gte(nrow(x), 88L)
+  expect_lte(nrow(x), 89L)
+  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_identical(
+    colnames(x), colnames)
 })
