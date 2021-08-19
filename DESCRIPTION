@@ -17,7 +17,7 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Depends: 
-    R (>= 3.6)
+    R (>= 4.0)
 Imports: 
     chk,
     dplyr,
