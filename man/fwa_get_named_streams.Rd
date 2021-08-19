@@ -4,10 +4,19 @@
 \alias{fwa_get_named_streams}
 \title{FWA get named_streams}
 \usage{
-fwa_get_named_streams(watershed, limit = getOption("fwa.limit", 10000))
+fwa_get_named_streams(
+  watershed,
+  intersect = FALSE,
+  epsg = getOption("fwa.epsg", 3005),
+  limit = getOption("fwa.limit", 10000)
+)
 }
 \arguments{
 \item{watershed}{A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).}
+
+\item{intersect}{A flag specifying whether to intersect the individual features with the watershed. Useful if the watershed is not a true watershed.}
+
+\item{epsg}{A positive whole number of the epsg to return the collection to.}
 
 \item{limit}{A positive whole number indicating the maximum number of features to return.}
 }
