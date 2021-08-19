@@ -117,20 +117,34 @@
     <p>Get collection within watershed.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fwa_get</span><span class='op'>(</span><span class='va'>watershed</span>, <span class='va'>collection_id</span>, limit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.limit"</span>, <span class='fl'>10000</span><span class='op'>)</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fwa_get</span><span class='op'>(</span>
+  <span class='va'>collection_id</span>,
+  watershed <span class='op'>=</span> <span class='cn'>NULL</span>,
+  intersect <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  epsg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.epsg"</span>, <span class='fl'>3005</span><span class='op'>)</span>,
+  limit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.limit"</span>, <span class='fl'>10000</span><span class='op'>)</span>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>watershed</th>
-      <td><p>A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).</p></td>
-    </tr>
-    <tr>
       <th>collection_id</th>
       <td><p>A character string of the collection id.
 names correspond to column names and the list values correspond to the desired
 value, e.g. <code>list(gnis_name = "Sangan River")</code>.</p></td>
+    </tr>
+    <tr>
+      <th>watershed</th>
+      <td><p>A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).</p></td>
+    </tr>
+    <tr>
+      <th>intersect</th>
+      <td><p>A flag specifying whether to intersect the individual features with the watershed. Useful if the watershed is not a true watershed.</p></td>
+    </tr>
+    <tr>
+      <th>epsg</th>
+      <td><p>A positive whole number of the epsg to return the collection to.</p></td>
     </tr>
     <tr>
       <th>limit</th>

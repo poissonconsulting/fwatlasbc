@@ -117,7 +117,12 @@
     <p>Get cultural line features within watershed.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fwa_get_cultural_lines</span><span class='op'>(</span><span class='va'>watershed</span>, limit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.limit"</span>, <span class='fl'>10000</span><span class='op'>)</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fwa_get_cultural_lines</span><span class='op'>(</span>
+  <span class='va'>watershed</span>,
+  intersect <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  epsg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.epsg"</span>, <span class='fl'>3005</span><span class='op'>)</span>,
+  limit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"fwa.limit"</span>, <span class='fl'>10000</span><span class='op'>)</span>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -125,6 +130,14 @@
     <tr>
       <th>watershed</th>
       <td><p>A single row sf object or sfc object of the watershed polygon (sfc geometry must inherit from sfc_POLYGON).</p></td>
+    </tr>
+    <tr>
+      <th>intersect</th>
+      <td><p>A flag specifying whether to intersect the individual features with the watershed. Useful if the watershed is not a true watershed.</p></td>
+    </tr>
+    <tr>
+      <th>epsg</th>
+      <td><p>A positive whole number of the epsg to return the collection to.</p></td>
     </tr>
     <tr>
       <th>limit</th>
