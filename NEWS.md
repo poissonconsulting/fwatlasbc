@@ -1,3 +1,14 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# fwatlasbc 0.0.0.9003
+
+- Added `epsg = getOption("fwa.epsg", 3005)` and `intersect = FALSE` arguments to `fwa_get_xx()` functions.
+- Fix bug `fwa_nearest_rkm()` where not using blue_line_key when all same non-missing blue_line_key.
+- Relax requirement that `fwa_add_nearest_id_to_rkm()` only positive integer id columns.
+- Allow `fwa_add_end_id_to_rkm()` to handle not just integer id columns.
+- Fix `fwa_add_end_id_to_rkm()` so not include additional columns!
+
+
 # fwatlasbc 0.0.0.9002
 
 - Soft-deprecated `fwa_add_columns_to_rkm()` for `fwa_add_end_id_to_rkm()`.
