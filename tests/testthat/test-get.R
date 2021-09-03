@@ -106,7 +106,7 @@ test_that("get functions work", {
   expect_is(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 40L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_is(x$geometry, "sfc_MULTILINESTRING")
   expect_identical(
     colnames(x),
     c("administrative_area", "attribute_acquisition_technque", "attribute_creation_date",
