@@ -9,6 +9,8 @@ test_that("get functions work", {
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
   expect_is(x$geometry, "sfc_LINESTRING")
+#  expect_identical(colnames(sf::st_coordinates(x)), c("X", "Y", "Z"))
+
   expect_identical(
     colnames(x),
     c("id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
