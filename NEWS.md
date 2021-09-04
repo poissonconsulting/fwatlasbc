@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.0.9004
+
+- Soft-deprecated `rkm` functions that use river kilometre for `rm` functions that use river metre.
+- Railway tracks is now a multiline string.
+
 # fwatlasbc 0.0.0.9003
 
 - Added `epsg = getOption("fwa.epsg", 3005)` and `intersect = FALSE` arguments to `fwa_get_xx()` functions.

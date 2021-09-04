@@ -1,6 +1,6 @@
 Package: fwatlasbc
 Title: Freshwater Atlas British Columbia
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: 
     c(person(given = "Sebastian",
              family = "Dalgarno",
