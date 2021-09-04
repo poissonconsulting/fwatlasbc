@@ -1,4 +1,5 @@
 test_that("rkm functions work", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
 
   x <- fwa_rkm(blue_line_key = 356308001L, interval = 100, start = 10000)
   expect_is(x, "sf")
@@ -8,6 +9,8 @@ test_that("rkm functions work", {
 })
 
 test_that("fwa_nearest_rkm works", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- fwa_rkm(blue_line_key = 356308001, interval = 1000)
 
   x <- rkm[rkm$rkm %in% c(0, 2, 5, 6, 7),]
@@ -127,6 +130,8 @@ test_that("fwa_add_columns_to_rkm with more than one column", {
 })
 
 test_that("fwa_add_nearest_id_to_rkm", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   x <- fwa_rkm(blue_line_key = 356308001L, interval = 100, start = 10000)
   expect_is(x, "sf")
 

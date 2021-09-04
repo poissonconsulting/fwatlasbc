@@ -1,4 +1,5 @@
 test_that("fwa_add_end_id_to_rkm errors if no columns", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
 
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9))
@@ -7,6 +8,8 @@ test_that("fwa_add_end_id_to_rkm errors if no columns", {
 })
 
 test_that("fwa_add_end_id_to_rkm reorders", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), id = 3:1)
 
@@ -17,6 +20,8 @@ test_that("fwa_add_end_id_to_rkm reorders", {
 })
 
 test_that("fwa_add_end_id_to_rkm adds missing values if zero length", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = 2L)
   rkm$new <- NA_real_
@@ -25,6 +30,8 @@ test_that("fwa_add_end_id_to_rkm adds missing values if zero length", {
 })
 
 test_that("fwa_add_end_id_to_rkm adds zero length", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   x <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = 2L)
 
@@ -34,6 +41,8 @@ test_that("fwa_add_end_id_to_rkm adds zero length", {
 })
 
 test_that("fwa_add_end_id_to_rkm simple example", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   y <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = c(3L, 7L, 10L))
 
@@ -43,6 +52,8 @@ test_that("fwa_add_end_id_to_rkm simple example", {
 })
 
 test_that("fwa_add_end_id_to_rkm with missing values", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   y <- data.frame(blue_line_key = 1L, rkm = c(2, 3, 7.5, 9), id = c(NA, 3L, 7L, 10L))
 
@@ -52,6 +63,8 @@ test_that("fwa_add_end_id_to_rkm with missing values", {
 })
 
 test_that("fwa_add_end_id_to_rkm doesn't grab extra column", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   y <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = c(3L, 7L, 10L),
                   extra = c("x", "y", "x"))
@@ -62,6 +75,8 @@ test_that("fwa_add_end_id_to_rkm doesn't grab extra column", {
 })
 
 test_that("fwa_add_end_id_to_rkm can handle non-integer columns", {
+  rlang::scoped_options(lifecycle_verbosity = "quiet")
+
   rkm <- data.frame(blue_line_key = 1L, rkm = seq(1, 10, by = 1))
   y <- data.frame(blue_line_key = 1L, rkm = c(3, 7.5, 9), new = c("3", "7", "10"),
                   extra = c("x", "y", "x"))

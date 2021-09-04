@@ -19,6 +19,8 @@ fwa_rkm <- function(blue_line_key, interval = 1000, start = 0,
                     epsg = getOption("fwa.epsg", 3005),
                     limit = getOption("fwa.limit", 10000)){
 
+  lifecycle::deprecate_soft("0.0.0.9004", "fwa_rkm()", "fwa_rm()")
+
   chk_whole_number(blue_line_key)
   chk_gt(blue_line_key)
   chk_whole_number(interval)
@@ -96,6 +98,9 @@ blue_line_key_nearest_rkm <- function(blue_line_key, x, rkm) {
 #' fwa_nearest_rkm(rkm[2:4,], rkm[3:5,])
 #' }
 fwa_nearest_rkm <- function(x, rkm) {
+
+  lifecycle::deprecate_soft("0.0.0.9004", "fwa_nearest_rkm()", "fwa_nearest_rm()")
+
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(rkm, "sf")
 
@@ -262,6 +267,8 @@ blue_line_key_nearest_feature <- function(blue_line_key, rkm, y, id, max_distanc
 #' @export
 fwa_add_nearest_id_to_rkm <- function(rkm, y, id = "id", max_distance = 10,
                                       max_end_distance = Inf) {
+  lifecycle::deprecate_soft("0.0.0.9004", "fwa_add_nearest_id_to_rkm()", "fwa_add_nearest_id_to_rm()")
+
   chk_s3_class(rkm, "sf")
   chk_s3_class(y, "sf")
   chk_string(id)
