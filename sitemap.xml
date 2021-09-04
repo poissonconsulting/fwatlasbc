@@ -25,7 +25,13 @@
     <loc>/reference/fwa_add_end_id_to_rkm.html</loc>
   </url>
   <url>
+    <loc>/reference/fwa_add_end_id_to_rm.html</loc>
+  </url>
+  <url>
     <loc>/reference/fwa_add_nearest_id_to_rkm.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fwa_add_nearest_id_to_rm.html</loc>
   </url>
   <url>
     <loc>/reference/fwa_blue_line_key_to_watershed.html</loc>
@@ -73,10 +79,16 @@
     <loc>/reference/fwa_nearest_rkm.html</loc>
   </url>
   <url>
+    <loc>/reference/fwa_nearest_rm.html</loc>
+  </url>
+  <url>
     <loc>/reference/fwa_point_to_watershed.html</loc>
   </url>
   <url>
     <loc>/reference/fwa_rkm.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fwa_rm.html</loc>
   </url>
   <url>
     <loc>/reference/fwa_search_streams.html</loc>
