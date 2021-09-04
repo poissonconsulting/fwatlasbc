@@ -31,12 +31,12 @@ fwa_get <- function(collection_id,
   chk_null_or(limit, chk_whole_number)
 
   if(is.null(watershed)) {
-    return(
-      fwapgr::fwa_collection(
+    x <- fwapgr::fwa_collection(
         collection_id,
         limit = limit,
         epsg = epsg)
-    )
+    x <- mutate(x, across(matches("gnis_id_\\d"), as.integer))
+    return(x)
   }
 
   watershed <- sf::st_geometry(watershed)

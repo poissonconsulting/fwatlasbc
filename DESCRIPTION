@@ -25,7 +25,8 @@ Imports:
     glue,
     lifecycle,
     units,
-    sf
+    sf,
+    tidyselect
 Suggests: 
     covr,
     rlang,
