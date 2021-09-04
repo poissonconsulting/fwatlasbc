@@ -72,7 +72,7 @@ fwa_get <- function(collection_id,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_stream_network(watershed)
 #' }
-fwa_get_stream_network <- function(watershed,
+fwa_get_stream_network <- function(watershed = NULL,
                                    intersect = FALSE,
                                    epsg = getOption("fwa.epsg", 3005),
                                    limit = getOption("fwa.limit", 10000)) {
@@ -96,7 +96,7 @@ fwa_get_stream_network <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_lakes(watershed)
 #' }
-fwa_get_lakes <- function(watershed,
+fwa_get_lakes <- function(watershed = NULL,
                           intersect = FALSE,
                           epsg = getOption("fwa.epsg", 3005),
                           limit = getOption("fwa.limit", 10000)) {
@@ -120,7 +120,7 @@ fwa_get_lakes <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_transport_lines(watershed)
 #' }
-fwa_get_transport_lines <- function(watershed,
+fwa_get_transport_lines <- function(watershed = NULL,
                                     intersect = FALSE,
                                     epsg = getOption("fwa.epsg", 3005),
                                     limit = getOption("fwa.limit", 10000)) {
@@ -144,7 +144,7 @@ fwa_get_transport_lines <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_cultural_lines(watershed)
 #' }
-fwa_get_cultural_lines <- function(watershed,
+fwa_get_cultural_lines <- function(watershed = NULL,
                                    intersect = FALSE,
                                    epsg = getOption("fwa.epsg", 3005),
                                    limit = getOption("fwa.limit", 10000)) {
@@ -168,7 +168,7 @@ fwa_get_cultural_lines <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_cultural_points(watershed)
 #' }
-fwa_get_cultural_points <- function(watershed,
+fwa_get_cultural_points <- function(watershed = NULL,
                                     intersect = FALSE,
                                     epsg = getOption("fwa.epsg", 3005),
                                     limit = getOption("fwa.limit", 10000)) {
@@ -192,7 +192,7 @@ fwa_get_cultural_points <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_wetlands(watershed)
 #' }
-fwa_get_wetlands <- function(watershed,
+fwa_get_wetlands <- function(watershed = NULL,
                              intersect = FALSE,
                              epsg = getOption("fwa.epsg", 3005),
                              limit = getOption("fwa.limit", 10000)) {
@@ -216,7 +216,7 @@ fwa_get_wetlands <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_railway_tracks(watershed)
 #' }
-fwa_get_railway_tracks <- function(watershed,
+fwa_get_railway_tracks <- function(watershed = NULL,
                                    intersect = FALSE,
                                    epsg = getOption("fwa.epsg", 3005),
                                    limit = getOption("fwa.limit", 10000)) {
@@ -240,7 +240,7 @@ fwa_get_railway_tracks <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_transmission_lines(watershed)
 #' }
-fwa_get_transmission_lines <- function(watershed,
+fwa_get_transmission_lines <- function(watershed = NULL,
                                        intersect = FALSE,
                                        epsg = getOption("fwa.epsg", 3005),
                                        limit = getOption("fwa.limit", 10000)) {
@@ -264,7 +264,7 @@ fwa_get_transmission_lines <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_obstructions(watershed)
 #' }
-fwa_get_obstructions <- function(watershed,
+fwa_get_obstructions <- function(watershed = NULL,
                                  intersect = FALSE,
                                  epsg = getOption("fwa.epsg", 3005),
                                  limit = getOption("fwa.limit", 10000)) {
@@ -288,7 +288,7 @@ fwa_get_obstructions <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_rivers(watershed)
 #' }
-fwa_get_rivers <- function(watershed,
+fwa_get_rivers <- function(watershed = NULL,
                            intersect = FALSE,
                            epsg = getOption("fwa.epsg", 3005),
                            limit = getOption("fwa.limit", 10000)) {
@@ -312,7 +312,7 @@ fwa_get_rivers <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_manmade_waterbodies(watershed)
 #' }
-fwa_get_manmade_waterbodies <- function(watershed,
+fwa_get_manmade_waterbodies <- function(watershed = NULL,
                                         intersect = FALSE,
                                         epsg = getOption("fwa.epsg", 3005),
                                         limit = getOption("fwa.limit", 10000)) {
@@ -336,7 +336,7 @@ fwa_get_manmade_waterbodies <- function(watershed,
 #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' fwa_get_named_streams(watershed)
 #' }
-fwa_get_named_streams <- function(watershed,
+fwa_get_named_streams <- function(watershed = NULL,
                                   intersect = FALSE,
                                   epsg = getOption("fwa.epsg", 3005),
                                   limit = getOption("fwa.limit", 10000)) {
@@ -360,7 +360,7 @@ fwa_get_named_streams <- function(watershed,
 #' #' watershed <- fwa_blue_line_key_to_watershed(356308001)
 #' #' fwa_get_glaciers(watershed)
 #' #' }
-#' fwa_get_glaciers <- function(watershed,
+#' fwa_get_glaciers <- function(watershed = NULL,
 #'                              intersect = FALSE,
 #'                              epsg = getOption("fwa.epsg", 3005),
 #'                              limit = getOption("fwa.limit", 10000)) {

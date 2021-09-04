@@ -5,7 +5,7 @@
 \title{FWA get obstructions}
 \usage{
 fwa_get_obstructions(
-  watershed,
+  watershed = NULL,
   intersect = FALSE,
   epsg = getOption("fwa.epsg", 3005),
   limit = getOption("fwa.limit", 10000)

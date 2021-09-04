@@ -3,13 +3,26 @@ test_that("get functions work", {
   wshed <- fwa_blue_line_key_to_watershed(blue_line_key = blk)
   expect_identical(sf::st_crs(wshed)$epsg, 3005L)
 
+  x <- fwa_get_stream_network(limit = 100)
+  expect_is(x, "sf")
+  expect_identical(sf::st_crs(x)$epsg, 3005L)
+  expect_identical(nrow(x), 100L)
+  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_identical(colnames(sf::st_coordinates(x)), c("X", "Y", "Z", "L1"))
+#
+#   x <- x$geometry[1]
+#
+#   sf::st_coordinates(x)
+#   sf::st_is_valid(x)
+#   sf::st_coordinates(sf::st_make_valid(x))
+
   x <- fwa_get_stream_network(wshed, limit = 1000)
   expect_is(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
   expect_is(x$geometry, "sfc_LINESTRING")
-#  expect_identical(colnames(sf::st_coordinates(x)), c("X", "Y", "Z"))
+  expect_identical(colnames(sf::st_coordinates(x)), c("X", "Y", "L1")) # why not , "Z", "L1"
 
   expect_identical(
     colnames(x),

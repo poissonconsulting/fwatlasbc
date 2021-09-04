@@ -5,7 +5,7 @@
 \title{FWA get named_streams}
 \usage{
 fwa_get_named_streams(
-  watershed,
+  watershed = NULL,
   intersect = FALSE,
   epsg = getOption("fwa.epsg", 3005),
   limit = getOption("fwa.limit", 10000)

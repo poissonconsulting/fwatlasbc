@@ -5,7 +5,7 @@
 \title{FWA get manmade waterbodies}
 \usage{
 fwa_get_manmade_waterbodies(
-  watershed,
+  watershed = NULL,
   intersect = FALSE,
   epsg = getOption("fwa.epsg", 3005),
   limit = getOption("fwa.limit", 10000)

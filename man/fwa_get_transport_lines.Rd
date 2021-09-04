@@ -5,7 +5,7 @@
 \title{FWA get transport lines}
 \usage{
 fwa_get_transport_lines(
-  watershed,
+  watershed = NULL,
   intersect = FALSE,
   epsg = getOption("fwa.epsg", 3005),
   limit = getOption("fwa.limit", 10000)
