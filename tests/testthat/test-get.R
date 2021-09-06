@@ -4,10 +4,10 @@ test_that("get functions work", {
   expect_identical(sf::st_crs(wshed)$epsg, 3005L)
 
   x <- fwa_get_stream_network(limit = 100)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 100L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(colnames(sf::st_coordinates(x)), c("X", "Y", "Z", "L1"))
 #
 #   x <- x$geometry[1]
@@ -17,11 +17,11 @@ test_that("get functions work", {
 #   sf::st_coordinates(sf::st_make_valid(x))
 
   x <- fwa_get_stream_network(wshed, limit = 1000)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(colnames(sf::st_coordinates(x)), c("X", "Y", "L1")) # why not , "Z", "L1"
 
   expect_identical(
@@ -36,8 +36,8 @@ test_that("get functions work", {
       "watershed_key_50k", "wscode_ltree", "geometry"))
 
   x <- fwa_get_lakes(wshed)
-  expect_is(x, "sf")
-  expect_is(x$geometry, "sfc_MULTIPOLYGON")
+  expect_s3_class(x, "sf")
+  expect_s3_class(x$geometry, "sfc_MULTIPOLYGON")
   expect_identical(nrow(x), 5L)
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(
@@ -51,10 +51,10 @@ test_that("get functions work", {
       "watershed_key", "wscode_ltree", "geometry"))
 
   x <- fwa_get_cultural_lines(wshed)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 15L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(
     colnames(x),
     c("admit_day", "admit_mnth", "admit_rfc", "admit_rkey", "admit_srel",
@@ -66,10 +66,10 @@ test_that("get functions work", {
       "x_supplier", "geometry"))
 
   x <- fwa_get_cultural_points(wshed)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 123L)
-  expect_is(x$geometry, "sfc_POINT")
+  expect_s3_class(x$geometry, "sfc_POINT")
   expect_identical(
     colnames(x),
     c("admit_day", "admit_mnth", "admit_rfc", "admit_rkey", "admit_srel",
@@ -81,10 +81,10 @@ test_that("get functions work", {
       "x_supplier", "geometry"))
 
   x <- fwa_get_manmade_waterbodies(wshed)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 2L)
-  expect_is(x$geometry, "sfc_MULTIPOLYGON")
+  expect_s3_class(x$geometry, "sfc_MULTIPOLYGON")
   expect_identical(
     colnames(x),
     c("id", "area_ha", "blue_line_key", "feature_code", "fwa_watershed_code",
@@ -96,32 +96,32 @@ test_that("get functions work", {
       "watershed_key", "wscode_ltree", "geometry"))
 
   x <- fwa_get_named_streams(wshed)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 11L)
-  expect_is(x$geometry, "sfc_MULTILINESTRING")
+  expect_s3_class(x$geometry, "sfc_MULTILINESTRING")
   expect_identical(
     colnames(x),
     c("id", "blue_line_key", "fwa_stream_networks_label_id", "gnis_name",
       "stream_order", "watershed_group_code", "geometry"))
 
   # x <- fwa_get_glaciers(wshed)
-  # expect_is(x, "sf")
-  # expect_is(x$geometry, "sfc_MULTILINESTRING")
+  # expect_s3_class(x, "sf")
+  # expect_s3_class(x$geometry, "sfc_MULTILINESTRING")
   # expect_identical(nrow(x), 11L)
   # expect_identical(sf::st_crs(x)$epsg, 3005L)
 
   # x <- fwa_get_obstructions(wshed)
-  # expect_is(x, "sf")
-  # expect_is(x$geometry, "sfc_MULTILINESTRING")
+  # expect_s3_class(x, "sf")
+  # expect_s3_class(x$geometry, "sfc_MULTILINESTRING")
   # expect_identical(nrow(x), 11L)
   # expect_identical(sf::st_crs(x)$epsg, 3005L)
 
   x <- fwa_get_railway_tracks(wshed)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 40L)
-  expect_is(x$geometry, "sfc_MULTILINESTRING")
+  expect_s3_class(x$geometry, "sfc_MULTILINESTRING")
   expect_identical(
     colnames(x),
     c("administrative_area", "attribute_acquisition_technque", "attribute_creation_date",
@@ -141,10 +141,10 @@ test_that("get functions work", {
        "transport_type", "use_type", "geometry"))
 
   x <- fwa_get_rivers(wshed)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 6L)
-  expect_is(x$geometry, "sfc_MULTIPOLYGON")
+  expect_s3_class(x$geometry, "sfc_MULTIPOLYGON")
   expect_identical(
     colnames(x),
     c("id", "area_ha", "blue_line_key", "feature_code", "fwa_watershed_code",
@@ -156,10 +156,10 @@ test_that("get functions work", {
       "watershed_key", "wscode_ltree", "geometry"))
 
   x <- fwa_get_transmission_lines(wshed)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_identical(nrow(x), 6L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(
     colnames(x),
     c("circuit_description", "circuit_name", "feature_length_m",
@@ -167,16 +167,16 @@ test_that("get functions work", {
       "transmission_line_id", "voltage", "geometry"))
 
   # x <- fwa_get_transport_lines(wshed)
-  # expect_is(x, "sf")
-  # expect_is(x$geometry, "sfc_MULTILINESTRING")
+  # expect_s3_class(x, "sf")
+  # expect_s3_class(x$geometry, "sfc_MULTILINESTRING")
   # expect_identical(nrow(x), 721L)
   # expect_identical(sf::st_crs(x)$epsg, 3005L)
 
 
   # x <- fwa_get_wetlands(wshed)
-  # expect_is(x, "sf")
+  # expect_s3_class(x, "sf")
   # class(x$geometry)
-  # expect_is(x$geometry, "sfc_LINESTRING")
+  # expect_s3_class(x$geometry, "sfc_LINESTRING")
   # expect_identical(nrow(x), 6L)
   # expect_identical(sf::st_crs(x)$epsg, 3005L)
 })
@@ -196,53 +196,53 @@ test_that("test get functions deal with other projections and intersect", {
 
   x <- fwa_get_stream_network(wshed)
 
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(
     colnames(x), colnames)
 
   wshed <- sf::st_transform(wshed, 4326)
 
   x <- fwa_get_stream_network(wshed)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(
     colnames(x), colnames)
 
   x <- fwa_get_stream_network(wshed, epsg = 4326)
 
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 4326L)
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(
     colnames(x), colnames)
 
   wshed <- sf::st_transform(wshed, "+proj=utm +zone=11 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs")
 
   x <- fwa_get_stream_network(wshed, epsg = 4326)
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 4326L)
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(
     colnames(x), colnames)
 
   x <- fwa_get_stream_network(wshed, epsg = 4326, intersect = TRUE)
 
-  expect_is(x, "sf")
+  expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 4326L)
   expect_gte(nrow(x), 88L)
   expect_lte(nrow(x), 89L)
-  expect_is(x$geometry, "sfc_LINESTRING")
+  expect_s3_class(x$geometry, "sfc_LINESTRING")
   expect_identical(
     colnames(x), colnames)
 })

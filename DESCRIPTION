@@ -6,7 +6,7 @@ Authors@R:
              family = "Dalgarno",
              role = c("aut", "cre"),
              email = "seb@poissonconsulting.ca",
-             comment = c(ORCID = "0000-0002-3658-4517")),
+             comment = c(ORCID = "https://orcid.org/0000-0002-3658-4517")),
       person(given = "Joe",
              family = "Thorley",
              role = "aut",
@@ -17,22 +17,24 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Depends: 
-    R (>= 4.0)
+    R (>= 4.1)
 Imports: 
     chk,
     dplyr,
-    fwapgr,
+    fwapgr (>= 0.1.0.9007),
     glue,
     lifecycle,
-    units,
     sf,
-    tidyselect
+    tidyselect,
+    units
 Suggests: 
     covr,
+    readr,
     rlang,
-    testthat
+    testthat (>= 3.0.0)
 Remotes:
     poissonconsulting/fwapgr
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

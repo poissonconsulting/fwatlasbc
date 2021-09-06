@@ -23,12 +23,12 @@ fwa_get <- function(collection_id,
                     epsg = getOption("fwa.epsg", 3005),
                     limit = getOption("fwa.limit", 10000)){
 
-  chk_null_or(watershed, chk_sf_sfc)
+  chk_null_or(watershed, vld = vld_sf_sfc)
   chk_string(collection_id)
   chk_flag(intersect)
   chk_whole_number(epsg)
   chk_gt(epsg)
-  chk_null_or(limit, chk_whole_number)
+  chk_null_or(limit, vld = vld_whole_number)
 
   if(is.null(watershed)) {
     x <- fwapgr::fwa_collection(

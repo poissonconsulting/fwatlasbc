@@ -25,11 +25,11 @@ fwa_rkm <- function(blue_line_key, interval = 1000, start = 0,
   chk_gt(blue_line_key)
   chk_whole_number(interval)
   chk_whole_number(start)
-  chk_null_or(end, chk_whole_number)
+  chk_null_or(end, vld = vld_whole_number)
 
   chk_gt(interval)
   chk_gte(start)
-  chk_null_or(end, chk_gt, start)
+  chk_null_or(end, vld = vld_gt, value = start)
 
   if(!is.null(limit) && !is.null(end)) {
     lim <- floor((end - start) / interval)
@@ -173,14 +173,14 @@ fwa_add_columns_to_rkm <- function(rkm, y) {
   rkm <- rkm[!colnames(rkm) %in% colnames]
 
   if(!nrow(rkm)) {
-    y <- dplyr::select(y, colnames)
+    y <- dplyr::select(y, dplyr::all_of(colnames))
     y <- dplyr::slice(y, 0)
     rkm <- dplyr::bind_cols(rkm, y)
     return(rkm)
   }
   y <- y[y$blue_line_key %in% rkm$blue_line_key,,drop = FALSE]
   if(!nrow(y)) {
-    y <- dplyr::select(y, colnames)
+    y <- dplyr::select(y, dplyr::all_of(colnames))
     y <- lapply(y, function(x) {is.na(x) <- TRUE; x})
     y <- dplyr::as_tibble(y)
     rkm <- dplyr::bind_cols(rkm, y)
