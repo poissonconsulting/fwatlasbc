@@ -1,7 +1,7 @@
 test_that("fwa_add_nearest_id_to_rkm", {
   rlang::scoped_options(lifecycle_verbosity = "quiet")
 
-  x <- fwa_rkm(blue_line_key = 356308001L, interval = 100, start = 10000, limit = 10)
+  x <- fwa_rkm(blue_line_key = 356308001L, interval = 100, start = 10000, end = 11000)
   expect_s3_class(x, "sf")
 
   x <- x[1:10,]

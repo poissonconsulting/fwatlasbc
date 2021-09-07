@@ -9,8 +9,7 @@ fwa_rm(
   interval = 1000,
   start = 0,
   end = NULL,
-  epsg = getOption("fwa.epsg", 3005),
-  limit = getOption("fwa.limit", 10000)
+  epsg = getOption("fwa.epsg", 3005)
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ fwa_rm(
 \item{end}{An integer of the distance in meters upstream from the river mouth to start from.}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
-
-\item{limit}{A positive whole number of the maximum number of features to return.}
 }
 \value{
 A sf object

@@ -8,7 +8,6 @@
 #' @param start An integer of the distance in meters upstream from the river mouth to start from.
 #' @param end An integer of the distance in meters upstream from the river mouth to start from.
 #' @param epsg A positive whole number of the epsg to transform features to.
-#' @param limit A positive whole number of the maximum number of features to return.
 #' @return A sf object
 #' @family rm
 #' @export
@@ -16,8 +15,7 @@
 #' fwa_rm(356308001)
 fwa_rm <- function(blue_line_key, interval = 1000, start = 0,
                    end = NULL,
-                   epsg = getOption("fwa.epsg", 3005),
-                   limit = getOption("fwa.limit", 10000)){
+                   epsg = getOption("fwa.epsg", 3005)){
 
   chk_whole_number(blue_line_key)
   chk_gt(blue_line_key)
@@ -29,24 +27,13 @@ fwa_rm <- function(blue_line_key, interval = 1000, start = 0,
   chk_gte(start)
   chk_null_or(end, vld = vld_gt, value = start)
 
-  if(!is.null(limit) && !is.null(end)) {
-    lim <- floor((end - start) / interval)
-    if(lim > limit)
-      chk::abort_chk("`limit` must be greater than `(end - start) / interval` (", lim ,") not ", limit, ".")
-  }
-
   x <- fwa_locate_along_interval(blue_line_key,
                                  interval_length = interval,
                                  start_measure = start,
                                  end_measure = end,
-                                 epsg = epsg,
-                                 limit = limit)
+                                 epsg = epsg)
   x$rm <- x$index * interval + start
 
-  if(!is.null(limit)) {
-    if(nrow(x) == limit)
-      chk::wrn("`limit` was reached.")
-  }
   if(!is.null(end)) {
     lim <- floor((end - start) / interval)
 
