@@ -20,6 +20,7 @@ fwa_streams_to_blue_line_keys("Sangan River")
 }
 \seealso{
 Other streams: 
+\code{\link{fwa_add_blk_to_stream_name}()},
 \code{\link{fwa_search_streams}()}
 }
 \concept{streams}

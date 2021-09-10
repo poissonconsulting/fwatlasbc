@@ -6,7 +6,7 @@
 #' by default returns all values.
 #' @param ignore_case A flag indicating whether to ignore case
 #' when matching the regular expression.
-#' @return A character vector of the stream names.
+#' @return A character vector of the stream names that match.
 #' @family streams
 #' @export
 #' @examples

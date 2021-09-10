@@ -14,7 +14,7 @@ by default returns all values.}
 when matching the regular expression.}
 }
 \value{
-A character vector of the stream names.
+A character vector of the stream names that match.
 }
 \description{
 Get stream names that match regular expression.
@@ -24,6 +24,7 @@ fwa_search_streams("sangan")
 }
 \seealso{
 Other streams: 
+\code{\link{fwa_add_blk_to_stream_name}()},
 \code{\link{fwa_streams_to_blue_line_keys}()}
 }
 \concept{streams}
