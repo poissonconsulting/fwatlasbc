@@ -17,10 +17,6 @@ fwa_add_blk_to_stream_name <- function(x) {
     x$blk <- integer(0)
     return(x)
   }
-  if(anyNA(x$stream_name)) {
-    x$blk <- NA_integer_
-    return(x)
-  }
   x |>
     left_join(named_streams, by = c(stream_name = "gnis_name")) |>
     rename(blk = .data$blue_line_key)
