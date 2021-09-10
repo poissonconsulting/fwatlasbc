@@ -5,15 +5,19 @@ chk_sf_sfc <- function(x, x_name = NULL){
   if (is.null(x_name)) {
     x_name <- deparse_backtick_chk(substitute(x))
   }
-  chkor(chk_s3_class(x, "sfc"), chk_s3_class(x, "sf"),
-        x_name = x_name)
+  if(!vld_s3_class(x, "sfc") && !vld_s3_class(x, "sf")) {
+    chkor_vld(vld_s3_class(x, "sfc"), vld_s3_class(x, "sf"), x_name = x_name)
+  }
 }
+
 
 # chk_sf_sfc_null <- function(x){
 #   if(vld_sf_sfc_null(x)) {
 #     return(invisible())
 #   }
-#   chkor(chk_s3_class(x, "sfc"), chk_s3_class(x, "sf"))
+# if(!vld_s3_class(x, "sfc") && !vld_s3_class(x, "sf")) {
+#   chkor_vld(vld_s3_class(x, "sfc"), vld_s3_class(x, "sf"), x_name = x_name)
+# }
 # }
 
 chk_sfc_polygon <- function(x, x_name = NULL){
