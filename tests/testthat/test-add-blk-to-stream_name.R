@@ -25,7 +25,7 @@ test_that("fwa_add_blk_to_stream_name works multiple matches example ", {
 
 test_that("fwa_add_blk_to_stream_name works mix missing and present ", {
   blks <- fwa_add_blk_to_stream_name(data.frame(stream_name = c("Sangan River" , NA)))
-  expect_snapshot_data(blks, "missing and present")
+  expect_snapshot_data(blks, "missing-and-present")
 })
 
 
