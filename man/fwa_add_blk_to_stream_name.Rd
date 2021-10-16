@@ -7,20 +7,20 @@
 fwa_add_blk_to_stream_name(x)
 }
 \arguments{
-\item{x}{A data frame with column stream_name.}
+\item{x}{A data frame with character column StreamName.}
 }
 \value{
-An copy of x with additional blue_line_key column.
+A tibble with the columns of x plus an integer column BLK.
 }
 \description{
-Adds blue line keys to stream names.
+Adds blue line keys (BLK) to stream names.
+A stream name may correspond to more than one blue line key (BLK).
 }
 \examples{
-fwa_add_blk_to_stream_name(data.frame(stream_name = "Sangan River"))
+fwa_add_blk_to_stream_name(data.frame(StreamName = "Sangan River"))
 }
 \seealso{
 Other streams: 
-\code{\link{fwa_search_streams}()},
-\code{\link{fwa_streams_to_blue_line_keys}()}
+\code{\link{fwa_get_stream_name}()}
 }
 \concept{streams}

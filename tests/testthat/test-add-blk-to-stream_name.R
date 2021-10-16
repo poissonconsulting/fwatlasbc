@@ -1,32 +1,34 @@
 test_that("fwa_add_blk_to_stream_name works simple example ", {
-  blks <- fwa_add_blk_to_stream_name(data.frame(stream_name = "Sangan River"))
-  expect_snapshot_data(blks, "simple")
+  blk <- fwa_add_blk_to_stream_name(data.frame(StreamName = "Sangan River"))
+  expect_identical(blk, dplyr::tibble(StreamName = "Sangan River", BLK = 360879896L))
 })
 
 test_that("fwa_add_blk_to_stream_name works no rows", {
-  blks <- fwa_add_blk_to_stream_name(data.frame(stream_name = character(0)))
-  expect_identical(nrow(blks), 0L)
-  expect_identical(colnames(blks), c("stream_name", "blk"))
-  expect_type(blks$blk, "integer")
+  blk <- fwa_add_blk_to_stream_name(data.frame(StreamName = character(0)))
+  expect_identical(blk, dplyr::tibble(StreamName = character(0), BLK = integer(0)))
 })
 
 test_that("fwa_add_blk_to_stream_name works all missing values", {
-  blks <- fwa_add_blk_to_stream_name(data.frame(stream_name = NA_character_))
-  expect_identical(nrow(blks), 1L)
-  expect_identical(colnames(blks), c("stream_name", "blk"))
-  expect_identical(blks$blk, NA_integer_)
+  blk <- fwa_add_blk_to_stream_name(data.frame(StreamName = NA_character_))
+  expect_identical(blk, dplyr::tibble(StreamName = NA_character_, BLK = NA_integer_))
 })
 
 test_that("fwa_add_blk_to_stream_name works multiple matches example ", {
-  blks <- fwa_add_blk_to_stream_name(data.frame(stream_name = "Steep Creek"))
-  expect_snapshot_data(blks, "multiple")
+  blk <- fwa_add_blk_to_stream_name(data.frame(StreamName = "Steep Creek"))
+  expect_identical(blk, dplyr::tibble(StreamName = c("Steep Creek", "Steep Creek", "Steep Creek"
+  ), BLK = c(356362258L, 356534225L, 356570155L)))
 })
 
-
-test_that("fwa_add_blk_to_stream_name works mix missing and present ", {
-  blks <- fwa_add_blk_to_stream_name(data.frame(stream_name = c("Sangan River" , NA)))
-  expect_snapshot_data(blks, "missing-and-present")
+test_that("fwa_add_blk_to_stream_name preserves order", {
+  blk <- fwa_add_blk_to_stream_name(data.frame(StreamName = c("Zymoetz River", "Aaltanhash River")))
+  expect_identical(blk, dplyr::tibble(StreamName = c("Zymoetz River", "Aaltanhash River"
+  ), BLK = c(360881231L, 360886335L)))
 })
 
-
-
+test_that("fwa_add_blk_to_stream_name works mix multiple, missing and order ", {
+  blk <- fwa_add_blk_to_stream_name(data.frame(StreamName = c("Zymoetz River", NA, "Steep Creek")))
+  expect_identical(blk, dplyr::tibble(StreamName = c("Zymoetz River", NA, "Steep Creek",
+                                                "Steep Creek", "Steep Creek"),
+                                 BLK = c(360881231L, NA, 356362258L,
+                                         356534225L, 356570155L)))
+})

@@ -23,8 +23,8 @@ fwa_get <- function(collection_id,
                     epsg = getOption("fwa.epsg", 3005),
                     limit = getOption("fwa.limit", 10000)){
 
-  chk_null_or(watershed, vld = vld_sf_sfc)
   chk_string(collection_id)
+  chk_null_or(watershed, vld = vld_sf_sfc)
   chk_flag(intersect)
   chk_whole_number(epsg)
   chk_gt(epsg)

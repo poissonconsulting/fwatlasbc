@@ -1,4 +1,3 @@
-
 #' FWA get stream network
 #'
 #' Get stream network features within watershed.

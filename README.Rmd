@@ -36,6 +36,22 @@ You can install the latest version of `fwatlasbc` from [GitHub](https://github.c
 devtools::install_github("poissonconsulting/fwatlasbc")
 ```
 
+## Demonstration
+
+Get stream names using regular expression.
+
+```{r}
+library(fwatlasbc)
+sangan <- fwa_get_stream_name("sangan")
+sangan
+```
+
+Add blue line key unique identifiers to stream names
+```{r}
+sangan <- fwa_add_blk_to_stream_name(sangan)
+sangan
+```
+
 ## Inspiration
 
 `fwatlasbc` supersedes the archived [`fwabc`](https://github.com/poissonconsulting/fwabc) which retrieved data via [WFS](https://openmaps.gov.bc.ca/geo/pub/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=WHSE_BASEMAPPING.FWA_LAKES_POLY&outputFormat=json&SRSNAME=epsg%3A3005&CQL_FILTER=GNIS_NAME_1=%27Quamichan%20Lake%27) using [`bcdata`](https://github.com/bcgov/bcdata). 

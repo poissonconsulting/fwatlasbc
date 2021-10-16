@@ -1,17 +1,19 @@
 #' Adds Blue Line Key to Stream Name
 #'
-#' Adds blue line keys to stream names.
+#' Adds blue line keys (BLK) to stream names.
+#' A stream name may correspond to more than one blue line key (BLK).
 #'
-#' @param x A data frame with column stream_name.
-#' @return An copy of x with additional blue_line_key column.
+#' @param x A data frame with character column StreamName.
+#' @return A tibble with the columns of x plus an integer column BLK.
 #' @export
 #' @family streams
 #' @examples
-#' fwa_add_blk_to_stream_name(data.frame(stream_name = "Sangan River"))
+#' fwa_add_blk_to_stream_name(data.frame(StreamName = "Sangan River"))
 fwa_add_blk_to_stream_name <- function(x) {
-  check_data(x, values = list(stream_name = c("", NA)))
+  check_data(x, values = list(StreamName = c("", NA)))
 
   x |>
-    left_join(named_streams, by = c(stream_name = "gnis_name")) |>
-    rename(blk = .data$blue_line_key)
+    as_tibble() |>
+    left_join(named_streams, by = c(StreamName = "gnis_name")) |>
+    rename(BLK = .data$blue_line_key)
 }

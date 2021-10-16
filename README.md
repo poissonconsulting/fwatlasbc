@@ -33,6 +33,29 @@ You can install the latest version of `fwatlasbc` from
 devtools::install_github("poissonconsulting/fwatlasbc")
 ```
 
+## Demonstration
+
+``` r
+library(fwatlasbc)
+sangan <- fwa_get_stream_name("sangan")
+sangan
+#> # A tibble: 1 × 1
+#>   StreamName  
+#>   <chr>       
+#> 1 Sangan River
+```
+
+Get blue line key
+
+``` r
+sangan <- fwa_add_blk_to_stream_name(sangan)
+sangan
+#> # A tibble: 1 × 2
+#>   StreamName         BLK
+#>   <chr>            <int>
+#> 1 Sangan River 360879896
+```
+
 ## Inspiration
 
 `fwatlasbc` supersedes the archived
