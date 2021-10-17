@@ -7,7 +7,7 @@
 fwa_add_watershed_to_blk(
   x,
   rm = 0,
-  include_fundamental = TRUE,
+  exclude = FALSE,
   epsg = getOption("fwa.epsg", 3005)
 )
 }
@@ -15,20 +15,20 @@ fwa_add_watershed_to_blk(
 \item{rm}{A positive whole numeric of the distance in meters upstream
 from the river mouth.}
 
-\item{include_fundamental}{A logical vector specifying whether to include the
+\item{exclude}{A logical vector specifying whether to exclude the
 fundamental watershed in which the start falls.}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
 }
 \value{
-An sf tibble with the columns of x plus integer column StartRM and
+An sf tibble with the columns of x plus
 sf column geometry.
 
 A sf object
 }
 \description{
 Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (BLK).
-The start distances which is in meters is from the river mouth.
+The rm distances which is in meters is from the river mouth.
 }
 \examples{
 \dontrun{

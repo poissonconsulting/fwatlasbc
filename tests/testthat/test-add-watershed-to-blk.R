@@ -9,7 +9,7 @@ test_that("fwa_add_watershed_to_blk works", {
 })
 
 test_that("fwa_add_watershed_to_blk", {
-  x <- fwa_add_watershed_to_blk(data.frame(BLK = 360879896L), include_fundamental = FALSE)
+  x <- fwa_add_watershed_to_blk(data.frame(BLK = 360879896L), exclude = TRUE)
 
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("BLK", "geometry"))

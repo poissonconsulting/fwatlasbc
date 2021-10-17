@@ -1,42 +1,57 @@
+adjust_watershed <- function(wshed, x, epsg) {
+
+  if(x$..fwa_exclude && wshed$refine_method == "DROP") {
+    return(wshed)
+  }
+  if(!x$..fwa_exclude && wshed$refine_method == "KEEP") {
+    return(wshed)
+  }
+
+  fwshed <- fwa_watershed_hex(blue_line_key = x$BLK,
+                              downstream_route_measure = x$..fwa_rm,
+                              epsg = epsg)
+
+
+  fgeometry <- sf::st_union(fwshed$geometry)
+
+  if(x$..fwa_exclude) {
+    wshed$geometry <- sf::st_difference(wshed$geometry, fgeometry)
+  } else {
+    wshed$geometry <- sf::st_union(wshed$geometry, fgeometry)
+  }
+  wshed
+}
+
 add_watershed_to_blk <- function(x, epsg) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
-  rm <- x$..fwa_rm
-  include <- x$..fwa_include
-
   wshed <- try(fwa_watershed_at_measure(blue_line_key = x$BLK,
-                                        downstream_route_measure = rm,
+                                        downstream_route_measure = x$..fwa_rm,
                                         epsg = epsg), silent = TRUE)
 
-  print(wshed)
   if(is_try_error(wshed)) {
-    abort_chk("Unable to retrieve fundamental watershed for BLK ", x$BLK, " at rm ",
-              x$..fwa_rm, ".")
+    abort_chk("Unable to retrieve fundamental watershed for BLK ", x$BLK,
+              " at rm ", x$..fwa_rm, ".")
   }
 
-  y <- dplyr::select(x, -.data$..fwa_rm, -.data$..fwa_include)
-  fwshed <- fwa_add_watershed_fundamental_to_blk(y, rm = rm, epsg = epsg)
-  if(include) {
-    wshed$geometry <- sf::st_union(wshed$geometry, fwshed$geometry)
-  } else {
-    wshed$geometry <- sf::st_difference(wshed$geometry, fwshed$geometry)
-  }
+  wshed <- adjust_watershed(wshed, x, epsg)
 
   x |>
     dplyr::mutate(geometry = wshed$geometry) |>
     sf::st_set_geometry("geometry")
 }
+
 #' Add Watershed to Blue Line Key
 #'
 #' Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (BLK).
-#' The start distances which is in meters is from the river mouth.
-#' @return An sf tibble with the columns of x plus integer column StartRM and
+#' The rm distances which is in meters is from the river mouth.
+#' @return An sf tibble with the columns of x plus
 #' sf column geometry.
 #'
 #' @inheritParams fwapgr::fwa_locate_along
 #' @param rm A positive whole numeric of the distance in meters upstream
 #' from the river mouth.
-#' @param include_fundamental A logical vector specifying whether to include the
+#' @param exclude A logical vector specifying whether to exclude the
 #' fundamental watershed in which the start falls.
 #' @return A sf object
 #' @seealso \code{\link[fwapgr]{fwa_watershed_at_measure}}.
@@ -47,7 +62,7 @@ add_watershed_to_blk <- function(x, epsg) {
 #' }
 fwa_add_watershed_to_blk <- function(x,
                                      rm = 0,
-                                     include_fundamental = TRUE,
+                                     exclude = FALSE,
                                      epsg = getOption("fwa.epsg", 3005)) {
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
@@ -56,21 +71,21 @@ fwa_add_watershed_to_blk <- function(x,
   chk_subset(x$BLK, unique(named_streams$BLK))
   chk_unique(x$BLK)
   chk_not_subset(colnames(x), "geometry")
-  chk_not_subset(colnames(x), c("..fwa_rm", "..fwa_include"))
+  chk_not_subset(colnames(x), c("..fwa_rm", "..fwa_exclude"))
   chk_whole_numeric(rm)
   chk_not_any_na(rm)
   chk_gte(rm)
-  chk_logical(include_fundamental)
-  chk_not_any_na(include_fundamental)
+  chk_logical(exclude)
+  chk_not_any_na(exclude)
   chk_whole_number(epsg)
   chk_gte(epsg)
 
   x |>
     dplyr::as_tibble() |>
     dplyr::mutate(..fwa_rm = rm,
-                  ..fwa_include = include_fundamental) |>
+                  ..fwa_exclude = exclude) |>
     dplyr::group_split(.data$BLK) |>
     lapply(add_watershed_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
-    dplyr::select(-.data$..fwa_rm, -.data$..fwa_include)
+    dplyr::select(-.data$..fwa_rm, -.data$..fwa_exclude)
 }
