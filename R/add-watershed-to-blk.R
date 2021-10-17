@@ -8,7 +8,6 @@ add_watershed_to_blk <- function(x, epsg) {
     abort_chk("Unable to retrieve watershed for BLK ", x$BLK, " with start ",
               x$StartRM, ".")
 
-  # includes
   wshed <- wshed |>
     dplyr::select(Area = .data$area_ha, .data$geometry)
 

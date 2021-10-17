@@ -24,7 +24,7 @@ The start distances which is in meters is from the river mouth.
 }
 \examples{
 \dontrun{
-fwa_blue_line_key_to_watershed(356308001)
+fwa_add_watershed_to_blk(data.frame(BLK = 356308001))
 }
 }
 \seealso{
