@@ -26,6 +26,6 @@ fwa_nearest_rm(rm[2:4,], rm[3:5,])
 }
 \seealso{
 Other rm: 
-\code{\link{fwa_rm}()}
+\code{\link{fwa_add_rms_to_blk}()}
 }
 \concept{rm}

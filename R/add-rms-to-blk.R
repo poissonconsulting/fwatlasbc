@@ -1,0 +1,75 @@
+add_rms_to_blk <- function(x, epsg) {
+  check_dim(x, dim = nrow, values = 1L) # +chk
+
+  interval <- x$..fwa_interval
+  start <- x$..fwa_start
+  end <- x$..fwa_end
+
+  if(is.infinite(end)) end <- NULL
+
+  rm <- fwa_locate_along_interval(x$BLK,
+                                  interval_length = interval,
+                                  start_measure = start,
+                                  end_measure = end,
+                                  epsg = epsg) |>
+    dplyr::mutate(RM = .data$index * interval + start,
+                  RM = as.integer(.data$RM)) |>
+    dplyr::select(.data$RM, .data$geometry)
+
+  if(!is.null(end)) {
+    lim <- floor((end - start) / interval)
+
+    if(nrow(x) < lim)
+      chk::wrn("`end` was not reached for BLK ", x$BLK)
+  }
+  x |>
+    dplyr::bind_cols(rm) |>
+    sf::st_set_geometry("geometry")
+}
+
+#' Add River Meters to Blue Line Key
+#'
+#' Adds distances (RM) and spatial coordinates (geometry) of
+#' regularly spaced points along blue line key (BLK).
+#' All distances which are in meters are from the river mouth.
+#'
+#' @param x A data frame with integer column BLK.
+#' @param interval A whole numeric of the distance between points.
+#' @param start A whole numeric of the start distance.
+#' @param end An integer of the end distance.
+#' @param epsg A positive whole number of EPSG projection for the coordinates.
+#' @return An sf tibble with the columns of x plus integer column RM
+#' and sf column geometry.
+#' @family rm
+#' @export
+#' @examples
+#' fwa_add_rms_to_blk(data.frame(BLK = 356308001))
+fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
+                               epsg = getOption("fwa.epsg", 3005)){
+  check_data(x)
+  check_dim(x, dim = nrow, values = TRUE)
+  chk_whole_numeric(x$BLK)
+  chk_subset(x$BLK, unique(named_streams$BLK))
+  chk_unique(x$BLK)
+  chk_not_subset(colnames(x), c("RM", "geometry"))
+  chk_not_subset(colnames(x), c("..fwa_interval", "..fwa_start", "..fwa_end"))
+
+  chk_whole_number(interval)
+  chk_gt(interval)
+  chk_whole_number(start)
+  chk_gte(start)
+  chk_whole_number(end)
+  chk_gt(end, start)
+
+  x |>
+    dplyr::as_tibble() |>
+    dplyr::mutate(..fwa_interval = interval,
+                  ..fwa_start = start,
+                  ..fwa_end = end) |>
+    dplyr::group_split(.data$BLK) |>
+    lapply(add_rms_to_blk, epsg = epsg) |>
+    dplyr::bind_rows() |>
+    dplyr::select(-.data$..fwa_interval,
+                  -.data$..fwa_start,
+                  -.data$..fwa_end)
+}

@@ -38,19 +38,27 @@ devtools::install_github("poissonconsulting/fwatlasbc")
 
 ## Demonstration
 
-Get stream names using regular expression.
+Find gnis stream names using regular expression.
 
 ```{r}
 library(fwatlasbc)
-sangan <- fwa_get_stream_name("sangan")
-sangan
+streams <- fwa_find_stream_names("steep c")
+streams
 ```
 
-Add blue line key unique identifiers to stream names
+Add blue line keys to stream names.
+It is worth noting that there may be more than one stream with the same name.
 ```{r}
-sangan <- fwa_add_blk_to_stream_name(sangan)
-sangan
+streams <- fwa_add_blks_to_stream_name(streams)
+streams
 ```
+
+Get river meters for the blue line keys.
+```{r}
+rm <- fwa_add_blks_to_stream_name(streams)
+streams
+```
+
 
 ## Inspiration
 
