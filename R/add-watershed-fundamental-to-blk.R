@@ -38,7 +38,7 @@ fwa_add_watershed_fundamental_to_blk <- function(x, rm = 0,
   chk_subset(x$BLK, unique(named_streams$BLK))
   chk_unique(x$BLK)
   chk_not_subset(colnames(x), "geometry")
-  chk_not_subset(colnames(x), c("..fwa_rm"))
+  chk_not_subset(colnames(x), "..fwa_rm")
   chk_whole_numeric(rm)
   chk_not_any_na(rm)
   chk_gte(rm)

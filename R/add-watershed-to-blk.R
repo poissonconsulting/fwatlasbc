@@ -1,20 +1,29 @@
-add_watershed_to_blk <- function(x, include_start, epsg) {
+add_watershed_to_blk <- function(x, epsg) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
+  rm <- x$..fwa_rm
+  include <- x$..fwa_include
+
   wshed <- try(fwa_watershed_at_measure(blue_line_key = x$BLK,
-                                        downstream_route_measure = x$StartRM,
+                                        downstream_route_measure = rm,
                                         epsg = epsg), silent = TRUE)
-  if(is_try_error(wshed))
-    abort_chk("Unable to retrieve watershed for BLK ", x$BLK, " with start ",
-              x$StartRM, ".")
 
   print(wshed)
+  if(is_try_error(wshed)) {
+    abort_chk("Unable to retrieve fundamental watershed for BLK ", x$BLK, " at rm ",
+              x$..fwa_rm, ".")
+  }
 
-  wshed <- wshed |>
-    dplyr::select(Area = .data$area_ha, .data$geometry)
+  y <- dplyr::select(x, -.data$..fwa_rm, -.data$..fwa_include)
+  fwshed <- fwa_add_watershed_fundamental_to_blk(y, rm = rm, epsg = epsg)
+  if(include) {
+    wshed$geometry <- sf::st_union(wshed$geometry, fwshed$geometry)
+  } else {
+    wshed$geometry <- sf::st_difference(wshed$geometry, fwshed$geometry)
+  }
 
   x |>
-    dplyr::bind_cols(wshed) |>
+    dplyr::mutate(geometry = wshed$geometry) |>
     sf::st_set_geometry("geometry")
 }
 #' Add Watershed to Blue Line Key
@@ -47,6 +56,7 @@ fwa_add_watershed_to_blk <- function(x,
   chk_subset(x$BLK, unique(named_streams$BLK))
   chk_unique(x$BLK)
   chk_not_subset(colnames(x), "geometry")
+  chk_not_subset(colnames(x), c("..fwa_rm", "..fwa_include"))
   chk_whole_numeric(rm)
   chk_not_any_na(rm)
   chk_gte(rm)
@@ -57,8 +67,10 @@ fwa_add_watershed_to_blk <- function(x,
 
   x |>
     dplyr::as_tibble() |>
-    dplyr::mutate(StartRM = start) |>
+    dplyr::mutate(..fwa_rm = rm,
+                  ..fwa_include = include_fundamental) |>
     dplyr::group_split(.data$BLK) |>
-    lapply(add_watershed_to_blk, include_start = include_start, epsg = epsg) |>
-    dplyr::bind_rows()
+    lapply(add_watershed_to_blk, epsg = epsg) |>
+    dplyr::bind_rows() |>
+    dplyr::select(-.data$..fwa_rm, -.data$..fwa_include)
 }

@@ -6,16 +6,16 @@
 \usage{
 fwa_add_watershed_to_blk(
   x,
-  start = 0,
-  include_start = TRUE,
+  rm = 0,
+  include_fundamental = TRUE,
   epsg = getOption("fwa.epsg", 3005)
 )
 }
 \arguments{
-\item{start}{A positive whole numeric of the distance in meters upstream
+\item{rm}{A positive whole numeric of the distance in meters upstream
 from the river mouth.}
 
-\item{include_start}{A logical vector specifying whether to include the
+\item{include_fundamental}{A logical vector specifying whether to include the
 fundamental watershed in which the start falls.}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
