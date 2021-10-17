@@ -1,0 +1,60 @@
+#' Add Section to River Meter
+#'
+#' Adds section column in y to x based on BLK and end RM in y.
+#' All RMs in x up to and including the end RM but before the previous end
+#' RM are assigned the section column value (which can be missing).
+#'
+#' @param x A data frame with integer columns BLK and RM.
+#' @param y A data frame with integer columns BLK and RM and column specified in section.
+#' @param section A string of the name of the column in y (can include missing values).
+#' @return A tibble of x with section column from y.
+#' @export
+fwa_add_section_to_rm <- function(x, y, section = "Section") {
+  chk_data(x)
+  chk_data(y)
+  chk_string(section)
+  chk_not_subset(section, c("BLK", "RM"))
+  check_names(x, c("BLK", "RM"))
+  check_names(y, c("BLK", "RM", section))
+  chk_not_subset(colnames(x), section)
+
+  chk_whole_numeric(x$BLK)
+  chk_not_any_na(x$BLK)
+  chk_gt(x$BLK)
+  chk_whole_numeric(x$RM)
+  chk_not_any_na(x$RM)
+  chk_gte(x$RM)
+  chk_whole_numeric(x$BLK)
+
+  chk_whole_numeric(y$BLK)
+  chk_not_any_na(y$BLK)
+  chk_gt(y$BLK)
+  chk_whole_numeric(y$RM)
+  chk_not_any_na(y$RM)
+  chk_gte(y$RM)
+
+  check_key(y, c("BLK", "RM"))
+
+  x <- x |>
+    dplyr::as_tibble()
+
+  if(!nrow(x)) {
+    x[[section]] <- y[[section]][0]
+    return(x)
+  }
+
+  y <- y |>
+    dplyr::as_tibble() |>
+    dplyr::arrange(.data$BLK, dplyr::desc(.data$RM)) |>
+    dplyr::filter(.data$BLK %in% x$BLK)
+
+  x[[section]] <- y[[section]][0][1] # gets missing value
+  if(!nrow(y)) {
+    return(x)
+  }
+
+  for(i in seq_len(nrow(y))) {
+    x[[section]][x$BLK == y$BLK[i] & x$RM <= y$RM[i]] <-  y[[section]][i]
+  }
+  x
+}
