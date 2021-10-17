@@ -1,7 +1,7 @@
 nearest_rm <- function(x, rm) {
   index <- sf::st_nearest_feature(x, rm)
   rm <- rm[index,]
-  x$BLK <- rm$BLK
+  x$..fwa_BLK <- rm$BLK
   x$RM <- rm$RM
   x$Distance <- sf::st_distance(x, rm, by_element = TRUE)
   x$Distance <- as.numeric(x$Distance)
@@ -39,8 +39,10 @@ fwa_snap_rm_to_point <- function(x, rm) {
 
   chk_whole_numeric(x$BLK)
   chk_gt(x$BLK)
+  chk_not_subset(colnames(x), c("..fwa_id", "..fwa_BLK"))
 
   check_names(rm, c("BLK", "RM"))
+
   chk_whole_numeric(rm$BLK)
   chk_not_any_na(rm$BLK)
   chk_gt(rm$BLK)
@@ -60,10 +62,12 @@ fwa_snap_rm_to_point <- function(x, rm) {
   }
 
   x |>
-    dplyr::mutate(..fwatlasbc.id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     dplyr::group_split(.data$BLK) |>
     lapply(snap_rm_to_point, rm = rm) |>
     dplyr::bind_rows() |>
-    dplyr::arrange(.data$..fwatlasbc.id) |>
-    dplyr::select(-.data$..fwatlasbc.id)
+    dplyr::arrange(.data$..fwa_id) |>
+    dplyr::mutate(BLK = .data$..fwa_BLK) |>
+    dplyr::relocate(.data$Distance, .after = "RM") |>
+    dplyr::select(-.data$..fwa_id, -.data$..fwa_BLK)
 }
