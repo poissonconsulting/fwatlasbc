@@ -14,8 +14,8 @@ test_that("fwa_add_rms_to_blk works multiple", {
   expect_s3_class(x, "sf")
   expect_identical(names(x), c("BLK", "RM", "geometry"))
   expect_s3_class(x$geometry, "sfc_POINT")
-  expect_identical(x$BLK, c(rep(354091024, 3), rep(356308001, 20)))
-  expect_setequal(x$RM, seq(0, 19000, by = 1000))
+  expect_identical(x$BLK, c(rep(356308001, 20), rep(354091024, 3)))
+  expect_equal(x$RM, c(seq(0, 19000, by = 1000), c(0, 1000, 2000)))
 })
 
 test_that("fwa_add_rms_to_blk errors missing blk", {

@@ -68,10 +68,10 @@ fwa_add_watershed_to_blk <- function(x,
   check_dim(x, dim = nrow, values = TRUE)
   chk_whole_numeric(x$BLK)
   chk_not_any_na(x$BLK)
-  chk_subset(x$BLK, unique(named_streams$BLK))
+  chk_gt(x$BLK)
   chk_unique(x$BLK)
   chk_not_subset(colnames(x), "geometry")
-  chk_not_subset(colnames(x), c("..fwa_rm", "..fwa_exclude"))
+  chk_not_subset(colnames(x), c("..fwa_rm", "..fwa_exclude", "..fwatlasbc.id"))
   chk_whole_numeric(rm)
   chk_not_any_na(rm)
   chk_gte(rm)
@@ -83,9 +83,11 @@ fwa_add_watershed_to_blk <- function(x,
   x |>
     dplyr::as_tibble() |>
     dplyr::mutate(..fwa_rm = rm,
-                  ..fwa_exclude = exclude) |>
+                  ..fwa_exclude = exclude,
+                  ..fwatlasbc.id = 1:dplyr::n()) |>
     dplyr::group_split(.data$BLK) |>
     lapply(add_watershed_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
-    dplyr::select(-.data$..fwa_rm, -.data$..fwa_exclude)
+    dplyr::arrange(.data$..fwatlasbc.id) |>
+    dplyr::select(-.data$..fwa_rm, -.data$..fwa_exclude, -.data$..fwatlasbc.id)
 }

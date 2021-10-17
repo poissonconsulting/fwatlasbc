@@ -50,10 +50,11 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
   check_dim(x, dim = nrow, values = TRUE)
   chk_whole_numeric(x$BLK)
   chk_not_any_na(x$BLK)
-  chk_subset(x$BLK, unique(named_streams$BLK))
+  chk_gt(x$BLK)
   chk_unique(x$BLK)
   chk_not_subset(colnames(x), c("RM", "geometry"))
-  chk_not_subset(colnames(x), c("..fwa_interval", "..fwa_start", "..fwa_end"))
+  chk_not_subset(colnames(x), c("..fwa_interval", "..fwa_start",
+                                "..fwa_end", "..fwatlasbc.id"))
 
   chk_whole_number(interval)
   chk_gt(interval)
@@ -68,11 +69,14 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
     dplyr::as_tibble() |>
     dplyr::mutate(..fwa_interval = interval,
                   ..fwa_start = start,
-                  ..fwa_end = end) |>
+                  ..fwa_end = end,
+                  ..fwatlasbc.id = 1:dplyr::n()) |>
     dplyr::group_split(.data$BLK) |>
     lapply(add_rms_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
+    dplyr::arrange(.data$..fwatlasbc.id, .data$RM) |>
     dplyr::select(-.data$..fwa_interval,
                   -.data$..fwa_start,
-                  -.data$..fwa_end)
+                  -.data$..fwa_end,
+                  -.data$..fwatlasbc.id)
 }

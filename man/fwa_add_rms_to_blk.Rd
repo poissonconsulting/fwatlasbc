@@ -37,6 +37,6 @@ fwa_add_rms_to_blk(data.frame(BLK = 356308001))
 }
 \seealso{
 Other rm: 
-\code{\link{fwa_nearest_rm}()}
+\code{\link{fwa_snap_rm_to_point}()}
 }
 \concept{rm}
