@@ -1,5 +1,5 @@
-test_that("fwa_add_fundamental_watershed_to_blk works", {
-  x <- fwa_add_fundamental_watershed_to_blk(data.frame(BLK = 360879896L, extra_col = "ex"),
+test_that("fwa_add_watershed_fundamental_to_blk works", {
+  x <- fwa_add_watershed_fundamental_to_blk(data.frame(BLK = 360879896L, extra_col = "ex"),
                                 rm = 10)
 
   expect_s3_class(x, "sf")

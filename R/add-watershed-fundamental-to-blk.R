@@ -1,4 +1,4 @@
-add_fundamental_watershed_to_blk <- function(x, epsg) {
+add_watershed_fundamental_to_blk <- function(x, epsg) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
   wshed <- try(fwa_watershed_hex(blue_line_key = x$BLK,
@@ -15,7 +15,7 @@ add_fundamental_watershed_to_blk <- function(x, epsg) {
 }
 #' Add Fundamental Watershed to Blue Line Key
 #'
-#' Adds polygon (geometry) of fundamental watershed to blue line key (BLK).
+#' Adds sfc polygon (geometry) of fundamental watershed to blue line key (BLK).
 #' @return An sf tibble with the columns of x plus
 #' sfc polygon column geometry.
 #'
@@ -27,9 +27,9 @@ add_fundamental_watershed_to_blk <- function(x, epsg) {
 #' @export
 #' @examples
 #' \dontrun{
-#' fwa_add_fundamental_watershed_to_blk(data.frame(BLK = 360879896L), rm = 100)
+#' fwa_add_watershed_fundamental_to_blk(data.frame(BLK = 360879896L), rm = 100)
 #' }
-fwa_add_fundamental_watershed_to_blk <- function(x, rm,
+fwa_add_watershed_fundamental_to_blk <- function(x, rm = 0,
                                                  epsg = getOption("fwa.epsg", 3005)) {
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
@@ -39,7 +39,8 @@ fwa_add_fundamental_watershed_to_blk <- function(x, rm,
   chk_unique(x$BLK)
   chk_not_subset(colnames(x), "geometry")
   chk_not_subset(colnames(x), c("..fwa_rm"))
-  chk_whole_number(rm)
+  chk_whole_numeric(rm)
+  chk_not_any_na(rm)
   chk_gte(rm)
   chk_whole_number(epsg)
   chk_gte(epsg)
@@ -48,7 +49,7 @@ fwa_add_fundamental_watershed_to_blk <- function(x, rm,
     dplyr::as_tibble() |>
     dplyr::mutate(..fwa_rm = rm) |>
     dplyr::group_split(.data$BLK) |>
-    lapply(add_fundamental_watershed_to_blk, epsg = epsg) |>
+    lapply(add_watershed_fundamental_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
     dplyr::select(-.data$..fwa_rm)
 }

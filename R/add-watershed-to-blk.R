@@ -25,9 +25,9 @@ add_watershed_to_blk <- function(x, include_start, epsg) {
 #' sf column geometry.
 #'
 #' @inheritParams fwapgr::fwa_locate_along
-#' @param start A positive whole numeric of the distance in meters upstream
+#' @param rm A positive whole numeric of the distance in meters upstream
 #' from the river mouth.
-#' @param include_start A logical vector specifying whether to include the
+#' @param include_fundamental A logical vector specifying whether to include the
 #' fundamental watershed in which the start falls.
 #' @return A sf object
 #' @seealso \code{\link[fwapgr]{fwa_watershed_at_measure}}.
@@ -37,8 +37,8 @@ add_watershed_to_blk <- function(x, include_start, epsg) {
 #' fwa_add_watershed_to_blk(data.frame(BLK = 356308001))
 #' }
 fwa_add_watershed_to_blk <- function(x,
-                                     start = 0,
-                                     include_start = TRUE,
+                                     rm = 0,
+                                     include_fundamental = TRUE,
                                      epsg = getOption("fwa.epsg", 3005)) {
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
@@ -46,11 +46,12 @@ fwa_add_watershed_to_blk <- function(x,
   chk_not_any_na(x$BLK)
   chk_subset(x$BLK, unique(named_streams$BLK))
   chk_unique(x$BLK)
-  chk_not_subset(colnames(x), c("StartRM", "geometry"))
-  chk_whole_number(start)
-  chk_gte(start)
-  chk_logical(include_start)
-  chk_not_any_na(include_start)
+  chk_not_subset(colnames(x), "geometry")
+  chk_whole_numeric(rm)
+  chk_not_any_na(rm)
+  chk_gte(rm)
+  chk_logical(include_fundamental)
+  chk_not_any_na(include_fundamental)
   chk_whole_number(epsg)
   chk_gte(epsg)
 
