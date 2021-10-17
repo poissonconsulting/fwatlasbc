@@ -49,6 +49,7 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
   chk_whole_numeric(x$BLK)
+  chk_not_any_na(x$BLK)
   chk_subset(x$BLK, unique(named_streams$BLK))
   chk_unique(x$BLK)
   chk_not_subset(colnames(x), c("RM", "geometry"))
@@ -60,6 +61,8 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
   chk_gte(start)
   chk_whole_number(end)
   chk_gt(end, start)
+  chk_whole_number(epsg)
+  chk_gte(epsg)
 
   x |>
     dplyr::as_tibble() |>
