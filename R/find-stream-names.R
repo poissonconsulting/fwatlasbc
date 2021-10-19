@@ -15,7 +15,7 @@ fwa_find_stream_names <- function(pattern = ".*", ignore_case = TRUE){
   chk_string(pattern)
   chk_flag(ignore_case)
 
-  stream_names <- unique(named_streams$stream_name)
+  stream_names <- unique(fwatlasbc::fwa_stream_name$stream_name)
   indices <- grep(pattern, stream_names, ignore.case = ignore_case)
   stream_names <- stream_names[indices]
   stream_names <- sort(stream_names)

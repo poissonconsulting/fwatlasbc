@@ -3,7 +3,7 @@
 \docType{data}
 \name{fwa_collection_name}
 \alias{fwa_collection_name}
-\title{Collection Names}
+\title{Collection Name}
 \format{
 An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 12 rows and 2 columns.
 }

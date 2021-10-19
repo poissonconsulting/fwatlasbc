@@ -15,5 +15,5 @@ fwa_add_blks_to_stream_name <- function(x) {
 
   x |>
     as_tibble() |>
-    left_join(named_streams, by = "stream_name")
+    left_join(fwatlasbc::fwa_stream_name, by = "stream_name")
 }
