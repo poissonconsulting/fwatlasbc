@@ -38,7 +38,7 @@ devtools::install_github("poissonconsulting/fwatlasbc")
 
 ## Demonstration
 
-Find gnis stream names using regular expression.
+Find stream names using regular expression.
 
 ```{r}
 library(fwatlasbc)
@@ -47,18 +47,30 @@ streams
 ```
 
 Add blue line keys to stream names.
-It is worth noting that there may be more than one stream with the same name.
 ```{r}
 streams <- fwa_add_blks_to_stream_name(streams)
 streams
+streams <- streams[streams$BLK == 356534225,]
 ```
 
-Get river meters for the blue line keys.
+Get river meters (every 100 m).
 ```{r}
-rm <- fwa_add_blks_to_stream_name(streams)
-streams
+rm <- fwa_add_rms_to_blk(streams, interval = 100)
+rm
 ```
 
+Get watershed.
+```{r}
+wshed <- fwa_add_watershed_to_blk(streams)
+wshed
+```
+
+Plot watershed and river meters.
+```{r dpi=300, fig.width=7, fig.height=7}
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = wshed) +
+  ggplot2::geom_sf(data = rm)
+```
 
 ## Inspiration
 

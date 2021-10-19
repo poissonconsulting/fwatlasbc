@@ -35,26 +35,86 @@ devtools::install_github("poissonconsulting/fwatlasbc")
 
 ## Demonstration
 
+Find stream names using regular expression.
+
 ``` r
 library(fwatlasbc)
-sangan <- fwa_get_stream_name("sangan")
-sangan
-#> # A tibble: 1 × 1
-#>   StreamName  
-#>   <chr>       
-#> 1 Sangan River
+streams <- fwa_find_stream_names("steep c")
+streams
+#> # A tibble: 2 × 1
+#>   StreamName        
+#>   <chr>             
+#> 1 Steep Canyon Creek
+#> 2 Steep Creek
 ```
 
-Get blue line key
+Add blue line keys to stream names.
 
 ``` r
-sangan <- fwa_add_blk_to_stream_name(sangan)
-sangan
-#> # A tibble: 1 × 2
-#>   StreamName         BLK
-#>   <chr>            <int>
-#> 1 Sangan River 360879896
+streams <- fwa_add_blks_to_stream_name(streams)
+streams
+#> # A tibble: 4 × 2
+#>   StreamName               BLK
+#>   <chr>                  <int>
+#> 1 Steep Canyon Creek 360883036
+#> 2 Steep Creek        356362258
+#> 3 Steep Creek        356534225
+#> 4 Steep Creek        356570155
+streams <- streams[streams$BLK == 356534225,]
 ```
+
+Get river meters (every 100 m).
+
+``` r
+rm <- fwa_add_rms_to_blk(streams, interval = 100)
+rm
+#> Simple feature collection with 46 features and 3 fields
+#> Geometry type: POINT
+#> Dimension:     XYZ
+#> Bounding box:  xmin: 1657747 ymin: 728476.5 xmax: 1661313 ymax: 730795.9
+#> z_range:       zmin: 1087 zmax: 2524.455
+#> Projected CRS: NAD83 / BC Albers
+#> # A tibble: 46 × 4
+#>    StreamName        BLK    RM                      geometry
+#>    <chr>           <int> <int>                   <POINT [m]>
+#>  1 Steep Creek 356534225     0     Z (1657747 728476.5 1087)
+#>  2 Steep Creek 356534225   100 Z (1657839 728506.7 1094.162)
+#>  3 Steep Creek 356534225   200 Z (1657911 728572.2 1101.743)
+#>  4 Steep Creek 356534225   300 Z (1657989 728633.1 1111.435)
+#>  5 Steep Creek 356534225   400   Z (1658070 728691 1123.997)
+#>  6 Steep Creek 356534225   500  Z (1658141 728754.7 1132.81)
+#>  7 Steep Creek 356534225   600 Z (1658233 728792.8 1144.575)
+#>  8 Steep Creek 356534225   700 Z (1658324 728830.6 1153.982)
+#>  9 Steep Creek 356534225   800 Z (1658395 728897.5 1168.074)
+#> 10 Steep Creek 356534225   900 Z (1658470 728960.1 1180.635)
+#> # … with 36 more rows
+```
+
+Get watershed.
+
+``` r
+wshed <- fwa_add_watershed_to_blk(streams)
+wshed
+#> Simple feature collection with 1 feature and 2 fields
+#> Geometry type: POLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 1656218 ymin: 725423.1 xmax: 1661726 ymax: 732146.2
+#> Projected CRS: NAD83 / BC Albers
+#> # A tibble: 1 × 3
+#>   StreamName        BLK                                                 geometry
+#>   <chr>           <int>                                            <POLYGON [m]>
+#> 1 Steep Creek 356534225 ((1658037 728924.8, 1658107 728964.9, 1658107 728964.9,…
+```
+
+Plot watershed and river meters.
+
+``` r
+ggplot2::ggplot() +
+  ggplot2::geom_sf(data = wshed) +
+  ggplot2::geom_sf(data = rm)
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ## Inspiration
 
