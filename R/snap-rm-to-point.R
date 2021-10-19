@@ -3,8 +3,8 @@ nearest_rm <- function(x, rm) {
   rm <- rm[index,]
   x$..fwa_BLK <- rm$BLK
   x$RM <- rm$RM
-  x$Distance <- sf::st_distance(x, rm, by_element = TRUE)
-  x$Distance <- as.numeric(x$Distance)
+  x$DistanceToRM <- sf::st_distance(x, rm, by_element = TRUE)
+  x$DistanceToRM <- as.numeric(x$DistanceToRM)
   x
 }
 
@@ -19,7 +19,7 @@ snap_rm_to_point <- function(x, rm) {
 #'
 #' Assigns closest river meter to each spatial point.
 #' If the blue line key (BLK) is missing then it is also assigned
-#' together with the distance (in m).
+#' together with the distance to the river meter (DistanceToRM) in m.
 #'
 #' @param x An sf object of spatial points with optional integer column BLK.
 #' @param rm An sf object of spatial point with BLK and RM columns.
@@ -52,12 +52,12 @@ fwa_snap_rm_to_point <- function(x, rm) {
 
   if(!nrow(x)) {
     x$RM <- integer(0)
-    x$Distance <- numeric(0)
+    x$DistanceToRM <- numeric(0)
     return(x)
   }
   if(!nrow(rm)) {
     x$RM <- NA_integer_
-    x$Distance <- NA_real_
+    x$DistanceToRM <- NA_real_
     return(x)
   }
 
@@ -68,6 +68,6 @@ fwa_snap_rm_to_point <- function(x, rm) {
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::mutate(BLK = .data$..fwa_BLK) |>
-    dplyr::relocate(.data$Distance, .after = "RM") |>
+    dplyr::relocate(.data$DistanceToRM, .after = "RM") |>
     dplyr::select(-.data$..fwa_id, -.data$..fwa_BLK)
 }

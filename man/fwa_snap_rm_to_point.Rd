@@ -17,7 +17,7 @@ An updated version of x with integer columns BLK and RM and numeric column Dista
 \description{
 Assigns closest river meter to each spatial point.
 If the blue line key (BLK) is missing then it is also assigned
-together with the distance (in m).
+together with the distance to the river meter (DistanceToRM) in m.
 }
 \examples{
 \dontrun{
