@@ -7,7 +7,7 @@ add_rms_to_blk <- function(x, epsg) {
 
   if(is.infinite(end)) end <- NULL
 
-  rm <- fwa_locate_along_interval(x$BLK,
+  rm <- fwa_locate_along_interval(x$blk,
                                   interval_length = interval,
                                   start_measure = start,
                                   end_measure = end,
@@ -22,7 +22,7 @@ add_rms_to_blk <- function(x, epsg) {
     lim <- floor((end - start) / interval)
 
     if(nrow(x) < lim)
-      chk::wrn("`end` was not reached for BLK ", x$BLK)
+      chk::wrn("`end` was not reached for blk ", x$blk)
   }
   x |>
     dplyr::bind_cols(rm) |>
@@ -32,10 +32,10 @@ add_rms_to_blk <- function(x, epsg) {
 #' Add River Meters to Blue Line Key
 #'
 #' Adds distances (rm) and spatial coordinates (geometry) of
-#' regularly spaced points along blue line key (BLK).
+#' regularly spaced points along blue line key (blk).
 #' All distances which are in meters are from the river mouth.
 #'
-#' @param x A data frame with integer column BLK.
+#' @param x A data frame with integer column blk.
 #' @param interval A whole numeric of the distance between points.
 #' @param start A whole numeric of the start distance.
 #' @param end An integer of the end distance.
@@ -45,15 +45,15 @@ add_rms_to_blk <- function(x, epsg) {
 #' @family rm
 #' @export
 #' @examples
-#' fwa_add_rms_to_blk(data.frame(BLK = 356308001))
+#' fwa_add_rms_to_blk(data.frame(blk = 356308001))
 fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
                                epsg = getOption("fwa.epsg", 3005)){
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
-  chk_whole_numeric(x$BLK)
-  chk_not_any_na(x$BLK)
-  chk_gt(x$BLK)
-  chk_unique(x$BLK)
+  chk_whole_numeric(x$blk)
+  chk_not_any_na(x$blk)
+  chk_gt(x$blk)
+  chk_unique(x$blk)
   chk_not_subset(colnames(x), c("rm", "Elevation", "geometry"))
   chk_not_subset(colnames(x), c("..fwa_interval", "..fwa_start",
                                 "..fwa_end", "..fwa_id"))
@@ -73,7 +73,7 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
                   ..fwa_start = start,
                   ..fwa_end = end,
                   ..fwa_id = 1:dplyr::n()) |>
-    dplyr::group_split(.data$BLK) |>
+    dplyr::group_split(.data$blk) |>
     lapply(add_rms_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id, .data$rm) |>

@@ -13,7 +13,7 @@ fwa_add_rms_to_blk(
 )
 }
 \arguments{
-\item{x}{A data frame with integer column BLK.}
+\item{x}{A data frame with integer column blk.}
 
 \item{interval}{A whole numeric of the distance between points.}
 
@@ -29,11 +29,11 @@ and sf column geometry.
 }
 \description{
 Adds distances (rm) and spatial coordinates (geometry) of
-regularly spaced points along blue line key (BLK).
+regularly spaced points along blue line key (blk).
 All distances which are in meters are from the river mouth.
 }
 \examples{
-fwa_add_rms_to_blk(data.frame(BLK = 356308001))
+fwa_add_rms_to_blk(data.frame(blk = 356308001))
 }
 \seealso{
 Other rm: 

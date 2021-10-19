@@ -7,7 +7,7 @@ adjust_watershed <- function(wshed, x, epsg) {
     return(wshed)
   }
 
-  fwshed <- fwa_watershed_hex(blue_line_key = x$BLK,
+  fwshed <- fwa_watershed_hex(blue_line_key = x$blk,
                               downstream_route_measure = x$..fwa_rm,
                               epsg = epsg)
 
@@ -25,12 +25,12 @@ adjust_watershed <- function(wshed, x, epsg) {
 add_watershed_to_blk <- function(x, epsg) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
-  wshed <- try(fwa_watershed_at_measure(blue_line_key = x$BLK,
+  wshed <- try(fwa_watershed_at_measure(blue_line_key = x$blk,
                                         downstream_route_measure = x$..fwa_rm,
                                         epsg = epsg), silent = TRUE)
 
   if(is_try_error(wshed)) {
-    abort_chk("Unable to retrieve fundamental watershed for BLK ", x$BLK,
+    abort_chk("Unable to retrieve fundamental watershed for blk ", x$blk,
               " at rm ", x$..fwa_rm, ".")
   }
 
@@ -43,7 +43,7 @@ add_watershed_to_blk <- function(x, epsg) {
 
 #' Add Watershed to Blue Line Key
 #'
-#' Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (BLK).
+#' Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (blk).
 #' The rm distances which is in meters is from the river mouth.
 #' @return An sf tibble with the columns of x plus
 #' sf column geometry.
@@ -59,7 +59,7 @@ add_watershed_to_blk <- function(x, epsg) {
 #' @export
 #' @examples
 #' \dontrun{
-#' fwa_add_watershed_to_blk(data.frame(BLK = 356308001))
+#' fwa_add_watershed_to_blk(data.frame(blk = 356308001))
 #' }
 fwa_add_watershed_to_blk <- function(x,
                                      rm = 0,
@@ -67,10 +67,10 @@ fwa_add_watershed_to_blk <- function(x,
                                      epsg = getOption("fwa.epsg", 3005)) {
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
-  chk_whole_numeric(x$BLK)
-  chk_not_any_na(x$BLK)
-  chk_gt(x$BLK)
-  chk_unique(x$BLK)
+  chk_whole_numeric(x$blk)
+  chk_not_any_na(x$blk)
+  chk_gt(x$blk)
+  chk_unique(x$blk)
   chk_not_subset(colnames(x), "geometry")
   chk_not_subset(colnames(x), c("..fwa_rm", "..fwa_exclude", "..fwa_id"))
   chk_whole_numeric(rm)
@@ -86,7 +86,7 @@ fwa_add_watershed_to_blk <- function(x,
     dplyr::mutate(..fwa_rm = rm,
                   ..fwa_exclude = exclude,
                   ..fwa_id = 1:dplyr::n()) |>
-    dplyr::group_split(.data$BLK) |>
+    dplyr::group_split(.data$blk) |>
     lapply(add_watershed_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>

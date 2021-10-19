@@ -29,12 +29,12 @@ sf column geometry.
 A sf object
 }
 \description{
-Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (BLK).
+Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (blk).
 The rm distances which is in meters is from the river mouth.
 }
 \examples{
 \dontrun{
-fwa_add_watershed_to_blk(data.frame(BLK = 356308001))
+fwa_add_watershed_to_blk(data.frame(blk = 356308001))
 }
 }
 \seealso{

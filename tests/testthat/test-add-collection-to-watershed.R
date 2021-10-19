@@ -1,5 +1,5 @@
 test_that("fwa_add_collection_to_watershed functions work", {
-  wshed <- fwa_add_watershed_to_blk(data.frame(BLK = 356308001))
+  wshed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))
   x <- fwa_add_collection_to_watershed(wshed, limit = 1000)
 
   expect_s3_class(x, "sf")
@@ -10,7 +10,7 @@ test_that("fwa_add_collection_to_watershed functions work", {
 
   expect_identical(
     colnames(x),
-    c("BLK", "Id", "BlueLineKey", "BlueLineKey50K", "DownstreamRouteMeasure",
+    c("blk", "Id", "BlueLineKey", "BlueLineKey50K", "DownstreamRouteMeasure",
       "EdgeType", "FeatureCode", "FeatureSource", "FwaWatershedCode",
       "GnisId", "GnisName", "Gradient", "LeftRightTributary", "LengthMetre",
       "LinearFeatureId", "LocalWatershedCode", "LocalcodeLtree", "StreamMagnitude",
@@ -21,7 +21,7 @@ test_that("fwa_add_collection_to_watershed functions work", {
 })
 
 test_that("fwa_add_collection_to_watershed function intersects work", {
-  wshed <- fwa_add_watershed_to_blk(data.frame(BLK = 356308001))
+  wshed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))
   x <- fwa_add_collection_to_watershed(wshed, intersect = TRUE, limit = 1000)
 
   expect_s3_class(x, "sf")
@@ -29,7 +29,7 @@ test_that("fwa_add_collection_to_watershed function intersects work", {
   expect_gte(nrow(x), 189L)
   expect_identical(
     colnames(x),
-    c("BLK", "Id", "BlueLineKey", "BlueLineKey50K", "DownstreamRouteMeasure",
+    c("blk", "Id", "BlueLineKey", "BlueLineKey50K", "DownstreamRouteMeasure",
       "EdgeType", "FeatureCode", "FeatureSource", "FwaWatershedCode",
       "GnisId", "GnisName", "Gradient", "LeftRightTributary", "LengthMetre",
       "LinearFeatureId", "LocalWatershedCode", "LocalcodeLtree", "StreamMagnitude",
@@ -44,7 +44,7 @@ test_that("fwa_add_collection_to_watershed function intersects work", {
 })
 
 test_that("fwa_add_collection_to_watershed function intersects works with named streams and keeps extras and deals other projection", {
-  wshed <- fwa_add_watershed_to_blk(data.frame(BLK = 356308001, ExCol = "ex"))
+  wshed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, ExCol = "ex"))
   wshed <- sf::st_transform(wshed, 4326)
   x <- fwa_add_collection_to_watershed(wshed, "whse_basemapping.fwa_named_streams",
                                        limit = 1000,
@@ -56,7 +56,7 @@ test_that("fwa_add_collection_to_watershed function intersects works with named 
   expect_s3_class(x$geometry, "sfc_MULTILINESTRING")
   expect_identical(
     colnames(x),
-    c("BLK", "ExCol", "id", "blue_line_key", "fwa_stream_networks_label_id",
+    c("blk", "ExCol", "id", "blue_line_key", "fwa_stream_networks_label_id",
       "gnis_name", "stream_order", "watershed_group_code", "geometry"
     ))
 })

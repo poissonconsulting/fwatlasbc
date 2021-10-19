@@ -72,7 +72,7 @@ add_collection_to_watershed <- function(x, collection, filter, limit, offset,
 #' @export
 #' @examples
 #' \dontrun{
-#' watershed <- fwa_add_watershed_to_blk(data.frame(BLK = 356308001))
+#' watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))
 #' fwa_add_collection_to_watershed(watershed)
 #' }
 fwa_add_collection_to_watershed <- function(x, collection = "stream_network",

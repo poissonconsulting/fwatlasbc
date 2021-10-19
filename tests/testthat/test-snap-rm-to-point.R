@@ -1,12 +1,12 @@
 test_that("fwa_snap_rm_to_point works", {
-  rm <- fwa_add_rms_to_blk(data.frame(BLK = 356308001))
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
   x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
   rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("BLK", "rm", "DistanceTorm", "Elevation", "geometry"))
-  expect_equal(x$BLK, rep(356308001, 5))
+  expect_identical(colnames(x), c("blk", "rm", "DistanceTorm", "Elevation", "geometry"))
+  expect_equal(x$blk, rep(356308001, 5))
   expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
   expect_equal(x$DistanceTorm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
                              514.952511361304))
@@ -14,30 +14,30 @@ test_that("fwa_snap_rm_to_point works", {
 })
 
 test_that("fwa_snap_rm_to_point works one row", {
-  rm <- fwa_add_rms_to_blk(data.frame(BLK = 356308001))
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
   x <- rm[rm$rm == 5000,]
   rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("BLK", "rm", "DistanceTorm", "Elevation", "geometry"))
-  expect_equal(x$BLK, 356308001)
+  expect_identical(colnames(x), c("blk", "rm", "DistanceTorm", "Elevation", "geometry"))
+  expect_equal(x$blk, 356308001)
   expect_equal(x$rm, 4000)
   expect_equal(x$DistanceTorm, 754.230245890789)
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
 test_that("fwa_snap_rm_to_point works", {
-  rm <- fwa_add_rms_to_blk(data.frame(BLK = 356308001))
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
   x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
   rm <- rm[rm$rm %in% c(1000, 3000, 4000, 9000, 10000),]
-  rm$BLK[rm$rm == 3000] <- 2L
-  x$BLK[1:2] <- NA_integer_
+  rm$blk[rm$rm == 3000] <- 2L
+  x$blk[1:2] <- NA_integer_
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("BLK", "rm", "DistanceTorm", "Elevation", "geometry"))
-  expect_equal(x$BLK, c(356308001, 2, rep(356308001, 3)))
+  expect_identical(colnames(x), c("blk", "rm", "DistanceTorm", "Elevation", "geometry"))
+  expect_equal(x$blk, c(356308001, 2, rep(356308001, 3)))
   expect_equal(x$rm, c(1000, 3000, 4000, 4000, 9000))
   expect_equal(x$DistanceTorm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
                              645.410842257104))

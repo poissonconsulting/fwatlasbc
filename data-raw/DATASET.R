@@ -27,6 +27,6 @@ named_streams2 <- coll_id |>
 named_streams <- named_streams1 |>
   bind_rows(named_streams2) |>
   distinct() |>
-  rename(BLK = blue_line_key, StreamName = gnis_name)
+  rename(blk = blue_line_key, StreamName = gnis_name)
 
 usethis::use_data(named_streams, overwrite = TRUE, internal = TRUE)

@@ -10,10 +10,10 @@ fwa_add_blks_to_stream_name(x)
 \item{x}{A data frame with character column StreamName.}
 }
 \value{
-A tibble with the columns of x plus an integer column BLK.
+A tibble with the columns of x plus an integer column blk.
 }
 \description{
-Adds blue line keys (BLK) to stream names.
+Adds blue line keys (blk) to stream names.
 There may be more than one stream with the same name.
 }
 \examples{
