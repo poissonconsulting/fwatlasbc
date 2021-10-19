@@ -49,6 +49,7 @@ add_watershed_to_blk <- function(x, epsg) {
 #' sf column geometry.
 #'
 #' @inheritParams fwapgr::fwa_locate_along
+#' @param x An sf object with a polygon sfc column specifying watersheds.
 #' @param rm A positive whole numeric of the distance in meters upstream
 #' from the river mouth.
 #' @param exclude A logical vector specifying whether to exclude the

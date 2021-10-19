@@ -7,10 +7,10 @@
 fwa_find_stream_names(pattern = ".*", ignore_case = TRUE)
 }
 \arguments{
+\item{pattern}{A string of a regular expression.}
+
 \item{ignore_case}{A flag specifying whether to ignore case
 when matching the regular expression to gnis stream names.}
-
-\item{stream_name}{A string of a regular expression.}
 }
 \value{
 A tibble with character column StreamName of the names of

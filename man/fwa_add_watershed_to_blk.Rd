@@ -12,6 +12,8 @@ fwa_add_watershed_to_blk(
 )
 }
 \arguments{
+\item{x}{An sf object with a polygon sfc column specifying watersheds.}
+
 \item{rm}{A positive whole numeric of the distance in meters upstream
 from the river mouth.}
 

@@ -2,7 +2,7 @@
 #'
 #' Finds gnis stream names that match regular expression.
 #'
-#' @param stream_name A string of a regular expression.
+#' @param pattern A string of a regular expression.
 #' @param ignore_case A flag specifying whether to ignore case
 #' when matching the regular expression to gnis stream names.
 #' @return A tibble with character column StreamName of the names of
@@ -19,5 +19,5 @@ fwa_find_stream_names <- function(pattern = ".*", ignore_case = TRUE){
   indices <- grep(pattern, stream_names, ignore.case = ignore_case)
   stream_names <- stream_names[indices]
   stream_names <- sort(stream_names)
-  tibble::tibble(StreamName = stream_names)
+  dplyr::tibble(StreamName = stream_names)
 }

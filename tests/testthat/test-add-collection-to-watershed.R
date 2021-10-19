@@ -46,7 +46,8 @@ test_that("fwa_add_collection_to_watershed function intersects work", {
 test_that("fwa_add_collection_to_watershed function intersects works with named streams and keeps extras and deals other projection", {
   wshed <- fwa_add_watershed_to_blk(data.frame(BLK = 356308001, ExCol = "ex"))
   wshed <- sf::st_transform(wshed, 4326)
-  x <- fwa_add_collection_to_watershed(wshed, "named_streams", limit = 1000,
+  x <- fwa_add_collection_to_watershed(wshed, "whse_basemapping.fwa_named_streams",
+                                       limit = 1000,
                                         epsg = 32610, camel_case = FALSE)
 
   expect_s3_class(x, "sf")
