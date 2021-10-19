@@ -5,7 +5,7 @@ test_that("fwa_snap_rm_to_point works", {
   rm <- rm[rm$RM %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("BLK", "RM", "Distance", "geometry"))
+  expect_identical(colnames(x), c("BLK", "RM", "Distance", "Elevation", "geometry"))
   expect_equal(x$BLK, rep(356308001, 5))
   expect_equal(x$RM, c(1000, 3000, 4000, 4000, 8000))
   expect_equal(x$Distance, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
@@ -20,7 +20,7 @@ test_that("fwa_snap_rm_to_point works one row", {
   rm <- rm[rm$RM %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("BLK", "RM", "Distance", "geometry"))
+  expect_identical(colnames(x), c("BLK", "RM", "Distance", "Elevation", "geometry"))
   expect_equal(x$BLK, 356308001)
   expect_equal(x$RM, 4000)
   expect_equal(x$Distance, 754.230245890789)
@@ -36,7 +36,7 @@ test_that("fwa_snap_rm_to_point works", {
   x$BLK[1:2] <- NA_integer_
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("BLK", "RM", "Distance", "geometry"))
+  expect_identical(colnames(x), c("BLK", "RM", "Distance", "Elevation", "geometry"))
   expect_equal(x$BLK, c(356308001, 2, rep(356308001, 3)))
   expect_equal(x$RM, c(1000, 3000, 4000, 4000, 9000))
   expect_equal(x$Distance, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
