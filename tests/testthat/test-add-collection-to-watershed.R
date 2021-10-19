@@ -10,14 +10,14 @@ test_that("fwa_add_collection_to_watershed functions work", {
 
   expect_identical(
     colnames(x),
-    c("blk", "Id", "BlueLineKey", "BlueLineKey50K", "DownstreamRouteMeasure",
-      "EdgeType", "FeatureCode", "FeatureSource", "FwaWatershedCode",
-      "GnisId", "GnisName", "Gradient", "LeftRightTributary", "LengthMetre",
-      "LinearFeatureId", "LocalWatershedCode", "LocalcodeLtree", "StreamMagnitude",
-      "StreamOrder", "UpstreamAreaHa", "UpstreamRouteMeasure", "WaterbodyKey",
-      "WatershedCode50K", "WatershedGroupCode", "WatershedGroupCode50K",
-      "WatershedGroupId", "WatershedKey", "WatershedKey50K", "WscodeLtree",
-      "geometry"))
+    c("blk", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
+      "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
+      "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
+      "linear_feature_id", "local_watershed_code", "localcode_ltree",
+      "stream_magnitude", "stream_order", "upstream_area_ha", "upstream_route_measure",
+      "waterbody_key", "watershed_code_50k", "watershed_group_code",
+      "watershed_group_code_50k", "watershed_group_id", "watershed_key",
+      "watershed_key_50k", "wscode_ltree", "geometry"))
 })
 
 test_that("fwa_add_collection_to_watershed function intersects work", {
@@ -29,14 +29,14 @@ test_that("fwa_add_collection_to_watershed function intersects work", {
   expect_gte(nrow(x), 189L)
   expect_identical(
     colnames(x),
-    c("blk", "Id", "BlueLineKey", "BlueLineKey50K", "DownstreamRouteMeasure",
-      "EdgeType", "FeatureCode", "FeatureSource", "FwaWatershedCode",
-      "GnisId", "GnisName", "Gradient", "LeftRightTributary", "LengthMetre",
-      "LinearFeatureId", "LocalWatershedCode", "LocalcodeLtree", "StreamMagnitude",
-      "StreamOrder", "UpstreamAreaHa", "UpstreamRouteMeasure", "WaterbodyKey",
-      "WatershedCode50K", "WatershedGroupCode", "WatershedGroupCode50K",
-      "WatershedGroupId", "WatershedKey", "WatershedKey50K", "WscodeLtree",
-      "geometry"))
+    c("blk", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
+      "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
+      "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
+      "linear_feature_id", "local_watershed_code", "localcode_ltree",
+      "stream_magnitude", "stream_order", "upstream_area_ha", "upstream_route_measure",
+      "waterbody_key", "watershed_code_50k", "watershed_group_code",
+      "watershed_group_code_50k", "watershed_group_id", "watershed_key",
+      "watershed_key_50k", "wscode_ltree", "geometry"))
 
   skip("geometry for intersection sfc_GEOMETRY not sfc_LINESTRING as element 50 is POINT due to intersection - not sure for general algorithm to fix!")
   expect_s3_class(x$geometry, "sfc_LINESTRING")
@@ -48,7 +48,7 @@ test_that("fwa_add_collection_to_watershed function intersects works with named 
   wshed <- sf::st_transform(wshed, 4326)
   x <- fwa_add_collection_to_watershed(wshed, "whse_basemapping.fwa_named_streams",
                                        limit = 1000,
-                                        epsg = 32610, camel_case = FALSE)
+                                        epsg = 32610)
 
   expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 32610L)

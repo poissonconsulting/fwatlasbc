@@ -13,8 +13,7 @@ fwa_add_collection_to_watershed(
   offset = 0,
   properties = NULL,
   transform = NULL,
-  epsg = getOption("fwa.epsg", 3005),
-  camel_case = TRUE
+  epsg = getOption("fwa.epsg", 3005)
 )
 }
 \arguments{
@@ -39,9 +38,6 @@ value, e.g. \code{list(gnis_name = "Sangan River")}.}
 \item{transform}{A character vector with the name of the \href{https://github.com/CrunchyData/pg_featureserv/blob/master/config/pg_featureserv.toml.example#L29}{\emph{valid transform}} function followed by the parameter values (e.g. c("ST_Simplify", 100))}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
-
-\item{camel_case}{A flag specifying whether to rename collection column names
-to upper camel case.}
 }
 \value{
 An sf object
@@ -50,10 +46,6 @@ An sf object
 Adds collection to a watershed.
 If the active sfc polygon column is called geometry it is replaced
 by the geometry column of the collection.
-}
-\details{
-The collection column names are renamed to upper camel case.
-T
 }
 \examples{
 \dontrun{
