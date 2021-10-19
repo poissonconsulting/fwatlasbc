@@ -1,5 +1,15 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1
+
+- Soft-deprecate `fwa_streams_to_blue_line_keys()` for `fwa_add_blk_to_stream_name()`.
+- Added `fwa_add_blk_to_stream_name()`.
+- Remove limit from fwa_rm() and fwa_rkm().
+- Updating for fwapgr 0.1.0.9007
+- Now ensures gnis_id_\\d columns are integer
+- Allow `fwa_get` functions to have missing watershed.
+
+
 # fwatlasbc 0.0.0.9004
 
 - Soft-deprecated `rkm` functions that use river kilometre for `rm` functions that use river metre.
