@@ -13,7 +13,7 @@ fwa_find_stream_names(pattern = ".*", ignore_case = TRUE)
 when matching the regular expression to gnis stream names.}
 }
 \value{
-A tibble with character column StreamName of the names of
+A tibble with character column stream_name of the names of
 all the streams that match the regular expression.
 }
 \description{

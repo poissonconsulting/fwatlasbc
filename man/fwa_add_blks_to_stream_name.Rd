@@ -7,7 +7,7 @@
 fwa_add_blks_to_stream_name(x)
 }
 \arguments{
-\item{x}{A data frame with character column StreamName.}
+\item{x}{A data frame with character column stream_name.}
 }
 \value{
 A tibble with the columns of x plus an integer column blk.
@@ -17,7 +17,7 @@ Adds blue line keys (blk) to stream names.
 There may be more than one stream with the same name.
 }
 \examples{
-fwa_add_blks_to_stream_name(data.frame(StreamName = "Sangan River"))
+fwa_add_blks_to_stream_name(data.frame(stream_name = "Sangan River"))
 }
 \seealso{
 Other streams: 
