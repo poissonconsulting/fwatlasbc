@@ -1,22 +1,7 @@
 test_that("get functions work", {
-  blk <- 356308001
-  wshed <- fwa_blue_line_key_to_watershed(blue_line_key = blk)
-  expect_identical(sf::st_crs(wshed)$epsg, 3005L)
+  wshed <- fwa_add_watershed_to_blk(data.frame(BLK = 356308001))
+  x <- fwa_add_collection_to_watershed(wshed, limit = 1000)
 
-  x <- fwa_get_stream_network(limit = 100)
-  expect_s3_class(x, "sf")
-  expect_identical(sf::st_crs(x)$epsg, 3005L)
-  expect_identical(nrow(x), 100L)
-  expect_s3_class(x$geometry, "sfc_LINESTRING")
-  expect_identical(colnames(sf::st_coordinates(x)), c("X", "Y", "Z", "L1"))
-#
-#   x <- x$geometry[1]
-#
-#   sf::st_coordinates(x)
-#   sf::st_is_valid(x)
-#   sf::st_coordinates(sf::st_make_valid(x))
-
-  x <- fwa_get_stream_network(wshed, limit = 1000)
   expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 3005L)
   expect_gte(nrow(x), 88L)
