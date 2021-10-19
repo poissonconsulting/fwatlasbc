@@ -1,13 +1,13 @@
 library(dplyr)
 library(readr)
 
-fwa_collection_names <- read_csv("data-raw/fwa-collection-names.csv")
+fwa_collection_name <- read_csv("data-raw/fwa-collection-name.csv")
 
-fwa_collection_names <- arrange(fwa_collection_names, collection_name)
+fwa_collection_name <- arrange(fwa_collection_name, collection_name)
 
-chk::check_key(fwa_collection_names, "collection_name")
+chk::check_key(fwa_collection_name, "collection_name")
 
-usethis::use_data(fwa_collection_names, overwrite = TRUE)
+usethis::use_data(fwa_collection_name, overwrite = TRUE)
 
 coll_id <- "whse_basemapping.fwa_named_streams"
 

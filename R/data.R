@@ -3,5 +3,5 @@
 #' A tibble of collection names.
 #'
 #' @examples
-#' fwa_collection_names
-"fwa_collection_names"
+#' fwa_collection_name
+"fwa_collection_name"
