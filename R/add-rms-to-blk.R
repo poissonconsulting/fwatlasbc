@@ -14,9 +14,9 @@ add_rms_to_blk <- function(x, epsg) {
                                   epsg = epsg) |>
     dplyr::mutate(rm = .data$index * interval + start,
                   rm = as.integer(.data$rm),
-                  Elevation = unname(sf::st_coordinates(.data$geometry)[,"Z"])) |>
+                  elevation = unname(sf::st_coordinates(.data$geometry)[,"Z"])) |>
     sf::st_zm(x) |>
-    dplyr::select(.data$rm, .data$Elevation, .data$geometry)
+    dplyr::select(.data$rm, .data$elevation, .data$geometry)
 
   if(!is.null(end)) {
     lim <- floor((end - start) / interval)
@@ -54,7 +54,7 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
   chk_not_any_na(x$blk)
   chk_gt(x$blk)
   chk_unique(x$blk)
-  chk_not_subset(colnames(x), c("rm", "Elevation", "geometry"))
+  chk_not_subset(colnames(x), c("rm", "elevation", "geometry"))
   chk_not_subset(colnames(x), c("..fwa_interval", "..fwa_start",
                                 "..fwa_end", "..fwa_id"))
 
