@@ -1,4 +1,4 @@
-CollectionName,Collection
+collection_name,collection
 cultural_lines,whse_basemapping.trim_cultural_lines
 cultural_points,whse_basemapping.trim_cultural_points
 lakes,whse_basemapping.fwa_lakes_poly

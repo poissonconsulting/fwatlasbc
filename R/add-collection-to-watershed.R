@@ -1,9 +1,9 @@
 rename_collection <- function(collection) {
   chk_string(collection) # +chk
 
-  wch <- which(fwatlasbc::fwa_collection_names$CollectionName == collection)
+  wch <- which(fwatlasbc::fwa_collection_names$collection_name == collection)
   if(!length(wch)) return(collection)
-  fwatlasbc::fwa_collection_names$Collection[wch]
+  fwatlasbc::fwa_collection_names$collection[wch]
 }
 
 add_collection_to_watershed <- function(x, collection, filter, limit, offset,

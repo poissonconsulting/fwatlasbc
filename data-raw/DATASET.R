@@ -3,9 +3,9 @@ library(readr)
 
 fwa_collection_names <- read_csv("data-raw/fwa-collection-names.csv")
 
-fwa_collection_names <- arrange(fwa_collection_names, CollectionName)
+fwa_collection_names <- arrange(fwa_collection_names, collection_name)
 
-chk::check_key(fwa_collection_names, "CollectionName")
+chk::check_key(fwa_collection_names, "collection_name")
 
 usethis::use_data(fwa_collection_names, overwrite = TRUE)
 

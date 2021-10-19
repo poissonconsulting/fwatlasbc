@@ -1,4 +1,4 @@
-﻿CollectionName,Collection
+collection_name,collection
 stream_network,whse_basemapping.fwa_stream_networks_sp
 lakes,whse_basemapping.fwa_lakes_poly
 transport_lines,whse_basemapping.transport_line
