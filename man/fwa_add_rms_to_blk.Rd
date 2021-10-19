@@ -24,11 +24,11 @@ fwa_add_rms_to_blk(
 \item{epsg}{A positive whole number of EPSG projection for the coordinates.}
 }
 \value{
-An sf tibble with the columns of x plus integer column RM
+An sf tibble with the columns of x plus integer column rm
 and sf column geometry.
 }
 \description{
-Adds distances (RM) and spatial coordinates (geometry) of
+Adds distances (rm) and spatial coordinates (geometry) of
 regularly spaced points along blue line key (BLK).
 All distances which are in meters are from the river mouth.
 }

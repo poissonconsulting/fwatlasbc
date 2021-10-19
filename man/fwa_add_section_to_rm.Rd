@@ -7,9 +7,9 @@
 fwa_add_section_to_rm(x, y, section = "Section")
 }
 \arguments{
-\item{x}{A data frame with integer columns BLK and RM.}
+\item{x}{A data frame with integer columns BLK and rm.}
 
-\item{y}{A data frame with integer columns BLK and RM and column specified in section.}
+\item{y}{A data frame with integer columns BLK and rm and column specified in section.}
 
 \item{section}{A string of the name of the column in y (can include missing values).}
 }
@@ -17,7 +17,7 @@ fwa_add_section_to_rm(x, y, section = "Section")
 A tibble of x with section column from y.
 }
 \description{
-Adds section column in y to x based on BLK and end RM in y.
-All RMs in x up to and including the end RM but before the previous end
-RM are assigned the section column value (which can be missing).
+Adds section column in y to x based on BLK and end rm in y.
+All rms in x up to and including the end rm but before the previous end
+rm are assigned the section column value (which can be missing).
 }

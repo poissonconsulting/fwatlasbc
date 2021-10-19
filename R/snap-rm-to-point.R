@@ -2,9 +2,9 @@ nearest_rm <- function(x, rm) {
   index <- sf::st_nearest_feature(x, rm)
   rm <- rm[index,]
   x$..fwa_BLK <- rm$BLK
-  x$RM <- rm$RM
-  x$DistanceToRM <- sf::st_distance(x, rm, by_element = TRUE)
-  x$DistanceToRM <- as.numeric(x$DistanceToRM)
+  x$rm <- rm$rm
+  x$DistanceTorm <- sf::st_distance(x, rm, by_element = TRUE)
+  x$DistanceTorm <- as.numeric(x$DistanceTorm)
   x
 }
 
@@ -19,11 +19,11 @@ snap_rm_to_point <- function(x, rm) {
 #'
 #' Assigns closest river meter to each spatial point.
 #' If the blue line key (BLK) is missing then it is also assigned
-#' together with the distance to the river meter (DistanceToRM) in m.
+#' together with the distance to the river meter (DistanceTorm) in m.
 #'
 #' @param x An sf object of spatial points with optional integer column BLK.
-#' @param rm An sf object of spatial point with BLK and RM columns.
-#' @return An updated version of x with integer columns BLK and RM and numeric column Distance.
+#' @param rm An sf object of spatial point with BLK and rm columns.
+#' @return An updated version of x with integer columns BLK and rm and numeric column Distance.
 #' @family rm
 #' @export
 #' @examples
@@ -41,23 +41,23 @@ fwa_snap_rm_to_point <- function(x, rm) {
   chk_gt(x$BLK)
   chk_not_subset(colnames(x), c("..fwa_id", "..fwa_BLK"))
 
-  check_names(rm, c("BLK", "RM"))
+  check_names(rm, c("BLK", "rm"))
 
   chk_whole_numeric(rm$BLK)
   chk_not_any_na(rm$BLK)
   chk_gt(rm$BLK)
-  chk_whole_numeric(rm$RM)
-  chk_not_any_na(rm$RM)
-  chk_gte(rm$RM)
+  chk_whole_numeric(rm$rm)
+  chk_not_any_na(rm$rm)
+  chk_gte(rm$rm)
 
   if(!nrow(x)) {
-    x$RM <- integer(0)
-    x$DistanceToRM <- numeric(0)
+    x$rm <- integer(0)
+    x$DistanceTorm <- numeric(0)
     return(x)
   }
   if(!nrow(rm)) {
-    x$RM <- NA_integer_
-    x$DistanceToRM <- NA_real_
+    x$rm <- NA_integer_
+    x$DistanceTorm <- NA_real_
     return(x)
   }
 
@@ -68,6 +68,6 @@ fwa_snap_rm_to_point <- function(x, rm) {
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::mutate(BLK = .data$..fwa_BLK) |>
-    dplyr::relocate(.data$DistanceToRM, .after = "RM") |>
+    dplyr::relocate(.data$DistanceTorm, .after = "rm") |>
     dplyr::select(-.data$..fwa_id, -.data$..fwa_BLK)
 }

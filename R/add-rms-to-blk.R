@@ -12,11 +12,11 @@ add_rms_to_blk <- function(x, epsg) {
                                   start_measure = start,
                                   end_measure = end,
                                   epsg = epsg) |>
-    dplyr::mutate(RM = .data$index * interval + start,
-                  RM = as.integer(.data$RM),
+    dplyr::mutate(rm = .data$index * interval + start,
+                  rm = as.integer(.data$rm),
                   Elevation = unname(sf::st_coordinates(.data$geometry)[,"Z"])) |>
     sf::st_zm(x) |>
-    dplyr::select(.data$RM, .data$Elevation, .data$geometry)
+    dplyr::select(.data$rm, .data$Elevation, .data$geometry)
 
   if(!is.null(end)) {
     lim <- floor((end - start) / interval)
@@ -31,7 +31,7 @@ add_rms_to_blk <- function(x, epsg) {
 
 #' Add River Meters to Blue Line Key
 #'
-#' Adds distances (RM) and spatial coordinates (geometry) of
+#' Adds distances (rm) and spatial coordinates (geometry) of
 #' regularly spaced points along blue line key (BLK).
 #' All distances which are in meters are from the river mouth.
 #'
@@ -40,7 +40,7 @@ add_rms_to_blk <- function(x, epsg) {
 #' @param start A whole numeric of the start distance.
 #' @param end An integer of the end distance.
 #' @param epsg A positive whole number of EPSG projection for the coordinates.
-#' @return An sf tibble with the columns of x plus integer column RM
+#' @return An sf tibble with the columns of x plus integer column rm
 #' and sf column geometry.
 #' @family rm
 #' @export
@@ -54,7 +54,7 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
   chk_not_any_na(x$BLK)
   chk_gt(x$BLK)
   chk_unique(x$BLK)
-  chk_not_subset(colnames(x), c("RM", "Elevation", "geometry"))
+  chk_not_subset(colnames(x), c("rm", "Elevation", "geometry"))
   chk_not_subset(colnames(x), c("..fwa_interval", "..fwa_start",
                                 "..fwa_end", "..fwa_id"))
 
@@ -76,7 +76,7 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
     dplyr::group_split(.data$BLK) |>
     lapply(add_rms_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
-    dplyr::arrange(.data$..fwa_id, .data$RM) |>
+    dplyr::arrange(.data$..fwa_id, .data$rm) |>
     dplyr::select(-.data$..fwa_interval,
                   -.data$..fwa_start,
                   -.data$..fwa_end,
