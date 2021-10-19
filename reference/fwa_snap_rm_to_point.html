@@ -50,11 +50,12 @@ If the blue line key (blk) is missing then it is also assigned
 together with the distance to the river meter (distance_to_rm) in m.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_snap_rm_to_point</span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span><span class="op">)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/fwa_snap_rm_to_point.html">fwa_snap_rm_to_point</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span><span class="op">)</span></code></pre></div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
+    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
       <td><p>An sf object of spatial points with optional integer column blk.</p></td>
     </tr><tr><th>rm</th>
       <td><p>An sf object of spatial point with blk and rm columns.</p></td>
@@ -72,10 +73,11 @@ together with the distance to the river meter (distance_to_rm) in m.</p>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">rm</span> <span class="op">&lt;-</span> <span class="fu">fwa_rm</span><span class="op">(</span>blue_line_key <span class="op">=</span> <span class="fl">356308001</span>, interval <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">fwa_snap_rm_to_point</span><span class="op">(</span><span class="va">rm</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>,<span class="op">]</span>, <span class="va">rm</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
+<span class="va">rm</span> <span class="op">&lt;-</span> <span class="fu">fwa_rm</span><span class="op">(</span>blue_line_key <span class="op">=</span> <span class="fl">356308001</span>, interval <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>
+<span class="fu"><a href="../reference/fwa_snap_rm_to_point.html">fwa_snap_rm_to_point</a></span><span class="op">(</span><span class="va">rm</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>,<span class="op">]</span>, <span class="va">rm</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span><span class="op">)</span>
+<span class="op">}</span>
 </code></pre></div>
     </div>
   </div>

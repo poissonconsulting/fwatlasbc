@@ -31,6 +31,9 @@
     <loc>/reference/fwa_add_section_to_rm.html</loc>
   </url>
   <url>
+    <loc>/reference/fwa_add_stream_names_to_blk.html</loc>
+  </url>
+  <url>
     <loc>/reference/fwa_add_watershed_to_blk.html</loc>
   </url>
   <url>
@@ -41,6 +44,9 @@
   </url>
   <url>
     <loc>/reference/fwa_snap_rm_to_point.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fwa_stream_name.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
