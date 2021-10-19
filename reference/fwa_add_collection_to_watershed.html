@@ -59,8 +59,7 @@ by the geometry column of the collection.</p>
   offset <span class="op">=</span> <span class="fl">0</span>,
   properties <span class="op">=</span> <span class="cn">NULL</span>,
   transform <span class="op">=</span> <span class="cn">NULL</span>,
-  epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>,
-  camel_case <span class="op">=</span> <span class="cn">TRUE</span>
+  epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 
     <div id="arguments">
@@ -87,19 +86,11 @@ value, e.g. <code>list(gnis_name = "Sangan River")</code>.</p></td>
       <td><p>A character vector with the name of the <a href="https://github.com/CrunchyData/pg_featureserv/blob/master/config/pg_featureserv.toml.example#L29"><em>valid transform</em></a> function followed by the parameter values (e.g. c("ST_Simplify", 100))</p></td>
     </tr><tr><th>epsg</th>
       <td><p>A positive whole number of the epsg to transform features to.</p></td>
-    </tr><tr><th>camel_case</th>
-      <td><p>A flag specifying whether to rename collection column names
-to upper camel case.</p></td>
     </tr></table></div>
 
     <div id="value">
     <h2>Value</h2>
     <p>An sf object</p>
-    </div>
-    <div id="details">
-    <h2>Details</h2>
-    <p>The collection column names are renamed to upper camel case.
-T</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
