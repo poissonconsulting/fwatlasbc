@@ -19,88 +19,28 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/fwa_add_blk_to_stream_name.html</loc>
+    <loc>/reference/fwa_add_blks_to_stream_name.html</loc>
   </url>
   <url>
-    <loc>/reference/fwa_add_columns_to_rkm.html</loc>
+    <loc>/reference/fwa_add_collection_to_watershed.html</loc>
   </url>
   <url>
-    <loc>/reference/fwa_add_end_id_to_rkm.html</loc>
+    <loc>/reference/fwa_add_rms_to_blk.html</loc>
   </url>
   <url>
-    <loc>/reference/fwa_add_end_id_to_rm.html</loc>
+    <loc>/reference/fwa_add_section_to_rm.html</loc>
   </url>
   <url>
-    <loc>/reference/fwa_add_nearest_id_to_rkm.html</loc>
+    <loc>/reference/fwa_add_watershed_to_blk.html</loc>
   </url>
   <url>
-    <loc>/reference/fwa_add_nearest_id_to_rm.html</loc>
+    <loc>/reference/fwa_collection_names.html</loc>
   </url>
   <url>
-    <loc>/reference/fwa_blue_line_key_to_watershed.html</loc>
+    <loc>/reference/fwa_find_stream_names.html</loc>
   </url>
   <url>
-    <loc>/reference/fwa_get.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_cultural_lines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_cultural_points.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_lakes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_manmade_waterbodies.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_named_streams.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_obstructions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_railway_tracks.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_rivers.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_stream_network.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_transmission_lines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_transport_lines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_get_wetlands.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_nearest_rkm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_nearest_rm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_point_to_watershed.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_rkm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_rm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_search_streams.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_streams_to_blue_line_keys.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fwa_xy_to_watershed.html</loc>
+    <loc>/reference/fwa_snap_rm_to_point.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
