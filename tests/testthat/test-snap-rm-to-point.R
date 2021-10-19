@@ -5,10 +5,10 @@ test_that("fwa_snap_rm_to_point works", {
   rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "rm", "DistanceTorm", "Elevation", "geometry"))
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "Elevation", "geometry"))
   expect_equal(x$blk, rep(356308001, 5))
   expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
-  expect_equal(x$DistanceTorm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
+  expect_equal(x$distance_to_rm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
                              514.952511361304))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
@@ -20,10 +20,10 @@ test_that("fwa_snap_rm_to_point works one row", {
   rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "rm", "DistanceTorm", "Elevation", "geometry"))
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "Elevation", "geometry"))
   expect_equal(x$blk, 356308001)
   expect_equal(x$rm, 4000)
-  expect_equal(x$DistanceTorm, 754.230245890789)
+  expect_equal(x$distance_to_rm, 754.230245890789)
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -36,10 +36,10 @@ test_that("fwa_snap_rm_to_point works", {
   x$blk[1:2] <- NA_integer_
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "rm", "DistanceTorm", "Elevation", "geometry"))
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "Elevation", "geometry"))
   expect_equal(x$blk, c(356308001, 2, rep(356308001, 3)))
   expect_equal(x$rm, c(1000, 3000, 4000, 4000, 9000))
-  expect_equal(x$DistanceTorm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
+  expect_equal(x$distance_to_rm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
                              645.410842257104))
   expect_s3_class(x$geometry, "sfc_POINT")
 })

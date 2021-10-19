@@ -12,12 +12,12 @@ fwa_snap_rm_to_point(x, rm)
 \item{rm}{An sf object of spatial point with blk and rm columns.}
 }
 \value{
-An updated version of x with integer columns blk and rm and numeric column Distance.
+An updated version of x with integer columns blk and rm and numeric column distance_to_rm.
 }
 \description{
 Assigns closest river meter to each spatial point.
 If the blue line key (blk) is missing then it is also assigned
-together with the distance to the river meter (DistanceTorm) in m.
+together with the distance to the river meter (distance_to_rm) in m.
 }
 \examples{
 \dontrun{
