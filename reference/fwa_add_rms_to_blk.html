@@ -50,8 +50,7 @@ regularly spaced points along blue line key (blk).
 All distances which are in meters are from the river mouth.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fwa_add_rms_to_blk.html">fwa_add_rms_to_blk</a></span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_add_rms_to_blk</span><span class="op">(</span>
   <span class="va">x</span>,
   interval <span class="op">=</span> <span class="fl">1000</span>,
   start <span class="op">=</span> <span class="fl">0</span>,
@@ -61,7 +60,7 @@ All distances which are in meters are from the river mouth.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
+    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
       <td><p>A data frame with integer column blk.</p></td>
     </tr><tr><th>interval</th>
       <td><p>A whole numeric of the distance between points.</p></td>
@@ -73,6 +72,7 @@ All distances which are in meters are from the river mouth.</p>
       <td><p>A positive whole number of EPSG projection for the coordinates.</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>An sf tibble with the columns of x plus integer column rm
@@ -81,41 +81,42 @@ and sf column geometry.</p>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other rm: 
+<code><a href="fwa_add_rm_to_lon_lat.html">fwa_add_rm_to_lon_lat</a>()</code>,
 <code><a href="fwa_snap_rm_to_point.html">fwa_snap_rm_to_point</a>()</code></p></div>
+    </div>
     </div>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fwa_add_rms_to_blk.html">fwa_add_rms_to_blk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>blk <span class="op">=</span> <span class="fl">356308001</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Simple feature collection with 20 features and 3 fields</span>
-<span class="co">#&gt; Geometry type: POINT</span>
-<span class="co">#&gt; Dimension:     XY</span>
-<span class="co">#&gt; Bounding box:  xmin: 1290725 ymin: 464161.2 xmax: 1301656 ymax: 469483.5</span>
-<span class="co">#&gt; Projected CRS: NAD83 / BC Albers</span>
-<span class="co">#&gt; # A tibble: 20 × 4</span>
-<span class="co">#&gt;          blk    rm elevation           geometry</span>
-<span class="co">#&gt;        &lt;dbl&gt; &lt;int&gt;     &lt;dbl&gt;        &lt;POINT [m]&gt;</span>
-<span class="co">#&gt;  1 356308001     0      9.63 (1290725 469483.5)</span>
-<span class="co">#&gt;  2 356308001  1000     10.1  (1291542 469173.9)</span>
-<span class="co">#&gt;  3 356308001  2000      7.5  (1292439 468922.9)</span>
-<span class="co">#&gt;  4 356308001  3000      9.69 (1292909 468665.1)</span>
-<span class="co">#&gt;  5 356308001  4000      9.78 (1293268 467977.4)</span>
-<span class="co">#&gt;  6 356308001  5000      9.78 (1293158 467231.2)</span>
-<span class="co">#&gt;  7 356308001  6000      9.78 (1293794 467668.3)</span>
-<span class="co">#&gt;  8 356308001  7000      9.78 (1294079 467938.4)</span>
-<span class="co">#&gt;  9 356308001  8000     10    (1294497 468239.5)</span>
-<span class="co">#&gt; 10 356308001  9000     10.5  (1294708 468081.9)</span>
-<span class="co">#&gt; 11 356308001 10000     10.5  (1295576 467912.1)</span>
-<span class="co">#&gt; 12 356308001 11000     10.5  (1296011 467111.8)</span>
-<span class="co">#&gt; 13 356308001 12000     10.5  (1296414 466358.5)</span>
-<span class="co">#&gt; 14 356308001 13000     10.5  (1297305 465976.3)</span>
-<span class="co">#&gt; 15 356308001 14000     10.5  (1298145 465435.2)</span>
-<span class="co">#&gt; 16 356308001 15000     10.5  (1298990 464903.5)</span>
-<span class="co">#&gt; 17 356308001 16000     11.5  (1299886 465109.3)</span>
-<span class="co">#&gt; 18 356308001 17000     48.0  (1300649 465508.7)</span>
-<span class="co">#&gt; 19 356308001 18000    161.   (1301136 464758.4)</span>
-<span class="co">#&gt; 20 356308001 19000    210.   (1301656 464161.2)</span>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">fwa_add_rms_to_blk</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>blk <span class="op">=</span> <span class="fl">356308001</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 20 features and 3 fields</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POINT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 1290725 ymin: 464161.2 xmax: 1301656 ymax: 469483.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Projected CRS: NAD83 / BC Albers</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          blk    rm elevation           geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;POINT [m]&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 356<span style="text-decoration: underline;">308</span>001     0      9.63 (1290725 469483.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">1</span>000     10.1  (1291542 469173.9)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">2</span>000      7.5  (1292439 468922.9)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">3</span>000      9.69 (1292909 468665.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">4</span>000      9.78 (1293268 467977.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">5</span>000      9.78 (1293158 467231.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">6</span>000      9.78 (1293794 467668.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">7</span>000      9.78 (1294079 467938.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">8</span>000     10    (1294497 468239.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">9</span>000     10.5  (1294708 468081.9)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">10</span>000     10.5  (1295576 467912.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">11</span>000     10.5  (1296011 467111.8)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">12</span>000     10.5  (1296414 466358.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">13</span>000     10.5  (1297305 465976.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">14</span>000     10.5  (1298145 465435.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">15</span>000     10.5  (1298990 464903.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">16</span>000     11.5  (1299886 465109.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">17</span>000     48.0  (1300649 465508.7)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">18</span>000    161.   (1301136 464758.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">19</span>000    210.   (1301656 464161.2)</span>
 </code></pre></div>
     </div>
   </div>

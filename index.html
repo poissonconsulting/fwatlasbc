@@ -89,7 +89,7 @@
 <span class="va">streams</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_find_stream_names.html">fwa_find_stream_names</a></span><span class="op">(</span><span class="st">"steep c"</span><span class="op">)</span>
 <span class="va">streams</span>
 <span class="co">#&gt; # A tibble: 2 × 1</span>
-<span class="co">#&gt;   StreamName        </span>
+<span class="co">#&gt;   stream_name       </span>
 <span class="co">#&gt;   &lt;chr&gt;             </span>
 <span class="co">#&gt; 1 Steep Canyon Creek</span>
 <span class="co">#&gt; 2 Steep Creek</span></code></pre></div>
@@ -98,39 +98,50 @@
 <code class="sourceCode R"><span class="va">streams</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_blks_to_stream_name.html">fwa_add_blks_to_stream_name</a></span><span class="op">(</span><span class="va">streams</span><span class="op">)</span>
 <span class="va">streams</span>
 <span class="co">#&gt; # A tibble: 4 × 2</span>
-<span class="co">#&gt;   StreamName               BLK</span>
+<span class="co">#&gt;   stream_name              blk</span>
 <span class="co">#&gt;   &lt;chr&gt;                  &lt;int&gt;</span>
 <span class="co">#&gt; 1 Steep Canyon Creek 360883036</span>
 <span class="co">#&gt; 2 Steep Creek        356362258</span>
 <span class="co">#&gt; 3 Steep Creek        356534225</span>
 <span class="co">#&gt; 4 Steep Creek        356570155</span>
-<span class="va">streams</span> <span class="op">&lt;-</span> <span class="va">streams</span><span class="op">[</span><span class="va">streams</span><span class="op">$</span><span class="va">BLK</span> <span class="op">==</span> <span class="fl">356534225</span>,<span class="op">]</span></code></pre></div>
+<span class="va">streams</span> <span class="op">&lt;-</span> <span class="va">streams</span><span class="op">[</span><span class="va">streams</span><span class="op">$</span><span class="va">blk</span> <span class="op">==</span> <span class="fl">356534225</span>,<span class="op">]</span></code></pre></div>
 <p>Get river meters (every 100 m).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_rms_to_blk.html">fwa_add_rms_to_blk</a></span><span class="op">(</span><span class="va">streams</span>, interval <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 <span class="va">rm</span>
-<span class="co">#&gt; Simple feature collection with 46 features and 3 fields</span>
+<span class="co">#&gt; Simple feature collection with 46 features and 4 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
-<span class="co">#&gt; Dimension:     XYZ</span>
+<span class="co">#&gt; Dimension:     XY</span>
 <span class="co">#&gt; Bounding box:  xmin: 1657747 ymin: 728476.5 xmax: 1661313 ymax: 730795.9</span>
-<span class="co">#&gt; z_range:       zmin: 1087 zmax: 2524.455</span>
 <span class="co">#&gt; Projected CRS: NAD83 / BC Albers</span>
-<span class="co">#&gt; # A tibble: 46 × 4</span>
-<span class="co">#&gt;    StreamName        BLK    RM                      geometry</span>
-<span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt; &lt;int&gt;                   &lt;POINT [m]&gt;</span>
-<span class="co">#&gt;  1 Steep Creek 356534225     0     Z (1657747 728476.5 1087)</span>
-<span class="co">#&gt;  2 Steep Creek 356534225   100 Z (1657839 728506.7 1094.162)</span>
-<span class="co">#&gt;  3 Steep Creek 356534225   200 Z (1657911 728572.2 1101.743)</span>
-<span class="co">#&gt;  4 Steep Creek 356534225   300 Z (1657989 728633.1 1111.435)</span>
-<span class="co">#&gt;  5 Steep Creek 356534225   400   Z (1658070 728691 1123.997)</span>
-<span class="co">#&gt;  6 Steep Creek 356534225   500  Z (1658141 728754.7 1132.81)</span>
-<span class="co">#&gt;  7 Steep Creek 356534225   600 Z (1658233 728792.8 1144.575)</span>
-<span class="co">#&gt;  8 Steep Creek 356534225   700 Z (1658324 728830.6 1153.982)</span>
-<span class="co">#&gt;  9 Steep Creek 356534225   800 Z (1658395 728897.5 1168.074)</span>
-<span class="co">#&gt; 10 Steep Creek 356534225   900 Z (1658470 728960.1 1180.635)</span>
+<span class="co">#&gt; # A tibble: 46 × 5</span>
+<span class="co">#&gt;    stream_name       blk    rm elevation           geometry</span>
+<span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt; &lt;int&gt;     &lt;dbl&gt;        &lt;POINT [m]&gt;</span>
+<span class="co">#&gt;  1 Steep Creek 356534225     0     1087  (1657747 728476.5)</span>
+<span class="co">#&gt;  2 Steep Creek 356534225   100     1094. (1657839 728506.7)</span>
+<span class="co">#&gt;  3 Steep Creek 356534225   200     1102. (1657911 728572.2)</span>
+<span class="co">#&gt;  4 Steep Creek 356534225   300     1111. (1657989 728633.1)</span>
+<span class="co">#&gt;  5 Steep Creek 356534225   400     1124.   (1658070 728691)</span>
+<span class="co">#&gt;  6 Steep Creek 356534225   500     1133. (1658141 728754.7)</span>
+<span class="co">#&gt;  7 Steep Creek 356534225   600     1145. (1658233 728792.8)</span>
+<span class="co">#&gt;  8 Steep Creek 356534225   700     1154. (1658324 728830.6)</span>
+<span class="co">#&gt;  9 Steep Creek 356534225   800     1168. (1658395 728897.5)</span>
+<span class="co">#&gt; 10 Steep Creek 356534225   900     1181. (1658470 728960.1)</span>
 <span class="co">#&gt; # … with 36 more rows</span></code></pre></div>
-<p>Get watershed.</p>
+<p>Or get a blue line key and river meter from longitude and latitude.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/fwa_add_rm_to_lon_lat.html">fwa_add_rm_to_lon_lat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="op">-</span><span class="fl">132.26</span>, lat <span class="op">=</span> <span class="fl">53.36</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Simple feature collection with 1 feature and 5 fields</span>
+<span class="co">#&gt; Geometry type: POINT</span>
+<span class="co">#&gt; Dimension:     XY</span>
+<span class="co">#&gt; Bounding box:  xmin: 585153.6 ymin: 946162.9 xmax: 585153.6 ymax: 946162.9</span>
+<span class="co">#&gt; Projected CRS: NAD83 / BC Albers</span>
+<span class="co">#&gt; # A tibble: 1 × 6</span>
+<span class="co">#&gt;     lon   lat       blk    rm distance_to_lon_lat            geometry</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt; &lt;dbl&gt;               &lt;dbl&gt;         &lt;POINT [m]&gt;</span>
+<span class="co">#&gt; 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)</span></code></pre></div>
+<p>Get watershed.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">wshed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_watershed_to_blk.html">fwa_add_watershed_to_blk</a></span><span class="op">(</span><span class="va">streams</span><span class="op">)</span>
 <span class="va">wshed</span>
 <span class="co">#&gt; Simple feature collection with 1 feature and 2 fields</span>
@@ -139,15 +150,15 @@
 <span class="co">#&gt; Bounding box:  xmin: 1656218 ymin: 725423.1 xmax: 1661726 ymax: 732146.2</span>
 <span class="co">#&gt; Projected CRS: NAD83 / BC Albers</span>
 <span class="co">#&gt; # A tibble: 1 × 3</span>
-<span class="co">#&gt;   StreamName        BLK                                                 geometry</span>
+<span class="co">#&gt;   stream_name       blk                                                 geometry</span>
 <span class="co">#&gt;   &lt;chr&gt;           &lt;int&gt;                                            &lt;POLYGON [m]&gt;</span>
 <span class="co">#&gt; 1 Steep Creek 356534225 ((1658037 728924.8, 1658107 728964.9, 1658107 728964.9,…</span></code></pre></div>
 <p>Plot watershed and river meters.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">wshed</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">rm</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="inspiration">Inspiration<a class="anchor" aria-label="anchor" href="#inspiration"></a>

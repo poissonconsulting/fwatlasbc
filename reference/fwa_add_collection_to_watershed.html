@@ -50,8 +50,7 @@ If the active sfc polygon column is called geometry it is replaced
 by the geometry column of the collection.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fwa_add_collection_to_watershed.html">fwa_add_collection_to_watershed</a></span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_add_collection_to_watershed</span><span class="op">(</span>
   <span class="va">x</span>,
   collection <span class="op">=</span> <span class="st">"stream_network"</span>,
   intersect <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -65,7 +64,7 @@ by the geometry column of the collection.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
+    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
       <td><p>A sf object with an active sfc polygon column.</p></td>
     </tr><tr><th>collection</th>
       <td><p>A character string of the collection.</p></td>
@@ -89,6 +88,7 @@ value, e.g. <code>list(gnis_name = "Sangan River")</code>.</p></td>
       <td><p>A positive whole number of the epsg to transform features to.</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>An sf object</p>
@@ -97,14 +97,14 @@ value, e.g. <code>list(gnis_name = "Sangan River")</code>.</p></td>
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/pkg/fwapgr/man/fwa_query_collection.html" class="external-link">fwa_collection</a></code>.</p></div>
     </div>
+    </div>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-<span class="va">watershed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fwa_add_watershed_to_blk.html">fwa_add_watershed_to_blk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>blk <span class="op">=</span> <span class="fl">356308001</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/fwa_add_collection_to_watershed.html">fwa_add_collection_to_watershed</a></span><span class="op">(</span><span class="va">watershed</span><span class="op">)</span>
-<span class="op">}</span>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="va">watershed</span> <span class="op">&lt;-</span> <span class="fu"><a href="fwa_add_watershed_to_blk.html">fwa_add_watershed_to_blk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>blk <span class="op">=</span> <span class="fl">356308001</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">fwa_add_collection_to_watershed</span><span class="op">(</span><span class="va">watershed</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>

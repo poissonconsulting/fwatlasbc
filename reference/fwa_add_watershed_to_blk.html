@@ -48,8 +48,7 @@ The rm distances which is in meters is from the river mouth."><meta property="og
 The rm distances which is in meters is from the river mouth.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fwa_add_watershed_to_blk.html">fwa_add_watershed_to_blk</a></span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_add_watershed_to_blk</span><span class="op">(</span>
   <span class="va">x</span>,
   rm <span class="op">=</span> <span class="fl">0</span>,
   exclude <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -58,7 +57,7 @@ The rm distances which is in meters is from the river mouth.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="table ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
+    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
       <td><p>An sf object with a polygon sfc column specifying watersheds.</p></td>
     </tr><tr><th>rm</th>
       <td><p>A positive whole numeric of the distance in meters upstream
@@ -70,6 +69,7 @@ fundamental watershed in which the start falls.</p></td>
       <td><p>A positive whole number of the epsg to transform features to.</p></td>
     </tr></table></div>
 
+    <div id="ref-sections">
     <div id="value">
     <h2>Value</h2>
     <p>An sf tibble with the columns of x plus
@@ -80,13 +80,13 @@ sf column geometry.</p>
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/pkg/fwapgr/man/fwa_watershed_at_measure.html" class="external-link">fwa_watershed_at_measure</a></code>.</p></div>
     </div>
+    </div>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-<span class="fu"><a href="../reference/fwa_add_watershed_to_blk.html">fwa_add_watershed_to_blk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>blk <span class="op">=</span> <span class="fl">356308001</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="fu">fwa_add_watershed_to_blk</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>blk <span class="op">=</span> <span class="fl">356308001</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
