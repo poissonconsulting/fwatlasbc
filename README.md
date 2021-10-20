@@ -41,7 +41,7 @@ library(fwatlasbc)
 streams <- fwa_find_stream_names("steep c")
 streams
 #> # A tibble: 2 × 1
-#>   StreamName        
+#>   stream_name       
 #>   <chr>             
 #> 1 Steep Canyon Creek
 #> 2 Steep Creek
@@ -53,13 +53,13 @@ Add blue line keys to stream names.
 streams <- fwa_add_blks_to_stream_name(streams)
 streams
 #> # A tibble: 4 × 2
-#>   StreamName               BLK
+#>   stream_name              blk
 #>   <chr>                  <int>
 #> 1 Steep Canyon Creek 360883036
 #> 2 Steep Creek        356362258
 #> 3 Steep Creek        356534225
 #> 4 Steep Creek        356570155
-streams <- streams[streams$BLK == 356534225,]
+streams <- streams[streams$blk == 356534225,]
 ```
 
 Get river meters (every 100 m).
@@ -67,26 +67,40 @@ Get river meters (every 100 m).
 ``` r
 rm <- fwa_add_rms_to_blk(streams, interval = 100)
 rm
-#> Simple feature collection with 46 features and 3 fields
+#> Simple feature collection with 46 features and 4 fields
 #> Geometry type: POINT
-#> Dimension:     XYZ
+#> Dimension:     XY
 #> Bounding box:  xmin: 1657747 ymin: 728476.5 xmax: 1661313 ymax: 730795.9
-#> z_range:       zmin: 1087 zmax: 2524.455
 #> Projected CRS: NAD83 / BC Albers
-#> # A tibble: 46 × 4
-#>    StreamName        BLK    RM                      geometry
-#>    <chr>           <int> <int>                   <POINT [m]>
-#>  1 Steep Creek 356534225     0     Z (1657747 728476.5 1087)
-#>  2 Steep Creek 356534225   100 Z (1657839 728506.7 1094.162)
-#>  3 Steep Creek 356534225   200 Z (1657911 728572.2 1101.743)
-#>  4 Steep Creek 356534225   300 Z (1657989 728633.1 1111.435)
-#>  5 Steep Creek 356534225   400   Z (1658070 728691 1123.997)
-#>  6 Steep Creek 356534225   500  Z (1658141 728754.7 1132.81)
-#>  7 Steep Creek 356534225   600 Z (1658233 728792.8 1144.575)
-#>  8 Steep Creek 356534225   700 Z (1658324 728830.6 1153.982)
-#>  9 Steep Creek 356534225   800 Z (1658395 728897.5 1168.074)
-#> 10 Steep Creek 356534225   900 Z (1658470 728960.1 1180.635)
+#> # A tibble: 46 × 5
+#>    stream_name       blk    rm elevation           geometry
+#>    <chr>           <int> <int>     <dbl>        <POINT [m]>
+#>  1 Steep Creek 356534225     0     1087  (1657747 728476.5)
+#>  2 Steep Creek 356534225   100     1094. (1657839 728506.7)
+#>  3 Steep Creek 356534225   200     1102. (1657911 728572.2)
+#>  4 Steep Creek 356534225   300     1111. (1657989 728633.1)
+#>  5 Steep Creek 356534225   400     1124.   (1658070 728691)
+#>  6 Steep Creek 356534225   500     1133. (1658141 728754.7)
+#>  7 Steep Creek 356534225   600     1145. (1658233 728792.8)
+#>  8 Steep Creek 356534225   700     1154. (1658324 728830.6)
+#>  9 Steep Creek 356534225   800     1168. (1658395 728897.5)
+#> 10 Steep Creek 356534225   900     1181. (1658470 728960.1)
 #> # … with 36 more rows
+```
+
+Or get a blue line key and river meter from longitude and latitude.
+
+``` r
+fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
+#> Simple feature collection with 1 feature and 5 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: 585153.6 ymin: 946162.9 xmax: 585153.6 ymax: 946162.9
+#> Projected CRS: NAD83 / BC Albers
+#> # A tibble: 1 × 6
+#>     lon   lat       blk    rm distance_to_lon_lat            geometry
+#>   <dbl> <dbl>     <int> <dbl>               <dbl>         <POINT [m]>
+#> 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)
 ```
 
 Get watershed.
@@ -100,7 +114,7 @@ wshed
 #> Bounding box:  xmin: 1656218 ymin: 725423.1 xmax: 1661726 ymax: 732146.2
 #> Projected CRS: NAD83 / BC Albers
 #> # A tibble: 1 × 3
-#>   StreamName        BLK                                                 geometry
+#>   stream_name       blk                                                 geometry
 #>   <chr>           <int>                                            <POLYGON [m]>
 #> 1 Steep Creek 356534225 ((1658037 728924.8, 1658107 728964.9, 1658107 728964.9,…
 ```
@@ -113,7 +127,7 @@ ggplot2::ggplot() +
   ggplot2::geom_sf(data = rm)
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ## Inspiration
 

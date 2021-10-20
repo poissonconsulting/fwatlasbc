@@ -3,7 +3,23 @@ add_rm_to_lon_lat <- function(x, limit, tolerance, epsg) {
 
   rm <- fwapgr::fwa_index_point(x = x$lon, y = x$lat,
                                 limit = limit, tolerance = tolerance,
-                                  epsg = epsg) |>
+                                epsg = epsg)
+  if(!nrow(rm)) {
+    rm <- rm |>
+      dplyr::mutate(blk = integer(0),
+                    rm = numeric(0),
+                    distance_to_lon_lat = numeric(0)) |>
+      dplyr::select(.data$blk, .data$rm, .data$distance_to_lon_lat,
+                    .data$geometry)
+
+    x <- x |>
+      dplyr::bind_cols(rm) |>
+      sf::st_set_geometry("geometry")
+
+    return(x)
+  }
+
+  rm <- rm |>
     dplyr::select(blk = .data$blue_line_key,
                   rm = .data$downstream_route_measure,
                   distance_to_lon_lat = .data$distance_to_stream,
@@ -20,6 +36,8 @@ add_rm_to_lon_lat <- function(x, limit, tolerance, epsg) {
 #' and sfc point (geometry) column
 #' of the closest point on the stream network (within 5 km)
 #' to the point specified by the lon and lat (WGS84).
+#'
+#' If a match isn't found the row is dropped.
 #'
 #' @param x A data frame with numeric longitude (long) and
 #' latitude (lat) columns.

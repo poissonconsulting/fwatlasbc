@@ -31,6 +31,9 @@ and sfc point (geometry) column
 of the closest point on the stream network (within 5 km)
 to the point specified by the lon and lat (WGS84).
 }
+\details{
+If a match isn't found the row is dropped.
+}
 \examples{
 fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 }
