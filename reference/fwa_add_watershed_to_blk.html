@@ -18,7 +18,7 @@ The rm distances which is in meters is from the river mouth."><meta property="og
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fwatlasbc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9002</span>
       </span>
     </div>
 
@@ -50,7 +50,6 @@ The rm distances which is in meters is from the river mouth.</p>
 
     <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_add_watershed_to_blk</span><span class="op">(</span>
   <span class="va">x</span>,
-  rm <span class="op">=</span> <span class="fl">0</span>,
   exclude <span class="op">=</span> <span class="cn">FALSE</span>,
   epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
@@ -58,10 +57,9 @@ The rm distances which is in meters is from the river mouth.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>An sf object with a polygon sfc column specifying watersheds.</p></td>
-    </tr><tr><th>rm</th>
-      <td><p>A positive whole numeric of the distance in meters upstream
-from the river mouth.</p></td>
+      <td><p>An sf object with a polygon sfc column specifying watersheds
+and an optional rm column specfying the river meter.
+The rm is set to be 0 if missing.</p></td>
     </tr><tr><th>exclude</th>
       <td><p>A logical vector specifying whether to exclude the
 fundamental watershed in which the start falls.</p></td>
