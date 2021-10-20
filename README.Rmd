@@ -50,13 +50,18 @@ Add blue line keys to stream names.
 ```{r}
 streams <- fwa_add_blks_to_stream_name(streams)
 streams
-streams <- streams[streams$BLK == 356534225,]
+streams <- streams[streams$blk == 356534225,]
 ```
 
 Get river meters (every 100 m).
 ```{r}
 rm <- fwa_add_rms_to_blk(streams, interval = 100)
 rm
+```
+
+Or get a blue line key and river meter from longitude and latitude.
+```{r}
+fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 ```
 
 Get watershed.

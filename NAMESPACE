@@ -2,6 +2,7 @@
 
 export(fwa_add_blks_to_stream_name)
 export(fwa_add_collection_to_watershed)
+export(fwa_add_rm_to_lon_lat)
 export(fwa_add_rms_to_blk)
 export(fwa_add_section_to_rm)
 export(fwa_add_stream_names_to_blk)

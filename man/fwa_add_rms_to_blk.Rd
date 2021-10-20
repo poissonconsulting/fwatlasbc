@@ -37,6 +37,7 @@ fwa_add_rms_to_blk(data.frame(blk = 356308001))
 }
 \seealso{
 Other rm: 
+\code{\link{fwa_add_rm_to_lon_lat}()},
 \code{\link{fwa_snap_rm_to_point}()}
 }
 \concept{rm}

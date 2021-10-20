@@ -10,7 +10,7 @@ test_that("fwa_add_collection_to_watershed functions work", {
 
   expect_identical(
     colnames(x),
-    c("blk", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
+    c("blk", "rm", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
       "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
       "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
       "linear_feature_id", "local_watershed_code", "localcode_ltree",
@@ -29,7 +29,7 @@ test_that("fwa_add_collection_to_watershed function intersects work", {
   expect_gte(nrow(x), 189L)
   expect_identical(
     colnames(x),
-    c("blk", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
+    c("blk", "rm", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
       "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
       "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
       "linear_feature_id", "local_watershed_code", "localcode_ltree",
@@ -56,7 +56,7 @@ test_that("fwa_add_collection_to_watershed function intersects works with named 
   expect_s3_class(x$geometry, "sfc_MULTILINESTRING")
   expect_identical(
     colnames(x),
-    c("blk", "ExCol", "id", "blue_line_key", "fwa_stream_networks_label_id",
+    c("blk", "ExCol", "rm",  "id", "blue_line_key", "fwa_stream_networks_label_id",
       "gnis_name", "stream_order", "watershed_group_code", "geometry"
     ))
 })
