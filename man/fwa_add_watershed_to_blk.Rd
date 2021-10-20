@@ -6,16 +6,14 @@
 \usage{
 fwa_add_watershed_to_blk(
   x,
-  rm = 0,
   exclude = FALSE,
   epsg = getOption("fwa.epsg", 3005)
 )
 }
 \arguments{
-\item{x}{An sf object with a polygon sfc column specifying watersheds.}
-
-\item{rm}{A positive whole numeric of the distance in meters upstream
-from the river mouth.}
+\item{x}{An sf object with a polygon sfc column specifying watersheds
+and an optional rm column specfying the river meter.
+The rm is set to be 0 if missing.}
 
 \item{exclude}{A logical vector specifying whether to exclude the
 fundamental watershed in which the start falls.}
