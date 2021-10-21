@@ -70,10 +70,17 @@ wshed <- fwa_add_watershed_to_blk(streams)
 wshed
 ```
 
+Get stream network
+```{r}
+stream_network <- fwa_add_collection_to_watershed(wshed, "stream_network")
+stream_network
+```
+
 Plot watershed and river meters.
 ```{r dpi=300, fig.width=7, fig.height=7}
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
+  ggplot2::geom_sf(data = stream_network, color = "blue") +
   ggplot2::geom_sf(data = rm)
 ```
 

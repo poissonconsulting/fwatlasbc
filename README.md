@@ -108,15 +108,47 @@ Get watershed.
 ``` r
 wshed <- fwa_add_watershed_to_blk(streams)
 wshed
-#> Simple feature collection with 1 feature and 2 fields
+#> Simple feature collection with 1 feature and 3 fields
 #> Geometry type: POLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: 1656218 ymin: 725423.1 xmax: 1661726 ymax: 732146.2
 #> Projected CRS: NAD83 / BC Albers
-#> # A tibble: 1 × 3
-#>   stream_name       blk                                                 geometry
-#>   <chr>           <int>                                            <POLYGON [m]>
-#> 1 Steep Creek 356534225 ((1658037 728924.8, 1658107 728964.9, 1658107 728964.9,…
+#> # A tibble: 1 × 4
+#>   stream_name       blk    rm                                           geometry
+#>   <chr>           <int> <dbl>                                      <POLYGON [m]>
+#> 1 Steep Creek 356534225     0 ((1658037 728924.8, 1658107 728964.9, 1658107 728…
+```
+
+Get stream network
+
+``` r
+stream_network <- fwa_add_collection_to_watershed(wshed, "stream_network")
+stream_network
+#> Simple feature collection with 76 features and 31 fields
+#> Geometry type: LINESTRING
+#> Dimension:     XY
+#> Bounding box:  xmin: 1656200 ymin: 725423.1 xmax: 1661368 ymax: 731602.7
+#> Projected CRS: NAD83 / BC Albers
+#> # A tibble: 76 × 32
+#>    stream_name       blk    rm id        blue_line_key blue_line_key_50k
+#>    <chr>           <int> <dbl> <chr>             <int>             <int>
+#>  1 Steep Creek 356534225     0 707009047     356499676                NA
+#>  2 Steep Creek 356534225     0 707009141     356407032                NA
+#>  3 Steep Creek 356534225     0 707009211     356462244                NA
+#>  4 Steep Creek 356534225     0 707009213     356494188                NA
+#>  5 Steep Creek 356534225     0 707009233     356499676                NA
+#>  6 Steep Creek 356534225     0 707009235     356397697                NA
+#>  7 Steep Creek 356534225     0 707009415     356499676                NA
+#>  8 Steep Creek 356534225     0 707009417     356494188                NA
+#>  9 Steep Creek 356534225     0 707009460     356499676                NA
+#> 10 Steep Creek 356534225     0 707009535     356499676                NA
+#> # … with 66 more rows, and 26 more variables: downstream_route_measure <dbl>,
+#> #   edge_type <int>, feature_code <chr>, feature_source <chr>,
+#> #   fwa_watershed_code <chr>, gnis_id <int>, gnis_name <chr>, gradient <dbl>,
+#> #   left_right_tributary <chr>, length_metre <dbl>, linear_feature_id <int>,
+#> #   local_watershed_code <chr>, localcode_ltree <chr>, stream_magnitude <int>,
+#> #   stream_order <int>, upstream_area_ha <chr>, upstream_route_measure <dbl>,
+#> #   waterbody_key <int>, watershed_code_50k <chr>, …
 ```
 
 Plot watershed and river meters.
@@ -124,10 +156,11 @@ Plot watershed and river meters.
 ``` r
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
+  ggplot2::geom_sf(data = stream_network, color = "blue") +
   ggplot2::geom_sf(data = rm)
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
 ## Inspiration
 
