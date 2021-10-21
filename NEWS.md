@@ -1,5 +1,9 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9003
+
+- Added preliminary `fwa_add_stream_network_to_blk()`.
+
 # fwatlasbc 0.0.1.9002
 
 - Added `fwa_add_rm_to_lon_lat()`.
