@@ -1,3 +1,8 @@
+# https://stackoverflow.com/questions/43627679/round-any-equivalent-for-dplyr
+round_any <- function(x, accuracy, f = round) {
+  f(x/ accuracy) * accuracy
+}
+
 is_try_error <- function(x) inherits(x, "try-error")
 
 bbox <- function(x) {
