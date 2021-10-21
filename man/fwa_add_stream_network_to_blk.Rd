@@ -4,12 +4,12 @@
 \alias{fwa_add_stream_network_to_blk}
 \title{Add Stream Network to Blue Line Key}
 \usage{
-fwa_add_stream_network_to_blk(x, rm = 0, epsg = getOption("fwa.epsg", 3005))
+fwa_add_stream_network_to_blk(x, epsg = getOption("fwa.epsg", 3005))
 }
 \arguments{
-\item{x}{A data frame with a whole numeric blue line key (blk) column.}
-
-\item{rm}{A whole numeric vector of the river meter.}
+\item{x}{A data frame with a whole numeric blue line key (blk) column
+and an optional rm column specfying the river meter.
+The rm is set to be 0 if missing.}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
 }

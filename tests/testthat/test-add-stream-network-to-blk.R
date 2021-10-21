@@ -9,7 +9,7 @@ test_that("fwa_add_stream_network_to_blk() works", {
 
   expect_identical(
     colnames(x),
-    c("blk", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
+    c("blk", "rm", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
       "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
       "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
       "linear_feature_id", "local_watershed_code", "localcode_ltree",
@@ -17,5 +17,6 @@ test_that("fwa_add_stream_network_to_blk() works", {
       "waterbody_key", "watershed_code_50k", "watershed_group_code",
       "watershed_group_code_50k", "watershed_group_id", "watershed_key",
       "watershed_key_50k", "wscode_ltree", "geometry"))
+  expect_snapshot_data(x, "fwa_add_stream_network_to_blk")
 })
 
