@@ -47,6 +47,9 @@ Adds collection to a watershed.
 If the active sfc polygon column is called geometry it is replaced
 by the geometry column of the collection.
 }
+\details{
+The collection feature blue line key is called blue_line_key.
+}
 \examples{
 \dontrun{
 watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))

@@ -50,6 +50,8 @@ add_collection_to_watershed <- function(x, collection, filter, limit, offset,
 #' If the active sfc polygon column is called geometry it is replaced
 #' by the geometry column of the collection.
 #'
+#' The collection feature blue line key is called blue_line_key.
+#'
 #' @inheritParams fwapgr::fwa_collection
 #' @param x A sf object with an active sfc polygon column.
 #' @param collection A character string of the collection.
