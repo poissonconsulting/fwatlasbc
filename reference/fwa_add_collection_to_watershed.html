@@ -62,33 +62,25 @@ by the geometry column of the collection.</p>
   epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>A sf object with an active sfc polygon column.</p></td>
-    </tr><tr><th>collection</th>
-      <td><p>A character string of the collection.</p></td>
-    </tr><tr><th>intersect</th>
-      <td><p>A logical vector specifying whether to intersect the
-individual features with the watershed as opposed to just including
-the features that intersect the watershed.</p></td>
-    </tr><tr><th>filter</th>
-      <td><p>A named vector or list of the filter(s) to apply, where the list
-names correspond to column names and the list values correspond to the desired
-value, e.g. <code>list(gnis_name = "Sangan River")</code>.</p></td>
-    </tr><tr><th>limit</th>
-      <td><p>A positive whole number indicating the maximum number of features to return.</p></td>
-    </tr><tr><th>offset</th>
-      <td><p>A positive whole number indicating the offset of start of returned results.</p></td>
-    </tr><tr><th>properties</th>
-      <td><p>A vector of strings of the column names to include. If NULL (default), all columns are retained.</p></td>
-    </tr><tr><th>transform</th>
-      <td><p>A character vector with the name of the <a href="https://github.com/CrunchyData/pg_featureserv/blob/master/config/pg_featureserv.toml.example#L29" class="external-link"><em>valid transform</em></a> function followed by the parameter values (e.g. c("ST_Simplify", 100))</p></td>
-    </tr><tr><th>epsg</th>
-      <td><p>A positive whole number of the epsg to transform features to.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>x</dt><dd><p>A sf object with an active sfc polygon column.</p></dd>
+</dl><dl><dt>collection</dt><dd><p>A character string of the collection.</p></dd>
+</dl><dl><dt>intersect</dt><dd><p>A logical vector specifying whether to intersect the
+individual features with the watershed as opposed to just including
+the features that intersect the watershed.</p></dd>
+</dl><dl><dt>filter</dt><dd><p>A named vector or list of the filter(s) to apply, where the list
+names correspond to column names and the list values correspond to the desired
+value, e.g. <code>list(gnis_name = "Sangan River")</code>.</p></dd>
+</dl><dl><dt>limit</dt><dd><p>A positive whole number indicating the maximum number of features to return.</p></dd>
+</dl><dl><dt>offset</dt><dd><p>A positive whole number indicating the offset of start of returned results.</p></dd>
+</dl><dl><dt>properties</dt><dd><p>A vector of strings of the column names to include. If NULL (default), all columns are retained.</p></dd>
+</dl><dl><dt>transform</dt><dd><p>A character vector with the name of the <a href="https://github.com/CrunchyData/pg_featureserv/blob/master/config/pg_featureserv.toml.example#L29" class="external-link"><em>valid transform</em></a> function followed by the parameter values (e.g. c("ST_Simplify", 100))</p></dd>
+</dl><dl><dt>epsg</dt><dd><p>A positive whole number of the epsg to transform features to.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>An sf object</p>

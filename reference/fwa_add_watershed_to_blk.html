@@ -54,20 +54,18 @@ The rm distances which is in meters is from the river mouth.</p>
   epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>An sf object with a polygon sfc column specifying watersheds
-and an optional rm column specfying the river meter.
-The rm is set to be 0 if missing.</p></td>
-    </tr><tr><th>exclude</th>
-      <td><p>A logical vector specifying whether to exclude the
-fundamental watershed in which the start falls.</p></td>
-    </tr><tr><th>epsg</th>
-      <td><p>A positive whole number of the epsg to transform features to.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>x</dt><dd><p>An sf object with a polygon sfc column specifying watersheds
+and an optional rm column specfying the river meter.
+The rm is set to be 0 if missing.</p></dd>
+</dl><dl><dt>exclude</dt><dd><p>A logical vector specifying whether to exclude the
+fundamental watershed in which the start falls.</p></dd>
+</dl><dl><dt>epsg</dt><dd><p>A positive whole number of the epsg to transform features to.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>An sf tibble with the columns of x plus

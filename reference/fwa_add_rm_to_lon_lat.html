@@ -59,20 +59,17 @@ to the point specified by the lon and lat (WGS84).</p>
   epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>x</th>
-      <td><p>A data frame with numeric longitude (long) and
-latitude (lat) columns.</p></td>
-    </tr><tr><th>tolerance</th>
-      <td><p>A number of the tolerance in m.</p></td>
-    </tr><tr><th>limit</th>
-      <td><p>A positive whole number indicating the maximum number of features to return.</p></td>
-    </tr><tr><th>epsg</th>
-      <td><p>A positive whole number of the EPSG projection for the geometry.</p></td>
-    </tr></table></div>
+    
 
-    <div id="ref-sections">
+<dl><dt>x</dt><dd><p>A data frame with numeric longitude (long) and
+latitude (lat) columns.</p></dd>
+</dl><dl><dt>tolerance</dt><dd><p>A number of the tolerance in m.</p></dd>
+</dl><dl><dt>limit</dt><dd><p>A positive whole number indicating the maximum number of features to return.</p></dd>
+</dl><dl><dt>epsg</dt><dd><p>A positive whole number of the EPSG projection for the geometry.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>An sf tibble with the columns of x plus integer column blk,
