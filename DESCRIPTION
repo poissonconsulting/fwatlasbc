@@ -13,9 +13,9 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 4.1)
 Imports: 
-    chk,
+    chk (>= 0.7.0.9002),
     dplyr,
-    fwapgr (>= 0.1.0.9007),
+    fwapgr (>= 0.1.0.9009),
     glue,
     lifecycle,
     sf,
@@ -27,6 +27,7 @@ Suggests:
     rlang,
     testthat (>= 3.0.0)
 Remotes:
+    poissonconsulting/chk,
     poissonconsulting/fwapgr
 Config/testthat/edition: 3
 Encoding: UTF-8
