@@ -49,8 +49,8 @@ add_collection_to_watershed <- function(x, collection, filter, limit, offset,
 #' Adds collection to a watershed.
 #' If the active sfc polygon column is called geometry it is replaced
 #' by the geometry column of the collection.
-#'
-#' The collection feature blue line key is called blue_line_key.
+#' The collection includes a blue_line_key column the values are
+#' copied to column blk replacing any existing values.
 #'
 #' @inheritParams fwapgr::fwa_collection
 #' @param x A sf object with an active sfc polygon column.
@@ -83,7 +83,7 @@ fwa_add_collection_to_watershed <- function(x, collection = "stream_network",
 
   collection <- rename_collection(collection)
 
-  x |>
+  x <- x |>
     dplyr::mutate(..fwa_id = 1:dplyr::n(),
                   ..fwa_intersect = intersect) |>
     dplyr::group_split(.data$..fwa_id) |>
@@ -91,7 +91,13 @@ fwa_add_collection_to_watershed <- function(x, collection = "stream_network",
            filter = filter, limit = limit,
            offset = offset, properties = properties, transform = transform,
            epsg = epsg) |>
-    dplyr::bind_rows() |>
+    dplyr::bind_rows()
+
+  if("blue_line_key" %in% colnames(x)) {
+    x <- x |> mutate(blk = .data$blue_line_key)
+  }
+
+  x |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::select(-.data$..fwa_id, -.data$..fwa_intersect)
 }

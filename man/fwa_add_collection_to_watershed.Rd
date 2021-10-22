@@ -46,9 +46,8 @@ An sf object
 Adds collection to a watershed.
 If the active sfc polygon column is called geometry it is replaced
 by the geometry column of the collection.
-}
-\details{
-The collection feature blue line key is called blue_line_key.
+The collection includes a blue_line_key column the values are
+copied to column blk replacing any existing values.
 }
 \examples{
 \dontrun{

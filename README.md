@@ -82,7 +82,8 @@ fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #> 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)
 ```
 
-Get watershed for a blue line key and river meter (by default 0).
+Get watershed for a blue line key and river meter (by default 0). If it
+errors try increasing the river meter.
 
 ``` r
 wshed <- fwa_add_watershed_to_blk(blks)
@@ -98,10 +99,9 @@ wshed
 #> 1 Steep Creek 356534225     0 ((1658037 728924.8, 1658107 728964.9, 1658107 728…
 ```
 
-Get stream network for the watershed polygon. Note that blk and rm are
-from the original watershed while blue_line_key and
-downstream/upstream_route_measure are the equivalents for the stream
-segment in the network.
+Get stream network for the watershed polygon. Note that rm is from the
+original watershed while downstream/upstream_route_measure are the
+equivalents for the stream segment in the network.
 
 ``` r
 network <- fwa_add_collection_to_watershed(wshed, "stream_network")
@@ -114,16 +114,16 @@ network
 #> # A tibble: 76 × 32
 #>    stream_name       blk    rm id        blue_line_key blue_line_key_50k
 #>    <chr>           <int> <dbl> <chr>             <int>             <int>
-#>  1 Steep Creek 356534225     0 707009047     356499676                NA
-#>  2 Steep Creek 356534225     0 707009141     356407032                NA
-#>  3 Steep Creek 356534225     0 707009211     356462244                NA
-#>  4 Steep Creek 356534225     0 707009213     356494188                NA
-#>  5 Steep Creek 356534225     0 707009233     356499676                NA
-#>  6 Steep Creek 356534225     0 707009235     356397697                NA
-#>  7 Steep Creek 356534225     0 707009415     356499676                NA
-#>  8 Steep Creek 356534225     0 707009417     356494188                NA
-#>  9 Steep Creek 356534225     0 707009460     356499676                NA
-#> 10 Steep Creek 356534225     0 707009535     356499676                NA
+#>  1 Steep Creek 356499676     0 707009047     356499676                NA
+#>  2 Steep Creek 356407032     0 707009141     356407032                NA
+#>  3 Steep Creek 356462244     0 707009211     356462244                NA
+#>  4 Steep Creek 356494188     0 707009213     356494188                NA
+#>  5 Steep Creek 356499676     0 707009233     356499676                NA
+#>  6 Steep Creek 356397697     0 707009235     356397697                NA
+#>  7 Steep Creek 356499676     0 707009415     356499676                NA
+#>  8 Steep Creek 356494188     0 707009417     356494188                NA
+#>  9 Steep Creek 356499676     0 707009460     356499676                NA
+#> 10 Steep Creek 356499676     0 707009535     356499676                NA
 #> # … with 66 more rows, and 26 more variables: downstream_route_measure <dbl>,
 #> #   edge_type <int>, feature_code <chr>, feature_source <chr>,
 #> #   fwa_watershed_code <chr>, gnis_id <int>, gnis_name <chr>, gradient <dbl>,
@@ -133,8 +133,8 @@ network
 #> #   waterbody_key <int>, watershed_code_50k <chr>, …
 ```
 
-Convert the stream network into a table of the blue line keys with
-regularly spaced river meters starting at 0.
+Convert the stream network into a table blue line keys with regularly
+spaced river meters starting at 0.
 
 ``` r
 rms <- fwa_convert_stream_network_to_rms(network, interval = 100)

@@ -63,19 +63,20 @@ fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 ```
 
 Get watershed for a blue line key and river meter (by default 0).
+If it errors try increasing the river meter.
 ```{r}
 wshed <- fwa_add_watershed_to_blk(blks)
 wshed
 ```
 
 Get stream network for the watershed polygon.
-Note that blk and rm are from the original watershed while blue_line_key and downstream/upstream_route_measure are the equivalents for the stream segment in the network.
+Note that rm is from the original watershed while downstream/upstream_route_measure are the equivalents for the stream segment in the network.
 ```{r}
 network <- fwa_add_collection_to_watershed(wshed, "stream_network")
 network
 ```
 
-Convert the stream network into a table of the blue line keys with regularly spaced river meters starting at 0.
+Convert the stream network into a table blue line keys with regularly spaced river meters starting at 0.
 ```{r}
 rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
 rms
