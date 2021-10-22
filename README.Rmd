@@ -39,49 +39,55 @@ devtools::install_github("poissonconsulting/fwatlasbc")
 ## Demonstration
 
 Find stream names using regular expression.
-
+There may be more than one stream name that matches the regular expression.
 ```{r}
 library(fwatlasbc)
 streams <- fwa_find_stream_names("steep c")
 streams
 ```
 
-Add blue line keys to stream names.
+Add blue line keys (blk) to stream names.
+There may be multiple streams with the same name.
 ```{r}
-streams <- fwa_add_blks_to_stream_name(streams)
-streams
-streams <- streams[streams$blk == 356534225,]
+blks <- fwa_add_blks_to_stream_name(streams)
+blks
+blks <- blks[blks$blk == 356534225,]
 ```
 
-Get river meters (every 100 m).
-```{r}
-rm <- fwa_add_rms_to_blk(streams, interval = 100)
-rm
-```
+Alternatively get the nearest blue line key and river meter (rm) from the longitude and latitude. 
+The river meter is the distance in meters as the fish swims from the mouth of the river.
+The distance_to_lon_lat is the how far the original point was from the stream in meters.
 
-Or get a blue line key and river meter from longitude and latitude.
 ```{r}
 fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 ```
 
-Get watershed.
+Get watershed for a blue line key and river meter (by default 0).
 ```{r}
-wshed <- fwa_add_watershed_to_blk(streams)
+wshed <- fwa_add_watershed_to_blk(blks)
 wshed
 ```
 
-Get stream network
+Get stream network for the watershed polygon.
+Note that blk and rm are from the original watershed while blue_line_key and downstream/upstream_route_measure are the equivalents for the stream segment in the network.
 ```{r}
-stream_network <- fwa_add_collection_to_watershed(wshed, "stream_network")
-stream_network
+network <- fwa_add_collection_to_watershed(wshed, "stream_network")
+network
 ```
 
-Plot watershed and river meters.
+Convert the stream network into a table of the blue line keys with regularly spaced river meters starting at 0.
+Note that blk is from the original watershed while blue_line_key and rm are for the river meter.
+```{r}
+rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
+rms
+```
+
+Plot the watershed, network and river meters.
 ```{r dpi=300, fig.width=7, fig.height=7}
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
-  ggplot2::geom_sf(data = stream_network, color = "blue") +
-  ggplot2::geom_sf(data = rm)
+  ggplot2::geom_sf(data = network, color = "blue") +
+  ggplot2::geom_sf(data = rms)
 ```
 
 ## Inspiration

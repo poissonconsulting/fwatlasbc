@@ -35,7 +35,9 @@ to the point specified by the lon and lat (WGS84).
 If a match isn't found the row is dropped.
 }
 \examples{
+\dontrun{
 fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
+}
 }
 \seealso{
 Other rm: 

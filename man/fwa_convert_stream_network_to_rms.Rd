@@ -9,7 +9,10 @@ fwa_convert_stream_network_to_rms(x, interval = 5, tolerance = 0.1)
 \arguments{
 \item{x}{An sf tibble of a stream network.}
 
-\item{interval}{A whole numeric of the distance between points.}
+\item{interval}{A whole number of the distance between points.}
+
+\item{tolerance}{A number of the acceptable
+discrepancy in meters in the network lengths.}
 }
 \value{
 An sf tibble with the columns of x plus integer column rm
@@ -19,8 +22,11 @@ and sf column geometry.
 Convert Stream Network to River Meters
 }
 \examples{
-x <- fwa_add_stream_network_to_blk(data.frame(blk = 356308001))
-fwa_convert_stream_network_to_rms(x)
+\dontrun{
+watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
+network <- fwa_add_collection_to_watershed(watershed)
+fwa_convert_stream_network_to_rms(network, interval = 100)
+}
 }
 \seealso{
 Other rm: 

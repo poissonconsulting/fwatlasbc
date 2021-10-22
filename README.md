@@ -34,7 +34,8 @@ devtools::install_github("poissonconsulting/fwatlasbc")
 
 ## Demonstration
 
-Find stream names using regular expression.
+Find stream names using regular expression. There may be more than one
+stream name that matches the regular expression.
 
 ``` r
 library(fwatlasbc)
@@ -47,11 +48,12 @@ streams
 #> 2 Steep Creek
 ```
 
-Add blue line keys to stream names.
+Add blue line keys (blk) to stream names. There may be multiple streams
+with the same name.
 
 ``` r
-streams <- fwa_add_blks_to_stream_name(streams)
-streams
+blks <- fwa_add_blks_to_stream_name(streams)
+blks
 #> # A tibble: 4 × 2
 #>   stream_name              blk
 #>   <chr>                  <int>
@@ -59,36 +61,13 @@ streams
 #> 2 Steep Creek        356362258
 #> 3 Steep Creek        356534225
 #> 4 Steep Creek        356570155
-streams <- streams[streams$blk == 356534225,]
+blks <- blks[blks$blk == 356534225,]
 ```
 
-Get river meters (every 100 m).
-
-``` r
-rm <- fwa_add_rms_to_blk(streams, interval = 100)
-rm
-#> Simple feature collection with 46 features and 4 fields
-#> Geometry type: POINT
-#> Dimension:     XY
-#> Bounding box:  xmin: 1657747 ymin: 728476.5 xmax: 1661313 ymax: 730795.9
-#> Projected CRS: NAD83 / BC Albers
-#> # A tibble: 46 × 5
-#>    stream_name       blk    rm elevation           geometry
-#>    <chr>           <int> <int>     <dbl>        <POINT [m]>
-#>  1 Steep Creek 356534225     0     1087  (1657747 728476.5)
-#>  2 Steep Creek 356534225   100     1094. (1657839 728506.7)
-#>  3 Steep Creek 356534225   200     1102. (1657911 728572.2)
-#>  4 Steep Creek 356534225   300     1111. (1657989 728633.1)
-#>  5 Steep Creek 356534225   400     1124.   (1658070 728691)
-#>  6 Steep Creek 356534225   500     1133. (1658141 728754.7)
-#>  7 Steep Creek 356534225   600     1145. (1658233 728792.8)
-#>  8 Steep Creek 356534225   700     1154. (1658324 728830.6)
-#>  9 Steep Creek 356534225   800     1168. (1658395 728897.5)
-#> 10 Steep Creek 356534225   900     1181. (1658470 728960.1)
-#> # … with 36 more rows
-```
-
-Or get a blue line key and river meter from longitude and latitude.
+Alternatively get the nearest blue line key and river meter (rm) from
+the longitude and latitude. The river meter is the distance in meters as
+the fish swims from the mouth of the river. The distance_to_lon_lat is
+the how far the original point was from the stream in meters.
 
 ``` r
 fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
@@ -103,10 +82,10 @@ fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #> 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)
 ```
 
-Get watershed.
+Get watershed for a blue line key and river meter (by default 0).
 
 ``` r
-wshed <- fwa_add_watershed_to_blk(streams)
+wshed <- fwa_add_watershed_to_blk(blks)
 wshed
 #> Simple feature collection with 1 feature and 3 fields
 #> Geometry type: POLYGON
@@ -119,11 +98,14 @@ wshed
 #> 1 Steep Creek 356534225     0 ((1658037 728924.8, 1658107 728964.9, 1658107 728…
 ```
 
-Get stream network
+Get stream network for the watershed polygon. Note that blk and rm are
+from the original watershed while blue_line_key and
+downstream/upstream_route_measure are the equivalents for the stream
+segment in the network.
 
 ``` r
-stream_network <- fwa_add_collection_to_watershed(wshed, "stream_network")
-stream_network
+network <- fwa_add_collection_to_watershed(wshed, "stream_network")
+network
 #> Simple feature collection with 76 features and 31 fields
 #> Geometry type: LINESTRING
 #> Dimension:     XY
@@ -151,13 +133,47 @@ stream_network
 #> #   waterbody_key <int>, watershed_code_50k <chr>, …
 ```
 
-Plot watershed and river meters.
+Convert the stream network into a table of the blue line keys with
+regularly spaced river meters starting at 0. Note that blk is from the
+original watershed while blue_line_key and rm are for the river meter.
+
+``` r
+rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
+rms
+#> Simple feature collection with 314 features and 31 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: 1656200 ymin: 725425.2 xmax: 1661313 ymax: 731570.9
+#> Projected CRS: NAD83 / BC Albers
+#> # A tibble: 314 × 32
+#>    id           rm stream_name       blk blue_line_key blue_line_key_50k
+#>    <chr>     <int> <chr>           <int>         <int>             <int>
+#>  1 707009047  1900 Steep Creek 356534225     356499676                NA
+#>  2 707009047  2000 Steep Creek 356534225     356499676                NA
+#>  3 707009047  2100 Steep Creek 356534225     356499676                NA
+#>  4 707009047  2200 Steep Creek 356534225     356499676                NA
+#>  5 707009141     0 Steep Creek 356534225     356407032                NA
+#>  6 707009141   100 Steep Creek 356534225     356407032                NA
+#>  7 707009141   200 Steep Creek 356534225     356407032                NA
+#>  8 707009211     0 Steep Creek 356534225     356462244                NA
+#>  9 707009211   100 Steep Creek 356534225     356462244                NA
+#> 10 707009211   200 Steep Creek 356534225     356462244                NA
+#> # … with 304 more rows, and 26 more variables: downstream_route_measure <dbl>,
+#> #   edge_type <int>, feature_code <chr>, feature_source <chr>,
+#> #   fwa_watershed_code <chr>, gnis_id <int>, gnis_name <chr>, gradient <dbl>,
+#> #   left_right_tributary <chr>, length_metre <dbl>, linear_feature_id <int>,
+#> #   local_watershed_code <chr>, localcode_ltree <chr>, stream_magnitude <int>,
+#> #   stream_order <int>, upstream_area_ha <chr>, upstream_route_measure <dbl>,
+#> #   waterbody_key <int>, watershed_code_50k <chr>, …
+```
+
+Plot the watershed, network and river meters.
 
 ``` r
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
-  ggplot2::geom_sf(data = stream_network, color = "blue") +
-  ggplot2::geom_sf(data = rm)
+  ggplot2::geom_sf(data = network, color = "blue") +
+  ggplot2::geom_sf(data = rms)
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />

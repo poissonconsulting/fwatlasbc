@@ -2,8 +2,8 @@ convert_stream_segment_to_rms <- function(x, interval) {
   down <- x$downstream_route_measure
   up <- x$upstream_route_measure
 
-  down_rm <- plyr::round_any(down, interval, ceiling)
-  up_rm <- plyr::round_any(up, interval, floor)
+  down_rm <- round_any(down, interval, ceiling)
+  up_rm <- round_any(up, interval, floor)
 
   if(down_rm > up_rm) {
     rm <- integer(0)
@@ -11,7 +11,7 @@ convert_stream_segment_to_rms <- function(x, interval) {
   } else {
     rm <- seq(down_rm, up_rm, by = interval)
     rm <- as.integer(rm)
-    sample <- (rm - down) / up
+    sample <- (rm - down) / (up - down)
   }
   y <- x |>
     dplyr::as_tibble()
@@ -38,14 +38,19 @@ convert_stream_segment_to_rms <- function(x, interval) {
 #' Convert Stream Network to River Meters
 #'
 #' @param x An sf tibble of a stream network.
-#' @param interval A whole numeric of the distance between points.
+#' @param interval A whole number of the distance between points.
+#' @param tolerance A number of the acceptable
+#' discrepancy in meters in the network lengths.
 #' @return An sf tibble with the columns of x plus integer column rm
 #' and sf column geometry.
 #' @family rm
 #' @export
 #' @examples
-#' x <- fwa_add_stream_network_to_blk(data.frame(blk = 356308001))
-#' fwa_convert_stream_network_to_rms(x)
+#' \dontrun{
+#' watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
+#' network <- fwa_add_collection_to_watershed(watershed)
+#' fwa_convert_stream_network_to_rms(network, interval = 100)
+#' }
 fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) {
   chk_s3_class(x, "sf")
   chk_whole_number(interval)

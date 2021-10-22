@@ -45,7 +45,9 @@ add_rms_to_blk <- function(x, epsg) {
 #' @family rm
 #' @export
 #' @examples
+#' \dontrun{
 #' fwa_add_rms_to_blk(data.frame(blk = 356308001))
+#' }
 fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
                                epsg = getOption("fwa.epsg", 3005)){
   check_data(x)

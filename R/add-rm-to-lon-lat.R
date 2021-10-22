@@ -48,7 +48,9 @@ add_rm_to_lon_lat <- function(x, limit, tolerance, epsg) {
 #' @family rm
 #' @export
 #' @examples
+#' \dontrun{
 #' fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
+#' }
 fwa_add_rm_to_lon_lat <- function(x, tolerance = 5000, limit = 1,
                                   epsg = getOption("fwa.epsg", 3005)) {
   check_data(x, values = list(lon = c(-180,180,NA), lat = c(-90,90,NA)))

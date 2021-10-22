@@ -33,7 +33,9 @@ regularly spaced points along blue line key (blk).
 All distances which are in meters are from the river mouth.
 }
 \examples{
+\dontrun{
 fwa_add_rms_to_blk(data.frame(blk = 356308001))
+}
 }
 \seealso{
 Other rm: 
