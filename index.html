@@ -117,7 +117,7 @@
 <span class="co">#&gt;     lon   lat       blk    rm distance_to_lon_lat            geometry</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt; &lt;dbl&gt;               &lt;dbl&gt;         &lt;POINT [m]&gt;</span>
 <span class="co">#&gt; 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)</span></code></pre></div>
-<p>Get watershed for a blue line key and river meter (by default 0).</p>
+<p>Get watershed for a blue line key and river meter (by default 0). If it errors try increasing the river meter.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">wshed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_watershed_to_blk.html">fwa_add_watershed_to_blk</a></span><span class="op">(</span><span class="va">blks</span><span class="op">)</span>
 <span class="va">wshed</span>
@@ -130,7 +130,7 @@
 <span class="co">#&gt;   stream_name       blk    rm                                           geometry</span>
 <span class="co">#&gt;   &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt;                                      &lt;POLYGON [m]&gt;</span>
 <span class="co">#&gt; 1 Steep Creek 356534225     0 ((1658037 728924.8, 1658107 728964.9, 1658107 728…</span></code></pre></div>
-<p>Get stream network for the watershed polygon. Note that blk and rm are from the original watershed while blue_line_key and downstream/upstream_route_measure are the equivalents for the stream segment in the network.</p>
+<p>Get stream network for the watershed polygon. Note that rm is from the original watershed while downstream/upstream_route_measure are the equivalents for the stream segment in the network.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">network</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_collection_to_watershed.html">fwa_add_collection_to_watershed</a></span><span class="op">(</span><span class="va">wshed</span>, <span class="st">"stream_network"</span><span class="op">)</span>
 <span class="va">network</span>
@@ -142,16 +142,16 @@
 <span class="co">#&gt; # A tibble: 76 × 32</span>
 <span class="co">#&gt;    stream_name       blk    rm id        blue_line_key blue_line_key_50k</span>
 <span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;             &lt;int&gt;             &lt;int&gt;</span>
-<span class="co">#&gt;  1 Steep Creek 356534225     0 707009047     356499676                NA</span>
-<span class="co">#&gt;  2 Steep Creek 356534225     0 707009141     356407032                NA</span>
-<span class="co">#&gt;  3 Steep Creek 356534225     0 707009211     356462244                NA</span>
-<span class="co">#&gt;  4 Steep Creek 356534225     0 707009213     356494188                NA</span>
-<span class="co">#&gt;  5 Steep Creek 356534225     0 707009233     356499676                NA</span>
-<span class="co">#&gt;  6 Steep Creek 356534225     0 707009235     356397697                NA</span>
-<span class="co">#&gt;  7 Steep Creek 356534225     0 707009415     356499676                NA</span>
-<span class="co">#&gt;  8 Steep Creek 356534225     0 707009417     356494188                NA</span>
-<span class="co">#&gt;  9 Steep Creek 356534225     0 707009460     356499676                NA</span>
-<span class="co">#&gt; 10 Steep Creek 356534225     0 707009535     356499676                NA</span>
+<span class="co">#&gt;  1 Steep Creek 356499676     0 707009047     356499676                NA</span>
+<span class="co">#&gt;  2 Steep Creek 356407032     0 707009141     356407032                NA</span>
+<span class="co">#&gt;  3 Steep Creek 356462244     0 707009211     356462244                NA</span>
+<span class="co">#&gt;  4 Steep Creek 356494188     0 707009213     356494188                NA</span>
+<span class="co">#&gt;  5 Steep Creek 356499676     0 707009233     356499676                NA</span>
+<span class="co">#&gt;  6 Steep Creek 356397697     0 707009235     356397697                NA</span>
+<span class="co">#&gt;  7 Steep Creek 356499676     0 707009415     356499676                NA</span>
+<span class="co">#&gt;  8 Steep Creek 356494188     0 707009417     356494188                NA</span>
+<span class="co">#&gt;  9 Steep Creek 356499676     0 707009460     356499676                NA</span>
+<span class="co">#&gt; 10 Steep Creek 356499676     0 707009535     356499676                NA</span>
 <span class="co">#&gt; # … with 66 more rows, and 26 more variables: downstream_route_measure &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   edge_type &lt;int&gt;, feature_code &lt;chr&gt;, feature_source &lt;chr&gt;,</span>
 <span class="co">#&gt; #   fwa_watershed_code &lt;chr&gt;, gnis_id &lt;int&gt;, gnis_name &lt;chr&gt;, gradient &lt;dbl&gt;,</span>
@@ -159,7 +159,7 @@
 <span class="co">#&gt; #   local_watershed_code &lt;chr&gt;, localcode_ltree &lt;chr&gt;, stream_magnitude &lt;int&gt;,</span>
 <span class="co">#&gt; #   stream_order &lt;int&gt;, upstream_area_ha &lt;chr&gt;, upstream_route_measure &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   waterbody_key &lt;int&gt;, watershed_code_50k &lt;chr&gt;, …</span></code></pre></div>
-<p>Convert the stream network into a table of the blue line keys with regularly spaced river meters starting at 0.</p>
+<p>Convert the stream network into a table blue line keys with regularly spaced river meters starting at 0.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rms</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_convert_stream_network_to_rms.html">fwa_convert_stream_network_to_rms</a></span><span class="op">(</span><span class="va">network</span>, interval <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 <span class="va">rms</span>
