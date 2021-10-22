@@ -1,7 +1,7 @@
 split_blk <- function(x, blk, rm = 0) {
   x$..fwa_split[x$blk == blk & x$rm >= rm] <- TRUE
 
-  blks <- x$blk[!is.na(x$parent_blk) & x$parent_blk == blk] |>
+  blks <- x$blk[!is.na(x$parent_blk) & x$parent_blk == blk & x$parent_rm >= rm] |>
     unique()
 
   for(blk in blks) {
@@ -10,9 +10,9 @@ split_blk <- function(x, blk, rm = 0) {
   x
 }
 
-get_split_to_rms <- function(name, x, y) {
+get_split_to_rms <- function(nm, x, y) {
   y <- y |>
-    dplyr::filter(.data$name == name)
+    dplyr::filter(.data$name == nm)
 
   check_dim(y, nrow, 1L) # +chk
 
@@ -41,7 +41,7 @@ fwa_add_split_to_rms <- function(x, y) {
 
   check_names(x, c("blk", "rm", "parent_blk", "parent_rm"))
   check_names(y, c("blk", "rm", "name"))
-  chk_not_subset(colnames(x), x$names)
+  chk_not_subset(colnames(x), y$name)
   chk_not_subset(colnames(x), "..fwa_split")
 
   chk_whole_numeric(x$blk)
@@ -55,14 +55,14 @@ fwa_add_split_to_rms <- function(x, y) {
   chk_whole_numeric(x$parent_blk)
   chk_gt(x$parent_blk)
 
-  chk_whole_numeric(x$parent_rm)
+  chk_numeric(x$parent_rm)
   chk_gte(x$parent_rm)
 
   chk_whole_numeric(y$blk)
   chk_not_any_na(y$blk)
   chk_gt(y$blk)
 
-  chk_whole_numeric(y$rm)
+  chk_numeric(y$rm)
   chk_not_any_na(y$rm)
   chk_gte(y$rm)
 
@@ -72,7 +72,6 @@ fwa_add_split_to_rms <- function(x, y) {
   chk_valid_name(y$name)
 
   if(!nrow(y)) return(x)
-
 
   splits <- lapply(y$name, get_split_to_rms, x = x, y = y)
   names(splits) <- y$name
