@@ -159,7 +159,7 @@
 <span class="co">#&gt; #   local_watershed_code &lt;chr&gt;, localcode_ltree &lt;chr&gt;, stream_magnitude &lt;int&gt;,</span>
 <span class="co">#&gt; #   stream_order &lt;int&gt;, upstream_area_ha &lt;chr&gt;, upstream_route_measure &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   waterbody_key &lt;int&gt;, watershed_code_50k &lt;chr&gt;, …</span></code></pre></div>
-<p>Convert the stream network into a table of the blue line keys with regularly spaced river meters starting at 0. Note that blk is from the original watershed while blue_line_key and rm are for the river meter.</p>
+<p>Convert the stream network into a table of the blue line keys with regularly spaced river meters starting at 0.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rms</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_convert_stream_network_to_rms.html">fwa_convert_stream_network_to_rms</a></span><span class="op">(</span><span class="va">network</span>, interval <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 <span class="va">rms</span>
@@ -169,18 +169,18 @@
 <span class="co">#&gt; Bounding box:  xmin: 1656200 ymin: 725425.2 xmax: 1661313 ymax: 731570.9</span>
 <span class="co">#&gt; Projected CRS: NAD83 / BC Albers</span>
 <span class="co">#&gt; # A tibble: 314 × 32</span>
-<span class="co">#&gt;    id           rm stream_name       blk blue_line_key blue_line_key_50k</span>
-<span class="co">#&gt;    &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;           &lt;int&gt;         &lt;int&gt;             &lt;int&gt;</span>
-<span class="co">#&gt;  1 707009047  1900 Steep Creek 356534225     356499676                NA</span>
-<span class="co">#&gt;  2 707009047  2000 Steep Creek 356534225     356499676                NA</span>
-<span class="co">#&gt;  3 707009047  2100 Steep Creek 356534225     356499676                NA</span>
-<span class="co">#&gt;  4 707009047  2200 Steep Creek 356534225     356499676                NA</span>
-<span class="co">#&gt;  5 707009141     0 Steep Creek 356534225     356407032                NA</span>
-<span class="co">#&gt;  6 707009141   100 Steep Creek 356534225     356407032                NA</span>
-<span class="co">#&gt;  7 707009141   200 Steep Creek 356534225     356407032                NA</span>
-<span class="co">#&gt;  8 707009211     0 Steep Creek 356534225     356462244                NA</span>
-<span class="co">#&gt;  9 707009211   100 Steep Creek 356534225     356462244                NA</span>
-<span class="co">#&gt; 10 707009211   200 Steep Creek 356534225     356462244                NA</span>
+<span class="co">#&gt;    id              blk    rm stream_name blue_line_key blue_line_key_50k</span>
+<span class="co">#&gt;    &lt;chr&gt;         &lt;int&gt; &lt;int&gt; &lt;chr&gt;               &lt;int&gt;             &lt;int&gt;</span>
+<span class="co">#&gt;  1 707009047 356499676  1900 Steep Creek     356499676                NA</span>
+<span class="co">#&gt;  2 707009047 356499676  2000 Steep Creek     356499676                NA</span>
+<span class="co">#&gt;  3 707009047 356499676  2100 Steep Creek     356499676                NA</span>
+<span class="co">#&gt;  4 707009047 356499676  2200 Steep Creek     356499676                NA</span>
+<span class="co">#&gt;  5 707009141 356407032     0 Steep Creek     356407032                NA</span>
+<span class="co">#&gt;  6 707009141 356407032   100 Steep Creek     356407032                NA</span>
+<span class="co">#&gt;  7 707009141 356407032   200 Steep Creek     356407032                NA</span>
+<span class="co">#&gt;  8 707009211 356462244     0 Steep Creek     356462244                NA</span>
+<span class="co">#&gt;  9 707009211 356462244   100 Steep Creek     356462244                NA</span>
+<span class="co">#&gt; 10 707009211 356462244   200 Steep Creek     356462244                NA</span>
 <span class="co">#&gt; # … with 304 more rows, and 26 more variables: downstream_route_measure &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   edge_type &lt;int&gt;, feature_code &lt;chr&gt;, feature_source &lt;chr&gt;,</span>
 <span class="co">#&gt; #   fwa_watershed_code &lt;chr&gt;, gnis_id &lt;int&gt;, gnis_name &lt;chr&gt;, gradient &lt;dbl&gt;,</span>
