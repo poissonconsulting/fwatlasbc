@@ -1,3 +1,50 @@
+strip_trailing_0s <- function(x) {
+  str_replace_all(x, "-0{6,6}", "")
+}
+
+get_parent_code <- function(x) {
+  str_replace(x, "-\\d{6,6}$", "")
+}
+
+get_parent_proportion <- function(x) {
+  x |>
+    str_extract("\\d{6,6}$") |>
+    as.integer() |>
+    divide_by(1000000)
+}
+
+add_parent_blk_rm <- function(x) {
+  parent <- x |>
+    dplyr::as_tibble() |>
+    dplyr::filter(!str_detect(.data$fwa_watershed_code, "^999")) |>
+    dplyr::mutate(fwa_watershed_code = strip_trailing_0s(.data$fwa_watershed_code)) |>
+    dplyr::group_by(.data$blue_line_key, .data$fwa_watershed_code) |>
+    dplyr::summarise(min_rm = min(.data$upstream_route_measure),
+                     max_rm = max(.data$upstream_route_measure)) |>
+    dplyr::ungroup() |>
+    dplyr::filter(.data$min_rm != 0)
+
+  check_key(parent, "blue_line_key")
+
+  # drops main parents as multiple blks!
+  parent <- parent |>
+    dplyr::filter(!str_detect(.data$fwa_watershed_code, "^\\d{3,3}$"))
+
+  child <- parent |>
+    dplyr::mutate(
+      parent_code = get_parent_code(.data$fwa_watershed_code),
+      parent_proportion = get_parent_proportion(.data$fwa_watershed_code)) |>
+    dplyr::select(
+      child_blk = .data$blue_line_key, .data$parent_code, .data$parent_proportion) |>
+    dplyr::inner_join(parent, by = c(parent_code = "fwa_watershed_code")) |>
+    dplyr::mutate(parent_rm = .data$parent_proportion * .data$max_rm) |>
+    dplyr::select(blue_line_key = .data$child_blk, parent_blk = .data$blue_line_key, .data$parent_rm)
+
+  x |>
+    dplyr::left_join(child, by = "blue_line_key") |>
+    dplyr::relocate(.data$parent_blk, .data$parent_rm, .after = "id")
+}
+
 convert_stream_segment_to_rms <- function(x, interval) {
   down <- x$downstream_route_measure
   up <- x$upstream_route_measure
@@ -59,7 +106,7 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
   chk_gte(tolerance)
 
   check_names(x, c("id", "blue_line_key", "downstream_route_measure",
-                   "upstream_route_measure"))
+                   "upstream_route_measure", "fwa_watershed_code"))
   chk_not_subset(colnames(x), "..fwa_id")
 
   chk_not_any_na(x$id)
@@ -68,6 +115,10 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
   chk_whole_numeric(x$blue_line_key)
   chk_not_any_na(x$blue_line_key)
   chk_gt(x$blue_line_key)
+
+  chk_character_or_factor(x$fwa_watershed_code)
+  chk_not_any_na(x$fwa_watershed_code)
+  chk_match(x$fwa_watershed_code, "^\\d{3,3}(-\\d{6,6})+-(0{6,6}|9{6,6})$")
 
   chk_numeric(x$downstream_route_measure)
   chk_not_any_na(x$downstream_route_measure)
@@ -86,6 +137,7 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
   }
 
   x |>
+    add_parent_blk_rm() |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     dplyr::group_split(.data$..fwa_id) |>
     lapply(convert_stream_segment_to_rms, interval = interval) |>

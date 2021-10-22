@@ -139,31 +139,31 @@ regularly spaced river meters starting at 0.
 ``` r
 rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
 rms
-#> Simple feature collection with 314 features and 31 fields
+#> Simple feature collection with 544 features and 33 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: 1656200 ymin: 725425.2 xmax: 1661313 ymax: 731570.9
 #> Projected CRS: NAD83 / BC Albers
-#> # A tibble: 314 × 32
-#>    id              blk    rm stream_name blue_line_key blue_line_key_50k
-#>    <chr>         <int> <int> <chr>               <int>             <int>
-#>  1 707009047 356499676  1900 Steep Creek     356499676                NA
-#>  2 707009047 356499676  2000 Steep Creek     356499676                NA
-#>  3 707009047 356499676  2100 Steep Creek     356499676                NA
-#>  4 707009047 356499676  2200 Steep Creek     356499676                NA
-#>  5 707009141 356407032     0 Steep Creek     356407032                NA
-#>  6 707009141 356407032   100 Steep Creek     356407032                NA
-#>  7 707009141 356407032   200 Steep Creek     356407032                NA
-#>  8 707009211 356462244     0 Steep Creek     356462244                NA
-#>  9 707009211 356462244   100 Steep Creek     356462244                NA
-#> 10 707009211 356462244   200 Steep Creek     356462244                NA
-#> # … with 304 more rows, and 26 more variables: downstream_route_measure <dbl>,
-#> #   edge_type <int>, feature_code <chr>, feature_source <chr>,
-#> #   fwa_watershed_code <chr>, gnis_id <int>, gnis_name <chr>, gradient <dbl>,
-#> #   left_right_tributary <chr>, length_metre <dbl>, linear_feature_id <int>,
-#> #   local_watershed_code <chr>, localcode_ltree <chr>, stream_magnitude <int>,
-#> #   stream_order <int>, upstream_area_ha <chr>, upstream_route_measure <dbl>,
-#> #   waterbody_key <int>, watershed_code_50k <chr>, …
+#> # A tibble: 544 × 34
+#>    id              blk    rm stream_name parent_blk parent_rm blue_line_key
+#>    <chr>         <int> <int> <chr>            <int>     <dbl>         <int>
+#>  1 707009047 356499676  1900 Steep Creek  356534225     2594.     356499676
+#>  2 707009047 356499676  2000 Steep Creek  356534225     2594.     356499676
+#>  3 707009047 356499676  2100 Steep Creek  356534225     2594.     356499676
+#>  4 707009047 356499676  2200 Steep Creek  356534225     2594.     356499676
+#>  5 707009141 356407032     0 Steep Creek  356499676     1840.     356407032
+#>  6 707009141 356407032   100 Steep Creek  356499676     1840.     356407032
+#>  7 707009141 356407032   200 Steep Creek  356499676     1840.     356407032
+#>  8 707009211 356462244     0 Steep Creek  356494188      175.     356462244
+#>  9 707009211 356462244   100 Steep Creek  356494188      175.     356462244
+#> 10 707009211 356462244   200 Steep Creek  356494188      175.     356462244
+#> # … with 534 more rows, and 27 more variables: blue_line_key_50k <int>,
+#> #   downstream_route_measure <dbl>, edge_type <int>, feature_code <chr>,
+#> #   feature_source <chr>, fwa_watershed_code <chr>, gnis_id <int>,
+#> #   gnis_name <chr>, gradient <dbl>, left_right_tributary <chr>,
+#> #   length_metre <dbl>, linear_feature_id <int>, local_watershed_code <chr>,
+#> #   localcode_ltree <chr>, stream_magnitude <int>, stream_order <int>,
+#> #   upstream_area_ha <chr>, upstream_route_measure <dbl>, …
 ```
 
 Plot the watershed, network and river meters.

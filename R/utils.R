@@ -9,3 +9,7 @@ bbox <- function(x) {
   bbox <- sf::st_transform(x, 4326)
   sf::st_bbox(bbox)
 }
+
+divide_by <- function(x, y) {
+  x / y
+}
