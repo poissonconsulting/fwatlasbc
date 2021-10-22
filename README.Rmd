@@ -76,7 +76,6 @@ network
 ```
 
 Convert the stream network into a table of the blue line keys with regularly spaced river meters starting at 0.
-Note that blk is from the original watershed while blue_line_key and rm are for the river meter.
 ```{r}
 rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
 rms

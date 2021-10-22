@@ -30,7 +30,8 @@ convert_stream_segment_to_rms <- function(x, interval) {
     sf::st_sf() |>
     dplyr::mutate(id = y$id) |>
     dplyr::left_join(y, by = "id") |>
-    dplyr::relocate(.data$rm, .after = "id") |>
+    dplyr::mutate(blk = .data$blue_line_key) |>
+    dplyr::relocate(.data$blk, .data$rm, .after = "id") |>
     dplyr::relocate(.data$geometry, .after = dplyr::last_col()) |>
     dplyr::arrange(.data$rm)
 }

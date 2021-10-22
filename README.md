@@ -134,8 +134,7 @@ network
 ```
 
 Convert the stream network into a table of the blue line keys with
-regularly spaced river meters starting at 0. Note that blk is from the
-original watershed while blue_line_key and rm are for the river meter.
+regularly spaced river meters starting at 0.
 
 ``` r
 rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
@@ -146,18 +145,18 @@ rms
 #> Bounding box:  xmin: 1656200 ymin: 725425.2 xmax: 1661313 ymax: 731570.9
 #> Projected CRS: NAD83 / BC Albers
 #> # A tibble: 314 × 32
-#>    id           rm stream_name       blk blue_line_key blue_line_key_50k
-#>    <chr>     <int> <chr>           <int>         <int>             <int>
-#>  1 707009047  1900 Steep Creek 356534225     356499676                NA
-#>  2 707009047  2000 Steep Creek 356534225     356499676                NA
-#>  3 707009047  2100 Steep Creek 356534225     356499676                NA
-#>  4 707009047  2200 Steep Creek 356534225     356499676                NA
-#>  5 707009141     0 Steep Creek 356534225     356407032                NA
-#>  6 707009141   100 Steep Creek 356534225     356407032                NA
-#>  7 707009141   200 Steep Creek 356534225     356407032                NA
-#>  8 707009211     0 Steep Creek 356534225     356462244                NA
-#>  9 707009211   100 Steep Creek 356534225     356462244                NA
-#> 10 707009211   200 Steep Creek 356534225     356462244                NA
+#>    id              blk    rm stream_name blue_line_key blue_line_key_50k
+#>    <chr>         <int> <int> <chr>               <int>             <int>
+#>  1 707009047 356499676  1900 Steep Creek     356499676                NA
+#>  2 707009047 356499676  2000 Steep Creek     356499676                NA
+#>  3 707009047 356499676  2100 Steep Creek     356499676                NA
+#>  4 707009047 356499676  2200 Steep Creek     356499676                NA
+#>  5 707009141 356407032     0 Steep Creek     356407032                NA
+#>  6 707009141 356407032   100 Steep Creek     356407032                NA
+#>  7 707009141 356407032   200 Steep Creek     356407032                NA
+#>  8 707009211 356462244     0 Steep Creek     356462244                NA
+#>  9 707009211 356462244   100 Steep Creek     356462244                NA
+#> 10 707009211 356462244   200 Steep Creek     356462244                NA
 #> # … with 304 more rows, and 26 more variables: downstream_route_measure <dbl>,
 #> #   edge_type <int>, feature_code <chr>, feature_source <chr>,
 #> #   fwa_watershed_code <chr>, gnis_id <int>, gnis_name <chr>, gradient <dbl>,
