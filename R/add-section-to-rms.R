@@ -9,7 +9,7 @@
 #' @param section A string of the name of the column in y (can include missing values).
 #' @return A tibble of x with section column from y.
 #' @export
-fwa_add_section_to_rm <- function(x, y, section = "Section") {
+fwa_add_section_to_rms <- function(x, y, section = "section") {
   chk_data(x)
   chk_data(y)
   chk_string(section)
