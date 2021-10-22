@@ -45,7 +45,6 @@ add_rm_to_lon_lat <- function(x, limit, tolerance, epsg) {
 #' @param epsg A positive whole number of the EPSG projection for the geometry.
 #' @return An sf tibble with the columns of x plus integer column blk,
 #' real columns rm and distance_to_lon_lat and sfc point column geometry
-#' @family rm
 #' @export
 #' @examples
 #' \dontrun{

@@ -43,7 +43,6 @@ convert_stream_segment_to_rms <- function(x, interval) {
 #' discrepancy in meters in the network lengths.
 #' @return An sf tibble with the columns of x plus integer column rm
 #' and sf column geometry.
-#' @family rm
 #' @export
 #' @examples
 #' \dontrun{

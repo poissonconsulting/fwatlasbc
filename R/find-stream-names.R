@@ -7,7 +7,6 @@
 #' when matching the regular expression to gnis stream names.
 #' @return A tibble with character column stream_name of the names of
 #' all the streams that match the regular expression.
-#' @family streams
 #' @export
 #' @examples
 #' fwa_find_stream_names("sangan")

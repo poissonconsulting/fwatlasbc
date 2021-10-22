@@ -42,7 +42,6 @@ add_rms_to_blk <- function(x, epsg) {
 #' @param epsg A positive whole number of EPSG projection for the coordinates.
 #' @return An sf tibble with the columns of x plus integer column rm
 #' and sf column geometry.
-#' @family rm
 #' @export
 #' @examples
 #' \dontrun{

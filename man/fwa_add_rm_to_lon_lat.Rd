@@ -39,10 +39,3 @@ If a match isn't found the row is dropped.
 fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 }
 }
-\seealso{
-Other rm: 
-\code{\link{fwa_add_rms_to_blk}()},
-\code{\link{fwa_convert_stream_network_to_rms}()},
-\code{\link{fwa_snap_rm_to_point}()}
-}
-\concept{rm}

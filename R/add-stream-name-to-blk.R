@@ -7,7 +7,6 @@
 #' @param stream_name A data frame with whole numeric column blk and character column stream_name.
 #' @return A tibble with the columns of x plus an integer column blk.
 #' @export
-#' @family streams
 #' @examples
 #' fwa_add_stream_names_to_blk(data.frame(blk = 360886335L))
 fwa_add_stream_names_to_blk <- function(x, stream_name = fwatlasbc::fwa_stream_name) {

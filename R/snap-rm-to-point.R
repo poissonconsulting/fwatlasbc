@@ -24,7 +24,6 @@ snap_rm_to_point <- function(x, rm) {
 #' @param x An sf object of spatial points with optional integer column blk.
 #' @param rm An sf object of spatial point with blk and rm columns.
 #' @return An updated version of x with integer columns blk and rm and numeric column distance_to_rm.
-#' @family rm
 #' @export
 #' @examples
 #' \dontrun{

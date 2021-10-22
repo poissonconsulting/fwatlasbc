@@ -28,10 +28,3 @@ network <- fwa_add_collection_to_watershed(watershed)
 fwa_convert_stream_network_to_rms(network, interval = 100)
 }
 }
-\seealso{
-Other rm: 
-\code{\link{fwa_add_rm_to_lon_lat}()},
-\code{\link{fwa_add_rms_to_blk}()},
-\code{\link{fwa_snap_rm_to_point}()}
-}
-\concept{rm}

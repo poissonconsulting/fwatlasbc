@@ -22,9 +22,3 @@ Finds gnis stream names that match regular expression.
 \examples{
 fwa_find_stream_names("sangan")
 }
-\seealso{
-Other streams: 
-\code{\link{fwa_add_blks_to_stream_name}()},
-\code{\link{fwa_add_stream_names_to_blk}()}
-}
-\concept{streams}

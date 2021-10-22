@@ -21,9 +21,3 @@ There may be more than one stream with the same name.
 \examples{
 fwa_add_stream_names_to_blk(data.frame(blk = 360886335L))
 }
-\seealso{
-Other streams: 
-\code{\link{fwa_add_blks_to_stream_name}()},
-\code{\link{fwa_find_stream_names}()}
-}
-\concept{streams}

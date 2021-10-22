@@ -6,7 +6,6 @@
 #' @param x A data frame with character column stream_name.
 #' @return A tibble with the columns of x plus an integer column blk.
 #' @export
-#' @family streams
 #' @examples
 #' fwa_add_blks_to_stream_name(data.frame(stream_name = "Sangan River"))
 fwa_add_blks_to_stream_name <- function(x) {

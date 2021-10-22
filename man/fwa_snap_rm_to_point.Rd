@@ -25,10 +25,3 @@ rm <- fwa_rm(blue_line_key = 356308001, interval = 1000)
 fwa_snap_rm_to_point(rm[2:4,], rm[3:5,])
 }
 }
-\seealso{
-Other rm: 
-\code{\link{fwa_add_rm_to_lon_lat}()},
-\code{\link{fwa_add_rms_to_blk}()},
-\code{\link{fwa_convert_stream_network_to_rms}()}
-}
-\concept{rm}
