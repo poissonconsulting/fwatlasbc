@@ -6,13 +6,20 @@
 \usage{
 fwa_add_gm_elevation_to_point(
   x,
+  chunk_size = 300L,
+  digits = 7,
   key = Sys.getenv("GOOGLE_MAPS_ELEVATION_API_KEY")
 )
 }
 \arguments{
 \item{x}{An sf object of spatial points.}
 
-\item{key}{A string of the google maps elevation api key.}
+\item{chunk_size}{The number of rows to include in each API query.}
+
+\item{digits}{The number of digits to round the latitude and longitude by
+before querying the elevation from the API}
+
+\item{key}{A string of the Google Maps Elevation API key.}
 }
 \value{
 An updated version of x with numeric column elevation.
