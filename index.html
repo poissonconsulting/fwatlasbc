@@ -107,7 +107,7 @@
 <span class="va">blks</span> <span class="op">&lt;-</span> <span class="va">blks</span><span class="op">[</span><span class="va">blks</span><span class="op">$</span><span class="va">blk</span> <span class="op">==</span> <span class="fl">356534225</span>,<span class="op">]</span></code></pre></div>
 <p>Alternatively get the nearest blue line key and river meter (rm) from the longitude and latitude. The river meter is the distance in meters as the fish swims from the mouth of the river. The distance_to_lon_lat is the how far the original point was from the stream in meters.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">fwa_add_rm_to_lon_lat</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="op">-</span><span class="fl">132.26</span>, lat <span class="op">=</span> <span class="fl">53.36</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="reference/fwa_add_blk_to_lon_lat.html">fwa_add_blk_to_lon_lat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="op">-</span><span class="fl">132.26</span>, lat <span class="op">=</span> <span class="fl">53.36</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Simple feature collection with 1 feature and 5 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
@@ -117,7 +117,7 @@
 <span class="co">#&gt;     lon   lat       blk    rm distance_to_lon_lat            geometry</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt; &lt;dbl&gt;               &lt;dbl&gt;         &lt;POINT [m]&gt;</span>
 <span class="co">#&gt; 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)</span></code></pre></div>
-<p>Get watershed for a blue line key and river meter (by default 0). If it errors try increasing the river meter.</p>
+<p>Get watershed (by aggregating fundamental watersheds) for a blue line key and river meter (by default 0). If it errors try increasing the river meter.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">wshed</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_watershed_to_blk.html">fwa_add_watershed_to_blk</a></span><span class="op">(</span><span class="va">blks</span><span class="op">)</span>
 <span class="va">wshed</span>
@@ -132,7 +132,7 @@
 <span class="co">#&gt; 1 Steep Creek 356534225     0 ((1658037 728924.8, 1658107 728964.9, 1658107 728…</span></code></pre></div>
 <p>Get stream network for the watershed polygon. Note that rm is from the original watershed while downstream/upstream_route_measure are the equivalents for the stream segment in the network.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">network</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_collection_to_polygon.html">fwa_add_collection_to_watershed</a></span><span class="op">(</span><span class="va">wshed</span>, <span class="st">"stream_network"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">network</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_collection_to_polygon.html">fwa_add_collection_to_polygon</a></span><span class="op">(</span><span class="va">wshed</span>, <span class="st">"stream_network"</span><span class="op">)</span>
 <span class="va">network</span>
 <span class="co">#&gt; Simple feature collection with 76 features and 31 fields</span>
 <span class="co">#&gt; Geometry type: LINESTRING</span>
@@ -159,7 +159,7 @@
 <span class="co">#&gt; #   local_watershed_code &lt;chr&gt;, localcode_ltree &lt;chr&gt;, stream_magnitude &lt;int&gt;,</span>
 <span class="co">#&gt; #   stream_order &lt;int&gt;, upstream_area_ha &lt;chr&gt;, upstream_route_measure &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   waterbody_key &lt;int&gt;, watershed_code_50k &lt;chr&gt;, …</span></code></pre></div>
-<p>Convert the stream network into a table blue line keys with regularly spaced river meters starting at 0.</p>
+<p>Convert the stream network into a table of blue line keys with regularly spaced river meters starting at 0.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rms</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_convert_stream_network_to_rms.html">fwa_convert_stream_network_to_rms</a></span><span class="op">(</span><span class="va">network</span>, interval <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 <span class="va">rms</span>
