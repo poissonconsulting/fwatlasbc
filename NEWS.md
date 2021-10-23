@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9006
+
+- Renamed `fwa_add_rm_to_lon_lat()` to `fwa_add_blk_to_lon_lat()`.
+
+
 # fwatlasbc 0.0.1.9005
 
 - Soft-deprecated `fwa_add_collection_to_watershed()` for `fwa_add_collection_to_polygon()`.
