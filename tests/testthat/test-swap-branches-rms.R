@@ -83,7 +83,7 @@ test_that("fwa_swap_branches_rms works with a trib child and part parent_rm", {
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE)
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm"))
-  expect_identical(nrow(x), 6L)
+  expect_identical(nrow(x), 7L)
 
   expect_snapshot_data(x, "tribchildpart")
 })
@@ -105,8 +105,8 @@ test_that("fwa_swap_branches_rms works with a trib child and part parent_rm and 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2))
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm", "geometry"))
-  expect_identical(nrow(x), 6L)
+  expect_identical(nrow(x), 7L)
 
   skip("haven't adjusted points yet")
-  expect_snapshot_data(x, "tribchildpart")
+  expect_snapshot_data(x, "tribchildpartutms")
 })

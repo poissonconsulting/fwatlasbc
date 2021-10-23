@@ -58,7 +58,7 @@ swap_trib <- function(x, blk) {
 
   is_trib <- x$blk == blk & x$..fwa_trib
 
-  parent_rm <- as.integer(round(parent_rm))
+  parent_rm <- round_up(parent_rm)
 
   x$parent_rm[is_trib] <- parent_rm(x, parent_blk)
   x$parent_blk[is_trib] <- parent_blk(x, parent_blk)
@@ -75,7 +75,7 @@ swap_main <- function(x, blk) {
 
   is_main <- x$blk == parent_blk & x$rm >= parent_rm
 
-  parent_rm <- as.integer(round(parent_rm))
+  parent_rm <- round_up(parent_rm)
 
   x$parent_rm[is_main] <- parent_rm
   x$parent_blk[is_main] <- parent_blk
@@ -86,13 +86,21 @@ swap_main <- function(x, blk) {
   update_children_main(x, blk, parent_blk, parent_rm)
 }
 
-swap_branches <- function(x, blk) {
+# adjust_main <- function(blk) {
+#   is_new_main <- x$blk == blk & (x$rm == 0 | !..fwa_original)
+#   parent_rm <- parent_rm(x, blk, TRUE)
+#   current_rm <-
+#
+# }
+
+swap_branches <- function(x, blk, adjust_points) {
   chk_whole_number(blk) # +chk
 
   x <- x |>
     fwa_add_split_to_rms(data.frame(blk = blk, rm = 0, name = "..fwa_trib")) |>
     dplyr::mutate(..fwa_original = TRUE) |>
     swap_main(blk) |>
+#    adjust_main(blk, adjust_points) |>
     swap_trib(blk) |>
     dplyr::arrange(dplyr::desc(.data$..fwa_original)) |>
     dplyr::distinct(.data$blk, .data$rm, .keep_all = TRUE) |>
@@ -157,7 +165,7 @@ fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
     dplyr::mutate(..fwa_index = 1:n())
 
   for(blk in y$blk) {
-    x <- swap_branches(x, blk)
+    x <- swap_branches(x, blk, adjust_points)
   }
   x |>
     dplyr::arrange(.data$..fwa_index) |>
