@@ -12,8 +12,6 @@ add_collection_to_polygon <- function(x, collection, filter, limit, offset,
 
   polygon <- sf::st_geometry(x)
 
-  chk_s3_class(polygon, "sfc_POLYGON", x_name = "`x` active sfc column")
-
   bbox <- bbox(polygon)
 
   coll <- fwapgr::fwa_query_collection(collection,
@@ -75,6 +73,8 @@ fwa_add_collection_to_polygon <- function(x, collection = "stream_network",
                                             transform = NULL,
                                             epsg = getOption("fwa.epsg", 3005)) {
   chk_s3_class(x, "sf")
+  chk_s3_class(sf::st_geometry(x), "sfc_POLYGON")
+
   check_dim(x, nrow, TRUE)
   chk_string(collection)
   chk_logical(intersect)
