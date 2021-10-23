@@ -25,12 +25,12 @@ adjust_watershed <- function(wshed, x, epsg) {
 add_watershed_to_blk <- function(x, epsg) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
-  wshed <- try(fwa_watershed_at_measure(blue_line_key = x$blk,
+  wshed <- fwa_watershed_at_measure(blue_line_key = x$blk,
                                         downstream_route_measure = x$rm,
-                                        epsg = epsg), silent = TRUE)
+                                        epsg = epsg)
 
-  if(is_try_error(wshed) || !nrow(wshed)) {
-    abort_chk("Unable to retrieve fundamental watershed for blk ", x$blk,
+  if(!nrow(wshed)) {
+    abort_chk("Watershed undefined for blk ", x$blk,
               " at rm ", x$rm, " (try changing the rm).")
   }
 

@@ -30,7 +30,7 @@ test_that("fwa_add_watershed_to_blk exclude excludes", {
   expect_equal(as.numeric(sf::st_area(x)), 33609950.4141863)
 })
 
-test_that("fwa_add_watershed_to_blk useful when rm = 0 and doesn't work", {
+test_that("fwa_add_watershed_to_blk doesn't work when rm = 0 for 360883036 even with exclude", {
   chk::expect_chk_error(fwa_add_watershed_to_blk(data.frame(blk = 360883036), exclude = TRUE),
-                   "Unable to retrieve fundamental watershed for blk 360883036 at rm 0 \\(try changing the rm\\)")
+                   "Watershed undefined for blk 360883036 at rm 0 \\(try changing the rm\\)\\.$")
 })
