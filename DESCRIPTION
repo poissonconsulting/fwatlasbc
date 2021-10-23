@@ -23,6 +23,7 @@ Imports:
     units
 Suggests: 
     covr,
+    googleway,
     readr,
     rlang,
     testthat (>= 3.0.0)
