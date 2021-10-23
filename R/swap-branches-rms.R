@@ -85,11 +85,8 @@ swap_branches <- function(x, blk) {
 
   x |>
     fwa_add_split_to_rms(data.frame(blk = blk, rm = 0, name = "..fwa_trib")) |>
-    print() |>
     swap_main(blk) |>
-    print() |>
     swap_trib(blk) |>
-    print() |>
     dplyr::select(-.data$..fwa_trib)
 }
 
