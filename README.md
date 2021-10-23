@@ -70,7 +70,7 @@ the fish swims from the mouth of the river. The distance_to_lon_lat is
 the how far the original point was from the stream in meters.
 
 ``` r
-fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
+fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #> Simple feature collection with 1 feature and 5 fields
 #> Geometry type: POINT
 #> Dimension:     XY
@@ -82,8 +82,9 @@ fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #> 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)
 ```
 
-Get watershed for a blue line key and river meter (by default 0). If it
-errors try increasing the river meter.
+Get watershed (by aggregating fundamental watersheds) for a blue line
+key and river meter (by default 0). If it errors try increasing the
+river meter.
 
 ``` r
 wshed <- fwa_add_watershed_to_blk(blks)
@@ -104,7 +105,7 @@ original watershed while downstream/upstream_route_measure are the
 equivalents for the stream segment in the network.
 
 ``` r
-network <- fwa_add_collection_to_watershed(wshed, "stream_network")
+network <- fwa_add_collection_to_polygon(wshed, "stream_network")
 network
 #> Simple feature collection with 76 features and 31 fields
 #> Geometry type: LINESTRING
@@ -133,7 +134,7 @@ network
 #> #   waterbody_key <int>, watershed_code_50k <chr>, …
 ```
 
-Convert the stream network into a table blue line keys with regularly
+Convert the stream network into a table of blue line keys with regularly
 spaced river meters starting at 0.
 
 ``` r

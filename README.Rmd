@@ -62,7 +62,7 @@ The distance_to_lon_lat is the how far the original point was from the stream in
 fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 ```
 
-Get watershed for a blue line key and river meter (by default 0).
+Get watershed (by aggregating fundamental watersheds) for a blue line key and river meter (by default 0).
 If it errors try increasing the river meter.
 ```{r}
 wshed <- fwa_add_watershed_to_blk(blks)
@@ -76,7 +76,7 @@ network <- fwa_add_collection_to_polygon(wshed, "stream_network")
 network
 ```
 
-Convert the stream network into a table blue line keys with regularly spaced river meters starting at 0.
+Convert the stream network into a table of blue line keys with regularly spaced river meters starting at 0.
 ```{r}
 rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
 rms
