@@ -1,14 +1,16 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9005
+
+- Soft-deprecated `fwa_add_collection_to_watershed()` for `fwa_add_collection_to_polygon()`.
+- Change behaviour of `fwa_add_collection_to_watershed()` so copies blue_line_key to blk if present.
+- Added `fwa_add_split_to_rms()`.
+
+
 # fwatlasbc 0.0.1.9004
 
 - Added `fwa_convert_stream_network_to_rms()`.
 - Renamed `fwa_add_section_to_rm()` to `fwa_add_section_to_rms()`
-
-
-# fwatlasbc 0.0.1.9003
-
-- Added preliminary `fwa_add_stream_network_to_blk()`.
 
 
 # fwatlasbc 0.0.1.9002
@@ -22,7 +24,7 @@
 # fwatlasbc 0.0.1.9001
 
 - Switched column names to snake case.
-- In `fwa_add_rms_to_blk()` removed Z coordinate from returend geometry column and added as a numeric elevation column.
+- In `fwa_add_rms_to_blk()` removed Z coordinate from returned geometry column and added as a numeric elevation column.
 
 
 # fwatlasbc 0.0.1.9000
