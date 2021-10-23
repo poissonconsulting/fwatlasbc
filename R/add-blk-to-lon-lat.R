@@ -1,4 +1,4 @@
-add_rm_to_lon_lat <- function(x, limit, tolerance, epsg) {
+add_blk_to_lon_lat <- function(x, limit, tolerance, epsg) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
   rm <- fwapgr::fwa_index_point(x = x$lon, y = x$lat,
@@ -30,11 +30,11 @@ add_rm_to_lon_lat <- function(x, limit, tolerance, epsg) {
     sf::st_set_geometry("geometry")
 }
 
-#' Add River Meters to Longitude and Latitude
+#' Add Blue Line Key to Longitude and Latitude
 #'
-#' Adds numeric river meter (rm) and integer blue line key (blk) column
+#' Adds integer blue line key (blk) and numeric river meter (rm) column
 #' and sfc point (geometry) column
-#' of the closest point on the stream network (within 5 km)
+#' of the closest point on the stream network (by default within 5 km)
 #' to the point specified by the lon and lat (WGS84).
 #'
 #' If a match isn't found the row is dropped.
@@ -48,9 +48,9 @@ add_rm_to_lon_lat <- function(x, limit, tolerance, epsg) {
 #' @export
 #' @examples
 #' \dontrun{
-#' fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
+#' fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #' }
-fwa_add_rm_to_lon_lat <- function(x, tolerance = 5000, limit = 1,
+fwa_add_blk_to_lon_lat <- function(x, tolerance = 5000, limit = 1,
                                   epsg = getOption("fwa.epsg", 3005)) {
   check_data(x, values = list(lon = c(-180,180,NA), lat = c(-90,90,NA)))
   check_dim(x, dim = nrow, values = TRUE)
@@ -63,7 +63,7 @@ fwa_add_rm_to_lon_lat <- function(x, tolerance = 5000, limit = 1,
     dplyr::as_tibble() |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     dplyr::group_split(.data$..fwa_id) |>
-    lapply(add_rm_to_lon_lat, tolerance = tolerance, limit = limit, epsg = epsg) |>
+    lapply(add_blk_to_lon_lat, tolerance = tolerance, limit = limit, epsg = epsg) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::select(-.data$..fwa_id)

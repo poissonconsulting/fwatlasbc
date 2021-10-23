@@ -59,7 +59,7 @@ The river meter is the distance in meters as the fish swims from the mouth of th
 The distance_to_lon_lat is the how far the original point was from the stream in meters.
 
 ```{r}
-fwa_add_rm_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
+fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 ```
 
 Get watershed for a blue line key and river meter (by default 0).
