@@ -46,7 +46,7 @@
     <p>Swaps two branches of river meters.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_swap_branches_rms</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_swap_branches_rms</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, adjust_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 
     <div id="ref-sections">
     <div id="arguments">
@@ -56,6 +56,7 @@
 <dl><dt>x</dt><dd><p>A data frame with integer columns blk, rm, parent_blk and parent_rm.</p></dd>
 </dl><dl><dt>y</dt><dd><p>A data frame with integer column blk specifying the
 blue line key that currently begins at the confluence of the two branches.</p></dd>
+</dl><dl><dt>adjust_points</dt><dd><p>A flag specifying whether to adjust the coordinates of points which move.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
