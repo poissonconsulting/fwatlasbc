@@ -3,6 +3,16 @@ test_that("fwa_add_stream_names_to_blk works simple", {
   expect_identical(x, dplyr::tibble(blk = 360886335L, stream_name = "Aaltanhash River"))
 })
 
+test_that("fwa_add_stream_names_to_blk preserves sf", {
+  sf <- data.frame(blk = 360886335L, x = 1, y = 2) |>
+    sf::st_as_sf(coords = c("x", "y"), dim = "XY")
+
+  x <- fwa_add_stream_names_to_blk(sf)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "stream_name", "geometry"))
+  expect_snapshot_data(x, "add_stream_names_sf")
+})
+
 test_that("fwa_add_stream_names_to_blk works two streams same blk", {
   x <- fwa_add_stream_names_to_blk(data.frame(blk = 356235759))
   expect_identical(x, dplyr::tibble(blk = c(356235759, 356235759),
