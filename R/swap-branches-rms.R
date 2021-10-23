@@ -158,6 +158,8 @@ fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
   chk_unique(y$blk)
   chk_gt(y$blk)
 
+  check_key(x, c("blk", "rm"))
+
   if(!nrow(y)) return(x)
 
   missing <- setdiff(y$blk, x$blk)

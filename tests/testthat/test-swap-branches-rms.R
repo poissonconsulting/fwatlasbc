@@ -28,7 +28,7 @@ test_that("fwa_swap_branches_rms useful error message no points and adjust", {
                    "`x` must inherit from S3 class 'sf'\\.$")
 })
 
-test_that("fwa_swap_branches_rms errors unrooted trib", {
+test_that("fwa_swap_branches_rms useful error unrooted trib", {
 
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,
@@ -38,6 +38,20 @@ test_that("fwa_swap_branches_rms errors unrooted trib", {
 
   chk::expect_chk_error(fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE),
                         "^`blk` 2 from `x` is unrooted \\(missing rm == 0\\)\\.$")
+})
+
+
+test_that("fwa_swap_branches_rms useful error duplicates trib", {
+
+  rm <- dplyr::tribble(
+    ~blk, ~rm, ~parent_blk, ~parent_rm,
+    1,     0,    NA_integer_,   NA_integer_,
+    1,      1,    NA_integer_,   NA_integer_,
+    1,      1,    NA_integer_,   NA_integer_,
+    2,     0,    1,             1)
+
+  chk::expect_chk_error(fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE),
+                        "^Columns 'blk' and 'rm' in `x` must be a unique key\\.$")
 })
 
 test_that("fwa_swap_branches_rms works with a trib child", {
