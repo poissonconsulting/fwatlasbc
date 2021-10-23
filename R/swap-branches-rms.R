@@ -58,8 +58,6 @@ swap_trib <- function(x, blk) {
 
   is_trib <- x$blk == blk & x$..fwa_trib
 
-  parent_rm <- round_up(parent_rm)
-
   x$parent_rm[is_trib] <- parent_rm(x, parent_blk)
   x$parent_blk[is_trib] <- parent_blk(x, parent_blk)
   x$blk[is_trib] <- parent_blk
@@ -74,8 +72,6 @@ swap_main <- function(x, blk) {
   parent_rm <- parent_rm(x, blk, TRUE)
 
   is_main <- x$blk == parent_blk & x$rm >= parent_rm
-
-  parent_rm <- round_up(parent_rm)
 
   x$parent_rm[is_main] <- parent_rm
   x$parent_blk[is_main] <- parent_blk
@@ -102,6 +98,7 @@ swap_branches <- function(x, blk, adjust_points) {
     swap_main(blk) |>
 #    adjust_main(blk, adjust_points) |>
     swap_trib(blk) |>
+    dplyr::mutate(rm = round_up(.data$rm)) |>
     dplyr::arrange(dplyr::desc(.data$..fwa_original)) |>
     dplyr::distinct(.data$blk, .data$rm, .keep_all = TRUE) |>
     dplyr::arrange(.data$..fwa_index) |>
