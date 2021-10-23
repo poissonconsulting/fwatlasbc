@@ -72,7 +72,7 @@ wshed
 Get stream network for the watershed polygon.
 Note that rm is from the original watershed while downstream/upstream_route_measure are the equivalents for the stream segment in the network.
 ```{r}
-network <- fwa_add_collection_to_watershed(wshed, "stream_network")
+network <- fwa_add_collection_to_polygon(wshed, "stream_network")
 network
 ```
 

@@ -1,6 +1,6 @@
 test_that("fwa_convert_stream_network_to_rms", {
   watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
-  network <- fwa_add_collection_to_watershed(watershed)
+  network <- fwa_add_collection_to_polygon(watershed)
   x <- fwa_convert_stream_network_to_rms(network, interval = 100)
   expect_s3_class(x, "sf")
   expect_identical(nrow(x), 861L)

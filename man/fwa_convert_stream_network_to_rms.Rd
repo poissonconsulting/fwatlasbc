@@ -24,7 +24,7 @@ Convert Stream Network to River Meters
 \examples{
 \dontrun{
 watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
-network <- fwa_add_collection_to_watershed(watershed)
+network <- fwa_add_collection_to_polygon(watershed)
 fwa_convert_stream_network_to_rms(network, interval = 100)
 }
 }
