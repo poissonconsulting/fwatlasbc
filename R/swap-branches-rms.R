@@ -58,10 +58,13 @@ swap_trib <- function(x, blk) {
 
   is_trib <- x$blk == blk & x$..fwa_trib
 
+  parent_rm <- as.integer(round(parent_rm))
+
   x$parent_rm[is_trib] <- parent_rm(x, parent_blk)
   x$parent_blk[is_trib] <- parent_blk(x, parent_blk)
-  x$rm[is_trib] <- x$rm[is_trib] + parent_rm
   x$blk[is_trib] <- parent_blk
+  x$rm[is_trib] <- x$rm[is_trib] + parent_rm
+  x$..fwa_original[is_trib] <- FALSE
 
   update_children_trib(x, blk, parent_blk, parent_rm)
 }
@@ -72,10 +75,13 @@ swap_main <- function(x, blk) {
 
   is_main <- x$blk == parent_blk & x$rm >= parent_rm
 
+  parent_rm <- as.integer(round(parent_rm))
+
   x$parent_rm[is_main] <- parent_rm
   x$parent_blk[is_main] <- parent_blk
   x$blk[is_main] <- blk
   x$rm[is_main] <- x$rm[is_main] - parent_rm
+  x$..fwa_original[is_main] <- FALSE
 
   update_children_main(x, blk, parent_blk, parent_rm)
 }
@@ -83,11 +89,15 @@ swap_main <- function(x, blk) {
 swap_branches <- function(x, blk) {
   chk_whole_number(blk) # +chk
 
-  x |>
+  x <- x |>
     fwa_add_split_to_rms(data.frame(blk = blk, rm = 0, name = "..fwa_trib")) |>
+    dplyr::mutate(..fwa_original = TRUE) |>
     swap_main(blk) |>
     swap_trib(blk) |>
-    dplyr::select(-.data$..fwa_trib)
+    dplyr::arrange(dplyr::desc(.data$..fwa_original)) |>
+    dplyr::distinct(.data$blk, .data$rm, .keep_all = TRUE) |>
+    dplyr::arrange(.data$..fwa_index) |>
+    dplyr::select(-.data$..fwa_trib, -.data$..fwa_original)
 }
 
 #' Swap Branches of River Meters
@@ -104,7 +114,7 @@ fwa_swap_branches_rms <- function(x, y) {
   chk_data(y)
 
   check_names(x, c("blk", "rm", "parent_blk", "parent_rm"))
-  chk_not_subset(colnames(x), "..fwa_trib")
+  chk_not_subset(colnames(x), c("..fwa_index", "..fwa_trib", "..fwa_original"))
   check_names(y, "blk")
 
   chk_whole_numeric(x$blk)
@@ -134,8 +144,13 @@ fwa_swap_branches_rms <- function(x, y) {
               n = length(missing))
   }
 
+  x <- x |>
+    dplyr::mutate(..fwa_index = 1:n())
+
   for(blk in y$blk) {
     x <- swap_branches(x, blk)
   }
-  x
+  x |>
+    dplyr::arrange(.data$..fwa_index) |>
+    dplyr::select(-.data$..fwa_index)
 }

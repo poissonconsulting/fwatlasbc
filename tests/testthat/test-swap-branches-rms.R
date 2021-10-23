@@ -63,18 +63,16 @@ test_that("fwa_swap_branches_rms works with a trib child and part parent_rm", {
     1,     0,    NA_integer_,   NA_integer_,
     1,      1,    NA_integer_,   NA_integer_,
     1,      2,    NA_integer_,   NA_integer_,
-    2,     0,    1,             1.5,
-    2,     1,    1,             1.5,
-    2,     2,    1,             1.5,
-    3,     0,    2,             1.75,
-    3,     1,    2,             1.75)
+    1,      3,    NA_integer_,   NA_integer_,
+    2,     0,    1,             0.5,
+    2,     1,    1,             0.5,
+    2,     2,    1,             0.5)
 
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2))
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm"))
-  expect_identical(nrow(x), 8L)
+  expect_identical(nrow(x), 6L)
 
-  skip("need to move points to get whole rms!")
   expect_snapshot_data(x, "tribchildpart")
 })
 
