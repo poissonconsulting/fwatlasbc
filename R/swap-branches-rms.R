@@ -1,3 +1,7 @@
+is_rooted_blk <- function(x, blk) {
+  identical(as.numeric(min(x$rm[x$blk == blk])), 0)
+}
+
 parent_blk <- function(x, blk, defined = FALSE, trib = NA) {
   chk_whole_number(blk) # +chk
 
@@ -91,6 +95,10 @@ swap_main <- function(x, blk) {
 
 swap_branches <- function(x, blk, adjust_points) {
   chk_whole_number(blk) # +chk
+
+  if(!is_rooted_blk(x, blk)) {
+    abort_chk("`blk` ", blk, " from `x` is unrooted (missing rm == 0)")
+  }
 
   x <- x |>
     fwa_add_split_to_rms(data.frame(blk = blk, rm = 0, name = "..fwa_trib")) |>
