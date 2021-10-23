@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9007
+
+- Added `fwa_add_intersection_to_geometry()`.
+- Added `chunk_size` and `digits` arguments to `fwa_add_gm_elevation_to_point()`.
+- Added `fwa_add_gm_elevation_to_point()`.
+
+
 # fwatlasbc 0.0.1.9006
 
 - Renamed `fwa_add_rm_to_lon_lat()` to `fwa_add_blk_to_lon_lat()`.
