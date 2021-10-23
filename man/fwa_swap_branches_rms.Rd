@@ -4,13 +4,15 @@
 \alias{fwa_swap_branches_rms}
 \title{Swap Branches of River Meters}
 \usage{
-fwa_swap_branches_rms(x, y)
+fwa_swap_branches_rms(x, y, adjust_points = TRUE)
 }
 \arguments{
 \item{x}{A data frame with integer columns blk, rm, parent_blk and parent_rm.}
 
 \item{y}{A data frame with integer column blk specifying the
 blue line key that currently begins at the confluence of the two branches.}
+
+\item{adjust_points}{A flag specifying whether to adjust the coordinates of points which move.}
 }
 \value{
 A copy of x with the branches swapped.

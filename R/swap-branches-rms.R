@@ -107,11 +107,20 @@ swap_branches <- function(x, blk) {
 #' @param x A data frame with integer columns blk, rm, parent_blk and parent_rm.
 #' @param y A data frame with integer column blk specifying the
 #' blue line key that currently begins at the confluence of the two branches.
+#' @param adjust_points A flag specifying whether to adjust the coordinates of points which move.
 #' @return A copy of x with the branches swapped.
 #' @export
-fwa_swap_branches_rms <- function(x, y) {
+fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
   chk_data(x)
   chk_data(y)
+  chk_flag(adjust_points)
+  if(!(vld_false(adjust_points) | vld_s3_class(x, "sf"))) {
+    chkor_vld(vld_false(adjust_points), vld_s3_class(x, "sf"))
+  }
+
+  if(vld_s3_class(x, "sf")) {
+    chk_s3_class(sf::st_geometry(x), "sfc_POINT")
+  }
 
   check_names(x, c("blk", "rm", "parent_blk", "parent_rm"))
   chk_not_subset(colnames(x), c("..fwa_index", "..fwa_trib", "..fwa_original"))
