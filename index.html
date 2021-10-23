@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">fwatlasbc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9006</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
 <span class="va">blks</span> <span class="op">&lt;-</span> <span class="va">blks</span><span class="op">[</span><span class="va">blks</span><span class="op">$</span><span class="va">blk</span> <span class="op">==</span> <span class="fl">356534225</span>,<span class="op">]</span></code></pre></div>
 <p>Alternatively get the nearest blue line key and river meter (rm) from the longitude and latitude. The river meter is the distance in meters as the fish swims from the mouth of the river. The distance_to_lon_lat is the how far the original point was from the stream in meters.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/fwa_add_rm_to_lon_lat.html">fwa_add_rm_to_lon_lat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="op">-</span><span class="fl">132.26</span>, lat <span class="op">=</span> <span class="fl">53.36</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">fwa_add_rm_to_lon_lat</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="op">-</span><span class="fl">132.26</span>, lat <span class="op">=</span> <span class="fl">53.36</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Simple feature collection with 1 feature and 5 fields</span>
 <span class="co">#&gt; Geometry type: POINT</span>
 <span class="co">#&gt; Dimension:     XY</span>
