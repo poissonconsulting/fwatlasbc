@@ -13,26 +13,22 @@ thin_points <- function(x, npoint) {
     dplyr::mutate(..fwa_p = .data$..fwa_n / sum(.data$..fwa_n),
                   ..fwa_np = .data$..fwa_p * npoint,
                   ..fwa_np = ceiling(.data$..fwa_np),
-                  ..fwa_np = max(.data$..fwa_np, 2L),
-                  ..fwa_np = min(.data$..fwa_np, .data$..fwa_n)) |>
-    dplyr::select(.data$blk, .data$..fwa_np) |>
+                  ..fwa_np = pmax(.data$..fwa_np, 2L)) |>
     dplyr::inner_join(x, by = "blk") |>
     dplyr::group_by(.data$blk) |>
+    dplyr::mutate(..fwa_np = pmin(.data$..fwa_np, .data$..fwa_n)) |>
     dplyr::slice(round_up(seq(1, n(), length.out = .data$..fwa_np[1]))) |>
     dplyr::ungroup() |>
-    dplyr::select(-.data$..fwa_np) |>
+    dplyr::select(-.data$..fwa_n, -.data$..fwa_p, -.data$..fwa_np) |>
     sf::st_as_sf()
 }
 
 #' Map View River Meters
 #'
 #' @param x An sf data frame with unique integer columns blk and rm.
+#' @param zcol A string of the column to color points by.
+#' @param npoint An indication of the total number of points to plot.
 #' @export
-#' @examples
-#' \dontrun {
-#' x <- fwa_add_rms_to_blk(data.frame(blk = 356308001))i
-#' mapview(x)
-#' }
 fwa_mapview_rms <- function(x, zcol = "rm", npoint = 500) {
 
   if(!requireNamespace("mapview", quietly = TRUE)) {

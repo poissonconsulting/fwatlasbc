@@ -8,13 +8,11 @@ fwa_mapview_rms(x, zcol = "rm", npoint = 500)
 }
 \arguments{
 \item{x}{An sf data frame with unique integer columns blk and rm.}
+
+\item{zcol}{A string of the column to color points by.}
+
+\item{npoint}{An indication of the total number of points to plot.}
 }
 \description{
 Map View River Meters
-}
-\examples{
-\dontrun {
-x <- fwa_add_rms_to_blk(data.frame(blk = 356308001))i
-mapview(x)
-}
 }
