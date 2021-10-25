@@ -24,6 +24,7 @@ Imports:
 Suggests: 
     covr,
     googleway,
+    mapview,
     readr,
     rlang,
     testthat (>= 3.0.0)
