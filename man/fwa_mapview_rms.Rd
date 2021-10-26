@@ -4,12 +4,16 @@
 \alias{fwa_mapview_rms}
 \title{Map View River Meters}
 \usage{
-fwa_mapview_rms(x, zcol = "rm", npoint = 500)
+fwa_mapview_rms(x, layer = "blk", zcol = "rm", legend = FALSE, npoint = 250)
 }
 \arguments{
 \item{x}{An sf data frame with unique integer columns blk and rm.}
 
+\item{layer}{A string of the column to layer the points by.}
+
 \item{zcol}{A string of the column to color points by.}
+
+\item{legend}{A flag specifying whether to plot a legend.}
 
 \item{npoint}{An indication of the total number of points to plot.}
 }

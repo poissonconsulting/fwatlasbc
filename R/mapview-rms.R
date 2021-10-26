@@ -27,9 +27,11 @@ thin_points <- function(x, npoint) {
 #'
 #' @param x An sf data frame with unique integer columns blk and rm.
 #' @param zcol A string of the column to color points by.
+#' @param layer A string of the column to layer the points by.
+#' @param legend A flag specifying whether to plot a legend.
 #' @param npoint An indication of the total number of points to plot.
 #' @export
-fwa_mapview_rms <- function(x, zcol = "rm", npoint = 500) {
+fwa_mapview_rms <- function(x, layer = "blk", zcol = "rm", legend = FALSE, npoint = 250) {
 
   if(!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")
@@ -39,10 +41,18 @@ fwa_mapview_rms <- function(x, zcol = "rm", npoint = 500) {
   chk_s3_class(sf::st_geometry(x), "sfc_POINT")
   check_names(x, c("blk", "rm"))
   chk_not_subset(colnames(x), c("..fwa_n", "..fwa_p", "..fwa_np"))
-  chk_string(zcol)
+  chk_null_or(zcol, vld = vld_string)
+  chk_null_or(layer, vld = vld_string)
+  chk_flag(legend)
   chk_whole_number(npoint)
   chk_gt(npoint)
 
+  if(!is.null(layer)) {
+    check_names(x, layer)
+  }
+  if(!is.null(zcol)) {
+    check_names(x, zcol)
+  }
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -55,5 +65,11 @@ fwa_mapview_rms <- function(x, zcol = "rm", npoint = 500) {
   check_key(x, c("blk", "rm"))
 
   x <- thin_points(x, npoint)
-  mapview::mapview(x, zcol = zcol)
+
+  if(!is.null(layer)) {
+    x <- x |>
+      split(x[[layer]], drop = TRUE)
+  }
+
+  mapview::mapview(x, zcol = zcol, legend = legend)
 }
