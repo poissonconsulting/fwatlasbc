@@ -41,3 +41,9 @@ test_that("fwa_add_blks_to_stream_name works mix multiple, missing and order ", 
 test_that("fwa_add_blks_to_stream_name errors existing blk", {
   expect_error(fwa_add_blks_to_stream_name(data.frame(stream_name = "Sangan River", blk = 1L)))
 })
+
+test_that("fwa_add_blks_to_stream_name works custom", {
+  x <- fwa_add_blks_to_stream_name(data.frame(stream_name = "A Creek"),
+                                   data.frame(blk = 356235759, stream_name = "A Creek"))
+  expect_identical(x, dplyr::tibble(stream_name = "A Creek", blk = 356235759))
+})

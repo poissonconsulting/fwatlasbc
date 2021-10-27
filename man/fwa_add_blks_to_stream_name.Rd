@@ -4,10 +4,12 @@
 \alias{fwa_add_blks_to_stream_name}
 \title{Add Blue Line Key(s) to Stream Name}
 \usage{
-fwa_add_blks_to_stream_name(x)
+fwa_add_blks_to_stream_name(x, stream_name = fwatlasbc::fwa_stream_name)
 }
 \arguments{
 \item{x}{A data frame with character column stream_name.}
+
+\item{stream_name}{A data frame with whole numeric column blk and character column stream_name.}
 }
 \value{
 A tibble with the columns of x plus an integer column blk.
