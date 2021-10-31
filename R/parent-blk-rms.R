@@ -1,9 +1,10 @@
-#' Gets Parent Blue Line Key
+#' Parent Blue Line Key
 #'
 #' Gets parent blue line key.
 #'
 #' @param x A whole numeric vector of one or more blue line keys.
-#' @param rms A data frame with integer columns blk, rm, parent_blk and parent_rm.
+#' @param rms A data frame with integer columns blk and parent_blk.
+#' There must be only one parent_blk for each blk.
 #' @return A whole numeric vector of the parent blue line keys.
 #' @export
 fwa_parent_blk_rms <- function(x, rms) {
@@ -22,7 +23,9 @@ fwa_parent_blk_rms <- function(x, rms) {
   rms <- rms |>
     dplyr::distinct(.data$blk, .data$parent_blk)
 
-  check_key(rms, c("blk", "parent_blk"))
+  if(anyDuplicated(rms$blk)) {
+    abort_chk("Each blk in `rms` must have one parent_blk value.")
+  }
 
   if(!length(x)) return(integer(0))
   if(!nrow(rms)) return(rep(NA_integer_, length(x)))

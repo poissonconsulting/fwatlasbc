@@ -2,14 +2,15 @@
 % Please edit documentation in R/parent-blk-rms.R
 \name{fwa_parent_blk_rms}
 \alias{fwa_parent_blk_rms}
-\title{Gets Parent Blue Line Key}
+\title{Parent Blue Line Key}
 \usage{
 fwa_parent_blk_rms(x, rms)
 }
 \arguments{
 \item{x}{A whole numeric vector of one or more blue line keys.}
 
-\item{rms}{A data frame with integer columns blk, rm, parent_blk and parent_rm.}
+\item{rms}{A data frame with integer columns blk and parent_blk.
+There must be only one parent_blk for each blk.}
 }
 \value{
 A whole numeric vector of the parent blue line keys.
