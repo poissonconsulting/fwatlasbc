@@ -132,6 +132,5 @@ test_that("fwa_swap_branches_rms works with a trib child and part parent_rm and 
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm", "geometry"))
   expect_identical(nrow(x), 6L)
 
-  skip("haven't adjusted points yet")
   expect_snapshot_data(x, "tribchildpartutms")
 })

@@ -19,6 +19,7 @@ Imports:
     glue,
     lifecycle,
     sf,
+    stats,
     stringr,
     units
 Suggests: 

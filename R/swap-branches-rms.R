@@ -157,7 +157,6 @@ swap_branches <- function(x, blk, adjust_points) {
     dplyr::mutate(rm = round_up(.data$rm)) |>
     dplyr::arrange(dplyr::desc(.data$..fwa_original)) |>
     dplyr::distinct(.data$blk, .data$rm, .keep_all = TRUE) |>
-    dplyr::arrange(.data$..fwa_index) |>
     dplyr::select(-.data$..fwa_trib, -.data$..fwa_original)
 }
 
@@ -184,7 +183,7 @@ fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
   }
 
   check_names(x, c("blk", "rm", "parent_blk", "parent_rm"))
-  chk_not_subset(colnames(x), c("..fwa_index", "..fwa_trib", "..fwa_original"))
+  chk_not_subset(colnames(x), c("..fwa_trib", "..fwa_original"))
   check_names(y, "blk")
 
   chk_whole_numeric(x$blk)
@@ -216,13 +215,9 @@ fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
               n = length(missing))
   }
 
-  x <- x |>
-    dplyr::mutate(..fwa_index = 1:n())
-
   for(blk in y$blk) {
     x <- swap_branches(x, blk, adjust_points)
   }
   x |>
-    dplyr::arrange(.data$..fwa_index) |>
-    dplyr::select(-.data$..fwa_index)
+    dplyr::arrange(.data$blk, .data$rm)
 }
