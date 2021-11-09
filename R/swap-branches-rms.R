@@ -94,32 +94,51 @@ swap_main <- function(x, blk) {
   update_children_main(x, blk, parent_blk, parent_rm)
 }
 
-adjust_points_blk <- function(x, blk, interval) {
+adjust_points_blk <- function(x, blk) {
   y <- x[x$blk == blk,]
-  x <- x[x$blk != blk,]
-#
-#   print(blk)
-#   print(x)
-#   print(y)
+  if(nrow(y) < 2) return(x)
 
   range <- range(y$rm)
+  interval <- max(diff(sort(y$rm)))
   seq <- seq(0, range[2], by = interval)
   seq <- seq[seq >= range[1] & seq <= range[2]]
+
   if(!length(seq)) return(x)
+
+  x <- x[x$blk != blk,]
 
   y <- y |>
     dplyr::arrange(rm)
 
+  coordinates <- sf::st_coordinates(y) |>
+    dplyr::as_tibble() |>
+    mutate(rm = y$rm)
+
+  new_y <- y |>
+    dplyr::slice(rep(1L, length(seq))) |>
+    dplyr::mutate(rm = seq)
+
+  X <- approx(coordinates$rm, coordinates$X, new_y$rm)$y
+  Y <- approx(coordinates$rm, coordinates$Y, new_y$rm)$y
+
+  sfc <- matrix(c(X, Y), ncol = 2) |>
+    sf::st_multipoint(dim = "XY") |>
+    sf::st_sfc(crs = sf::st_crs(y)) |>
+    sf::st_cast("POINT")
+
+  new_y <- new_y |>
+    sf::st_set_geometry(sfc)
+
   x |>
-    dplyr::bind_rows(y)
+    dplyr::bind_rows(new_y)
 }
 
 adjust_points <- function(x, blk, adjust_points) {
   if(!adjust_points) return(x)
   parent_blk <- parent_blk(x, blk, TRUE)
   x |>
-    adjust_points_blk(blk, interval = 5) |>
-    adjust_points_blk(parent_blk, interval = 5)
+    adjust_points_blk(blk) |>
+    adjust_points_blk(parent_blk)
 }
 
 swap_branches <- function(x, blk, adjust_points) {
