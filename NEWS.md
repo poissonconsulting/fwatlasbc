@@ -1,5 +1,15 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9008
+
+- Added `swap_branches_rms()`.
+- Added `fwa_parent_stream_name_rms()`.
+- Added `fwa_parent_blk_rms()`.
+- Added `stream_name = fwatlasbc:fwa_stream_name` argument to `fwa_add_blks_to_stream_name()`.
+- Added `fwa_mapview_rms()`.
+- Added `fwa_swap_branches_rms()`.
+
+
 # fwatlasbc 0.0.1.9007
 
 - Added `fwa_add_intersection_to_geometry()`.
