@@ -127,7 +127,6 @@ test_that("fwa_swap_branches_rms works with a trib child and part parent_rm and 
     2,     2,    1,             0.5,          0.5, 2) |>
     sf::st_as_sf(coords = c("x", "y"), dim = "XY")
 
-
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2))
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm", "geometry"))

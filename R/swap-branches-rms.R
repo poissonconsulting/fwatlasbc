@@ -94,9 +94,32 @@ swap_main <- function(x, blk) {
   update_children_main(x, blk, parent_blk, parent_rm)
 }
 
+adjust_points_blk <- function(x, blk, interval) {
+  y <- x[x$blk == blk,]
+  x <- x[x$blk != blk,]
+#
+#   print(blk)
+#   print(x)
+#   print(y)
+
+  range <- range(y$rm)
+  seq <- seq(0, range[2], by = interval)
+  seq <- seq[seq >= range[1] & seq <= range[2]]
+  if(!length(seq)) return(x)
+
+  y <- y |>
+    dplyr::arrange(rm)
+
+  x |>
+    dplyr::bind_rows(y)
+}
+
 adjust_points <- function(x, blk, adjust_points) {
   if(!adjust_points) return(x)
-  x
+  parent_blk <- parent_blk(x, blk, TRUE)
+  x |>
+    adjust_points_blk(blk, interval = 5) |>
+    adjust_points_blk(parent_blk, interval = 5)
 }
 
 swap_branches <- function(x, blk, adjust_points) {
@@ -111,9 +134,7 @@ swap_branches <- function(x, blk, adjust_points) {
     dplyr::mutate(..fwa_original = TRUE) |>
     swap_main(blk) |>
     swap_trib(blk) |>
-#    print() |>
     adjust_points(blk, adjust_points) |>
-#    print() |>
     dplyr::mutate(rm = round_up(.data$rm)) |>
     dplyr::arrange(dplyr::desc(.data$..fwa_original)) |>
     dplyr::distinct(.data$blk, .data$rm, .keep_all = TRUE) |>
