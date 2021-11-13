@@ -52,7 +52,7 @@ fwa_add_gm_elevation_to_point <- function(x, chunk_size = 300L, digits = 7,
   x$..fwa_chunk <- 1:nrow(x) %/% chunk_size
 
   x |>
-    dplyr::group_split(.data$..fwa_chunk) |>
+    group_split_sf(.data$..fwa_chunk) |>
     lapply(add_gm_elevation_to_point, digits = digits, key = key) |>
      dplyr::bind_rows() |>
      dplyr::select(-.data$..fwa_chunk)

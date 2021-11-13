@@ -62,7 +62,7 @@ fwa_add_blk_to_lon_lat <- function(x, tolerance = 5000, limit = 1,
   x |>
     dplyr::as_tibble() |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
-    dplyr::group_split(.data$..fwa_id) |>
+    group_split_sf(.data$..fwa_id) |>
     lapply(add_blk_to_lon_lat, tolerance = tolerance, limit = limit, epsg = epsg) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>

@@ -74,7 +74,7 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
                   ..fwa_start = start,
                   ..fwa_end = end,
                   ..fwa_id = 1:dplyr::n()) |>
-    dplyr::group_split(.data$blk) |>
+    group_split_sf(.data$blk) |>
     lapply(add_rms_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id, .data$rm) |>

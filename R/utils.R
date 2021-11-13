@@ -1,3 +1,17 @@
+group_split_sf <- function(.tbl, ..., .keep = TRUE) {
+  is_sf <- inherits(.tbl, "sf")
+
+  if(is_sf) {
+    sf_column_name <- attr(.tbl, "sf_column")
+  }
+  x <- dplyr::group_split(.tbl, ..., .keep = .keep)
+  if(is_sf) {
+    x <- x |>
+      lapply(sf::st_sf, sf_column_name = sf_column_name)
+  }
+  x
+}
+
 # https://stackoverflow.com/questions/43627679/round-any-equivalent-for-dplyr
 round_any <- function(x, accuracy, f = round) {
   f(x/ accuracy) * accuracy

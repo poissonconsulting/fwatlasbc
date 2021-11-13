@@ -62,11 +62,9 @@ fwa_snap_rm_to_point <- function(x, rm) {
     return(x)
   }
 
-  sf_column_name <- attr(x, "sf_column")
   x |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
-    dplyr::group_split(.data$blk) |>
-    lapply(sf::st_sf, sf_column_name = sf_column_name) |>
+    group_split_sf(.data$blk) |>
     lapply(snap_rm_to_point, rm = rm) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>

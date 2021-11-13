@@ -86,7 +86,7 @@ fwa_add_collection_to_polygon <- function(x, collection = "stream_network",
   x <- x |>
     dplyr::mutate(..fwa_id = 1:dplyr::n(),
                   ..fwa_intersect = intersect) |>
-    dplyr::group_split(.data$..fwa_id) |>
+    group_split_sf(.data$..fwa_id) |>
     lapply(add_collection_to_polygon, collection = collection,
            filter = filter, limit = limit,
            offset = offset, properties = properties, transform = transform,

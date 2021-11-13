@@ -85,7 +85,7 @@ fwa_add_watershed_to_blk <- function(x,
     dplyr::as_tibble() |>
     dplyr::mutate(..fwa_exclude = exclude,
                   ..fwa_id = 1:dplyr::n()) |>
-    dplyr::group_split(.data$blk) |>
+    group_split_sf(.data$blk) |>
     lapply(add_watershed_to_blk, epsg = epsg) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
