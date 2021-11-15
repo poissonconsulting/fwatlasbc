@@ -15,7 +15,7 @@ Depends:
 Imports: 
     chk (>= 0.7.0.9002),
     dplyr,
-    fwapgr (>= 0.1.0.9009),
+    fwapgr (>= 0.1.0.9011),
     glue,
     lifecycle,
     sf,
