@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9010
+
+- Switch to new fwapgr endpoint.
+
+
 # fwatlasbc 0.0.1.9009
 
 - Fixed internal `group_split()` so that active geometry preserved.
