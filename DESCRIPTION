@@ -21,10 +21,12 @@ Imports:
     sf,
     stats,
     stringr,
+    tidyselect,
     units
 Suggests: 
     covr,
     googleway,
+    hms,
     mapview,
     readr,
     rlang,
