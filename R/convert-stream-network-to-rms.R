@@ -17,11 +17,11 @@ add_parent_blk_rm <- function(x) {
   parent <- x |>
     dplyr::as_tibble() |>
     dplyr::filter(!str_detect(.data$fwa_watershed_code, "^999")) |>
-    dplyr::filter(.data$stream_order > 1L) |>
     dplyr::mutate(fwa_watershed_code = strip_trailing_0s(.data$fwa_watershed_code)) |>
     dplyr::group_by(.data$blue_line_key, .data$fwa_watershed_code) |>
     dplyr::summarise(min_rm = min(.data$upstream_route_measure),
-                     max_rm = max(.data$upstream_route_measure)) |>
+                     max_rm = max(.data$upstream_route_measure),
+                     max_stream_order = max(.data$stream_order)) |>
     dplyr::ungroup() |>
     dplyr::filter(.data$min_rm != 0)
 
@@ -36,7 +36,12 @@ add_parent_blk_rm <- function(x) {
       parent_code = get_parent_code(.data$fwa_watershed_code),
       parent_proportion = get_parent_proportion(.data$fwa_watershed_code)) |>
     dplyr::select(
-      child_blk = .data$blue_line_key, .data$parent_code, .data$parent_proportion) |>
+      child_blk = .data$blue_line_key, .data$parent_code, .data$parent_proportion)
+
+  parent <- parent |>
+    dplyr::filter(.data$max_stream_order > 1)
+
+  child <- child |>
     dplyr::inner_join(parent, by = c(parent_code = "fwa_watershed_code")) |>
     dplyr::mutate(parent_rm = .data$parent_proportion * .data$max_rm) |>
     dplyr::select(blue_line_key = .data$child_blk, parent_blk = .data$blue_line_key, .data$parent_rm)
