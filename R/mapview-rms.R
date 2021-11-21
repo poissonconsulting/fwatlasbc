@@ -31,7 +31,7 @@ thin_points <- function(x, npoint) {
 #' @param legend A flag specifying whether to plot a legend.
 #' @param npoint An indication of the total number of points to plot.
 #' @export
-fwa_mapview_rms <- function(x, layer = "blk", zcol = "rm", legend = FALSE, npoint = 250) {
+fwa_mapview_rms <- function(x, layer = NULL, zcol = "rm", legend = FALSE, npoint = 250) {
 
   if(!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")

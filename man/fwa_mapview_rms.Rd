@@ -4,7 +4,7 @@
 \alias{fwa_mapview_rms}
 \title{Map View River Meters}
 \usage{
-fwa_mapview_rms(x, layer = "blk", zcol = "rm", legend = FALSE, npoint = 250)
+fwa_mapview_rms(x, layer = NULL, zcol = "rm", legend = FALSE, npoint = 250)
 }
 \arguments{
 \item{x}{An sf data frame with unique integer columns blk and rm.}
