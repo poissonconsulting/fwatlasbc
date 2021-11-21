@@ -17,6 +17,7 @@ add_parent_blk_rm <- function(x) {
   parent <- x |>
     dplyr::as_tibble() |>
     dplyr::filter(!str_detect(.data$fwa_watershed_code, "^999")) |>
+    dplyr::filter(.data$stream_order > 1L) |>
     dplyr::mutate(fwa_watershed_code = strip_trailing_0s(.data$fwa_watershed_code)) |>
     dplyr::group_by(.data$blue_line_key, .data$fwa_watershed_code) |>
     dplyr::summarise(min_rm = min(.data$upstream_route_measure),
@@ -142,5 +143,6 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
     lapply(convert_stream_segment_to_rms, interval = interval) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$blk, .data$rm) |>
+    chk::check_key(c("blk", "rm"), x_name = "`rms` constructed from `x`") |>
     dplyr::select(-.data$..fwa_id)
 }
