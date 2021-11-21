@@ -4,7 +4,7 @@
 \alias{fwa_mapview}
 \title{Map View}
 \usage{
-fwa_mapview(x, layer = NULL, zcol = "rm", legend = FALSE, ...)
+fwa_mapview(x, layer = NULL, zcol = NULL, legend = FALSE, ...)
 }
 \arguments{
 \item{x}{An sf data frame.}

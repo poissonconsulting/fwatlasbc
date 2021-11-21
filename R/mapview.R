@@ -9,7 +9,7 @@
 #' @param legend A flag specifying whether to plot a legend.
 #' @param ... Additional arguments passed to `mapview::mapview()`.
 #' @export
-fwa_mapview <- function(x, layer = NULL, zcol = "rm", legend = FALSE, ...) {
+fwa_mapview <- function(x, layer = NULL, zcol = NULL, legend = FALSE, ...) {
 
   if(!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")
