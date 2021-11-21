@@ -4,12 +4,16 @@
 \alias{fwa_mapview}
 \title{Map View}
 \usage{
-fwa_mapview(x, layer = NULL, ...)
+fwa_mapview(x, layer = NULL, zcol = "rm", legend = FALSE, ...)
 }
 \arguments{
 \item{x}{An sf data frame.}
 
 \item{layer}{A string of the column to layer the points by.}
+
+\item{zcol}{A string of the column to color points by.}
+
+\item{legend}{A flag specifying whether to plot a legend.}
 
 \item{...}{Additional arguments passed to \code{mapview::mapview()}.}
 }

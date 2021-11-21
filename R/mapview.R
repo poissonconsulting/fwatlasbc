@@ -4,10 +4,12 @@
 #' and coerces hms columns to character (to avoid being dropped).
 #'
 #' @param x An sf data frame.
+#' @param zcol A string of the column to color points by.
 #' @param layer A string of the column to layer the points by.
+#' @param legend A flag specifying whether to plot a legend.
 #' @param ... Additional arguments passed to `mapview::mapview()`.
 #' @export
-fwa_mapview <- function(x, layer = NULL, ...) {
+fwa_mapview <- function(x, layer = NULL, zcol = "rm", legend = FALSE, ...) {
 
   if(!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")
@@ -28,5 +30,5 @@ fwa_mapview <- function(x, layer = NULL, ...) {
       split(x[[layer]], drop = TRUE)
   }
 
-  mapview::mapview(x, ...)
+  mapview::mapview(x, zcol = zcol, legend = legend, ...)
 }

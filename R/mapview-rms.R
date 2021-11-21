@@ -26,12 +26,11 @@ thin_points <- function(x, npoint) {
 #' Map View River Meters
 #'
 #' @param x An sf data frame with unique integer columns blk and rm.
-#' @param zcol A string of the column to color points by.
-#' @param layer A string of the column to layer the points by.
-#' @param legend A flag specifying whether to plot a legend.
 #' @param npoint An indication of the total number of points to plot.
+#' @inheritParams fwa_mapview
 #' @export
-fwa_mapview_rms <- function(x, layer = NULL, zcol = "rm", legend = FALSE, npoint = 250) {
+fwa_mapview_rms <- function(x, layer = NULL, zcol = "rm", legend = FALSE, npoint = 250,
+                            ...) {
 
   if(!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")
@@ -66,10 +65,5 @@ fwa_mapview_rms <- function(x, layer = NULL, zcol = "rm", legend = FALSE, npoint
 
   x <- thin_points(x, npoint)
 
-  if(!is.null(layer)) {
-    x <- x |>
-      split(x[[layer]], drop = TRUE)
-  }
-
-  mapview::mapview(x, zcol = zcol, legend = legend)
+  fwa_mapview(x, layer = layer, zcol = zcol, legend = legend, ...)
 }
