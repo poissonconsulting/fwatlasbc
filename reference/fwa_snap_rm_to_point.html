@@ -50,25 +50,26 @@ If the blue line key (blk) is missing then it is also assigned
 together with the distance to the river meter (distance_to_rm) in m.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_snap_rm_to_point</span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_snap_rm_to_point</span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span>, <span class="va">...</span><span class="op">)</span></code></pre></div></div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>An sf object of spatial points with optional integer column blk.</p></dd>
 <dt>rm</dt>
 <dd><p>An sf object of spatial point with blk and rm columns.</p></dd>
+<dt>...</dt>
+<dd><p>Additional columns to group by when assigning.
+Elements with missing values in rm are assigned to any value in x.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>An updated version of x with integer columns blk and rm and numeric column distance_to_rm.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"><span class="va">rm</span> <span class="op">&lt;-</span> <span class="fu">fwa_rm</span><span class="op">(</span>blue_line_key <span class="op">=</span> <span class="fl">356308001</span>, interval <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">fwa_snap_rm_to_point</span><span class="op">(</span><span class="va">rm</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>,<span class="op">]</span>, <span class="va">rm</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>

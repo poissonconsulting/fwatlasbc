@@ -52,14 +52,13 @@ of the closest point on the stream network (by default within 5 km)
 to the point specified by the lon and lat (WGS84).</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_add_blk_to_lon_lat</span><span class="op">(</span>
+    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fwa_add_blk_to_lon_lat</span><span class="op">(</span>
   <span class="va">x</span>,
   tolerance <span class="op">=</span> <span class="fl">5000</span>,
   limit <span class="op">=</span> <span class="fl">1</span>,
   epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<span class="op">)</span></code></pre></div></div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
@@ -81,11 +80,10 @@ real columns rm and distance_to_lon_lat and sfc point column geometry</p>
     <h2>Details</h2>
     <p>If a match isn't found the row is dropped.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"><span class="fu">fwa_add_blk_to_lon_lat</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="op">-</span><span class="fl">132.26</span>, lat <span class="op">=</span> <span class="fl">53.36</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
