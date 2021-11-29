@@ -173,3 +173,25 @@ test_that("fwa_snap_rm_to_point works segment missing value x and rm", {
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
+test_that("fwa_snap_rm_to_point works segment missing value x and rm", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+  rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+  x$section <- c(1L, 1L, 3L, 2L, 2L)
+  rm$section <- c(2L, 2L, 2L, 2L, 2L, 2L)
+  x$blk[1:3] <- NA_integer_
+  rm2 <- rm[1:2,]
+  rm2$blk <- 2L
+  rm2$section <- c(1L, 1L)
+  rm <- dplyr::bind_rows(rm, rm2)
+
+  x <- fwa_snap_rm_to_point(x, rm, section)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry", "section"))
+  expect_equal(x$blk, c(2, 2, NA, 356308001, 356308001))
+  expect_equal(x$rm, c(1000L, 3000L, NA, 4000L, 8000L))
+  expect_equal(x$distance_to_rm, c(873.50885850392, 535.63765010454, NA, 610.731097004499,
+                                   514.952511361304))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
