@@ -24,6 +24,7 @@ test_that("fwa_snap_rm_to_point handles different projection", {
   expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry"))
   expect_equal(x$blk, rep(356308001, 5))
   expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
+  skip_on_os("linux")
   expect_equal(x$distance_to_rm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
                                    514.952511361304))
   expect_s3_class(x$geometry, "sfc_POINT")
