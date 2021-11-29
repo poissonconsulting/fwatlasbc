@@ -41,3 +41,7 @@ divide_by <- function(x, y) {
 same_crs <- function(x, y) {
   sf::st_transform(x, crs = sf::st_crs(y))
 }
+
+has_name <- function(x, name) {
+  name %in% names(x)
+}

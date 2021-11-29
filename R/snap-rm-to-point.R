@@ -67,7 +67,7 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(rm, "sf")
 
-  if(is.null(x$blk)) x$blk <- NA_integer_
+  if(!has_name(x, "blk")) x$blk <- NA_integer_
 
   chk_whole_numeric(x$blk)
   chk_gt(x$blk)
