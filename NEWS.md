@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9011
+
+- Added `fwa_mapview()`.
+- `fwa_convert_stream_network_to_rms()` now excludes channels with a stream order of 1 from being parents.
+- Added `...` argument to `fwa_snap_rm_to_point()` to allow assignment by additional columns.
+
+
 # fwatlasbc 0.0.1.9010
 
 - Switch to new fwapgr endpoint.
