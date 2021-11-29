@@ -4,12 +4,15 @@
 \alias{fwa_snap_rm_to_point}
 \title{Snap River Meter to Point}
 \usage{
-fwa_snap_rm_to_point(x, rm)
+fwa_snap_rm_to_point(x, rm, ...)
 }
 \arguments{
 \item{x}{An sf object of spatial points with optional integer column blk.}
 
 \item{rm}{An sf object of spatial point with blk and rm columns.}
+
+\item{...}{Additional columns to group by when assigning.
+Elements with missing values in rm are assigned to any value in x.}
 }
 \value{
 An updated version of x with integer columns blk and rm and numeric column distance_to_rm.

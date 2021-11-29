@@ -82,3 +82,94 @@ test_that("fwa_snap_rm_to_point works active geometry geometry2", {
   expect_equal(x$distance_to_rm, c(0, 0, 0, 0, 0))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
+
+test_that("fwa_snap_rm_to_point works segment", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+  rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+  x$section <- c(2L, 1L, 2L, 2L, 3L)
+  rm$section <- c(1L, 1L, 2L, 3L, 3L, 3L)
+
+  x <- fwa_snap_rm_to_point(x, rm, section)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry", "section"))
+  expect_equal(x$blk, rep(356308001, 5))
+  expect_equal(x$rm, c(4000, 3000, 4000, 4000, 8000))
+  expect_equal(x$distance_to_rm, c(2954.89069472597, 535.63765010454, 754.230245890789, 610.731097004499,
+                                   514.952511361304))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
+test_that("fwa_snap_rm_to_point works segment no match", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+  rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+  x$section <- c(2L, 1L, 2L, 2L, 4L)
+  rm$section <- c(1L, 1L, 2L, 3L, 3L, 3L)
+
+  x <- fwa_snap_rm_to_point(x, rm, section)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry", "section"))
+  expect_equal(x$blk, c(rep(356308001, 4), NA_integer_))
+  expect_equal(x$rm, c(4000, 3000, 4000, 4000, NA_integer_))
+  expect_equal(x$distance_to_rm, c(2954.89069472597, 535.63765010454, 754.230245890789, 610.731097004499,
+                                   NA_real_))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
+test_that("fwa_snap_rm_to_point works segment missing value x", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+  rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+  x$section <- c(NA_integer_, 1L, 2L, 2L, 3L)
+  rm$section <- c(1L, 1L, 2L, 3L, 3L, 3L)
+
+  x <- fwa_snap_rm_to_point(x, rm, section)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry", "section"))
+  expect_equal(x$blk, c(rep(356308001, 5)))
+  expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
+  expect_equal(x$distance_to_rm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
+                                   514.952511361304))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
+test_that("fwa_snap_rm_to_point works segment missing value rm", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+  rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+  x$section <- c(1L, 1L, 2L, 2L, 3L)
+  rm$section <- c(NA_integer_, 1L, 2L, 3L, 3L, 3L)
+
+  x <- fwa_snap_rm_to_point(x, rm, section)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry", "section"))
+  expect_equal(x$blk, c(rep(356308001, 5)))
+  expect_equal(x$rm, c(3000, 3000, 4000, 4000, 8000))
+  expect_equal(x$distance_to_rm, c(2331.96951067872, 535.63765010454, 754.230245890789, 610.731097004499,
+                                   514.952511361304))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
+test_that("fwa_snap_rm_to_point works segment missing value x and rm", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+  rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+  x$section <- c(NA_integer_, 1L, 2L, 2L, 3L)
+  rm$section <- c(NA_integer_, 1L, 2L, 3L, 3L, 3L)
+
+  x <- fwa_snap_rm_to_point(x, rm, section)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry", "section"))
+  expect_equal(x$blk, c(rep(356308001, 5)))
+  expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
+  expect_equal(x$distance_to_rm, c(873.50885850392, 535.63765010454, 754.230245890789, 610.731097004499,
+                                   514.952511361304))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
