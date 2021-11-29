@@ -93,6 +93,8 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
     return(x)
   }
 
+  rm <- same_crs(rm, x)
+
   rm <- rm |>
     dplyr::select(rm, .data$blk, .data$rm, ...)
 

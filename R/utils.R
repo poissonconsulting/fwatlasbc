@@ -37,3 +37,7 @@ bbox <- function(x) {
 divide_by <- function(x, y) {
   x / y
 }
+
+same_crs <- function(x, y) {
+  sf::st_transform(x, crs = sf::st_crs(y))
+}
