@@ -139,42 +139,42 @@ test_that("fwa_swap_branches_rms preserves pops not adjust points", {
 
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,  ~x, ~y, ~popn,
-    1,     0,    NA_integer_,   NA_integer_, 0, 0, "low",
-    1,      1,    NA_integer_,   NA_integer_, 1, 0, "mid1",
-    1,      2,    NA_integer_,   NA_integer_, 2, 0, "mid2",
-    1,      3,    NA_integer_,   NA_integer_, 3, 0, "mid3",
-    2,     0,    1,             0.5,          0.5, 0, "low0",
-    2,     1,    1,             0.5,          0.5, 1, "low1",
-    2,     2,    1,             0.5,          0.5, 2, "low2") |>
+    1,     0,    NA_integer_,   NA_integer_, 0, 0, "p1",
+    1,      1,    NA_integer_,   NA_integer_, 1, 0, "p2",
+    1,      2,    NA_integer_,   NA_integer_, 2, 0, "p3",
+    1,      3,    NA_integer_,   NA_integer_, 3, 0, "p4",
+    2,     0,    1,             0.5,          0.5, 0, "pa",
+    2,     1,    1,             0.5,          0.5, 1, "pb",
+    2,     2,    1,             0.5,          0.5, 2, "pc") |>
     sf::st_as_sf(coords = c("x", "y"), dim = "XY")
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE)
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm", "popn", "geometry"))
   expect_identical(nrow(x), 8L)
-  expect_identical(x$popn, c("low", "mid", "mid", "low", "low", "upper"))
+  expect_identical(x$popn, c("p1", "pa", "pb", "pc", "pa", "p2", "p3", "p4"))
 
-  #  expect_snapshot_data(x, "tribchildpartutmspopn")
+  expect_snapshot_data(x, "tribchildpartutmspopn")
 })
 
 test_that("fwa_swap_branches_rms preserves pops", {
 
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,  ~x, ~y, ~popn,
-    1,     0,    NA_integer_,   NA_integer_, 0, 0, "low",
-    1,      1,    NA_integer_,   NA_integer_, 1, 0, "mid",
-    1,      2,    NA_integer_,   NA_integer_, 2, 0, "mid",
-    1,      3,    NA_integer_,   NA_integer_, 3, 0, "mid",
-    2,     0,    1,             0.5,          0.5, 0, "low",
-    2,     1,    1,             0.5,          0.5, 1, "low",
-    2,     2,    1,             0.5,          0.5, 2, "upper") |>
+    1,     0,    NA_integer_,   NA_integer_, 0, 0, "p1",
+    1,      1,    NA_integer_,   NA_integer_, 1, 0, "p2",
+    1,      2,    NA_integer_,   NA_integer_, 2, 0, "p3",
+    1,      3,    NA_integer_,   NA_integer_, 3, 0, "p4",
+    2,     0,    1,             0.5,          0.5, 0, "pa",
+    2,     1,    1,             0.5,          0.5, 1, "pb",
+    2,     2,    1,             0.5,          0.5, 2, "pc") |>
     sf::st_as_sf(coords = c("x", "y"), dim = "XY")
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2))
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm", "popn", "geometry"))
   expect_identical(nrow(x), 6L)
-  expect_identical(x$popn, c("low", "mid", "mid", "low", "low", "upper"))
+#  expect_identical(x$popn, c("low", "mid", "mid", "low", "low", "upper"))
 
-#  expect_snapshot_data(x, "tribchildpartutmspopn")
+  expect_snapshot_data(x, "tribchildpartutmspopnadjust")
 })
