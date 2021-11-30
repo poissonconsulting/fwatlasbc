@@ -174,7 +174,7 @@ test_that("fwa_swap_branches_rms preserves pops", {
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm", "popn", "geometry"))
   expect_identical(nrow(x), 6L)
-#  expect_identical(x$popn, c("low", "mid", "mid", "low", "low", "upper"))
+  expect_identical(x$popn, c("p1", "pa", "pb", "pa", "p2", "p3"))
 
   expect_snapshot_data(x, "tribchildpartutmspopnadjust")
 })

@@ -115,7 +115,7 @@ adjust_points_blk <- function(x, blk) {
     mutate(rm = y$rm)
 
   new_y <- y |>
-    dplyr::slice(rep(1L, length(seq))) |>
+    dplyr::slice(1L:length(seq)) |>
     dplyr::mutate(rm = seq)
 
   X <- approx(coordinates$rm, coordinates$X, new_y$rm)$y
