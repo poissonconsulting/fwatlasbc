@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9012
+
+- Preserve point characteristics when adjusting with `fwa_swap_branches()`.
+
+
 # fwatlasbc 0.0.1.9011
 
 - Added `fwa_mapview()`.
