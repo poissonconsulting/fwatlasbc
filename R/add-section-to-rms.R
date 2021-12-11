@@ -35,7 +35,7 @@ fwa_add_section_to_rms <- function(x, y, section = "section") {
 
   check_key(y, c("blk", "rm"))
 
-  is_sf <- inherits(x, "sf")
+  sf_column_name <- sf_column_name(x)
 
   x <- x |>
     dplyr::as_tibble()
@@ -58,7 +58,9 @@ fwa_add_section_to_rms <- function(x, y, section = "section") {
   for(i in seq_len(nrow(y))) {
     x[[section]][x$blk == y$blk[i] & x$rm <= y$rm[i]] <-  y[[section]][i]
   }
-  if(is_sf)
-    x <- sf::st_as_sf(x)
+  if(!identical(sf_column_name, character(0))) {
+    x <- x |>
+      sf::st_sf(sf_column_name = sf_column_name)
+  }
   x
 }

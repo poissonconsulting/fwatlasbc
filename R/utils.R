@@ -45,3 +45,14 @@ same_crs <- function(x, y) {
 has_name <- function(x, name) {
   name %in% names(x)
 }
+
+is.sf <- function (x) {
+  inherits(x, "sf")
+}
+
+sf_column_name <- function (x) {
+  if (!is.sf(x) || is.null(attr(x, "sf_column"))) {
+    return(character(0))
+  }
+  attr(x, "sf_column")
+}
