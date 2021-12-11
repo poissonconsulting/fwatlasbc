@@ -33,7 +33,7 @@ get_split_to_rms <- function(nm, x, y) {
 #' @param y A data frame with integer columns blk and rm and character column name.
 #' @return A tibble of x with a logical column for each name in name.
 #' @export
-fwa_add_split_to_rms <- function(x, y) {
+fwa_add_upstream_split_to_rms <- function(x, y) {
   chk_data(x)
   chk_data(y)
 

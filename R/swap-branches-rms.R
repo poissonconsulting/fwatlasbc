@@ -149,7 +149,7 @@ swap_branches <- function(x, blk, adjust_points) {
   }
 
   x <- x |>
-    fwa_add_split_to_rms(data.frame(blk = blk, rm = 0, name = "..fwa_trib")) |>
+    fwa_add_upstream_split_to_rms(data.frame(blk = blk, rm = 0, name = "..fwa_trib")) |>
     dplyr::mutate(..fwa_original = TRUE) |>
     swap_main(blk) |>
     swap_trib(blk) |>
