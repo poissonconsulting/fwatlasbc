@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9013
+
+- Added `fwa_add_downstream_split_to_rms()`.
+- Soft-deprecated `fwa_add_split_to_rms()` for `fwa_add_upstream_split_to_rms()`.
+
+
 # fwatlasbc 0.0.1.9012
 
 - Preserve point characteristics when adjusting with `fwa_swap_branches()`.
