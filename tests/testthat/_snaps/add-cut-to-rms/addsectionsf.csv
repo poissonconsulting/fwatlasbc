@@ -1,0 +1,8 @@
+blk,rm,parent_blk,parent_rm,popn,cut
+1,0,NA,NA,p1,NA
+1,1,NA,NA,p2,TRUE
+1,2,NA,NA,p3,TRUE
+1,3,NA,NA,p4,FALSE
+2,0,1,0.5,pa,NA
+2,1,1,0.5,pb,NA
+2,2,1,0.5,pc,NA

@@ -3,6 +3,7 @@
 export(fwa_add_blk_to_lon_lat)
 export(fwa_add_blks_to_stream_name)
 export(fwa_add_collection_to_polygon)
+export(fwa_add_cut_to_rms)
 export(fwa_add_downstream_split_to_rms)
 export(fwa_add_gm_elevation_to_point)
 export(fwa_add_intersection_to_geometry)
