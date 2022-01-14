@@ -5,7 +5,7 @@ test_that("fwa_add_blk_to_lon_lat works", {
   ))
   expect_identical(x$lon, -132.26)
   expect_identical(x$lat, 53.36)
-  expect_identical(x$blk, 360824839L)
+  expect_identical(x$blk, 360824839)
   expect_equal(x$rm, 1118.34002309864)
   expect_equal(x$distance_to_lon_lat, 508.411631958987)
   expect_s3_class(x$geometry, "sfc_POINT")
