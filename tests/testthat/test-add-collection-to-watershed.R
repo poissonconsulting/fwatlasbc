@@ -14,7 +14,7 @@ test_that("fwa_add_collection_to_watershed functions work", {
 
   expect_identical(
     colnames(x),
-    c("blk", "rm", "id", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
+    c("blk", "rm", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
       "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
       "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
       "linear_feature_id", "local_watershed_code", "localcode_ltree",

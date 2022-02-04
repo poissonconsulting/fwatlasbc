@@ -110,10 +110,11 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
   chk_number(tolerance)
   chk_gte(tolerance)
 
-  check_names(x, c("id", "blue_line_key", "downstream_route_measure",
+  check_names(x, c("linear_feature_id", "blue_line_key", "downstream_route_measure",
                    "upstream_route_measure", "fwa_watershed_code"))
   chk_not_subset(colnames(x), "..fwa_id")
 
+  x$id <- x$linear_feature_id
   chk_not_any_na(x$id)
   check_key(x, "id")
 
