@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9014
+
+- Added `fwa_convert_rms_to_streams()` to convert rms sf point object into sf linestring object.
+- Added `fwa_prune_rms()` to prune tips.
+- Added `fwa_add_cut_rm()`.
+- `fwa_add_section_to_rms()` now preserves geometry.
+- `fwa_add_section_to_rms()` now preserves sf.
+
+
 # fwatlasbc 0.0.1.9013
 
 - Added `fwa_add_downstream_split_to_rms()`.
