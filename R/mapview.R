@@ -32,3 +32,4 @@ fwa_mapview <- function(x, layer = NULL, zcol = NULL, legend = FALSE, ...) {
 
   mapview::mapview(x, zcol = zcol, legend = legend, ...)
 }
+
