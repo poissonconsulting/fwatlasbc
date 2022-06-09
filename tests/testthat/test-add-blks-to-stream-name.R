@@ -47,3 +47,4 @@ test_that("fwa_add_blks_to_stream_name works custom", {
                                    data.frame(blk = 356235759, stream_name = "A Creek"))
   expect_identical(x, dplyr::tibble(stream_name = "A Creek", blk = 356235759))
 })
+
