@@ -21,6 +21,7 @@ Imports:
     sf,
     stats,
     stringr,
+    tibble,
     tidyselect,
     units
 Suggests: 
