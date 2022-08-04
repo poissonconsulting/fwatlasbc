@@ -65,11 +65,11 @@ copied to column blk replacing any existing values.
 }
 \section{Functions}{
 \itemize{
-\item \code{fwa_add_collection_to_watershed}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+\item \code{fwa_add_collection_to_watershed()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
 
 Deprecated for \code{fwa_add_collection_to_polygon()}.
-}}
 
+}}
 \examples{
 \dontrun{
 watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))

@@ -14,7 +14,7 @@ test_that("fwa_add_collection_to_polygon functions work", {
       "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
       "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
       "linear_feature_id", "local_watershed_code", "localcode_ltree",
-      "stream_magnitude", "stream_order", "upstream_area_ha", "upstream_route_measure",
+      "stream_magnitude", "stream_order", "upstream_route_measure",
       "waterbody_key", "watershed_code_50k", "watershed_group_code",
       "watershed_group_code_50k", "watershed_group_id", "watershed_key",
       "watershed_key_50k", "wscode_ltree", "geometry"))
@@ -33,7 +33,7 @@ test_that("fwa_add_collection_to_polygon function intersects work", {
       "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
       "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
       "linear_feature_id", "local_watershed_code", "localcode_ltree",
-      "stream_magnitude", "stream_order", "upstream_area_ha", "upstream_route_measure",
+      "stream_magnitude", "stream_order", "upstream_route_measure",
       "waterbody_key", "watershed_code_50k", "watershed_group_code",
       "watershed_group_code_50k", "watershed_group_id", "watershed_key",
       "watershed_key_50k", "wscode_ltree", "geometry"))
@@ -52,11 +52,11 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
 
   expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 32610L)
-  expect_identical(nrow(x), 12L)
+  expect_identical(nrow(x), 11L)
   expect_s3_class(x$geometry, "sfc_MULTILINESTRING")
   expect_identical(
     colnames(x),
-    c("blk", "ExCol", "rm",  "blue_line_key", "fwa_stream_networks_label_id",
-      "gnis_name", "stream_order", "watershed_group_code", "geometry"
+    c("blk", "ExCol", "rm", "blue_line_key",
+      "gnis_name", "named_streams_id", "stream_order", "watershed_group_code", "geometry"
     ))
 })

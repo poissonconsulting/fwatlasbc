@@ -3,7 +3,7 @@ test_that("fwa_convert_stream_network_to_rms", {
   network <- fwa_add_collection_to_polygon(watershed)
   x <- fwa_convert_stream_network_to_rms(network, interval = 100)
   expect_s3_class(x, "sf")
-  expect_identical(nrow(x), 861L)
+  expect_identical(nrow(x), 862L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
   expect_snapshot_data(x, "fwa_convert_stream_network_to_rms")
@@ -24,7 +24,7 @@ test_that("fwa_convert_stream_network_to_rms", {
 
   x <- fwa_convert_stream_network_to_rms(network, interval = 100)
   expect_s3_class(x, "sf")
-  expect_identical(nrow(x), 891L)
+  expect_identical(nrow(x), 892L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
   expect_snapshot_data(x, "fwa_convert_to_rms_side")

@@ -5,7 +5,7 @@ test_that("convert_rms_to_streams works", {
   x <- fwa_convert_rms_to_streams(x)
 
   expect_s3_class(x$geometry, "sfc_LINESTRING")
-  expect_identical(nrow(x), 38L)
+  expect_identical(nrow(x), 39L)
 
   x <- sf::st_cast(x, "MULTIPOINT")
   expect_warning(x <- sf::st_cast(x, "POINT"))

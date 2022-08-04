@@ -150,5 +150,7 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
     dplyr::bind_rows() |>
     dplyr::arrange(.data$blk, .data$rm) |>
     chk::check_key(c("blk", "rm"), x_name = "`rms` constructed from `x`") |>
-    dplyr::select(-.data$..fwa_id)
+    dplyr::select(-.data$..fwa_id) |>
+    tibble::as_tibble() |>
+    sf::st_as_sf()
 }

@@ -29,11 +29,6 @@ add_watershed_to_blk <- function(x, epsg) {
                                         downstream_route_measure = x$rm,
                                         epsg = epsg)
 
-  if(!nrow(wshed)) {
-    abort_chk("Watershed undefined for blk ", x$blk,
-              " at rm ", x$rm, " (try changing the rm).")
-  }
-
   wshed <- adjust_watershed(wshed, x, epsg)
 
   x |>

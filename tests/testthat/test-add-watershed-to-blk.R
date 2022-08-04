@@ -31,6 +31,5 @@ test_that("fwa_add_watershed_to_blk exclude excludes", {
 })
 
 test_that("fwa_add_watershed_to_blk doesn't work when rm = 0 for 360883036 even with exclude", {
-  chk::expect_chk_error(fwa_add_watershed_to_blk(data.frame(blk = 360883036), exclude = TRUE),
-                   "Watershed undefined for blk 360883036 at rm 0 \\(try changing the rm\\)\\.$")
+  chk::expect_chk_error(fwa_add_watershed_to_blk(data.frame(blk = 360883036), exclude = TRUE))
 })

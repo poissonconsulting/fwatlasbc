@@ -24,6 +24,6 @@ into upstream (TRUE) versus not (FALSE).
 }
 \section{Functions}{
 \itemize{
-\item \code{fwa_add_split_to_rms}: Soft-deprecated \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
-}}
+\item \code{fwa_add_split_to_rms()}: Soft-deprecated \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
+}}
