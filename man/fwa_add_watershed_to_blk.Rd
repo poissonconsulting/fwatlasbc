@@ -7,7 +7,8 @@
 fwa_add_watershed_to_blk(
   x,
   exclude = FALSE,
-  epsg = getOption("fwa.epsg", 3005)
+  epsg = getOption("fwa.epsg", 3005),
+  nocache = getOption("fwa.nocache", FALSE)
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ The rm is set to be 0 if missing.}
 fundamental watershed in which the start falls.}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
+
+\item{nocache}{A flag specifying whether or not to cache results.}
 }
 \value{
 An sf tibble with the columns of x plus

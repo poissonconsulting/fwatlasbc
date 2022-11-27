@@ -1,4 +1,4 @@
-add_rms_to_blk <- function(x, epsg) {
+add_rms_to_blk <- function(x, epsg, nocache) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
   interval <- x$..fwa_interval
@@ -11,7 +11,8 @@ add_rms_to_blk <- function(x, epsg) {
                                   interval_length = interval,
                                   start_measure = start,
                                   end_measure = end,
-                                  epsg = epsg) |>
+                                  epsg = epsg,
+                                  nocache = nocache) |>
     dplyr::mutate(rm = .data$index * interval + start,
                   rm = as.integer(.data$rm),
                   elevation = unname(sf::st_coordinates(.data$geometry)[,"Z"])) |>
@@ -40,6 +41,7 @@ add_rms_to_blk <- function(x, epsg) {
 #' @param start A whole numeric of the start distance.
 #' @param end An integer of the end distance.
 #' @param epsg A positive whole number of EPSG projection for the coordinates.
+#' @inheritParams fwapgr::fwa_locate_along_interval
 #' @return An sf tibble with the columns of x plus integer column rm
 #' and sf column geometry.
 #' @export
@@ -47,8 +49,9 @@ add_rms_to_blk <- function(x, epsg) {
 #' \dontrun{
 #' fwa_add_rms_to_blk(data.frame(blk = 356308001))
 #' }
-fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
-                               epsg = getOption("fwa.epsg", 3005)){
+fwa_add_rms_to_blk <- function(
+    x, interval = 1000, start = 0, end = Inf,
+    epsg = getOption("fwa.epsg", 3005), nocache = getOption("fwa.nocache", FALSE)){
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
   chk_whole_numeric(x$blk)
@@ -75,9 +78,9 @@ fwa_add_rms_to_blk <- function(x, interval = 1000, start = 0, end = Inf,
                   ..fwa_end = end,
                   ..fwa_id = 1:dplyr::n()) |>
     group_split_sf(.data$blk) |>
-    lapply(add_rms_to_blk, epsg = epsg) |>
+    lapply(add_rms_to_blk, epsg = epsg, nocache = nocache) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id, .data$rm) |>
     dplyr::select(!c("..fwa_interval", "..fwa_start",
-                  "..fwa_end", "..fwa_id"))
+                     "..fwa_end", "..fwa_id"))
 }

@@ -9,7 +9,8 @@ fwa_add_rms_to_blk(
   interval = 1000,
   start = 0,
   end = Inf,
-  epsg = getOption("fwa.epsg", 3005)
+  epsg = getOption("fwa.epsg", 3005),
+  nocache = getOption("fwa.nocache", FALSE)
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ fwa_add_rms_to_blk(
 \item{end}{An integer of the end distance.}
 
 \item{epsg}{A positive whole number of EPSG projection for the coordinates.}
+
+\item{nocache}{A flag specifying whether or not to cache results.}
 }
 \value{
 An sf tibble with the columns of x plus integer column rm

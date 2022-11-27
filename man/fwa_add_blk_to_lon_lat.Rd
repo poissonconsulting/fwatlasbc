@@ -8,7 +8,8 @@ fwa_add_blk_to_lon_lat(
   x,
   tolerance = 5000,
   limit = 1,
-  epsg = getOption("fwa.epsg", 3005)
+  epsg = getOption("fwa.epsg", 3005),
+  nocache = getOption("fwa.nocache", FALSE)
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ latitude (lat) columns.}
 \item{limit}{A positive whole number indicating the maximum number of features to return.}
 
 \item{epsg}{A positive whole number of the EPSG projection for the geometry.}
+
+\item{nocache}{A flag specifying whether or not to cache results.}
 }
 \value{
 An sf tibble with the columns of x plus integer column blk,

@@ -15,7 +15,8 @@ fwa_add_collection_to_polygon(
   offset = 0,
   properties = NULL,
   transform = NULL,
-  epsg = getOption("fwa.epsg", 3005)
+  epsg = getOption("fwa.epsg", 3005),
+  nocache = getOption("fwa.nocache", FALSE)
 )
 
 fwa_add_collection_to_watershed(
@@ -27,7 +28,8 @@ fwa_add_collection_to_watershed(
   offset = 0,
   properties = NULL,
   transform = NULL,
-  epsg = getOption("fwa.epsg", 3005)
+  epsg = getOption("fwa.epsg", 3005),
+  nocache = getOption("fwa.nocache", FALSE)
 )
 }
 \arguments{
@@ -52,6 +54,8 @@ value, e.g. \code{list(gnis_name = "Sangan River")}.}
 \item{transform}{A character vector with the name of the \href{https://github.com/CrunchyData/pg_featureserv/blob/master/config/pg_featureserv.toml.example#L29}{\emph{valid transform}} function followed by the parameter values (e.g. c("ST_Simplify", 100))}
 
 \item{epsg}{A positive whole number of the epsg to transform features to.}
+
+\item{nocache}{A flag specifying whether or not to cache results.}
 }
 \value{
 An sf object

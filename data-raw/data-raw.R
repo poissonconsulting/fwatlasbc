@@ -13,13 +13,13 @@ coll_id <- "whse_basemapping.fwa_named_streams"
 
 # first 10,000
 fwa_stream_name <- coll_id |>
-  fwapgr::fwa_query_collection() |>
+  fwapgr::fwa_query_collection(nocache = TRUE) |>
   as_tibble() |>
   select(blue_line_key, gnis_name)
 
 # 10,001 - 20,000
 fwa_stream_name2 <- coll_id |>
-  fwapgr::fwa_query_collection(offset = 9999) |>
+  fwapgr::fwa_query_collection(offset = 9999, nocache = TRUE) |>
   slice(-1) |>
   as_tibble() |>
   select(blue_line_key, gnis_name)

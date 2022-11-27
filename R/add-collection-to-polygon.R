@@ -7,7 +7,7 @@ rename_collection <- function(collection) {
 }
 
 add_collection_to_polygon <- function(x, collection, filter, limit, offset,
-                                        properties, transform, epsg) {
+                                      properties, transform, epsg, nocache) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
   polygon <- sf::st_geometry(x)
@@ -21,7 +21,8 @@ add_collection_to_polygon <- function(x, collection, filter, limit, offset,
                                        bbox = bbox,
                                        properties = properties,
                                        transform = transform,
-                                       epsg = epsg)
+                                       epsg = epsg,
+                                       nocache = nocache)
 
   polygon <- sf::st_transform(polygon, epsg)
   polygon <- sf::st_make_valid(polygon)
@@ -64,14 +65,16 @@ add_collection_to_polygon <- function(x, collection, filter, limit, offset,
 #' watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))
 #' fwa_add_collection_to_polygon(watershed)
 #' }
-fwa_add_collection_to_polygon <- function(x, collection = "stream_network",
-                                            intersect = FALSE,
-                                            filter = NULL,
-                                            limit = 10000,
-                                            offset = 0,
-                                            properties = NULL,
-                                            transform = NULL,
-                                            epsg = getOption("fwa.epsg", 3005)) {
+fwa_add_collection_to_polygon <- function(
+    x, collection = "stream_network",
+    intersect = FALSE,
+    filter = NULL,
+    limit = 10000,
+    offset = 0,
+    properties = NULL,
+    transform = NULL,
+    epsg = getOption("fwa.epsg", 3005),
+    nocache = getOption("fwa.nocache", FALSE)) {
   chk_s3_class(x, "sf")
   chk_s3_class(sf::st_geometry(x), "sfc_POLYGON")
 
@@ -90,7 +93,7 @@ fwa_add_collection_to_polygon <- function(x, collection = "stream_network",
     lapply(add_collection_to_polygon, collection = collection,
            filter = filter, limit = limit,
            offset = offset, properties = properties, transform = transform,
-           epsg = epsg) |>
+           epsg = epsg, nocache = nocache) |>
     dplyr::bind_rows()
 
   if("blue_line_key" %in% colnames(x)) {

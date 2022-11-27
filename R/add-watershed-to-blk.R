@@ -1,4 +1,4 @@
-adjust_watershed <- function(wshed, x, epsg) {
+adjust_watershed <- function(wshed, x, epsg, nocache) {
 
   if(x$..fwa_exclude && wshed$refine_method == "DROP") {
     return(wshed)
@@ -9,7 +9,7 @@ adjust_watershed <- function(wshed, x, epsg) {
 
   fwshed <- fwa_watershed_hex(blue_line_key = x$blk,
                               downstream_route_measure = x$rm,
-                              epsg = epsg)
+                              epsg = epsg, nocache = nocache)
 
 
   fgeometry <- sf::st_union(fwshed$geometry)
@@ -22,14 +22,15 @@ adjust_watershed <- function(wshed, x, epsg) {
   wshed
 }
 
-add_watershed_to_blk <- function(x, epsg) {
+add_watershed_to_blk <- function(x, epsg, nocache) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
   wshed <- fwa_watershed_at_measure(blue_line_key = x$blk,
                                         downstream_route_measure = x$rm,
-                                        epsg = epsg)
+                                        epsg = epsg,
+                                    nocache = nocache)
 
-  wshed <- adjust_watershed(wshed, x, epsg)
+  wshed <- adjust_watershed(wshed, x, epsg, nocache = nocache)
 
   x |>
     dplyr::mutate(geometry = wshed$geometry) |>
@@ -58,7 +59,8 @@ add_watershed_to_blk <- function(x, epsg) {
 #' }
 fwa_add_watershed_to_blk <- function(x,
                                      exclude = FALSE,
-                                     epsg = getOption("fwa.epsg", 3005)) {
+                                     epsg = getOption("fwa.epsg", 3005),
+                                     nocache = getOption("fwa.nocache", FALSE)) {
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
   chk_whole_numeric(x$blk)
@@ -81,7 +83,7 @@ fwa_add_watershed_to_blk <- function(x,
     dplyr::mutate(..fwa_exclude = exclude,
                   ..fwa_id = 1:dplyr::n()) |>
     group_split_sf(.data$blk) |>
-    lapply(add_watershed_to_blk, epsg = epsg) |>
+    lapply(add_watershed_to_blk, epsg = epsg, nocache = nocache) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::select(!c("..fwa_exclude", "..fwa_id"))
