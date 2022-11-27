@@ -3,7 +3,7 @@ add_gm_elevation_to_point <- function(x, digits, key) {
     sf::st_transform(crs = 4326) |>
     sf::st_coordinates() |>
     dplyr::as_tibble() |>
-    dplyr::select(lon = .data$X, lat = .data$Y) |>
+    dplyr::select(lon = "X", lat = "Y") |>
     dplyr::mutate(lon = round(.data$lon, digits), lat = round(.data$lat, digits))
 
   elevation <- googleway::google_elevation(coords, key = key)$results$elevation
@@ -55,5 +55,5 @@ fwa_add_gm_elevation_to_point <- function(x, chunk_size = 300L, digits = 7,
     group_split_sf(.data$..fwa_chunk) |>
     lapply(add_gm_elevation_to_point, digits = digits, key = key) |>
      dplyr::bind_rows() |>
-     dplyr::select(-.data$..fwa_chunk)
+     dplyr::select(!"..fwa_chunk")
 }

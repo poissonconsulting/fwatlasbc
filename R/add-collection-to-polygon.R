@@ -99,5 +99,5 @@ fwa_add_collection_to_polygon <- function(x, collection = "stream_network",
 
   x |>
     dplyr::arrange(.data$..fwa_id) |>
-    dplyr::select(-.data$..fwa_id, -.data$..fwa_intersect)
+    dplyr::select(!c("..fwa_id", "..fwa_intersect"))
 }

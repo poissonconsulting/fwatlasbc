@@ -21,7 +21,7 @@ fwa_prune_rms <- function(x, y) {
     x <- x |>
       fwa_add_upstream_split_to_rms(z) |>
       dplyr::filter(!.data$..fwa_prune) |>
-      dplyr::select(-.data$..fwa_prune)
+      dplyr::select(!"..fwa_prune")
   }
   x
 }

@@ -36,7 +36,7 @@ add_parent_blk_rm <- function(x) {
       parent_code = get_parent_code(.data$fwa_watershed_code),
       parent_proportion = get_parent_proportion(.data$fwa_watershed_code)) |>
     dplyr::select(
-      child_blk = .data$blue_line_key, .data$parent_code, .data$parent_proportion)
+      child_blk = "blue_line_key", "parent_code", "parent_proportion")
 
   parent <- parent |>
     dplyr::filter(.data$max_stream_order > 1)
@@ -44,11 +44,11 @@ add_parent_blk_rm <- function(x) {
   child <- child |>
     dplyr::inner_join(parent, by = c(parent_code = "fwa_watershed_code")) |>
     dplyr::mutate(parent_rm = .data$parent_proportion * .data$max_rm) |>
-    dplyr::select(blue_line_key = .data$child_blk, parent_blk = .data$blue_line_key, .data$parent_rm)
+    dplyr::select(blue_line_key = "child_blk", parent_blk = "blue_line_key", "parent_rm")
 
   x |>
     dplyr::left_join(child, by = "blue_line_key") |>
-    dplyr::relocate(.data$parent_blk, .data$parent_rm, .after = "id")
+    dplyr::relocate("parent_blk", "parent_rm", .after = "id")
 }
 
 convert_stream_segment_to_rms <- function(x, interval) {
@@ -84,8 +84,8 @@ convert_stream_segment_to_rms <- function(x, interval) {
     dplyr::mutate(id = y$id) |>
     dplyr::left_join(y, by = "id") |>
     dplyr::mutate(blk = .data$blue_line_key) |>
-    dplyr::relocate(.data$blk, .data$rm, .after = "id") |>
-    dplyr::relocate(.data$geometry, .after = dplyr::last_col())
+    dplyr::relocate("blk", "rm", .after = "id") |>
+    dplyr::relocate("geometry", .after = dplyr::last_col())
 }
 
 #' Convert Stream Network to River Meters
@@ -150,7 +150,7 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
     dplyr::bind_rows() |>
     dplyr::arrange(.data$blk, .data$rm) |>
     chk::check_key(c("blk", "rm"), x_name = "`rms` constructed from `x`") |>
-    dplyr::select(-.data$..fwa_id) |>
+    dplyr::select(!"..fwa_id") |>
     tibble::as_tibble() |>
     sf::st_as_sf()
 }

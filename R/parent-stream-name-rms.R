@@ -47,7 +47,7 @@ fwa_parent_stream_name_rms <- function(x, rms, stream_name = fwatlasbc::fwa_stre
     dplyr::tibble(stream_name = x) |>
     fwa_add_blks_to_stream_name(sname) |>
     dplyr::mutate(blk = fwa_parent_blk_rms(.data$blk, rms)) |>
-    dplyr::select(-.data$stream_name) |>
+    dplyr::select(!"stream_name") |>
     fwa_add_stream_names_to_blk(stream_name)
 
   x$stream_name

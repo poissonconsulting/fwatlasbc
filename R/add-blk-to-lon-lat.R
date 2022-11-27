@@ -9,8 +9,8 @@ add_blk_to_lon_lat <- function(x, limit, tolerance, epsg) {
       dplyr::mutate(blk = integer(0),
                     rm = numeric(0),
                     distance_to_lon_lat = numeric(0)) |>
-      dplyr::select(.data$blk, .data$rm, .data$distance_to_lon_lat,
-                    .data$geometry)
+      dplyr::select("blk", "rm", "distance_to_lon_lat",
+                    "geometry")
 
     x <- x |>
       dplyr::bind_cols(rm) |>
@@ -20,10 +20,10 @@ add_blk_to_lon_lat <- function(x, limit, tolerance, epsg) {
   }
 
   rm <- rm |>
-    dplyr::select(blk = .data$blue_line_key,
-                  rm = .data$downstream_route_measure,
-                  distance_to_lon_lat = .data$distance_to_stream,
-                  .data$geometry)
+    dplyr::select(blk = "blue_line_key",
+                  rm = "downstream_route_measure",
+                  distance_to_lon_lat = "distance_to_stream",
+                  "geometry")
 
   x |>
     dplyr::bind_cols(rm) |>
@@ -66,5 +66,5 @@ fwa_add_blk_to_lon_lat <- function(x, tolerance = 5000, limit = 1,
     lapply(add_blk_to_lon_lat, tolerance = tolerance, limit = limit, epsg = epsg) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
-    dplyr::select(-.data$..fwa_id)
+    dplyr::select(!"..fwa_id")
 }

@@ -19,7 +19,7 @@ thin_points <- function(x, npoint) {
     dplyr::mutate(..fwa_np = pmin(.data$..fwa_np, .data$..fwa_n)) |>
     dplyr::slice(round_up(seq(1, n(), length.out = .data$..fwa_np[1]))) |>
     dplyr::ungroup() |>
-    dplyr::select(-.data$..fwa_n, -.data$..fwa_p, -.data$..fwa_np) |>
+    dplyr::select(!c("..fwa_n", "..fwa_p", "..fwa_np")) |>
     sf::st_as_sf()
 }
 

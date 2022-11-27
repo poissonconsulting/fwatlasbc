@@ -157,7 +157,7 @@ swap_branches <- function(x, blk, adjust_points) {
     dplyr::mutate(rm = round_up(.data$rm)) |>
     dplyr::arrange(dplyr::desc(.data$..fwa_original)) |>
     dplyr::distinct(.data$blk, .data$rm, .keep_all = TRUE) |>
-    dplyr::select(-.data$..fwa_trib, -.data$..fwa_original)
+    dplyr::select(!c("..fwa_trib", "..fwa_original"))
 }
 
 #' Swap Branches of River Meters

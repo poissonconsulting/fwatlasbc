@@ -34,12 +34,12 @@ fwa_get_section_from_rms <- function(x, section = "section") {
     dplyr::summarise(length = max(.data$rm) - min(.data$rm),
                      rm = max(.data$rm)) |>
     dplyr::ungroup() |>
-    dplyr::select(.data[[section]], .data$blk, .data$rm, .data$length) |>
+    dplyr::select(tidyselect::all_of(section), "blk", "rm", "length") |>
     dplyr::arrange(.data$blk, .data$rm)
 
   if(!identical(sf_column_name, character(0))) {
     x <- x |>
-      dplyr::select(.data$blk, .data$rm)
+      dplyr::select("blk", "rm")
      y <- y |>
        dplyr::inner_join(x, by = c("blk", "rm")) |>
        sf::st_sf(sf_column_name = sf_column_name)

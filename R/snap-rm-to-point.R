@@ -96,7 +96,7 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
   rm <- same_crs(rm, x)
 
   rm <- rm |>
-    dplyr::select(rm, .data$blk, .data$rm, ...)
+    dplyr::select(rm, "blk", "rm", ...)
 
   x |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
@@ -105,6 +105,6 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::mutate(blk = .data$..fwa_blk) |>
-    dplyr::relocate(.data$distance_to_rm, .after = "rm") |>
-    dplyr::select(-.data$..fwa_id, -.data$..fwa_blk)
+    dplyr::relocate("distance_to_rm", .after = "rm") |>
+    dplyr::select(!c("..fwa_id", "..fwa_blk"))
 }
