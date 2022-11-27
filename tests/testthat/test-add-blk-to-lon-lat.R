@@ -1,4 +1,6 @@
 test_that("fwa_add_blk_to_lon_lat works", {
+  rlang::local_options(nocache = TRUE)
+
   x <- fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("lon", "lat", "blk", "rm", "distance_to_lon_lat", "geometry"
@@ -12,6 +14,8 @@ test_that("fwa_add_blk_to_lon_lat works", {
 })
 
 test_that("fwa_add_blk_to_lon_lat works multiple ", {
+  rlang::local_options(nocache = TRUE)
+
   x <- fwa_add_blk_to_lon_lat(data.frame(lon = c(-132.26, -132.25), lat = 53.36), limit = 3)
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("lon", "lat", "blk", "rm", "distance_to_lon_lat", "geometry"
@@ -21,6 +25,8 @@ test_that("fwa_add_blk_to_lon_lat works multiple ", {
 })
 
 test_that("fwa_add_blk_to_lon_lat works none ", {
+  rlang::local_options(nocache = TRUE)
+
   x <- fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36), tolerance = 500)
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("lon", "lat", "blk", "rm", "distance_to_lon_lat", "geometry"

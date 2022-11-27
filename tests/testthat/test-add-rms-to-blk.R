@@ -1,4 +1,6 @@
 test_that("fwa_add_rms_to_blk works simple case", {
+  rlang::local_options(nocache = TRUE)
+
   x <- fwa_add_rms_to_blk(data.frame(blk = 356308001, extra_col = "extra"),
                           interval = 100, start = 10001)
   expect_s3_class(x, "sf")
@@ -12,6 +14,8 @@ test_that("fwa_add_rms_to_blk works simple case", {
 })
 
 test_that("fwa_add_rms_to_blk works multiple", {
+  rlang::local_options(nocache = TRUE)
+
   x <- fwa_add_rms_to_blk(data.frame(blk = c(356308001, 354091024)))
   expect_s3_class(x, "sf")
   expect_identical(names(x), c("blk", "rm", "elevation", "geometry"))
@@ -22,13 +26,19 @@ test_that("fwa_add_rms_to_blk works multiple", {
 })
 
 test_that("fwa_add_rms_to_blk errors missing blk", {
+  rlang::local_options(nocache = TRUE)
+
   expect_error(fwa_add_rms_to_blk(data.frame(blk = NA_integer_)))
 })
 
 test_that("fwa_add_rms_to_blk errors no blk", {
+  rlang::local_options(nocache = TRUE)
+
   expect_error(fwa_add_rms_to_blk(blk = integer(0)))
 })
 
 test_that("fwa_add_rms_to_blk errors not recognised", {
+  rlang::local_options(nocache = TRUE)
+
   expect_error(fwa_add_rms_to_blk(data.frame(blk = 1L)))
 })

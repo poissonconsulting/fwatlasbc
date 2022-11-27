@@ -1,4 +1,6 @@
 test_that("fwa_add_collection_to_polygon functions work", {
+  rlang::local_options(nocache = TRUE)
+
   wshed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))
   x <- fwa_add_collection_to_polygon(wshed, limit = 1000)
 
@@ -22,6 +24,8 @@ test_that("fwa_add_collection_to_polygon functions work", {
 })
 
 test_that("fwa_add_collection_to_polygon function intersects work", {
+  rlang::local_options(nocache = TRUE)
+
   wshed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))
   x <- fwa_add_collection_to_polygon(wshed, intersect = TRUE, limit = 1000)
 
@@ -46,11 +50,13 @@ test_that("fwa_add_collection_to_polygon function intersects work", {
 })
 
 test_that("fwa_add_collection_to_polygon function intersects works with named streams and keeps extras and deals other projection", {
+  rlang::local_options(nocache = TRUE)
+
   wshed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, ExCol = "ex"))
   wshed <- sf::st_transform(wshed, 4326)
   x <- fwa_add_collection_to_polygon(wshed, "whse_basemapping.fwa_named_streams",
-                                       limit = 1000,
-                                        epsg = 32610)
+                                     limit = 1000,
+                                     epsg = 32610)
 
   expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 32610L)

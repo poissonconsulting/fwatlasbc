@@ -1,5 +1,5 @@
 test_that("fwa_add_collection_to_watershed functions work", {
-  rlang::local_options(lifecycle_verbosity = "quiet")
+  rlang::local_options(lifecycle_verbosity = "quiet", nocache = TRUE)
 
   wshed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001))
   lifecycle::expect_deprecated(
