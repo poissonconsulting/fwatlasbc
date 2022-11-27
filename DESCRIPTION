@@ -22,8 +22,7 @@ Imports:
     stats,
     stringr,
     tibble,
-    tidyselect,
-    units
+    tidyselect
 Suggests: 
     covr,
     googleway,
@@ -40,4 +39,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
