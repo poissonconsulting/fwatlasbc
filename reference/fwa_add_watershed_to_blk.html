@@ -52,7 +52,8 @@ The rm distances which is in meters is from the river mouth.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_add_watershed_to_blk</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  exclude <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span></span>
+<span>  epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>,</span>
+<span>  nocache <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.nocache"</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -71,6 +72,10 @@ fundamental watershed in which the start falls.</p></dd>
 
 <dt>epsg</dt>
 <dd><p>A positive whole number of the epsg to transform features to.</p></dd>
+
+
+<dt>nocache</dt>
+<dd><p>A flag specifying whether or not to cache results.</p></dd>
 
 </dl></div>
     <div id="value">

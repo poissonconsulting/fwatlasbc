@@ -57,7 +57,8 @@ to the point specified by the lon and lat (WGS84).</p>
 <span>  <span class="va">x</span>,</span>
 <span>  tolerance <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  limit <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span></span>
+<span>  epsg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.epsg"</span>, <span class="fl">3005</span><span class="op">)</span>,</span>
+<span>  nocache <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"fwa.nocache"</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -78,6 +79,10 @@ latitude (lat) columns.</p></dd>
 
 <dt>epsg</dt>
 <dd><p>A positive whole number of the EPSG projection for the geometry.</p></dd>
+
+
+<dt>nocache</dt>
+<dd><p>A flag specifying whether or not to cache results.</p></dd>
 
 </dl></div>
     <div id="value">
