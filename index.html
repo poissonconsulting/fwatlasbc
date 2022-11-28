@@ -115,7 +115,7 @@
 <span><span class="co">#&gt; Projected CRS: NAD83 / BC Albers</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 6</span></span>
 <span><span class="co">#&gt;     lon   lat       blk    rm distance_to_lon_lat            geometry</span></span>
-<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt; &lt;dbl&gt;               &lt;dbl&gt;         &lt;POINT [m]&gt;</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;               &lt;dbl&gt;         &lt;POINT [m]&gt;</span></span>
 <span><span class="co">#&gt; 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)</span></span></code></pre></div>
 <p>Get watershed (by aggregating fundamental watersheds) for a blue line key and river meter (by default 0). If it errors try increasing the river meter.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -129,7 +129,7 @@
 <span><span class="co">#&gt; # A tibble: 1 × 4</span></span>
 <span><span class="co">#&gt;   stream_name       blk    rm                                           geometry</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt;                                      &lt;POLYGON [m]&gt;</span></span>
-<span><span class="co">#&gt; 1 Steep Creek 356534225     0 ((1658037 728924.8, 1658107 728964.9, 1658107 728…</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Steep Creek 356534225     0 ((1658107 728964.9, 1658107 728964.9, 1658179 728…</span></span></code></pre></div>
 <p>Get stream network for the watershed polygon. Note that rm is from the original watershed while downstream/upstream_route_measure are the equivalents for the stream segment in the network.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">network</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_add_collection_to_polygon.html">fwa_add_collection_to_polygon</a></span><span class="op">(</span><span class="va">wshed</span>, <span class="st">"stream_network"</span><span class="op">)</span></span>
@@ -140,60 +140,36 @@
 <span><span class="co">#&gt; Bounding box:  xmin: 1656200 ymin: 725423.1 xmax: 1661368 ymax: 731602.7</span></span>
 <span><span class="co">#&gt; Projected CRS: NAD83 / BC Albers</span></span>
 <span><span class="co">#&gt; # A tibble: 76 × 32</span></span>
-<span><span class="co">#&gt;    stream_name       blk    rm id        blue_line_key blue_line_key_50k</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;             &lt;int&gt;             &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1 Steep Creek 356499676     0 707009047     356499676                NA</span></span>
-<span><span class="co">#&gt;  2 Steep Creek 356407032     0 707009141     356407032                NA</span></span>
-<span><span class="co">#&gt;  3 Steep Creek 356462244     0 707009211     356462244                NA</span></span>
-<span><span class="co">#&gt;  4 Steep Creek 356494188     0 707009213     356494188                NA</span></span>
-<span><span class="co">#&gt;  5 Steep Creek 356499676     0 707009233     356499676                NA</span></span>
-<span><span class="co">#&gt;  6 Steep Creek 356397697     0 707009235     356397697                NA</span></span>
-<span><span class="co">#&gt;  7 Steep Creek 356499676     0 707009415     356499676                NA</span></span>
-<span><span class="co">#&gt;  8 Steep Creek 356494188     0 707009417     356494188                NA</span></span>
-<span><span class="co">#&gt;  9 Steep Creek 356499676     0 707009460     356499676                NA</span></span>
-<span><span class="co">#&gt; 10 Steep Creek 356499676     0 707009535     356499676                NA</span></span>
-<span><span class="co">#&gt; # … with 66 more rows, and 26 more variables: downstream_route_measure &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   edge_type &lt;int&gt;, feature_code &lt;chr&gt;, feature_source &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   fwa_watershed_code &lt;chr&gt;, gnis_id &lt;int&gt;, gnis_name &lt;chr&gt;, gradient &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   left_right_tributary &lt;chr&gt;, length_metre &lt;dbl&gt;, linear_feature_id &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   local_watershed_code &lt;chr&gt;, localcode_ltree &lt;chr&gt;, stream_magnitude &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   stream_order &lt;int&gt;, upstream_area_ha &lt;chr&gt;, upstream_route_measure &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   waterbody_key &lt;int&gt;, watershed_code_50k &lt;chr&gt;, …</span></span></code></pre></div>
+<span><span class="co">#&gt;    stream…¹    blk    rm blue_…² blue_…³ downs…⁴ edge_…⁵ featu…⁶ featu…⁷ fwa_w…⁸</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt;  1 Steep C… 3.57e8     0  3.57e8    1130  2931.     1250 WA2411… areal … 300-90…</span></span>
+<span><span class="co">#&gt;  2 Steep C… 3.56e8     0  3.56e8      NA  1110.     1000 GA2485… linear… 300-90…</span></span>
+<span><span class="co">#&gt;  3 Steep C… 3.57e8     0  3.57e8      NA     0      1000 GA2485… linear… 300-90…</span></span>
+<span><span class="co">#&gt;  4 Steep C… 3.57e8     0  3.57e8    1142  2594.     1000 GA2485… linear… 300-90…</span></span>
+<span><span class="co">#&gt;  5 Steep C… 3.57e8     0  3.57e8    1142  2251.     1000 GA2485… linear… 300-90…</span></span>
+<span><span class="co">#&gt;  6 Steep C… 3.56e8     0  3.56e8      NA     0      1000 GA2485… linear… 300-90…</span></span>
+<span><span class="co">#&gt;  7 Steep C… 3.56e8     0  3.56e8      NA     0      1000 GA2485… linear… 300-90…</span></span>
+<span><span class="co">#&gt;  8 Steep C… 3.57e8     0  3.57e8    1131    51.8    1000 GA2485… linear… 300-90…</span></span>
+<span><span class="co">#&gt;  9 Steep C… 3.57e8     0  3.57e8    1130   751.     1250 WA2411… areal … 300-90…</span></span>
+<span><span class="co">#&gt; 10 Steep C… 3.56e8     0  3.56e8      NA   346.     1000 GA2485… linear… 300-90…</span></span>
+<span><span class="co">#&gt; # … with 66 more rows, 22 more variables: gnis_id &lt;dbl&gt;, gnis_name &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   gradient &lt;dbl&gt;, left_right_tributary &lt;chr&gt;, length_metre &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   linear_feature_id &lt;dbl&gt;, local_watershed_code &lt;chr&gt;, localcode_ltree &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   stream_magnitude &lt;dbl&gt;, stream_order &lt;dbl&gt;, stream_order_max &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   stream_order_parent &lt;dbl&gt;, upstream_route_measure &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   waterbody_key &lt;dbl&gt;, watershed_code_50k &lt;chr&gt;, watershed_group_code &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   watershed_group_code_50k &lt;chr&gt;, watershed_group_id &lt;dbl&gt;, …</span></span></code></pre></div>
 <p>Convert the stream network into a table of blue line keys with regularly spaced river meters starting at 0.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rms</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fwa_convert_stream_network_to_rms.html">fwa_convert_stream_network_to_rms</a></span><span class="op">(</span><span class="va">network</span>, interval <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="va">rms</span></span>
-<span><span class="co">#&gt; Simple feature collection with 544 features and 33 fields</span></span>
-<span><span class="co">#&gt; Geometry type: POINT</span></span>
-<span><span class="co">#&gt; Dimension:     XY</span></span>
-<span><span class="co">#&gt; Bounding box:  xmin: 1656200 ymin: 725425.2 xmax: 1661313 ymax: 731570.9</span></span>
-<span><span class="co">#&gt; Projected CRS: NAD83 / BC Albers</span></span>
-<span><span class="co">#&gt; # A tibble: 544 × 34</span></span>
-<span><span class="co">#&gt;    id              blk    rm stream_name parent_blk parent_rm blue_line_key</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;         &lt;int&gt; &lt;int&gt; &lt;chr&gt;            &lt;int&gt;     &lt;dbl&gt;         &lt;int&gt;</span></span>
-<span><span class="co">#&gt;  1 707017402 356365061     0 Steep Creek         NA       NA      356365061</span></span>
-<span><span class="co">#&gt;  2 707017293 356369408     0 Steep Creek         NA       NA      356369408</span></span>
-<span><span class="co">#&gt;  3 707009537 356372687     0 Steep Creek  356499676      998.     356372687</span></span>
-<span><span class="co">#&gt;  4 707009537 356372687   100 Steep Creek  356499676      998.     356372687</span></span>
-<span><span class="co">#&gt;  5 707009537 356372687   200 Steep Creek  356499676      998.     356372687</span></span>
-<span><span class="co">#&gt;  6 707009537 356372687   300 Steep Creek  356499676      998.     356372687</span></span>
-<span><span class="co">#&gt;  7 707012416 356391879     0 Steep Creek  356534225      587.     356391879</span></span>
-<span><span class="co">#&gt;  8 707012416 356391879   100 Steep Creek  356534225      587.     356391879</span></span>
-<span><span class="co">#&gt;  9 707012416 356391879   200 Steep Creek  356534225      587.     356391879</span></span>
-<span><span class="co">#&gt; 10 707012416 356391879   300 Steep Creek  356534225      587.     356391879</span></span>
-<span><span class="co">#&gt; # … with 534 more rows, and 27 more variables: blue_line_key_50k &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   downstream_route_measure &lt;dbl&gt;, edge_type &lt;int&gt;, feature_code &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   feature_source &lt;chr&gt;, fwa_watershed_code &lt;chr&gt;, gnis_id &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   gnis_name &lt;chr&gt;, gradient &lt;dbl&gt;, left_right_tributary &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   length_metre &lt;dbl&gt;, linear_feature_id &lt;int&gt;, local_watershed_code &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   localcode_ltree &lt;chr&gt;, stream_magnitude &lt;int&gt;, stream_order &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   upstream_area_ha &lt;chr&gt;, upstream_route_measure &lt;dbl&gt;, …</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#rms &lt;- fwa_convert_stream_network_to_rms(network, interval = 100)</span></span>
+<span><span class="co">#rms</span></span></code></pre></div>
 <p>Plot the watershed, network and river meters.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">wshed</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">network</span>, color <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rms</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#  ggplot2::geom_sf(data = rms) +</span></span>
+<span>  <span class="cn">NULL</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
 </div>
 <div class="section level2">
@@ -250,7 +226,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/poissonconsulting/fwatlasbc/actions" class="external-link"><img src="https://github.com/poissonconsulting/fwatlasbc/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/poissonconsulting/fwatlasbc" class="external-link"><img src="https://codecov.io/gh/poissonconsulting/fwatlasbc/branch/main/graph/badge.svg?token=x3TrvhuMbK" alt="codecov"></a></li>
 <li><a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"></a></li>
 </ul>
