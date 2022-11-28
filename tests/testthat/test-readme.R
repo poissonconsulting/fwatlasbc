@@ -2,7 +2,7 @@ test_that("multiplication works", {
   streams <- fwa_find_stream_names("steep c")
   expect_identical(streams, dplyr::tibble(stream_name = c("Steep Canyon Creek", "Steep Creek")))
   blks <- fwa_add_blks_to_stream_name(streams)
-  expect_identical(blks, dplyr::tibble(stream_name = c("Steep Canyon Creek", "Steep Creek", "Steep Creek", "Steep Creek"), blk = c(360883036L, 356362258L, 356534225L, 356570155L)))
+  expect_equal(blks, dplyr::tibble(stream_name = c("Steep Canyon Creek", "Steep Creek", "Steep Creek", "Steep Creek"), blk = c(360883036L, 356362258L, 356534225L, 356570155L)))
   blks <- blks[blks$blk == 356534225,]
   wshed <- fwa_add_watershed_to_blk(blks)
 

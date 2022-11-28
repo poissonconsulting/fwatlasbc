@@ -5,7 +5,7 @@
 \alias{fwa_stream_name}
 \title{Stream Name}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 11610 rows and 2 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 11606 rows and 2 columns.
 }
 \usage{
 fwa_stream_name

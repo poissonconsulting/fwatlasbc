@@ -7,7 +7,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/poissonconsulting/fwatlasbc/workflows/R-CMD-check/badge.svg)](https://github.com/poissonconsulting/fwatlasbc/actions)
+[![R-CMD-check](https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/poissonconsulting/fwatlasbc/branch/main/graph/badge.svg?token=x3TrvhuMbK)](https://codecov.io/gh/poissonconsulting/fwatlasbc)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
@@ -78,7 +78,7 @@ fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #> Projected CRS: NAD83 / BC Albers
 #> # A tibble: 1 × 6
 #>     lon   lat       blk    rm distance_to_lon_lat            geometry
-#>   <dbl> <dbl>     <int> <dbl>               <dbl>         <POINT [m]>
+#>   <dbl> <dbl>     <dbl> <dbl>               <dbl>         <POINT [m]>
 #> 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)
 ```
 
@@ -97,7 +97,7 @@ wshed
 #> # A tibble: 1 × 4
 #>   stream_name       blk    rm                                           geometry
 #>   <chr>           <int> <dbl>                                      <POLYGON [m]>
-#> 1 Steep Creek 356534225     0 ((1658037 728924.8, 1658107 728964.9, 1658107 728…
+#> 1 Steep Creek 356534225     0 ((1658107 728964.9, 1658107 728964.9, 1658179 728…
 ```
 
 Get stream network for the watershed polygon. Note that rm is from the
@@ -113,58 +113,33 @@ network
 #> Bounding box:  xmin: 1656200 ymin: 725423.1 xmax: 1661368 ymax: 731602.7
 #> Projected CRS: NAD83 / BC Albers
 #> # A tibble: 76 × 32
-#>    stream_name       blk    rm id        blue_line_key blue_line_key_50k
-#>    <chr>           <int> <dbl> <chr>             <int>             <int>
-#>  1 Steep Creek 356499676     0 707009047     356499676                NA
-#>  2 Steep Creek 356407032     0 707009141     356407032                NA
-#>  3 Steep Creek 356462244     0 707009211     356462244                NA
-#>  4 Steep Creek 356494188     0 707009213     356494188                NA
-#>  5 Steep Creek 356499676     0 707009233     356499676                NA
-#>  6 Steep Creek 356397697     0 707009235     356397697                NA
-#>  7 Steep Creek 356499676     0 707009415     356499676                NA
-#>  8 Steep Creek 356494188     0 707009417     356494188                NA
-#>  9 Steep Creek 356499676     0 707009460     356499676                NA
-#> 10 Steep Creek 356499676     0 707009535     356499676                NA
-#> # … with 66 more rows, and 26 more variables: downstream_route_measure <dbl>,
-#> #   edge_type <int>, feature_code <chr>, feature_source <chr>,
-#> #   fwa_watershed_code <chr>, gnis_id <int>, gnis_name <chr>, gradient <dbl>,
-#> #   left_right_tributary <chr>, length_metre <dbl>, linear_feature_id <int>,
-#> #   local_watershed_code <chr>, localcode_ltree <chr>, stream_magnitude <int>,
-#> #   stream_order <int>, upstream_area_ha <chr>, upstream_route_measure <dbl>,
-#> #   waterbody_key <int>, watershed_code_50k <chr>, …
+#>    stream…¹    blk    rm blue_…² blue_…³ downs…⁴ edge_…⁵ featu…⁶ featu…⁷ fwa_w…⁸
+#>    <chr>     <dbl> <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>   <chr>   <chr>  
+#>  1 Steep C… 3.57e8     0  3.57e8    1130  2931.     1250 WA2411… areal … 300-90…
+#>  2 Steep C… 3.56e8     0  3.56e8      NA  1110.     1000 GA2485… linear… 300-90…
+#>  3 Steep C… 3.57e8     0  3.57e8      NA     0      1000 GA2485… linear… 300-90…
+#>  4 Steep C… 3.57e8     0  3.57e8    1142  2594.     1000 GA2485… linear… 300-90…
+#>  5 Steep C… 3.57e8     0  3.57e8    1142  2251.     1000 GA2485… linear… 300-90…
+#>  6 Steep C… 3.56e8     0  3.56e8      NA     0      1000 GA2485… linear… 300-90…
+#>  7 Steep C… 3.56e8     0  3.56e8      NA     0      1000 GA2485… linear… 300-90…
+#>  8 Steep C… 3.57e8     0  3.57e8    1131    51.8    1000 GA2485… linear… 300-90…
+#>  9 Steep C… 3.57e8     0  3.57e8    1130   751.     1250 WA2411… areal … 300-90…
+#> 10 Steep C… 3.56e8     0  3.56e8      NA   346.     1000 GA2485… linear… 300-90…
+#> # … with 66 more rows, 22 more variables: gnis_id <dbl>, gnis_name <chr>,
+#> #   gradient <dbl>, left_right_tributary <chr>, length_metre <dbl>,
+#> #   linear_feature_id <dbl>, local_watershed_code <chr>, localcode_ltree <chr>,
+#> #   stream_magnitude <dbl>, stream_order <dbl>, stream_order_max <dbl>,
+#> #   stream_order_parent <dbl>, upstream_route_measure <dbl>,
+#> #   waterbody_key <dbl>, watershed_code_50k <chr>, watershed_group_code <chr>,
+#> #   watershed_group_code_50k <chr>, watershed_group_id <dbl>, …
 ```
 
 Convert the stream network into a table of blue line keys with regularly
 spaced river meters starting at 0.
 
 ``` r
-rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
-rms
-#> Simple feature collection with 544 features and 33 fields
-#> Geometry type: POINT
-#> Dimension:     XY
-#> Bounding box:  xmin: 1656200 ymin: 725425.2 xmax: 1661313 ymax: 731570.9
-#> Projected CRS: NAD83 / BC Albers
-#> # A tibble: 544 × 34
-#>    id              blk    rm stream_name parent_blk parent_rm blue_line_key
-#>    <chr>         <int> <int> <chr>            <int>     <dbl>         <int>
-#>  1 707017402 356365061     0 Steep Creek         NA       NA      356365061
-#>  2 707017293 356369408     0 Steep Creek         NA       NA      356369408
-#>  3 707009537 356372687     0 Steep Creek  356499676      998.     356372687
-#>  4 707009537 356372687   100 Steep Creek  356499676      998.     356372687
-#>  5 707009537 356372687   200 Steep Creek  356499676      998.     356372687
-#>  6 707009537 356372687   300 Steep Creek  356499676      998.     356372687
-#>  7 707012416 356391879     0 Steep Creek  356534225      587.     356391879
-#>  8 707012416 356391879   100 Steep Creek  356534225      587.     356391879
-#>  9 707012416 356391879   200 Steep Creek  356534225      587.     356391879
-#> 10 707012416 356391879   300 Steep Creek  356534225      587.     356391879
-#> # … with 534 more rows, and 27 more variables: blue_line_key_50k <int>,
-#> #   downstream_route_measure <dbl>, edge_type <int>, feature_code <chr>,
-#> #   feature_source <chr>, fwa_watershed_code <chr>, gnis_id <int>,
-#> #   gnis_name <chr>, gradient <dbl>, left_right_tributary <chr>,
-#> #   length_metre <dbl>, linear_feature_id <int>, local_watershed_code <chr>,
-#> #   localcode_ltree <chr>, stream_magnitude <int>, stream_order <int>,
-#> #   upstream_area_ha <chr>, upstream_route_measure <dbl>, …
+#rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
+#rms
 ```
 
 Plot the watershed, network and river meters.
@@ -173,7 +148,8 @@ Plot the watershed, network and river meters.
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
   ggplot2::geom_sf(data = network, color = "blue") +
-  ggplot2::geom_sf(data = rms)
+#  ggplot2::geom_sf(data = rms) +
+  NULL
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />

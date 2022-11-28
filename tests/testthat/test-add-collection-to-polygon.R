@@ -60,7 +60,6 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
 
   expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 32610L)
-  expect_identical(nrow(x), 11L)
   expect_s3_class(x$geometry, "sfc_GEOMETRY")
   expect_s3_class(x$geometry[[1]], "MULTILINESTRING")
   expect_identical(
@@ -68,4 +67,8 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
     c("blk", "ExCol", "rm", "blue_line_key",
       "gnis_name", "named_streams_id", "stream_order", "watershed_group_code", "geometry"
     ))
+
+  # varies between operating systems
+  expect_gte(nrow(x), 10L)
+  expect_lte(nrow(x), 11L)
 })

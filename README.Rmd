@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/poissonconsulting/fwatlasbc/workflows/R-CMD-check/badge.svg)](https://github.com/poissonconsulting/fwatlasbc/actions)
+[![R-CMD-check](https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/poissonconsulting/fwatlasbc/branch/main/graph/badge.svg?token=x3TrvhuMbK)](https://codecov.io/gh/poissonconsulting/fwatlasbc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
@@ -78,8 +78,8 @@ network
 
 Convert the stream network into a table of blue line keys with regularly spaced river meters starting at 0.
 ```{r}
-rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
-rms
+#rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
+#rms
 ```
 
 Plot the watershed, network and river meters.
@@ -87,7 +87,8 @@ Plot the watershed, network and river meters.
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
   ggplot2::geom_sf(data = network, color = "blue") +
-  ggplot2::geom_sf(data = rms)
+#  ggplot2::geom_sf(data = rms) +
+  NULL
 ```
 
 ## Inspiration

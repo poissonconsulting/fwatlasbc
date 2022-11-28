@@ -27,6 +27,11 @@ fwa_stream_name2 <- coll_id |>
 fwa_stream_name <- fwa_stream_name |>
   bind_rows(fwa_stream_name2) |>
   distinct() |>
-  rename(blk = blue_line_key, stream_name = gnis_name)
+  rename(blk = blue_line_key, stream_name = gnis_name) |>
+  mutate(blk = as.integer(blk))
+
+chk::check_data(fwa_stream_name,
+                values = list(blk = 1L, stream_name = ""),
+                exclusive = TRUE, order = TRUE, key = "blk")
 
 usethis::use_data(fwa_stream_name, overwrite = TRUE)

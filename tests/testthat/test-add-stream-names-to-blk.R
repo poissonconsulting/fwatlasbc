@@ -13,12 +13,6 @@ test_that("fwa_add_stream_names_to_blk preserves sf", {
   expect_snapshot_data(x, "add_stream_names_sf")
 })
 
-test_that("fwa_add_stream_names_to_blk works two streams same blk", {
-  x <- fwa_add_stream_names_to_blk(data.frame(blk = 356235759))
-  expect_identical(x, dplyr::tibble(blk = c(356235759, 356235759),
-                                     stream_name = c("Chilqua Creek", "Chilqua Slough")))
-})
-
 test_that("fwa_add_stream_names_to_blk works no rows", {
   x <- fwa_add_stream_names_to_blk(data.frame(blk = integer(0)))
   expect_identical(x, dplyr::tibble(blk = integer(0), stream_name = character(0)))
