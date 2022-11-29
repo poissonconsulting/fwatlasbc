@@ -112,6 +112,21 @@ test_that("fwa_snap_rm_to_point works active geometry geometry", {
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
+test_that("fwa_snap_rm_to_point doesn't replace non-matching blk with NA", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000),]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000),]
+  x$blk[1] <- 1L
+  x <- fwa_snap_rm_to_point(x, rm)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry"))
+  expect_equal(x$blk, c(1L, rep(356308001, 2)))
+  expect_equal(x$rm, c(NA, 2000, 5000))
+  expect_equal(x$distance_to_rm, c(NA, 0, 0))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
 test_that("fwa_snap_rm_to_point works active geometry geometry2", {
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
@@ -162,7 +177,7 @@ test_that("fwa_snap_rm_to_point works segment no match", {
   x <- fwa_snap_rm_to_point(x, rm, section)
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry", "section"))
-  expect_equal(x$blk, c(rep(356308001, 4), NA_integer_))
+  expect_equal(x$blk, rep(356308001, 5))
   expect_equal(x$rm, c(4000, 3000, 4000, 4000, NA_integer_))
   expect_equal(x$distance_to_rm, c(2954.89069472597, 535.63765010454, 754.230245890789, 610.731097004499,
                                    NA_real_))

@@ -60,8 +60,6 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
 
   expect_s3_class(x, "sf")
   expect_identical(sf::st_crs(x)$epsg, 32610L)
-  expect_s3_class(x$geometry, "sfc_GEOMETRY")
-  expect_s3_class(x$geometry[[1]], "MULTILINESTRING")
   expect_identical(
     colnames(x),
     c("blk", "ExCol", "rm", "blue_line_key",
@@ -71,4 +69,9 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
   # varies between operating systems
   expect_gte(nrow(x), 10L)
   expect_lte(nrow(x), 11L)
+
+  expect_s3_class(x$geometry[[1]], "MULTILINESTRING")
+
+  skip_on_os("windows") # getting 'sfc_MULTILINESTRING'/'sfc' on windows!
+  expect_s3_class(x$geometry, "sfc_GEOMETRY")
 })

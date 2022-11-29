@@ -104,7 +104,10 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
     lapply(snap_rm_to_point, rm = rm) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
-    dplyr::mutate(blk = .data$..fwa_blk) |>
+    dplyr::mutate(
+      ..fwa_blk = as.integer(.data$..fwa_blk),
+      blk = as.integer(.data$blk),
+      blk = dplyr::if_else(is.na(.data$..fwa_blk), .data$blk, .data$..fwa_blk)) |>
     dplyr::relocate("distance_to_rm", .after = "rm") |>
     dplyr::select(!c("..fwa_id", "..fwa_blk"))
 }
