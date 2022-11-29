@@ -59,10 +59,10 @@ snap_rm_to_point <- function(x, rm) {
 #' @return An updated version of x with integer columns blk and rm and numeric column distance_to_rm.
 #' @export
 #' @examples
-#' \dontrun{
-#' rm <- fwa_rm(blue_line_key = 356308001, interval = 1000)
-#' fwa_snap_rm_to_point(rm[2:4,], rm[3:5,])
-#' }
+#' rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+#' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+#' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+#' fwa_snap_rm_to_point(x, rm)
 fwa_snap_rm_to_point <- function(x, rm, ...) {
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(rm, "sf")
