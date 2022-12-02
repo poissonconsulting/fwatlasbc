@@ -18,41 +18,52 @@ prev_cummax <- function(x) {
 }
 
 interpolate_block <- function(x, rms, start, end) {
-  # approx
-#  which.min(abs(x - your.number))
+  ax <- c(x$..fwa_x_rm[start-1], x$..fwa_x_rm[end+1])
+  ay <- c(x$rm[start-1], x$rm[end+1])
+  indices <- start:end
+  xout <- x$..fwa_x_rm[indices]
+  y <- approx(ax, ay, xout)$y
+  #  x$rm[indices] <- y
   x
 }
 
 reallocate_blocks <- function(x, rms) {
-  n <- nrow(x)
-
   provided <- !is.na(x$..fwa_provided_new_rm)
   is.na(x$rm[provided]) <- TRUE
 
   rle <- rle(x$rm)
-  na_values <- is.na(rle$values)
-  lengths <- rle$lengths
-  csum <- cumsum(lengths)
-
-  lengths <- lengths[!na_values]
-  csum <- csum[!na_values]
-
-  if(csum[1] == 1) {
-    lengths[1] <- lengths[1] - 1
-    csum[1] <- 2
-  }
-  nsum <- length(csum)
-  if(csum[nsum] + lengths[nsum] == n) {
-    lengths[nsum] <- lengths[nsum] - 1
-  }
-
-  csum <- csum[lengths > 1]
-  lengths <- lengths[lengths > 1]
 
   x$rm[provided] <- x$..fwa_provided_new_rm[provided]
 
-  for(i in seq_along(csum)) {
-    x <- interpolate_block(x, rms, start = csum[i], end = lengths[i])
+  df <- data.frame(
+    values = rle$values,
+    length = rle$lengths
+  )
+  df$end <- cumsum(df$length)
+  df$start <- df$end - df$length + 1
+
+  df <- df[!is.na(df$values) & df$length > 1,]
+
+  if(!nrow(df)) return(x)
+
+  if(df$start[1] == 1) {
+    df$start[1] <- 2
+    df$length[1] <- df$length[1] - 1
+  }
+
+  nrm <- length(x$rm)
+  ndf <- nrow(df)
+  if(df$end[ndf] == nrm) {
+    df$end[ndf] <- nrm - 1
+    df$length[ndf] <- df$length[ndf] - 1
+  }
+
+  df <- df[!df$length > 1,]
+
+  if(!nrow(df)) return(x)
+
+  for(i in 1:nrow(df)) {
+    x <- interpolate_block(x, rms, start = df$start[i], end = df$end[i])
   }
   x
 }
