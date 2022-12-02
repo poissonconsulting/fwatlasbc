@@ -89,6 +89,9 @@ update_rms <- function(x, rms) {
 }
 
 snap_rm_to_rms <- function(x, rms) {
+  rms <- rms |>
+    dplyr::filter(blk == x$blk[1])
+
   x <- x |>
     snap_rm_to_point(rms) |>
     update_rms(rms) |>

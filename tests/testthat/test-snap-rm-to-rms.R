@@ -15,6 +15,32 @@ test_that("fwa_snap_rm_to_rms works", {
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
+test_that("fwa_snap_rm_to_rms works multiple blks", {
+  rlang::local_options(nocache = TRUE)
+
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000),]
+
+  x2 <- x
+  x2$blk <- 1
+  rm2 <- rm
+  rm2$blk <- 1
+
+  x <- dplyr::bind_rows(x, x2)
+  rm <- dplyr::bind_rows(rm, rm2)
+
+  x <- fwa_snap_rm_to_rms(x, rm)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_equal(x$blk, c(rep(356308001, 5), rep(1, 5)))
+  expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000))
+  expect_equal(x$new_rm, c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000))
+  expect_equal(x$distance_to_new_rm, rep(0,10))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
 test_that("fwa_snap_rm_to_rms doesn't snap mouth by default", {
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), nocache = FALSE)
 
