@@ -5,18 +5,23 @@ relocate_new_rm <- function (data) {
 }
 
 snap_zeros <- function(x, rms) {
-  mouth <- x$..old_rm == 0
+  mouth <- x$..fwa_x_rm == 0
   if(any(mouth) && any(rms$rm == 0)) {
-    x$rm[mouth] <- 0L
+    x$..fwa_provided_new_rm[mouth] <- 0L
   }
   x
 }
 
-snap_rm_to_rms <- function(x, rms, snap_zeros) {
-  x <- snap_rm_to_point(x, rms)
+snap_rm_to_rms <- function(x, rms, interval, snap_zeros) {
   if(snap_zeros) {
     x <- snap_zeros(x, rms)
   }
+  x <- x |>
+    snap_rm_to_point(rms)
+  provided <- !is.na(x$..fwa_provided_new_rm)
+  x$rm[provided] <- x$..fwa_provided_new_rm[provided]
+  x$rm <- round_any(x$rm, interval)
+  x$rm[provided] <- x$..fwa_provided_new_rm[provided]
   x
 }
 
@@ -58,7 +63,7 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
 
   check_names(x, c("blk", "rm"))
   check_names(rm, c("blk", "rm"))
-  chk_not_subset(colnames(x), c("..fwa_id", "..fwa_blk", "..fwa_new_rm"))
+  chk_not_subset(colnames(x), c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm", "..fwa_x_rm"))
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -100,17 +105,20 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
     dplyr::select(rm, "blk", "rm")
 
   x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
-    dplyr::rename(..old_rm = "rm") |>
+    tidyplus::add_missing_column(new_rm = NA_integer_) |>
+    dplyr::mutate(new_rm = as.integer(new_rm),
+                  ..fwa_id = 1:dplyr::n()) |>
+    dplyr::rename(..fwa_provided_new_rm = "new_rm",
+                  ..fwa_x_rm = "rm") |>
     group_split_sf(.data$blk) |>
-    lapply(snap_rm_to_rms, rm = rm, snap_zeros = snap_zeros) |>
+    lapply(snap_rm_to_rms, rm = rm, interval = interval, snap_zeros = snap_zeros) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::rename(new_rm = "rm",
                   distance_to_new_rm = "distance_to_rm",
-                  rm = "..old_rm") |>
+                  rm = "..fwa_x_rm") |>
     dplyr::mutate(
       blk = as.integer(.data$blk)) |>
-    dplyr::select(!c("..fwa_id", "..fwa_blk")) |>
+    dplyr::select(!c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm")) |>
     relocate_new_rm()
 }
