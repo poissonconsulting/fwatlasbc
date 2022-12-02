@@ -12,9 +12,23 @@ distance_to_rm <- function(x, rms) {
   x
 }
 
+prev_cummax <- function(x) {
+  if(!length(x)) return(x)
+  c(x[1], cummax(x)[-length(x)])
+}
+
 update_rms <- function(x, rms) {
   provided <- !is.na(x$..fwa_provided_new_rm)
   x$rm[provided] <- x$..fwa_provided_new_rm[provided]
+
+  wch <- which(provided)
+  for(id in wch) {
+    x$rm[1:id] <- pmin(x$rm[1:id], x$rm[id])
+  }
+
+  prev_cummax <- prev_cummax(x$rm)
+  wch <- which(x$rm < prev_cummax)
+  x$rm[wch] <- prev_cummax[wch]
 
   x
 }
