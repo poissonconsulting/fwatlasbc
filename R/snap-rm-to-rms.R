@@ -12,13 +12,17 @@ distance_to_rm <- function(x, rms) {
   x
 }
 
-snap_rm_to_rms <- function(x, rms) {
-  x <- x |>
-    snap_rm_to_point(rms)
+update_rms <- function(x, rms) {
   provided <- !is.na(x$..fwa_provided_new_rm)
   x$rm[provided] <- x$..fwa_provided_new_rm[provided]
 
-  x |>
+  x
+}
+
+snap_rm_to_rms <- function(x, rms) {
+  x <- x |>
+    snap_rm_to_point(rms) |>
+    update_rms(rms) |>
     distance_to_rm(rms)
 }
 
