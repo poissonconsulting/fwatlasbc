@@ -25,7 +25,7 @@ The closest river meter is snapped to each rm (by blk) and missing
 new_rm values are replaced with the corresponding rm value.
 The new_rm values are then ordered by adjusting the values so that
 firstly all previous values are not greater than each provided new_rm value
-and then all subsequent values are not less than the previous value.
+and then all subsequent values are not less than the maximum previous value.
 Next all runs of two or more identical new_rm values that do not include
 a provided new_rm are interpolated between the previous and subsequent
 new_rm values based on the original rm spacing and then snapped
