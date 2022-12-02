@@ -148,7 +148,7 @@ test_that("fwa_snap_rm_to_rms not exceeds subsequent new_rm", {
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
-test_that("fwa_snap_rm_to_rms not allow negative order", {
+test_that("fwa_snap_rm_to_rms only allow increasing order", {
   rlang::local_options(nocache = TRUE)
 
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
@@ -165,5 +165,26 @@ test_that("fwa_snap_rm_to_rms not allow negative order", {
   expect_equal(x$new_rm, c(1000, 8000, 8000, 8000, 8000))
   expect_equal(x$distance_to_new_rm, c(873.50885850392, 535.637650106249, 1455.35594246782, 1333.22900356052,
                                        1377.43784259615))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
+
+test_that("fwa_snap_rm_to_rms respects new_rm and only allow increasing order", {
+  rlang::local_options(nocache = TRUE)
+
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 8000),]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 8000),]
+  rm$rm <- c(0, 2000, 7000, 6000, 8000)
+  x$new_rm <- c(NA, NA, 6000, NA, NA, NA)
+
+  x <- fwa_snap_rm_to_rms(x, rm)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_equal(x$blk, rep(356308001, 6))
+  expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000, 8000))
+  expect_equal(x$new_rm, c(0, 2000, 6000, 6000, 6000, 8000))
+  expect_equal(x$distance_to_new_rm, c(0, 0, 772.26037010328, 0, 392.512382032925, 0))
   expect_s3_class(x$geometry, "sfc_POINT")
 })

@@ -81,7 +81,7 @@ fwa_snap_rm_to_rms <- function(x, rm) {
   chk_whole_numeric(x$rm)
   chk_not_any_na(x$rm)
   chk_gte(x$rm)
-  chk_unique(x$rm)
+  check_key(x, c("blk", "rm"))
 
   chk_whole_numeric(rm$blk)
   chk_not_any_na(rm$blk)
@@ -90,7 +90,7 @@ fwa_snap_rm_to_rms <- function(x, rm) {
   chk_whole_numeric(rm$rm)
   chk_not_any_na(rm$rm)
   chk_gte(rm$rm)
-  chk_unique(rm$rm)
+  check_key(rm, c("blk", "rm"))
 
   if(rlang::has_name(x, "new_rm")) {
     chk_whole_numeric(x$new_rm)
