@@ -21,7 +21,7 @@ An updated version of x with integer columns blk, rm and new_rm and numeric colu
 \description{
 Assigns closest river meter to river meters based on blue line keys.
 If x already includes new_rm column then non-missing values are preserved.
-The non-missing new_rm values must be ordered.
+The non-missing new_rm values must be ordered and must be present in rm.
 The snap_zeros argument overwrites any existing non-missing new_rm values
 where rm is 0 for the same blk.
 }

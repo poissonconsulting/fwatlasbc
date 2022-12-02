@@ -29,7 +29,7 @@ snap_rm_to_rms <- function(x, rms, interval, snap_zeros) {
 #'
 #' Assigns closest river meter to river meters based on blue line keys.
 #' If x already includes new_rm column then non-missing values are preserved.
-#' The non-missing new_rm values must be ordered.
+#' The non-missing new_rm values must be ordered and must be present in rm.
 #' The snap_zeros argument overwrites any existing non-missing new_rm values
 #' where rm is 0 for the same blk.
 #'
@@ -81,6 +81,11 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
   chk_not_any_na(rm$rm)
   chk_gte(rm$rm)
 
+  if(rlang::has_name(x, "new_rm")) {
+    chk_whole_numeric(x$new_rm)
+    chk_gte(x$new_rm)
+  }
+
   if(!nrow(x)) {
     x <- x |>
       tidyplus::add_missing_column(
@@ -104,14 +109,18 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
   rm <- rm |>
     dplyr::select(rm, "blk", "rm")
 
-  x |>
+  x <- x |>
     tidyplus::add_missing_column(new_rm = NA_integer_) |>
-    dplyr::mutate(new_rm = as.integer(new_rm),
-                  ..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(new_rm = as.integer(new_rm)) |>
+    dplyr::arrange("blk", "rm") |>
+    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     dplyr::rename(..fwa_provided_new_rm = "new_rm",
                   ..fwa_x_rm = "rm") |>
-    group_split_sf(.data$blk) |>
-    lapply(snap_rm_to_rms, rm = rm, interval = interval, snap_zeros = snap_zeros) |>
+    group_split_sf(.data$blk)
+
+  x |> lapply(function(x) { chk_sorted(x$..fwa_provided_new_rm, x_name = "`x$new_rm`") })
+
+  x |> lapply(snap_rm_to_rms, rm = rm, interval = interval, snap_zeros = snap_zeros) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::rename(new_rm = "rm",
