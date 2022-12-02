@@ -188,3 +188,26 @@ test_that("fwa_snap_rm_to_rms respects new_rm and only allow increasing order", 
   expect_equal(x$distance_to_new_rm, c(0, 0, 772.26037010328, 0, 392.512382032925, 0))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
+
+
+test_that("fwa_snap_rm_to_rms interpolates block", {
+  rlang::local_options(nocache = TRUE)
+
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 1000, 2000, 3000, 4000, 8000),]
+  rm <- rm[rm$rm %in% c(0, 4000, 5000, 6000, 7000, 8000),]
+  rm$rm <- c(0, 4000, 1000, 2000, 3000, 8000)
+
+  x <- fwa_snap_rm_to_rms(x, rm)
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_equal(x$blk, rep(356308001, 6))
+  expect_equal(x$rm, c(0, 1000, 2000, 3000, 4000, 8000))
+  expect_equal(x$new_rm, c(0, 0, 4000, 4000, 4000, 8000)) #without
+  expect_equal(x$new_rm, c(0, 2000, 4000, 4000, 4000, 8000)) # with
+  expect_equal(x$new_rm, c(0, 2000, 3000, 4000, 4000, 8000)) # expect
+#  expect_equal(x$distance_to_new_rm, c(0, 2709.10257791358, 535.637650106249, 0, 0))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+

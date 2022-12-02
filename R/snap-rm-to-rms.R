@@ -22,8 +22,10 @@ interpolate_block <- function(x, rms, start, end) {
   ay <- c(x$rm[start-1], x$rm[end+1])
   indices <- start:end
   xout <- x$..fwa_x_rm[indices]
-  y <- approx(ax, ay, xout)$y
-  #  x$rm[indices] <- y
+  x$rm[indices] <- approx(ax, ay, xout)$y
+  for(i in indices) {
+    x$rm[i] <- rms$rm[which.min(abs(x$rm[i] - rms$rm))]
+  }
   x
 }
 
