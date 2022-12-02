@@ -56,3 +56,12 @@ sf_column_name <- function (x) {
   }
   attr(x, "sf_column")
 }
+
+# from https://tanaylab.github.io/tgutil/index.html
+pmean <- function(..., na.rm = FALSE) {
+  d <- do.call(cbind, list(...))
+  res <- rowMeans(d, na.rm = na.rm)
+  idx_na <- !rowMeans(!is.na(d))
+  res[idx_na] <- NA
+  return(res)
+}

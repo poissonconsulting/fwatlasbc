@@ -70,8 +70,7 @@ reallocate_blocks <- function(x, rms) {
   for(i in 1:nrow(df)) {
     x <- interpolate_block(x, start = df$start[i], end = df$end[i])
     indices <- df$start[i]:df$end[i]
-  #  x$rm[indices] <- pmean(x$rm[indices], xrev$rm[indices])
-    x$rm[indices] <- x$rm[indices]
+    x$rm[indices] <- pmean(x$rm[indices], xrev$rm[indices])
     for(j in indices) {
       x$rm[j] <- rms$rm[which.min(abs(x$rm[j] - rms$rm))]
     }
@@ -87,11 +86,9 @@ update_rms <- function(x, rms) {
   for(id in wch) {
     x$rm[1:id] <- pmin(x$rm[1:id], x$rm[id])
   }
-
   prev_cummax <- prev_cummax(x$rm)
   wch <- which(x$rm < prev_cummax)
   x$rm[wch] <- prev_cummax[wch]
-
   reallocate_blocks(x, rms)
 }
 
@@ -157,7 +154,7 @@ fwa_snap_rm_to_rms <- function(x, rm) {
   chk_gte(rm$rm)
   check_key(rm, c("blk", "rm"))
 
-  if(rlang::has_name(x, "new_rm")) {
+  if(has_name(x, "new_rm")) {
     chk_whole_numeric(x$new_rm)
     chk_gte(x$new_rm)
     if(!vld_join(x[!is.na(x$new_rm),], rm, c(blk = "blk", new_rm = "rm"))) {
