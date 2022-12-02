@@ -104,7 +104,7 @@ test_that("fwa_snap_rm_to_rms no x or rm", {
   expect_s3_class(x$geometry, "sfc_GEOMETRY")
 })
 
-test_that("fwa_snap_rm_to_rms new_rm preserves all new_rm", {
+test_that("fwa_snap_rm_to_rms new_rm errors if new_rm not in rm", {
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), nocache = FALSE)
 
   x <- rm[rm$rm %in% c(0, 3000, 6000),]
@@ -112,15 +112,8 @@ test_that("fwa_snap_rm_to_rms new_rm preserves all new_rm", {
   rm$rm <- c(3000, 6000, 0)
   x$new_rm <- c(3000, 6000, 9000)
 
-  x <- fwa_snap_rm_to_rms(x, rm)
-  expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
-  expect_equal(x$blk, rep(356308001, 3))
-  expect_equal(x$rm, c(0, 3000, 6000))
-  expect_equal(x$new_rm, c(3000, 6000, 9000))
-  skip("distance update at end")
-  expect_equal(x$distance_to_new_rm, rep(NA_real_, 3))
-  expect_s3_class(x$geometry, "sfc_POINT")
+  expect_error(fwa_snap_rm_to_rms(x, rm),
+               "^All `x\\$new_rm` values must be in `rm\\$rm` by `blk`\\.$")
 })
 
 test_that("fwa_snap_rm_to_rms new_rm errors if not sorted", {
@@ -131,7 +124,7 @@ test_that("fwa_snap_rm_to_rms new_rm errors if not sorted", {
   rm$rm <- c(3000, 6000, 0)
   x$new_rm <- c(3000, 6000, 0)
 
-  expect_error(fwa_snap_rm_to_rms(x, rm), "`x\\$new_rm` must be sorted\\.$")
+  expect_error(fwa_snap_rm_to_rms(x, rm), "^`x\\$new_rm` must be sorted\\.$")
 })
 
 

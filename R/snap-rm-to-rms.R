@@ -29,7 +29,8 @@ snap_rm_to_rms <- function(x, rms, interval, snap_zeros) {
 #'
 #' Assigns closest river meter to river meters based on blue line keys.
 #' If x already includes new_rm column then non-missing values are preserved.
-#' The non-missing new_rm values must be ordered and must be present in rm.
+#' The non-missing new_rm values must be ordered (with respect to x$rm)
+#' and must be present in rm$rm.
 #' The snap_zeros argument overwrites any existing non-missing new_rm values
 #' where rm is 0 for the same blk.
 #'
@@ -72,6 +73,7 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
   chk_whole_numeric(x$rm)
   chk_not_any_na(x$rm)
   chk_gte(x$rm)
+  chk_unique(x$rm)
 
   chk_whole_numeric(rm$blk)
   chk_not_any_na(rm$blk)
@@ -80,10 +82,14 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
   chk_whole_numeric(rm$rm)
   chk_not_any_na(rm$rm)
   chk_gte(rm$rm)
+  chk_unique(rm$rm)
 
   if(rlang::has_name(x, "new_rm")) {
     chk_whole_numeric(x$new_rm)
     chk_gte(x$new_rm)
+    if(!vld_join(x, rm, c(blk = "blk", new_rm = "rm"))) {
+      chk::abort_chk("All `x$new_rm` values must be in `rm$rm` by `blk`")
+    }
   }
 
   if(!nrow(x)) {
