@@ -89,12 +89,21 @@ update_rms <- function(x, rms) {
   prev_cummax <- prev_cummax(x$rm)
   wch <- which(x$rm < prev_cummax)
   x$rm[wch] <- prev_cummax[wch]
-  reallocate_blocks(x, rms)
+  x <- reallocate_blocks(x, rms)
+  prev_cummax <- prev_cummax(x$rm)
+  wch <- which(x$rm < prev_cummax)
+  x$rm[wch] <- prev_cummax[wch]
+  if(!vld_sorted(x$rm)) {
+    stop("generated new_rm should be sorted end")
+  }
+  x
 }
 
 snap_rm_to_rms <- function(x, rms) {
+  chk_sorted(x$..fwa_provided_new_rm, x_name = "`x$new_rm`")
+
   rms <- rms |>
-    dplyr::filter(blk == x$blk[1])
+    dplyr::filter(.data$blk == x$blk[1])
 
   x <- x |>
     snap_rm_to_point(rms) |>
@@ -190,16 +199,13 @@ fwa_snap_rm_to_rms <- function(x, rm) {
 
   x$new_rm <- as.integer(x$new_rm)
 
-  x <- x |>
+  x |>
     dplyr::arrange("blk", "rm") |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     dplyr::rename(..fwa_provided_new_rm = "new_rm",
                   ..fwa_x_rm = "rm") |>
-    group_split_sf(.data$blk)
-
-  x |> lapply(function(x) { chk_sorted(x$..fwa_provided_new_rm, x_name = "`x$new_rm`") })
-
-  x |> lapply(snap_rm_to_rms, rm = rm) |>
+    group_split_sf(.data$blk) |>
+    lapply(snap_rm_to_rms, rm = rm) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::rename(new_rm = "rm",
