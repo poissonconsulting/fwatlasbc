@@ -4,24 +4,16 @@ relocate_new_rm <- function (data) {
     dplyr::relocate("distance_to_new_rm", .after = "new_rm")
 }
 
-snap_zeros <- function(x, rms) {
-  mouth <- x$..fwa_x_rm == 0
-  if(any(mouth) && any(rms$rm == 0)) {
-    x$..fwa_provided_new_rm[mouth] <- 0L
-  }
-  x
-}
-
-snap_rm_to_rms <- function(x, rms, interval, snap_zeros) {
-  if(snap_zeros) {
-    x <- snap_zeros(x, rms)
-  }
+snap_rm_to_rms <- function(x, rms) {
   x <- x |>
     snap_rm_to_point(rms)
   provided <- !is.na(x$..fwa_provided_new_rm)
   x$rm[provided] <- x$..fwa_provided_new_rm[provided]
-  x$rm <- round_any(x$rm, interval)
-  x$rm[provided] <- x$..fwa_provided_new_rm[provided]
+
+  fac <- factor(rms$rm, levels = rms$rm)
+  rm <- rms[as.integer(factor(x$rm, levels = levels(fac))),]
+  x$distance_to_rm <- sf::st_distance(x, rm, by_element = TRUE)
+  x$distance_to_rm <- as.numeric(x$distance_to_rm)
   x
 }
 
@@ -31,23 +23,19 @@ snap_rm_to_rms <- function(x, rms, interval, snap_zeros) {
 #' If x already includes new_rm column then non-missing values are preserved.
 #' The non-missing new_rm values must be ordered (with respect to x$rm)
 #' and must be present in rm$rm.
-#' The snap_zeros argument overwrites any existing non-missing new_rm values
-#' where rm is 0 for the same blk.
 #'
-#' The closest river meter is snapped to each rm by blk and missing
+#' The closest river meter is snapped to each rm (by blk) and missing
 #' new_rm values are replaced with the corresponding rm value.
 #' The new_rm values are then ordered by adjusting the values so that
 #' firstly all previous values are not greater than each provided new_rm value
 #' and then all subsequent values are not less than the previous value.
 #' Next all runs of two or more identical new_rm values that do not include
 #' a provided new_rm are interpolated between the previous and subsequent
-#' new_rm values based on the original rm spacing.
-#' Finally all generated new_rm values are rounded to the interval.
+#' new_rm values based on the original rm spacing and then snapped
+#' to the closest rm value in rm.
 #'
 #' @param x An sf object of spatial points with blk and rm columns and optional new_rm integer column.
 #' @param rm An sf object of spatial point with blk and rm columns.
-#' @param interval A whole number of the interval to round generated new_rm values to.
-#' @param snap_zeros A flag specifying whether to set new_rm to 0 where rm is 0.
 #' @return An updated version of x with integer columns blk, rm and new_rm and numeric column distance_to_new_rm.
 #' @export
 #' @examples
@@ -55,12 +43,9 @@ snap_rm_to_rms <- function(x, rms, interval, snap_zeros) {
 #' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
 #' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
 #' fwa_snap_rm_to_rms(x, rm)
-fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
+fwa_snap_rm_to_rms <- function(x, rm) {
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(rm, "sf")
-  chk_whole_number(interval)
-  chk_gt(interval)
-  chk_flag(snap_zeros)
 
   check_names(x, c("blk", "rm"))
   check_names(rm, c("blk", "rm"))
@@ -87,7 +72,7 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
   if(rlang::has_name(x, "new_rm")) {
     chk_whole_numeric(x$new_rm)
     chk_gte(x$new_rm)
-    if(!vld_join(x, rm, c(blk = "blk", new_rm = "rm"))) {
+    if(!vld_join(x[!is.na(x$new_rm),], rm, c(blk = "blk", new_rm = "rm"))) {
       chk::abort_chk("All `x$new_rm` values must be in `rm$rm` by `blk`")
     }
   }
@@ -116,8 +101,11 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
     dplyr::select(rm, "blk", "rm")
 
   x <- x |>
-    tidyplus::add_missing_column(new_rm = NA_integer_) |>
-    dplyr::mutate(new_rm = as.integer(new_rm)) |>
+    tidyplus::add_missing_column(new_rm = NA_integer_)
+
+  x$new_rm <- as.integer(x$new_rm)
+
+  x <- x |>
     dplyr::arrange("blk", "rm") |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     dplyr::rename(..fwa_provided_new_rm = "new_rm",
@@ -126,7 +114,7 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
 
   x |> lapply(function(x) { chk_sorted(x$..fwa_provided_new_rm, x_name = "`x$new_rm`") })
 
-  x |> lapply(snap_rm_to_rms, rm = rm, interval = interval, snap_zeros = snap_zeros) |>
+  x |> lapply(snap_rm_to_rms, rm = rm) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::rename(new_rm = "rm",

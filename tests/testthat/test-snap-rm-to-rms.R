@@ -16,40 +16,41 @@ test_that("fwa_snap_rm_to_rms works", {
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
-test_that("fwa_snap_rm_to_rms does snap mouth", {
+test_that("fwa_snap_rm_to_rms doesn't snap mouth by default", {
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), nocache = FALSE)
 
   x <- rm[rm$rm %in% c(0, 3000, 6000),]
   rm <- rm[rm$rm %in% c(3000, 6000, 9000),]
   rm$rm <- c(3000, 6000, 0)
 
-  x <- fwa_snap_rm_to_rms(x, rm, snap_zeros = TRUE)
-
-  expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
-  expect_equal(x$blk, rep(356308001, 3))
-  expect_equal(x$rm, c(0, 3000, 6000))
-  expect_equal(x$new_rm, c(0, 3000, 6000))
-  expect_equal(x$distance_to_new_rm, c(2331.96951067872, 0, 0))
-  expect_s3_class(x$geometry, "sfc_POINT")
-})
-
-test_that("fwa_snap_rm_to_rms doesn't snap mouth", {
-  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), nocache = FALSE)
-
-  x <- rm[rm$rm %in% c(0, 3000, 6000),]
-  rm <- rm[rm$rm %in% c(3000, 6000, 9000),]
-  rm$rm <- c(3000, 6000, 0)
-
-  x <- fwa_snap_rm_to_rms(x, rm, snap_zeros = FALSE)
+  x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
   expect_equal(x$blk, rep(356308001, 3))
   expect_equal(x$rm, c(0, 3000, 6000))
   expect_equal(x$new_rm, c(3000, 3000, 6000))
-  skip("update distance to new rm")
-  expect_equal(x$distance_to_new_rm, c(0, 0, 0))
+  expect_equal(x$distance_to_new_rm, c(2331.96951067872, 0, 0))
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
+test_that("fwa_snap_rm_to_rms does snap mouth using new_rm", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), nocache = FALSE)
+
+  x <- rm[rm$rm %in% c(0, 3000, 6000),]
+  rm <- rm[rm$rm %in% c(3000, 6000, 9000),]
+  rm$rm <- c(3000, 6000, 0)
+
+  x$new_rm <- c(0, NA, NA)
+
+  x <- fwa_snap_rm_to_rms(x, rm)
+
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_equal(x$blk, rep(356308001, 3))
+  expect_equal(x$rm, c(0, 3000, 6000))
+  expect_equal(x$new_rm, c(0, 3000, 6000))
+  expect_equal(x$distance_to_new_rm, c(4222.41372431505, 0, 0))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -60,7 +61,7 @@ test_that("fwa_snap_rm_to_rms no x", {
   rm <- rm[rm$rm %in% c(3000, 6000, 9000),]
   rm$rm <- c(3000, 6000, 0)
 
-  x <- fwa_snap_rm_to_rms(x, rm, snap_zeros = FALSE)
+  x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
@@ -76,7 +77,7 @@ test_that("fwa_snap_rm_to_rms no rm", {
 
   x <- rm[rm$rm %in% c(0, 3000, 6000),]
   rm <- rm[FALSE,]
-  x <- fwa_snap_rm_to_rms(x, rm, snap_zeros = FALSE)
+  x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
@@ -93,7 +94,7 @@ test_that("fwa_snap_rm_to_rms no x or rm", {
   x <- rm[FALSE,]
   rm <- rm[FALSE,]
 
-  x <- fwa_snap_rm_to_rms(x, rm, snap_zeros = FALSE)
+  x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
@@ -126,5 +127,3 @@ test_that("fwa_snap_rm_to_rms new_rm errors if not sorted", {
 
   expect_error(fwa_snap_rm_to_rms(x, rm), "^`x\\$new_rm` must be sorted\\.$")
 })
-
-

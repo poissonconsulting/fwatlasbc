@@ -4,16 +4,12 @@
 \alias{fwa_snap_rm_to_rms}
 \title{Snap River Meter to River Meters}
 \usage{
-fwa_snap_rm_to_rms(x, rm, interval = 5, snap_zeros = FALSE)
+fwa_snap_rm_to_rms(x, rm)
 }
 \arguments{
 \item{x}{An sf object of spatial points with blk and rm columns and optional new_rm integer column.}
 
 \item{rm}{An sf object of spatial point with blk and rm columns.}
-
-\item{interval}{A whole number of the interval to round generated new_rm values to.}
-
-\item{snap_zeros}{A flag specifying whether to set new_rm to 0 where rm is 0.}
 }
 \value{
 An updated version of x with integer columns blk, rm and new_rm and numeric column distance_to_new_rm.
@@ -21,20 +17,19 @@ An updated version of x with integer columns blk, rm and new_rm and numeric colu
 \description{
 Assigns closest river meter to river meters based on blue line keys.
 If x already includes new_rm column then non-missing values are preserved.
-The non-missing new_rm values must be ordered and must be present in rm.
-The snap_zeros argument overwrites any existing non-missing new_rm values
-where rm is 0 for the same blk.
+The non-missing new_rm values must be ordered (with respect to x$rm)
+and must be present in rm$rm.
 }
 \details{
-The closest river meter is snapped to each rm by blk and missing
+The closest river meter is snapped to each rm (by blk) and missing
 new_rm values are replaced with the corresponding rm value.
 The new_rm values are then ordered by adjusting the values so that
 firstly all previous values are not greater than each provided new_rm value
 and then all subsequent values are not less than the previous value.
 Next all runs of two or more identical new_rm values that do not include
 a provided new_rm are interpolated between the previous and subsequent
-new_rm values based on the original rm spacing.
-Finally all generated new_rm values are rounded to the interval.
+new_rm values based on the original rm spacing and then snapped
+to the closest rm value in rm.
 }
 \examples{
 rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
