@@ -4,17 +4,22 @@ relocate_new_rm <- function (data) {
     dplyr::relocate("distance_to_new_rm", .after = "new_rm")
 }
 
+distance_to_rm <- function(x, rms) {
+  fac <- factor(rms$rm, levels = rms$rm)
+  rm <- rms[as.integer(factor(x$rm, levels = levels(fac))),]
+  x$distance_to_rm <- sf::st_distance(x, rm, by_element = TRUE)
+  x$distance_to_rm <- as.numeric(x$distance_to_rm)
+  x
+}
+
 snap_rm_to_rms <- function(x, rms) {
   x <- x |>
     snap_rm_to_point(rms)
   provided <- !is.na(x$..fwa_provided_new_rm)
   x$rm[provided] <- x$..fwa_provided_new_rm[provided]
 
-  fac <- factor(rms$rm, levels = rms$rm)
-  rm <- rms[as.integer(factor(x$rm, levels = levels(fac))),]
-  x$distance_to_rm <- sf::st_distance(x, rm, by_element = TRUE)
-  x$distance_to_rm <- as.numeric(x$distance_to_rm)
-  x
+  x |>
+    distance_to_rm(rms)
 }
 
 #' Snap River Meter to River Meters
