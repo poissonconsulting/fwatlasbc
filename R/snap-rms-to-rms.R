@@ -14,6 +14,20 @@ merge_blocks <- function(df) {
   df
 }
 
+select_closest <- function(rm, prev_new_rm) {
+  chk_whole_number(prev_new_rm)
+  rm$..fwa_keep[rm$new_rm < prev_new_rm] <- FALSE
+  if(!any(rm$..fwa_keep)) return(rm)
+
+  rm$..fwa_distance_to_rm <- sf::st_distance(rm, rm$..fwa_geometry, by_element = TRUE)
+  rm$..fwa_distance_to_rm <- as.numeric(rm$..fwa_distance_to_rm)
+  wch_keep <- which.min(rm$..fwa_distance_to_rm[rm$..fwa_keep])
+  rm$..fwa_distance_to_rm <- NULL
+
+  rm$..fwa_keep[rm$..fwa_keep][-wch_keep] <- FALSE
+  rm
+}
+
 resolve_multijoins <- function(rm) {
   rle <- rle(rm$rm)
 
@@ -30,11 +44,15 @@ resolve_multijoins <- function(rm) {
   df <- merge_blocks(df)
   if(!nrow(df)) return(rm)
 
-  print(df)
-  # need to select closest one of those available by filtering on rm
-  # but need new_rm to not decrease....
-  # simplest to start at bottom and work up
-  # discard if less than then choose closest and so on...
+  prev_new_rm <- 0
+  rm$..fwa_keep <- TRUE
+  for(i in 1:nrow(df)) {
+    indices <- df$start[i]:df$end[i]
+    rm[indices,] <- select_closest(rm[indices,], prev_new_rm)
+    prev_new_rm <- rm$new_rm[indices][rm$..fwa_keep[indices]]
+  }
+  rm <- rm[rm$..fwa_keep,]
+  rm$..fwa_keep <- NULL
   rm
 }
 
@@ -75,11 +93,14 @@ fwa_snap_rms_to_rms <- function(x, rm) {
   x <- fwa_snap_rm_to_rms(x, rm)
   x2 <- x |>
     as_tibble(x)
-  x2 <- x2[c("blk", "new_rm", "rm")]
+  x2 <- x2[c("blk", "new_rm", "rm", "geometry")]
   x2$rm2 <- x2$rm
   x2$rm <- x2$new_rm
   x2$new_rm <- x2$rm2
   x2$rm2 <- NULL
+  # should really grab geometry whatever name
+  x2$..fwa_geometry <- x2$geometry
+  x2$geometry <- NULL
 
   rm <- rm |>
     dplyr::left_join(x2, by = c("blk", "rm"))
@@ -88,6 +109,8 @@ fwa_snap_rms_to_rms <- function(x, rm) {
     group_split_sf(.data$blk) |>
     lapply(resolve_multijoins) |>
     dplyr::bind_rows()
+
+  rm$..fwa_geometry <- NULL
 
   rm <- rm |>
     fwa_snap_rm_to_rms(x)

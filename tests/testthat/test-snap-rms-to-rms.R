@@ -48,8 +48,7 @@ test_that("fwa_snap_rms_to_rms can deal with mising blks", {
   expect_identical(colnames(rm), c("blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
   expect_equal(rm$blk, c(1,1,rep(356308001, 4)))
   expect_equal(rm$rm, c(0, 2000, 5000, 6000, 7000, 10000))
-  expect_equal(rm$new_rm, c(NA, NA, 0, 5000L, 7000L, 7000L))
-  expect_equal(rm$distance_to_new_rm, c(NA, NA, 3314.98934913696, 772.26037010328, 0, 1496.94367005726
-  ))
+  expect_equal(rm$new_rm, c(NA, NA, 2000, 6000L, 7000L, 7000L))
+  expect_equal(rm$distance_to_new_rm, c(NA, NA, 1837.8850050135, 0, 0, 1496.94367005726))
   expect_s3_class(rm$geometry, "sfc_POINT")
 })
