@@ -22,6 +22,7 @@ interpolate_block <- function(x, rms, start, end) {
   ay <- c(x$rm[start-1], x$rm[end+1])
   indices <- start:end
   xout <- x$..fwa_x_rm[indices]
+
   x$rm[indices] <- approx(ax, ay, xout)$y
   for(i in indices) {
     x$rm[i] <- rms$rm[which.min(abs(x$rm[i] - rms$rm))]
@@ -44,6 +45,7 @@ reallocate_blocks <- function(x, rms) {
   df$end <- cumsum(df$length)
   df$start <- df$end - df$length + 1
 
+
   df <- df[!is.na(df$values) & df$length > 1,]
 
   if(!nrow(df)) return(x)
@@ -60,7 +62,7 @@ reallocate_blocks <- function(x, rms) {
     df$length[ndf] <- df$length[ndf] - 1
   }
 
-  df <- df[!df$length > 1,]
+  df <- df[df$length > 1,]
 
   if(!nrow(df)) return(x)
 
