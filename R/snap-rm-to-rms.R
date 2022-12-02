@@ -17,6 +17,15 @@ prev_cummax <- function(x) {
   c(x[1], cummax(x)[-length(x)])
 }
 
+reallocate_blocks <- function(x, rms) {
+  #' Next all runs of two or more identical new_rm values that do not include
+  #' a provided new_rm are interpolated between the previous and subsequent
+  #' new_rm values based on the original rm spacing and then snapped
+  #' to the closest rm value in rm.
+
+  x
+}
+
 update_rms <- function(x, rms) {
   provided <- !is.na(x$..fwa_provided_new_rm)
   x$rm[provided] <- x$..fwa_provided_new_rm[provided]
@@ -30,7 +39,7 @@ update_rms <- function(x, rms) {
   wch <- which(x$rm < prev_cummax)
   x$rm[wch] <- prev_cummax[wch]
 
-  x
+  reallocate_blocks(x, rms)
 }
 
 snap_rm_to_rms <- function(x, rms) {
