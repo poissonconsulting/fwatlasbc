@@ -17,12 +17,43 @@ prev_cummax <- function(x) {
   c(x[1], cummax(x)[-length(x)])
 }
 
-reallocate_blocks <- function(x, rms) {
-  #' Next all runs of two or more identical new_rm values that do not include
-  #' a provided new_rm are interpolated between the previous and subsequent
-  #' new_rm values based on the original rm spacing and then snapped
-  #' to the closest rm value in rm.
+interpolate_block <- function(x, rms, start, end) {
+  # approx
+#  which.min(abs(x - your.number))
+  x
+}
 
+reallocate_blocks <- function(x, rms) {
+  n <- nrow(x)
+
+  provided <- !is.na(x$..fwa_provided_new_rm)
+  is.na(x$rm[provided]) <- TRUE
+
+  rle <- rle(x$rm)
+  na_values <- is.na(rle$values)
+  lengths <- rle$lengths
+  csum <- cumsum(lengths)
+
+  lengths <- lengths[!na_values]
+  csum <- csum[!na_values]
+
+  if(csum[1] == 1) {
+    lengths[1] <- lengths[1] - 1
+    csum[1] <- 2
+  }
+  nsum <- length(csum)
+  if(csum[nsum] + lengths[nsum] == n) {
+    lengths[nsum] <- lengths[nsum] - 1
+  }
+
+  csum <- csum[lengths > 1]
+  lengths <- lengths[lengths > 1]
+
+  x$rm[provided] <- x$..fwa_provided_new_rm[provided]
+
+  for(i in seq_along(csum)) {
+    x <- interpolate_block(x, rms, start = csum[i], end = lengths[i])
+  }
   x
 }
 
