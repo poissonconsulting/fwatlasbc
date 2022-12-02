@@ -22,7 +22,8 @@ Imports:
     stats,
     stringr,
     tibble,
-    tidyselect
+    tidyselect,
+    tidyplus
 Suggests: 
     covr,
     googleway,

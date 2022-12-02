@@ -13,11 +13,11 @@ snap_zeros <- function(x, rms) {
 }
 
 snap_rm_to_rms <- function(x, rms, snap_zeros) {
-   x <- snap_rm_to_point(x, rms)
-   if(snap_zeros) {
-     x <- snap_zeros(x, rms)
-   }
-   x
+  x <- snap_rm_to_point(x, rms)
+  if(snap_zeros) {
+    x <- snap_zeros(x, rms)
+  }
+  x
 }
 
 #' Snap River Meter to River Meters
@@ -58,7 +58,7 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
 
   check_names(x, c("blk", "rm"))
   check_names(rm, c("blk", "rm"))
-  chk_not_subset(colnames(x), c("..fwa_id", "..fwa_blk"))
+  chk_not_subset(colnames(x), c("..fwa_id", "..fwa_blk", "..fwa_new_rm"))
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -77,19 +77,20 @@ fwa_snap_rm_to_rms <- function(x, rm, interval = 5, snap_zeros = FALSE) {
   chk_gte(rm$rm)
 
   if(!nrow(x)) {
-    x$new_rm <- integer(0)
-    x$distance_to_new_rm <- numeric(0)
     x <- x |>
+      tidyplus::add_missing_column(
+        new_rm = integer(0),
+        distance_to_new_rm = numeric(0)) |>
       relocate_new_rm()
 
     return(x)
   }
   if(!nrow(rm)) {
-    x$new_rm <- NA_integer_
-    x$distance_to_new_rm <- NA_real_
     x <- x |>
+      tidyplus::add_missing_column(
+        new_rm = NA_integer_,
+        distance_to_new_rm = NA_real_) |>
       relocate_new_rm()
-
     return(x)
   }
 
