@@ -17,16 +17,13 @@ prev_cummax <- function(x) {
   c(x[1], cummax(x)[-length(x)])
 }
 
-interpolate_block <- function(x, rms, start, end) {
+interpolate_block <- function(x, start, end) {
   ax <- c(x$..fwa_x_rm[start-1], x$..fwa_x_rm[end+1])
   ay <- c(x$rm[start-1], x$rm[end+1])
   indices <- start:end
   xout <- x$..fwa_x_rm[indices]
 
   x$rm[indices] <- approx(ax, ay, xout)$y
-  for(i in indices) {
-    x$rm[i] <- rms$rm[which.min(abs(x$rm[i] - rms$rm))]
-  }
   x
 }
 
@@ -66,8 +63,18 @@ reallocate_blocks <- function(x, rms) {
 
   if(!nrow(df)) return(x)
 
+  xrev <- x
+  for(i in nrow(df):1) {
+    xrev <- interpolate_block(xrev, start = df$start[i], end = df$end[i])
+  }
   for(i in 1:nrow(df)) {
-    x <- interpolate_block(x, rms, start = df$start[i], end = df$end[i])
+    x <- interpolate_block(x, start = df$start[i], end = df$end[i])
+    indices <- df$start[i]:df$end[i]
+  #  x$rm[indices] <- pmean(x$rm[indices], xrev$rm[indices])
+    x$rm[indices] <- x$rm[indices]
+    for(j in indices) {
+      x$rm[j] <- rms$rm[which.min(abs(x$rm[j] - rms$rm))]
+    }
   }
   x
 }
