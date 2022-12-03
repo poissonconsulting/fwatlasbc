@@ -78,6 +78,13 @@ reallocate_blocks <- function(x, rms) {
   x
 }
 
+to_prev_max <- function(x) {
+  prev_cummax <- prev_cummax(x$rm)
+  wch <- which(x$rm < prev_cummax)
+  x$rm[wch] <- prev_cummax[wch]
+  x
+}
+
 update_rms <- function(x, rms) {
   provided <- !is.na(x$..fwa_provided_new_rm)
   x$rm[provided] <- x$..fwa_provided_new_rm[provided]
@@ -86,13 +93,9 @@ update_rms <- function(x, rms) {
   for(id in wch) {
     x$rm[1:id] <- pmin(x$rm[1:id], x$rm[id])
   }
-  prev_cummax <- prev_cummax(x$rm)
-  wch <- which(x$rm < prev_cummax)
-  x$rm[wch] <- prev_cummax[wch]
+  x <- to_prev_max(x)
   x <- reallocate_blocks(x, rms)
-  prev_cummax <- prev_cummax(x$rm)
-  wch <- which(x$rm < prev_cummax)
-  x$rm[wch] <- prev_cummax[wch]
+  x <- to_prev_max(x)
   if(!vld_sorted(x$rm)) {
     stop("generated new_rm should be sorted end")
   }
