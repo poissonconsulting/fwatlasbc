@@ -4,30 +4,16 @@
 \alias{fwa_mapview_rms_to_rms}
 \title{Map View River Meters}
 \usage{
-fwa_mapview_rms_to_rms(
-  x,
-  y,
-  layer = NULL,
-  zcol = "rm",
-  legend = FALSE,
-  npoint = 250,
-  ...
-)
+fwa_mapview_rms_to_rms(x, y, zcol = "rm", npoint = 250)
 }
 \arguments{
 \item{x}{An sf data frame with unique integer columns blk and rm and integer column new_rm.}
 
 \item{y}{An sf data frame with unique integer columns blk and rm.}
 
-\item{layer}{A string of the column to layer the points by.}
-
 \item{zcol}{A string of the column to color points by.}
 
-\item{legend}{A flag specifying whether to plot a legend.}
-
 \item{npoint}{An indication of the total number of points to plot.}
-
-\item{...}{Additional arguments passed to \code{mapview::mapview()}.}
 }
 \description{
 Maps two alternative stream networks by adding links from each point in x to matching point in y.

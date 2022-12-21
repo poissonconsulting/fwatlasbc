@@ -9,6 +9,27 @@ filter_points <- function(x, y) {
     sf::st_sf()
 }
 
+join_points <- function(x, y) {
+  crs <- sf::st_crs(x)
+  sf::st_crs(y) <- crs
+
+  x <- x |>
+    as_tibble() |>
+    dplyr::rename(..fwa_geometry1 = "geometry")
+  y <- y |>
+    as_tibble() |>
+    dplyr::rename(..fwa_geometry2 = "geometry") |>
+    dplyr::select("blk", "rm", "..fwa_geometry2")
+  z <- x |>
+    dplyr::inner_join(y, by = c("blk" = "blk", "new_rm" = "rm"))
+
+  z$geometry <- sf::st_sfc(mapply(function(a,b){sf::st_cast(sf::st_union(a,b),"LINESTRING")}, z$..fwa_geometry1, z$..fwa_geometry2, SIMPLIFY=FALSE), crs = crs)
+
+  z |>
+    dplyr::select(-"..fwa_geometry1", -"..fwa_geometry2") |>
+    sf::st_sf()
+}
+
 #' Map View River Meters
 #'
 #' Maps two alternative stream networks by adding links from each point in x to matching point in y.
@@ -18,8 +39,7 @@ filter_points <- function(x, y) {
 #' @param npoint An indication of the total number of points to plot.
 #' @inheritParams fwa_mapview
 #' @export
-fwa_mapview_rms_to_rms <- function(x, y, layer = NULL, zcol = "rm", legend = FALSE, npoint = 250,
-                                   ...) {
+fwa_mapview_rms_to_rms <- function(x, y, zcol = "rm", npoint = 250) {
 
   if(!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")
@@ -35,14 +55,9 @@ fwa_mapview_rms_to_rms <- function(x, y, layer = NULL, zcol = "rm", legend = FAL
   check_names(x, c("blk", "rm"))
 
   chk_null_or(zcol, vld = vld_string)
-  chk_null_or(layer, vld = vld_string)
-  chk_flag(legend)
   chk_whole_number(npoint)
   chk_gt(npoint)
 
-  if(!is.null(layer)) {
-    check_names(x, layer)
-  }
   if(!is.null(zcol)) {
     check_names(x, zcol)
   }
@@ -74,8 +89,9 @@ fwa_mapview_rms_to_rms <- function(x, y, layer = NULL, zcol = "rm", legend = FAL
 
   y <- filter_points(y, x)
 
-#  z <- make_lines(x, y) need to do this and add and figure out how to have as separate layers!
+  z <- join_points(x, y)
 
-  fwa_mapview(x, layer = layer, zcol = zcol, legend = legend, ...) +
-    fwa_mapview(y, layer = layer, zcol = zcol, legend = legend, alpha = 0, ...)
+  mapview::mapview(x, zcol = zcol, legend = FALSE) +
+    mapview::mapview(y, zcol = zcol, alpha = 0, legend = FALSE) +
+    mapview::mapview(z, zcol = zcol, legend = FALSE)
 }
