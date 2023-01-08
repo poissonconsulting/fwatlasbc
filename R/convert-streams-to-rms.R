@@ -1,32 +1,26 @@
 join_string <- function(x) {
-  sf_column_name <- sf_column_name(x)
-
   dplyr::as_tibble(x) |>
     dplyr::select("blk") |>
     dplyr::distinct() |>
     dplyr::bind_cols(geometry = sf::st_union(x)) |>
-    sf::st_sf(sf_column_name = sf_column_name) |>
+    sf::st_sf() |>
     sf::st_cast("MULTILINESTRING") |>
     sf::st_line_merge() |>
     dplyr::bind_cols()
 }
 
 join_strings <- function(x) {
-  sf_column_name <- sf_column_name(x)
-
   x |>
     sf::st_zm() |>
-    sf::st_sf(sf_column_name = sf_column_name) |>
+    sf::st_sf() |>
     dplyr::group_split(.data$blk) |>
     purrr::map(join_string) |>
     dplyr::bind_rows() |>
-    sf::st_sf(sf_column_name = sf_column_name) |>
+    sf::st_sf() |>
     dplyr::filter(purrr::map_lgl(.data$geometry, is_linestring))
 }
 
 start_end_elevation <- function(x) {
-  sf_column_name <- sf_column_name(x)
-
   x <- x |>
     sf::st_sf(sf_column_name = "start") |>
     fwa_add_gm_elevation_to_point() |>
@@ -35,7 +29,7 @@ start_end_elevation <- function(x) {
     fwa_add_gm_elevation_to_point() |>
     dplyr::rename(end_elevation = .data$elevation) |>
     dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
-    sf::st_sf(sf_column_name = sf_column_name)
+    sf::st_sf()
 
   x |>
     dplyr::filter(.data$reverse) |>
@@ -46,7 +40,6 @@ start_end_elevation <- function(x) {
 }
 
 start_points <- function(x, elevation) {
-  sf_column_name <- sf_column_name(x)
   x <- x |>
     dplyr::mutate(start = sf::st_line_sample(x, sample = 0),
                   end = sf::st_line_sample(x, sample = 1),
@@ -70,7 +63,7 @@ start_points <- function(x, elevation) {
 #' @param x An sf tibble with a column blk and linestrings of streams.
 #' @param interval A positive whole number of the distance (m) between points.
 #' @param gap A positive real number specifying the maximum gap between
-#' the mouth of stream and its parent.
+#' the mouth of stream and its parent stream to be considered connected.
 #' @param elevation A flag specifying whether to use the elevation
 #' from Google Maps to determine stream direction (or use the
 #' direction of the provided linestrings)

@@ -21,3 +21,18 @@ test_that("fwa_convert_streams_to_rms elevation", {
 
   expect_snapshot_data(x, "fwa_convert_streams_to_rms elevation")
 })
+
+test_that("fwa_convert_streams_to_rms diff_name", {
+  watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
+  network <- fwa_add_collection_to_polygon(watershed)
+
+  streams <- network |>
+    dplyr::as_tibble() |>
+    dplyr::select(blk = blue_line_key, Shape = geometry) |>
+    sf::st_as_sf()
+
+  x <- fwa_convert_streams_to_rms(streams, interval = 100)
+  expect_s3_class(x, "sf")
+  expect_identical(nrow(x), 903L)
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
