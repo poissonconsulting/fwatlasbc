@@ -18,6 +18,7 @@ Imports:
     fwapgr (>= 0.1.0.9013),
     glue,
     lifecycle,
+    purrr,
     sf,
     stats,
     stringr,

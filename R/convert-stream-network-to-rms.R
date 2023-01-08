@@ -90,12 +90,15 @@ convert_stream_segment_to_rms <- function(x, interval) {
 
 #' Convert Stream Network to River Meters
 #'
+#' Converts a tibble of a BC stream network to river meters.
+#'
 #' @param x An sf tibble of a stream network.
 #' @param interval A whole number of the distance between points.
 #' @param tolerance A number of the acceptable
 #' discrepancy in meters in the network lengths.
 #' @return An sf tibble with the columns of x plus integer column rm
 #' and sf column geometry.
+#' @seealso [`fwa_convert_streams_to_rms()`]
 #' @export
 #' @examples
 #' \dontrun{

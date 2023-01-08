@@ -50,6 +50,10 @@ is.sf <- function (x) {
   inherits(x, "sf")
 }
 
+is_linestring <- function(x) {
+  "LINESTRING" %in% class(x)
+}
+
 sf_column_name <- function (x) {
   if (!is.sf(x) || is.null(attr(x, "sf_column"))) {
     return(character(0))
