@@ -24,8 +24,34 @@ join_strings <- function(x) {
     dplyr::filter(purrr::map_lgl(.data$geometry, is_linestring))
 }
 
-start_end_points <- function(x, elevation) {
+start_end_elevation <- function(x) {
+  sf_column_name <- sf_column_name(x)
 
+  x |>
+    sf::st_sf(sf_column_name = "start") |>
+    fwa_add_gm_elevation_to_point() |>
+    dplyr::rename(start_elevation = .data$elevation) |>
+    sf::st_sf(sf_column_name = "end") |>
+    fwa_add_gm_elevation_to_point() |>
+    dplyr::rename(end_elevation = .data$elevation) |>
+    dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
+    sf::st_sf(sf_column_name = sf_column_name)
+}
+
+start_end_points <- function(x, elevation) {
+  sf_column_name <- sf_column_name(x)
+  x <- x |>
+    dplyr::mutate(length = sf::st_length(x),
+                  start = sf::st_line_sample(x, sample = 0),
+                  end = sf::st_line_sample(x, sample = 1),
+                  start = sf::st_cast(start, "POINT"),
+                  end = sf::st_cast(end, "POINT"))
+
+  if(elevation) {
+    x <- x |>
+      start_end_elevation()
+  }
+  x
 }
 
 #' Convert Streams to River Meters
@@ -52,7 +78,6 @@ start_end_points <- function(x, elevation) {
 #' network <- select(network, blk = blue_line_key)
 #' fwa_convert_streams_to_rms(network, interval = 100)
 #' }
-#'
 fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, elevation = FALSE) {
   chk_s3_class(x, "sf")
   chk_whole_number(interval)
@@ -68,5 +93,5 @@ fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, elevation = FAL
   chk_flag(elevation)
 
   x <- join_strings(x)
-  x
+  start_end_points(x, elevation)
 }

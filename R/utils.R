@@ -54,6 +54,10 @@ is_linestring <- function(x) {
   "LINESTRING" %in% class(x)
 }
 
+rev_linestring <- function(x) {
+  sf::st_linestring(x[rev(seq_len(nrow(x))),])
+}
+
 sf_column_name <- function (x) {
   if (!is.sf(x) || is.null(attr(x, "sf_column"))) {
     return(character(0))
