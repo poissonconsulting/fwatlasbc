@@ -34,7 +34,6 @@ network <- fwa_add_collection_to_polygon(watershed)
 network <- select(network, blk = blue_line_key)
 fwa_convert_streams_to_rms(network, interval = 100)
 }
-
 }
 \seealso{
 \code{\link[=fwa_convert_stream_network_to_rms]{fwa_convert_stream_network_to_rms()}}

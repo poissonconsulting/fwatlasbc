@@ -27,7 +27,7 @@ join_strings <- function(x) {
 start_end_elevation <- function(x) {
   sf_column_name <- sf_column_name(x)
 
-  x |>
+  x <- x |>
     sf::st_sf(sf_column_name = "start") |>
     fwa_add_gm_elevation_to_point() |>
     dplyr::rename(start_elevation = .data$elevation) |>
@@ -36,6 +36,11 @@ start_end_elevation <- function(x) {
     dplyr::rename(end_elevation = .data$elevation) |>
     dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
     sf::st_sf(sf_column_name = sf_column_name)
+
+  x |>
+    dplyr::filter(.data$reverse) |>
+    reverse_linestrings() |>
+    dplyr::bind_rows(dplyr::filter(x, !.data$reverse))
 }
 
 start_end_points <- function(x, elevation) {
@@ -44,8 +49,8 @@ start_end_points <- function(x, elevation) {
     dplyr::mutate(length = sf::st_length(x),
                   start = sf::st_line_sample(x, sample = 0),
                   end = sf::st_line_sample(x, sample = 1),
-                  start = sf::st_cast(start, "POINT"),
-                  end = sf::st_cast(end, "POINT"))
+                  start = sf::st_cast(.data$start, "POINT"),
+                  end = sf::st_cast(.data$end, "POINT"))
 
   if(elevation) {
     x <- x |>

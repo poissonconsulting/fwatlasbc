@@ -54,7 +54,14 @@ is_linestring <- function(x) {
   "LINESTRING" %in% class(x)
 }
 
-rev_linestring <- function(x) {
+reverse_linestrings <- function(x) {
+  linestrings <- sf::st_geometry(x) |>
+    purrr::map(reverse_linestring) |>
+    sf::st_sfc()
+  sf::st_set_geometry(x, linestrings)
+}
+
+reverse_linestring <- function(x) {
   sf::st_linestring(x[rev(seq_len(nrow(x))),])
 }
 
