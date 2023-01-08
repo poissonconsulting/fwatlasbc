@@ -54,6 +54,36 @@ is_linestring <- function(x) {
   "LINESTRING" %in% class(x)
 }
 
+sample_linestring <- function(x, interval) {
+  length <- sf::st_length(x) |> as.numeric()
+  sample <- seq(0, length, by = interval) / length
+  if(sample[length(sample)] != 1) {
+    sample <- c(sample, 1)
+  }
+
+  points <- sf::st_geometry(x) |>
+    sf::st_line_sample(sample = sample) |>
+    sf::st_cast("POINT")
+
+  x <- x |>
+    dplyr::slice(rep(1, length(points))) |>
+    sf::st_set_geometry(points) |>
+    dplyr::mutate(rm = (dplyr::row_number() - 1) * interval,
+                  rm = as.integer(.data$rm))
+
+  x$rm[nrow(x)] <- as.integer(length)
+  x
+}
+
+sample_linestrings <- function(x, interval) {
+  x <- x |>
+    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::group_split(.data$..fwa_id) |>
+    purrr::map(sample_linestring, interval) |>
+    dplyr::bind_rows() |>
+    dplyr::select(!"..fwa_id")
+}
+
 reverse_linestrings <- function(x) {
   linestrings <- sf::st_geometry(x) |>
     purrr::map(reverse_linestring) |>

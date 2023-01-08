@@ -7,7 +7,7 @@
 fwa_convert_streams_to_rms(x, interval = 5, gap = 1, elevation = FALSE)
 }
 \arguments{
-\item{x}{An sf linestring tibble of streams.}
+\item{x}{An sf tibble with a column blk and linestrings of streams.}
 
 \item{interval}{A positive whole number of the distance (m) between points.}
 
@@ -19,7 +19,7 @@ from Google Maps to determine stream direction (or use the
 direction of the provided linestrings)}
 }
 \value{
-An sf tibble with the columns of x plus integer column rm
+An sf tibble with the columns blk, integer column rm
 and sf column point geometry.
 }
 \description{

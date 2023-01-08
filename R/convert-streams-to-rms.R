@@ -40,14 +40,15 @@ start_end_elevation <- function(x) {
   x |>
     dplyr::filter(.data$reverse) |>
     reverse_linestrings() |>
-    dplyr::bind_rows(dplyr::filter(x, !.data$reverse))
+    dplyr::bind_rows(dplyr::filter(x, !.data$reverse)) |>
+    dplyr::select(!c("start_elevation", "end_elevation", "reverse")) |>
+    identity()
 }
 
-start_end_points <- function(x, elevation) {
+start_points <- function(x, elevation) {
   sf_column_name <- sf_column_name(x)
   x <- x |>
-    dplyr::mutate(length = sf::st_length(x),
-                  start = sf::st_line_sample(x, sample = 0),
+    dplyr::mutate(start = sf::st_line_sample(x, sample = 0),
                   end = sf::st_line_sample(x, sample = 1),
                   start = sf::st_cast(.data$start, "POINT"),
                   end = sf::st_cast(.data$end, "POINT"))
@@ -56,7 +57,8 @@ start_end_points <- function(x, elevation) {
     x <- x |>
       start_end_elevation()
   }
-  x
+  x |>
+    dplyr::select(!"end")
 }
 
 #' Convert Streams to River Meters
@@ -65,14 +67,14 @@ start_end_points <- function(x, elevation) {
 #' Unlike [`fwa_convert_stream_network_to_rms()`] it only requires
 #' the linestrings and the unique integer identifier for each stream.
 #'
-#' @param x An sf linestring tibble of streams.
+#' @param x An sf tibble with a column blk and linestrings of streams.
 #' @param interval A positive whole number of the distance (m) between points.
 #' @param gap A positive real number specifying the maximum gap between
 #' the mouth of stream and its parent.
 #' @param elevation A flag specifying whether to use the elevation
 #' from Google Maps to determine stream direction (or use the
 #' direction of the provided linestrings)
-#' @return An sf tibble with the columns of x plus integer column rm
+#' @return An sf tibble with the columns blk, integer column rm
 #' and sf column point geometry.
 #' @export
 #' @seealso [`fwa_convert_stream_network_to_rms()`]
@@ -89,7 +91,7 @@ fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, elevation = FAL
   chk_gt(interval)
 
   check_names(x, "blk")
-  chk_not_subset(colnames(x), "..fwa_id")
+  chk_not_subset(colnames(x), "..fwa_length")
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -97,6 +99,12 @@ fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, elevation = FAL
 
   chk_flag(elevation)
 
-  x <- join_strings(x)
-  start_end_points(x, elevation)
+  crs <- sf::st_crs(x)
+
+  x |>
+    join_strings() |>
+    start_points(elevation) |>
+    sample_linestrings(interval) |>
+    dplyr::select(!"start") |>
+    sf::st_set_crs(crs)
 }
