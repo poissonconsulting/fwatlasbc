@@ -4,7 +4,13 @@
 \alias{fwa_convert_streams_to_rms}
 \title{Convert Streams to River Meters}
 \usage{
-fwa_convert_streams_to_rms(x, interval = 5, gap = 1, elevation = FALSE)
+fwa_convert_streams_to_rms(
+  x,
+  interval = 5,
+  gap = 1,
+  end = 1,
+  elevation = FALSE
+)
 }
 \arguments{
 \item{x}{An sf tibble with a column blk and linestrings of streams.}
@@ -13,6 +19,10 @@ fwa_convert_streams_to_rms(x, interval = 5, gap = 1, elevation = FALSE)
 
 \item{gap}{A positive real number specifying the maximum gap (m) between
 the mouth of stream and its parent stream to be considered connected.}
+
+\item{end}{A positive whole number indicating how distance (m) the end of
+the stream has to be from the last interval to include.
+To exclude ends set \code{end = gap + 1}.}
 
 \item{elevation}{A flag specifying whether to use the elevation
 from Google Maps to determine stream direction (or use the

@@ -120,6 +120,9 @@ get_parent_stream <- function(x, y, gap) {
 #' @param interval A positive whole number of the distance (m) between points.
 #' @param gap A positive real number specifying the maximum gap (m) between
 #' the mouth of stream and its parent stream to be considered connected.
+#' @param end A positive whole number indicating how distance (m) the end of
+#' the stream has to be from the last interval to include.
+#' To exclude ends set `end = gap + 1`.
 #' @param elevation A flag specifying whether to use the elevation
 #' from Google Maps to determine stream direction (or use the
 #' direction of the provided linestrings)
@@ -134,7 +137,7 @@ get_parent_stream <- function(x, y, gap) {
 #' network <- select(network, blk = blue_line_key)
 #' fwa_convert_streams_to_rms(network, interval = 100)
 #' }
-fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, elevation = FALSE) {
+fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, end = 1, elevation = FALSE) {
   chk_s3_class(x, "sf")
   chk_whole_number(interval)
   chk_gt(interval)
@@ -146,6 +149,9 @@ fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, elevation = FAL
   chk_not_any_na(x$blk)
   chk_gt(x$blk)
 
+  chk_whole_number(end)
+  chk_gt(end)
+
   chk_flag(elevation)
 
   crs <- sf::st_crs(x)
@@ -155,7 +161,7 @@ fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, elevation = FAL
 
   x |>
     start_points(elevation) |>
-    sample_linestrings(interval) |>
+    sample_linestrings(interval, end = end) |>
     get_parent_stream(x, gap = gap) |>
     sf::st_set_crs(crs)
 }
