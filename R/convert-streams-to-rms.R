@@ -56,21 +56,39 @@ start_points <- function(x, elevation) {
     dplyr::select(!c("end", "start"))
 }
 
-get_parent_blk <- function(x, y) {
+get_parent_blk_rm <- function(x, y, gap) {
   y <- y |>
     dplyr::anti_join(as_tibble(x), by = "blk")
 
-  x |>
-    dplyr::mutate(parent_blk = sf::st_nearest_feature(x, y),
-                  parent_blk = y$blk[.data$parent_blk])
-}
 
-get_parent_rm <- function(x) {
+  x <- x |>
+    dplyr::mutate(parent_blk = sf::st_nearest_feature(x, y),
+                  parent_blk = y$blk[.data$parent_blk]) |>
+    dplyr::left_join(as_tibble(y), by = c("parent_blk" = "blk"))
+
+  span <- sf::st_nearest_points(x$geometry, x$..fwa_linestring, pairwise = TRUE)
+  distance <- sf::st_length(span) |> as.numeric()
+
+  if(distance > gap) {
+    x$parent_blk <- NA_integer_
+    x$parent_rm <- NA_real_
+  } else {
+    point <- sf::st_cast(span, "POINT") |>
+      dplyr::nth(2)
+
+    parent_rm <- lwgeom::st_split(x$..fwa_linestring, point) |>
+      sf::st_collection_extract("LINESTRING")
+
+    parent_rm <- parent_rm |>
+      dplyr::nth(2) |>
+      sf::st_length() |>
+      as.numeric()
+
+    x$parent_rm <- parent_rm
+  }
   x |>
-    dplyr::mutate(parent_rm = lwgeom::st_split(.data$..fwa_linestring, .data$parent_rm),
-                  parent_rm = sf::st_collection_extract(.data$parent_rm,"LINESTRING"),
-                  parent_rm = sf::st_length(.data$parent_rm),
-                  parent_rm = as.numeric(parent_rm))
+    as_tibble() |>
+    dplyr::select("blk", "parent_blk", "parent_rm")
 }
 
 get_parent_stream <- function(x, y, gap) {
@@ -79,18 +97,8 @@ get_parent_stream <- function(x, y, gap) {
   mouth <- x |>
     dplyr::filter(rm == 0) |>
     dplyr::group_split(.data$blk) |>
-    purrr::map(get_parent_blk, y) |>
+    purrr::map(get_parent_blk_rm, y, gap) |>
     dplyr::bind_rows() |>
-    dplyr::left_join(as_tibble(y), by = "blk") |>
-    dplyr::mutate(parent_rm = sf::st_nearest_points(.data$geometry, .data$..fwa_linestring, pairwise = TRUE),
-                  ..fwa_distance = as.numeric(sf::st_length(.data$parent_rm)),
-                  parent_rm = sf::st_line_sample(.data$parent_rm, 1),
-                  parent_rm = sf::st_cast(.data$parent_rm, "POINT")) |>
-    dplyr::group_split(.data$blk) |>
-    purrr::map(get_parent_rm) |>
-    dplyr::bind_rows() |>
-    dplyr::mutate(parent_blk = dplyr::if_else(.data$..fwa_distance > gap, NA_integer_, .data$parent_blk),
-                 parent_rm = dplyr::if_else(.data$..fwa_distance > gap, NA_real_, .data$parent_rm)) |>
     as_tibble() |>
     dplyr::select("blk", "parent_blk", "parent_rm")
 
