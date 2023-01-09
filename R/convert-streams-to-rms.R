@@ -120,9 +120,9 @@ get_parent_stream <- function(x, y, gap) {
 #' @param interval A positive whole number of the distance (m) between points.
 #' @param gap A positive real number specifying the maximum gap (m) between
 #' the mouth of stream and its parent stream to be considered connected.
-#' @param end A positive whole number indicating how distance (m) the end of
-#' the stream has to be from the last interval to include.
-#' To exclude ends set `end = gap + 1`.
+#' @param end A positive whole number indicating far far (m) the end of
+#' the stream linestring has to be from the last interval to be included.
+#' To exclude ends set `end = NULL` (equivalent to `end = interval + 1`).
 #' @param elevation A flag specifying whether to use the elevation
 #' from Google Maps to determine stream direction (or use the
 #' direction of the provided linestrings)
@@ -149,7 +149,10 @@ fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, end = 1, elevat
   chk_not_any_na(x$blk)
   chk_gt(x$blk)
 
-  chk_whole_number(end)
+  chk_null_or(end, vld = vld_whole_number)
+  if(is.null(end)) {
+    end <- interval + 1
+  }
   chk_gt(end)
 
   chk_flag(elevation)

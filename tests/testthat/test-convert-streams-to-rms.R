@@ -32,7 +32,7 @@ test_that("fwa_convert_streams_to_rms diff_name and not end", {
     dplyr::select(blk = blue_line_key, Shape = geometry) |>
     sf::st_as_sf()
 
-  x <- fwa_convert_streams_to_rms(streams, interval = 100, end = 100 + 1)
+  x <- fwa_convert_streams_to_rms(streams, interval = 100, end = NULL)
   expect_s3_class(x, "sf")
   expect_identical(nrow(x), 864L)
   expect_s3_class(x$geometry, "sfc_POINT")
