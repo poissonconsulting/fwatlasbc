@@ -21,6 +21,8 @@ join_strings <- function(x) {
 }
 
 start_end_elevation <- function(x) {
+  crs <- sf::st_crs(x)
+
   x <- x |>
     sf::st_sf(sf_column_name = "start") |>
     fwa_add_gm_elevation_to_point() |>
@@ -36,7 +38,7 @@ start_end_elevation <- function(x) {
     reverse_linestrings() |>
     dplyr::bind_rows(dplyr::filter(x, !.data$reverse)) |>
     dplyr::select(!c("start_elevation", "end_elevation", "reverse")) |>
-    identity()
+    sf::st_set_crs(crs)
 }
 
 start_points <- function(x, elevation) {
@@ -76,7 +78,7 @@ get_parent_stream <- function(x, y, gap) {
 
   mouth <- x |>
     dplyr::filter(rm == 0) |>
-    dplyr::group_split(blk) |>
+    dplyr::group_split(.data$blk) |>
     purrr::map(get_parent_blk, y) |>
     dplyr::bind_rows() |>
     dplyr::left_join(as_tibble(y), by = "blk") |>
@@ -84,7 +86,7 @@ get_parent_stream <- function(x, y, gap) {
                   ..fwa_distance = as.numeric(sf::st_length(.data$parent_rm)),
                   parent_rm = sf::st_line_sample(.data$parent_rm, 1),
                   parent_rm = sf::st_cast(.data$parent_rm, "POINT")) |>
-    dplyr::group_split(blk) |>
+    dplyr::group_split(.data$blk) |>
     purrr::map(get_parent_rm) |>
     dplyr::bind_rows() |>
     dplyr::mutate(parent_blk = dplyr::if_else(.data$..fwa_distance > gap, NA_integer_, .data$parent_blk),
