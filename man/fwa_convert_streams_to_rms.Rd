@@ -11,8 +11,8 @@ fwa_convert_streams_to_rms(x, interval = 5, gap = 1, elevation = FALSE)
 
 \item{interval}{A positive whole number of the distance (m) between points.}
 
-\item{gap}{A positive real number specifying the maximum gap between
-the mouth of stream and its parent.}
+\item{gap}{A positive real number specifying the maximum gap (m) between
+the mouth of stream and its parent stream to be considered connected.}
 
 \item{elevation}{A flag specifying whether to use the elevation
 from Google Maps to determine stream direction (or use the
