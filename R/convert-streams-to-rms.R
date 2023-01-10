@@ -1,61 +1,3 @@
-join_string <- function(x) {
-  dplyr::as_tibble(x) |>
-    dplyr::select("blk") |>
-    dplyr::distinct() |>
-    dplyr::bind_cols(geometry = sf::st_union(x)) |>
-    sf::st_sf() |>
-    sf::st_cast("MULTILINESTRING") |>
-    sf::st_line_merge() |>
-    dplyr::bind_cols()
-}
-
-join_strings <- function(x) {
-  x |>
-    sf::st_zm() |>
-    sf::st_sf() |>
-    dplyr::group_split(.data$blk) |>
-    purrr::map(join_string) |>
-    dplyr::bind_rows() |>
-    sf::st_sf() |>
-    dplyr::filter(purrr::map_lgl(.data$geometry, is_linestring))
-}
-
-start_end_elevation <- function(x) {
-  crs <- sf::st_crs(x)
-
-  x <- x |>
-    sf::st_sf(sf_column_name = "start") |>
-    fwa_add_gm_elevation_to_point() |>
-    dplyr::rename(start_elevation = "elevation") |>
-    sf::st_sf(sf_column_name = "end") |>
-    fwa_add_gm_elevation_to_point() |>
-    dplyr::rename(end_elevation = "elevation") |>
-    dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
-    sf::st_sf()
-
-  x |>
-    dplyr::filter(.data$reverse) |>
-    reverse_linestrings() |>
-    dplyr::bind_rows(dplyr::filter(x, !.data$reverse)) |>
-    dplyr::select(!c("start_elevation", "end_elevation", "reverse")) |>
-    sf::st_set_crs(crs)
-}
-
-start_points <- function(x, elevation) {
-  x <- x |>
-    dplyr::mutate(start = sf::st_line_sample(x, sample = 0),
-                  end = sf::st_line_sample(x, sample = 1),
-                  start = sf::st_cast(.data$start, "POINT"),
-                  end = sf::st_cast(.data$end, "POINT"))
-
-  if(elevation) {
-    x <- x |>
-      start_end_elevation()
-  }
-  x |>
-    dplyr::select(!c("end", "start"))
-}
-
 get_parent_blk_rm <- function(x, y, gap) {
   y <- y |>
     dplyr::anti_join(as_tibble(x), by = "blk")
@@ -105,10 +47,6 @@ get_parent_stream <- function(x, y, gap) {
   x |>
     left_join(mouth, by = "blk")
 }
-#
-#
-# > parts = st_collection_extract(st_split(reach$geometry, site_snap$geometry),"LINESTRING")
-#
 
 #' Convert Streams to River Meters
 #'
@@ -155,15 +93,12 @@ fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, end = 1, elevat
   }
   chk_gt(end)
 
-  chk_flag(elevation)
-
   crs <- sf::st_crs(x)
 
   x <- x |>
-    join_strings()
+    fwa_join_stream_segments(elevation)
 
   x |>
-    start_points(elevation) |>
     sample_linestrings(interval, end = end) |>
     get_parent_stream(x, gap = gap) |>
     sf::st_set_crs(crs)
