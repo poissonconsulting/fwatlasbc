@@ -64,10 +64,16 @@
     <loc>/reference/fwa_convert_stream_network_to_rms.html</loc>
   </url>
   <url>
+    <loc>/reference/fwa_convert_streams_to_rms.html</loc>
+  </url>
+  <url>
     <loc>/reference/fwa_find_stream_names.html</loc>
   </url>
   <url>
     <loc>/reference/fwa_get_section_from_rms.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fwa_join_stream_segments.html</loc>
   </url>
   <url>
     <loc>/reference/fwa_mapview.html</loc>
