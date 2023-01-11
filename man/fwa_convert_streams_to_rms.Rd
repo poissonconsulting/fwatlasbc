@@ -8,7 +8,7 @@ fwa_convert_streams_to_rms(
   x,
   interval = 5,
   gap = 1,
-  end = 1,
+  end = NULL,
   elevation = FALSE
 )
 }
@@ -20,9 +20,9 @@ fwa_convert_streams_to_rms(
 \item{gap}{A positive real number specifying the maximum gap (m) between
 the mouth of stream and its parent stream to be considered connected.}
 
-\item{end}{A positive whole number indicating far far (m) the end of
+\item{end}{A positive whole number indicating how far (m) the end of
 the stream linestring has to be from the last interval to be included.
-To exclude ends set \code{end = NULL} (equivalent to \code{end = interval + 1}).}
+To  default \code{end = NULL} (equivalent to \code{end = interval + 1}) excludes ends.}
 
 \item{elevation}{A flag specifying whether to use the elevation
 from Google Maps to determine stream direction (or use the
