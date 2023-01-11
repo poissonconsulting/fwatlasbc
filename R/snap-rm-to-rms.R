@@ -1,3 +1,9 @@
+new_blk_to_blk <- function(x) {
+  x |>
+    dplyr::select(!"blk") |>
+    dplyr::rename(blk = "new_blk")
+}
+
 relocate_blks_new_rm <- function (data) {
   data |>
     dplyr::relocate("blk", "new_blk") |>
@@ -226,16 +232,14 @@ fwa_snap_rm_to_rms <- function(x, rm) {
   x$new_rm <- as.integer(x$new_rm)
 
   x |>
-    dplyr::select(!"blk") |>
-    dplyr::rename(blk = "new_blk") |>
     dplyr::arrange("blk", "rm") |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     dplyr::rename(..fwa_provided_new_rm = "new_rm",
                   ..fwa_x_rm = "rm") |>
     group_split_sf(.data$blk) |>
+    lapply(new_blk_to_blk) |>
     lapply(snap_rm_to_rms, rm = rm) |>
     dplyr::bind_rows() |>
-    dplyr::arrange(.data$..fwa_id) |>
     dplyr::rename(new_rm = "rm",
                   distance_to_new_rm = "distance_to_rm",
                   rm = "..fwa_x_rm",
@@ -244,5 +248,6 @@ fwa_snap_rm_to_rms <- function(x, rm) {
     dplyr::mutate(blk = as.integer(.data$blk),
                   new_blk = as.integer(.data$new_blk)) |>
     dplyr::select(!c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm")) |>
-    relocate_blks_new_rm()
+    relocate_blks_new_rm() |>
+    dplyr::arrange(.data$blk, .data$rm)
 }
