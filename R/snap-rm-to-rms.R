@@ -113,12 +113,18 @@ snap_rm_to_rms <- function(x, rms) {
   chk_sorted(x$..fwa_provided_new_rm, x_name = "`x$new_rm`")
 
   rms <- rms |>
-    dplyr::filter(.data$blk == x$blk[1])
+    dplyr::filter(.data$blk == x$new_blk[1])
+
+  blk <- x$blk
 
   x <- x |>
+    new_blk_to_blk() |>
     snap_rm_to_point(rms) |>
     update_rms(rms) |>
-    distance_to_rm(rms)
+    distance_to_rm(rms) |>
+    dplyr::mutate(new_blk = .data$blk)
+  x$blk <- blk
+  x
 }
 
 #' Snap River Meter to River Meters
@@ -237,16 +243,15 @@ fwa_snap_rm_to_rms <- function(x, rm) {
     dplyr::rename(..fwa_provided_new_rm = "new_rm",
                   ..fwa_x_rm = "rm") |>
     group_split_sf(.data$blk) |>
-    lapply(new_blk_to_blk) |>
     lapply(snap_rm_to_rms, rm = rm) |>
     dplyr::bind_rows() |>
     dplyr::rename(new_rm = "rm",
                   distance_to_new_rm = "distance_to_rm",
-                  rm = "..fwa_x_rm",
-                  new_blk = "blk") |>
-    dplyr::inner_join(blks, by = "new_blk") |>
+                  rm = "..fwa_x_rm") |>
     dplyr::mutate(blk = as.integer(.data$blk),
-                  new_blk = as.integer(.data$new_blk)) |>
+                  new_blk = as.integer(.data$new_blk),
+                  rm = as.integer(.data$rm),
+                  new_rm = as.integer(.data$new_rm)) |>
     dplyr::select(!c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm")) |>
     relocate_blks_new_rm() |>
     dplyr::arrange(.data$blk, .data$rm)
