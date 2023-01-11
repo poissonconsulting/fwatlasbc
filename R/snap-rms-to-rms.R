@@ -65,9 +65,12 @@ resolve_multijoins <- function(rm) {
 #' x is first snapped to rm then rm is snapped to x while ensuring
 #' that the links between x and rm are bidirectional as much as possible.
 #'
-#' @param x An sf object of spatial points with blk and rm columns and optional new_rm integer column.
+#' @param x An sf object of spatial points with blk and rm columns and
+#' optional new_blk and new_rm integer column.
 #' @param rm An sf object of spatial point with blk and rm columns.
-#' @return A named list with an updated versions of x and rm with integer columns blk, new_blk, rm and new_rm and numeric column distance_to_new_rm.
+#' @return A named list with an updated versions of x and rm with
+#' integer columns blk, new_blk, rm and new_rm and
+#' numeric column distance_to_new_rm.
 #' @seealso [fwa_snap_rm_to_rms()]
 #' @export
 #' @examples
@@ -91,16 +94,15 @@ fwa_snap_rms_to_rms <- function(x, rm) {
   chk_gt(rm$blk)
 
   x <- fwa_snap_rm_to_rms(x, rm)
+  geometry <- sf::st_geometry(x)
   x2 <- x |>
     as_tibble(x)
-  x2 <- x2[c("blk", "new_rm", "rm", "geometry")]
+  x2 <- x2[c("blk", "new_rm", "rm")]
   x2$rm2 <- x2$rm
   x2$rm <- x2$new_rm
   x2$new_rm <- x2$rm2
   x2$rm2 <- NULL
-  # should really grab geometry whatever name
-  x2$..fwa_geometry <- x2$geometry
-  x2$geometry <- NULL
+  x2$..fwa_geometry <- geometry
 
   rm <- rm |>
     dplyr::left_join(x2, by = c("blk", "rm"))
