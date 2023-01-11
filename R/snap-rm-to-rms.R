@@ -1,5 +1,6 @@
-relocate_new_rm <- function (data) {
+relocate_blks_new_rm <- function (data) {
   data |>
+    dplyr::relocate("blk", "new_blk") |>
     dplyr::relocate("new_rm", .after = "rm") |>
     dplyr::relocate("distance_to_new_rm", .after = "new_rm")
 }
@@ -120,8 +121,12 @@ snap_rm_to_rms <- function(x, rms) {
 #' If x already includes new_rm column then non-missing values are preserved.
 #' The non-missing new_rm values must be ordered (with respect to x$rm)
 #' and must be present in rm$rm.
+#' If x already includes new_blk then river meters can be assigned to
+#' a creek with a different blue line key and/or
+#' river meters from multiple creeks can be assigned to the same creek
+#' (for example in the case of a previously unmapped side channel and the mainstem).
 #'
-#' The closest river meter is snapped to each rm (by blk) and missing
+#' The closest river meter is snapped to each rm (by blk = new_blk) and missing
 #' new_rm values are replaced with the corresponding rm value.
 #' The new_rm values are then ordered by adjusting the values so that
 #' firstly all previous values are not greater than each provided new_rm value
@@ -131,9 +136,12 @@ snap_rm_to_rms <- function(x, rms) {
 #' new_rm values based on the original rm spacing and then snapped
 #' to the closest rm value in rm.
 #'
-#' @param x An sf object of spatial points with blk and rm columns and optional new_rm integer column.
+#' To ensure that pairs of streams snap at their mouths set the new_rm
+#' to be 0 where the rm is 0.
+#'
+#' @param x An sf object of spatial points with blk and rm columns and optional new_rm integer and new_blk columns.
 #' @param rm An sf object of spatial point with blk and rm columns.
-#' @return An updated version of x with integer columns blk, rm and new_rm and numeric column distance_to_new_rm.
+#' @return An updated version of x with integer columns blk, rm, new_blk, new_rm and numeric column distance_to_new_rm.
 #' @export
 #' @examples
 #' rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
@@ -174,12 +182,27 @@ fwa_snap_rm_to_rms <- function(x, rm) {
     }
   }
 
+  if(has_name(x, "new_blk")) {
+    chk_whole_numeric(x$new_blk)
+    chk_not_any_na(x$new_blk)
+    chk_gt(x$new_blk)
+  } else {
+    x$new_blk <- x$blk
+  }
+
+  blks <- x |>
+    dplyr::distinct(.data$blk, .data$new_blk)
+
+  if(!vld_unique(blks$blk)) {
+    abort_chk("Each blk in `x` must map to at most one new_blk.")
+  }
+
   if(!nrow(x)) {
     x <- x |>
       tidyplus::add_missing_column(
         new_rm = integer(0),
         distance_to_new_rm = numeric(0)) |>
-      relocate_new_rm()
+      relocate_blks_new_rm()
 
     return(x)
   }
@@ -188,7 +211,7 @@ fwa_snap_rm_to_rms <- function(x, rm) {
       tidyplus::add_missing_column(
         new_rm = NA_integer_,
         distance_to_new_rm = NA_real_) |>
-      relocate_new_rm()
+      relocate_blks_new_rm()
     return(x)
   }
 
@@ -203,6 +226,8 @@ fwa_snap_rm_to_rms <- function(x, rm) {
   x$new_rm <- as.integer(x$new_rm)
 
   x |>
+    dplyr::select(!"blk") |>
+    dplyr::rename(blk = "new_blk") |>
     dplyr::arrange("blk", "rm") |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     dplyr::rename(..fwa_provided_new_rm = "new_rm",
@@ -213,9 +238,11 @@ fwa_snap_rm_to_rms <- function(x, rm) {
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::rename(new_rm = "rm",
                   distance_to_new_rm = "distance_to_rm",
-                  rm = "..fwa_x_rm") |>
-    dplyr::mutate(
-      blk = as.integer(.data$blk)) |>
+                  rm = "..fwa_x_rm",
+                  new_blk = "blk") |>
+    dplyr::inner_join(blks, by = "new_blk") |>
+    dplyr::mutate(blk = as.integer(.data$blk),
+                  new_blk = as.integer(.data$new_blk)) |>
     dplyr::select(!c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm")) |>
-    relocate_new_rm()
+    relocate_blks_new_rm()
 }

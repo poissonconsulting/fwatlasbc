@@ -67,7 +67,7 @@ resolve_multijoins <- function(rm) {
 #'
 #' @param x An sf object of spatial points with blk and rm columns and optional new_rm integer column.
 #' @param rm An sf object of spatial point with blk and rm columns.
-#' @return A named list with an updated versions of x and rm with integer columns blk, rm and new_rm and numeric column distance_to_new_rm.
+#' @return A named list with an updated versions of x and rm with integer columns blk, new_blk, rm and new_rm and numeric column distance_to_new_rm.
 #' @seealso [fwa_snap_rm_to_rms()]
 #' @export
 #' @examples

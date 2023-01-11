@@ -7,21 +7,25 @@
 fwa_snap_rm_to_rms(x, rm)
 }
 \arguments{
-\item{x}{An sf object of spatial points with blk and rm columns and optional new_rm integer column.}
+\item{x}{An sf object of spatial points with blk and rm columns and optional new_rm integer and new_blk columns.}
 
 \item{rm}{An sf object of spatial point with blk and rm columns.}
 }
 \value{
-An updated version of x with integer columns blk, rm and new_rm and numeric column distance_to_new_rm.
+An updated version of x with integer columns blk, rm, new_blk, new_rm and numeric column distance_to_new_rm.
 }
 \description{
 Assigns closest river meter to river meters based on blue line keys.
 If x already includes new_rm column then non-missing values are preserved.
 The non-missing new_rm values must be ordered (with respect to x$rm)
 and must be present in rm$rm.
+If x already includes new_blk then river meters can be assigned to
+a creek with a different blue line key and/or
+river meters from multiple creeks can be assigned to the same creek
+(for example in the case of a previously unmapped side channel and the mainstem).
 }
 \details{
-The closest river meter is snapped to each rm (by blk) and missing
+The closest river meter is snapped to each rm (by blk = new_blk) and missing
 new_rm values are replaced with the corresponding rm value.
 The new_rm values are then ordered by adjusting the values so that
 firstly all previous values are not greater than each provided new_rm value
@@ -30,6 +34,9 @@ Next all runs of two or more identical new_rm values that do not include
 a provided new_rm are interpolated between the previous and subsequent
 new_rm values based on the original rm spacing and then snapped
 to the closest rm value in rm.
+
+To ensure that pairs of streams snap at their mouths set the new_rm
+to be 0 where the rm is 0.
 }
 \examples{
 rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))

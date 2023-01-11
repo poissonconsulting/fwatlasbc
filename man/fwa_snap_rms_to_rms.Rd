@@ -12,7 +12,7 @@ fwa_snap_rms_to_rms(x, rm)
 \item{rm}{An sf object of spatial point with blk and rm columns.}
 }
 \value{
-A named list with an updated versions of x and rm with integer columns blk, rm and new_rm and numeric column distance_to_new_rm.
+A named list with an updated versions of x and rm with integer columns blk, new_blk, rm and new_rm and numeric column distance_to_new_rm.
 }
 \description{
 Assigns closest river meters to river meters by blue line keys using
