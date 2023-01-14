@@ -54,3 +54,36 @@ test_that("fwa_add_new_blk_to_blk_rm works tibble and missing values", {
   expect_equal(x$new_rm, c(0, NA, 5000, 6000, 7000))
 })
 
+test_that("fwa_add_new_blk_to_blk_rm works tibble and missing values", {
+  rlang::local_options(nocache = TRUE)
+
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000),]
+  x <- fwa_snap_rms_to_rms(x, rm)
+  rm <- x$rm
+  x <- x$x
+
+  rm <- x |>
+    dplyr::slice(-2) |>
+    dplyr::rename(rm2 = rm, blk2 = blk,
+                  old_rm = new_rm, old_blk = new_blk)
+
+  x <- x |>
+    dplyr::as_tibble() |>
+    dplyr::select(blk, rm, elevation) |>
+    dplyr::rename(rm1 = rm, blk1 = blk)
+
+
+  x <- fwa_add_new_blk_rm_to_blk_rm(x, rm, rm = "rm1", blk = "blk1",
+                                    rm2 = "rm2", blk2 = "blk2",
+                                    new_rm = "old_rm", new_blk = "old_blk")
+
+  expect_s3_class(x, "tbl_df")
+  expect_identical(colnames(x), c("blk1", "rm1", "old_blk", "old_rm", "elevation"))
+  expect_equal(x$blk1, rep(356308001, 5))
+  expect_equal(x$old_blk, c(356308001, NA, rep(356308001, 3)))
+  expect_equal(x$rm1, c(0, 2000, 5000, 6000, 7000))
+  expect_equal(x$old_rm, c(0, NA, 5000, 6000, 7000))
+})

@@ -4,19 +4,40 @@
 \alias{fwa_add_new_blk_rm_to_blk_rm}
 \title{Add New Blue Line Key and River Meter to Blue Line Key and River Meter}
 \usage{
-fwa_add_new_blk_rm_to_blk_rm(x, rm)
+fwa_add_new_blk_rm_to_blk_rm(
+  x,
+  y,
+  blk = "blk",
+  rm = "rm",
+  blk2 = "blk",
+  rm2 = "rm",
+  new_blk = "new_blk",
+  new_rm = "new_rm"
+)
 }
 \arguments{
 \item{x}{A tibble (or sf object) with blk and rm columns.}
 
-\item{rm}{A tibble (or sf object) with unique blk and rm columns
+\item{y}{A tibble (or sf object) with unique blk and rm columns
 and new blk and rm columns.}
+
+\item{blk}{A string of the name of the blk column in x.}
+
+\item{rm}{A string of the name of the rm column in x.}
+
+\item{blk2}{A string of the name of the blk column in y.}
+
+\item{rm2}{A string of the name of the rm column in y.}
+
+\item{new_blk}{A string of the name of the new blk column in y.}
+
+\item{new_rm}{A string of the name of the new rm column in y.}
 }
 \value{
 An updated version of x with
-additional new_blk and new_rm columns.
+additional columns for the new blk and rm columns.
 }
 \description{
 Adds new blk and rm values where existing blk and rm values
-based on look up in rm.
+based on look up in y.
 }
