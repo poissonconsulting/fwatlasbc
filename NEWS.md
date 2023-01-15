@@ -1,5 +1,38 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9015
+
+- Added `fwa_add_new_blk_rm_to_blk_rm()`.
+
+- Added `fwa_join_stream_segments()`.
+
+- Added `fwa_convert_streams_to_rms()`.
+
+- Added `fwa_mapview_rms_to_rms()`.
+
+- Adding `fwa_mapview_rms_to_rms()`.
+
+- Adding `fwa_snap_rms_to_rms()`.
+
+- Merge pull request #58 from poissonconsulting/rmtorms.
+
+Rmtorms
+
+- `fwa_snap_rm_to_point()` now retains blk if no match.
+
+- Updated stream names.
+
+- Added `nocache = getOption("fwa.nocache", FALSE)` argument.
+
+- Replace .data$name with "name" in select statements.
+
+- `fwa_add_watershed_to_blk()` now provides general error if watershed is undefined for blk at rm.
+
+- Collections no longer include `upstream_area_ha`.
+
+- `distance_to_lon_lat` now rounded to mm.
+
+
 # fwatlasbc 0.0.1.9014
 
 - Added `fwa_convert_rms_to_streams()` to convert rms sf point object into sf linestring object.
