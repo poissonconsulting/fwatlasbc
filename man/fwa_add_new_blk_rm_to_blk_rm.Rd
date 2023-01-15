@@ -12,14 +12,16 @@ fwa_add_new_blk_rm_to_blk_rm(
   blk2 = "blk",
   rm2 = "rm",
   new_blk = "new_blk",
-  new_rm = "new_rm"
+  new_rm = "new_rm",
+  new_blk_to = new_blk,
+  new_rm_to = new_rm
 )
 }
 \arguments{
 \item{x}{A tibble (or sf object) with blk and rm columns.}
 
 \item{y}{A tibble (or sf object) with unique blk and rm columns
-and new blk and rm columns.}
+and new blk (optional) and rm columns.}
 
 \item{blk}{A string of the name of the blk column in x.}
 
@@ -29,15 +31,25 @@ and new blk and rm columns.}
 
 \item{rm2}{A string of the name of the rm column in y.}
 
-\item{new_blk}{A string of the name of the new blk column in y.}
+\item{new_blk}{An optional string of the name of the new blk column in y.
+If NULL it is not used in the join.}
 
 \item{new_rm}{A string of the name of the new rm column in y.}
+
+\item{new_blk_to}{A string specifying the name to rename
+the new blk column with.}
+
+\item{new_rm_to}{A string specifying the name to rename
+the new blk column with.}
 }
 \value{
 An updated version of x with
 additional columns for the new blk and rm columns.
 }
 \description{
-Adds new blk and rm values where existing blk and rm values
-based on look up in y.
+Adds new blk and rm values to existing blk and rm values
+based on look up in second data frame.
+}
+\seealso{
+\verb{[fwa_add_new_rm_to_blk_rm()]}
 }
