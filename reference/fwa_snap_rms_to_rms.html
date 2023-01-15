@@ -57,7 +57,8 @@ rm must not have an existing new_rm column.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>An sf object of spatial points with blk and rm columns and optional new_rm integer column.</p></dd>
+<dd><p>An sf object of spatial points with blk and rm columns and
+optional new_blk and new_rm integer column.</p></dd>
 
 
 <dt>rm</dt>
@@ -68,7 +69,9 @@ rm must not have an existing new_rm column.</p>
     <h2>Value</h2>
     
 
-<p>A named list with an updated versions of x and rm with integer columns blk, rm and new_rm and numeric column distance_to_new_rm.</p>
+<p>A named list with an updated versions of x and rm with
+integer columns blk, new_blk, rm and new_rm and
+numeric column distance_to_new_rm.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -87,35 +90,37 @@ that the links between x and rm are bidirectional as much as possible.</p>
 <span class="r-in"><span><span class="va">rm</span> <span class="op">&lt;-</span> <span class="va">rm</span><span class="op">[</span><span class="va">rm</span><span class="op">$</span><span class="va">rm</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">3000</span>, <span class="fl">4000</span>, <span class="fl">8000</span>, <span class="fl">9000</span>, <span class="fl">10000</span><span class="op">)</span>,<span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu">fwa_snap_rms_to_rms</span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 5 features and 5 fields</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 5 features and 6 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POINT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 1290725 ymin: 467231.2 xmax: 1294079 ymax: 469483.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Projected CRS: NAD83 / BC Albers</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         blk    rm new_rm distance_to_new_rm elevation           geometry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;POINT [m]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 356<span style="text-decoration: underline;">308</span>001     0   <span style="text-decoration: underline;">1</span>000               874.      9.63 (1290725 469483.5)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">2</span>000   <span style="text-decoration: underline;">3</span>000               536.      7.5  (1292439 468922.9)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">5</span>000   <span style="text-decoration: underline;">4</span>000               754.      9.78 (1293158 467231.2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">6</span>000   <span style="text-decoration: underline;">8</span>000               905.      9.78 (1293794 467668.3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">7</span>000   <span style="text-decoration: underline;">8</span>000               515.      9.78 (1294079 467938.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         blk   new_blk    rm new_rm distance_…¹ eleva…²           geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;POINT [m]&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001     0   <span style="text-decoration: underline;">1</span>000        874.    9.63 (1290725 469483.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">2</span>000   <span style="text-decoration: underline;">3</span>000        536.    7.5  (1292439 468922.9)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">5</span>000   <span style="text-decoration: underline;">4</span>000        754.    9.78 (1293158 467231.2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">6</span>000   <span style="text-decoration: underline;">8</span>000        905.    9.78 (1293794 467668.3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">7</span>000   <span style="text-decoration: underline;">8</span>000        515.    9.78 (1294079 467938.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​distance_to_new_rm, ²​elevation</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 6 features and 5 fields</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 6 features and 6 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POINT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 1291542 ymin: 467912.1 xmax: 1295576 ymax: 469173.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Projected CRS: NAD83 / BC Albers</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         blk    rm new_rm distance_to_new_rm elevation           geometry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;POINT [m]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">1</span>000      0               874.     10.1  (1291542 469173.9)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">3</span>000   <span style="text-decoration: underline;">2</span>000               536.      9.69 (1292909 468665.1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">4</span>000   <span style="text-decoration: underline;">5</span>000               754.      9.78 (1293268 467977.4)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">8</span>000   <span style="text-decoration: underline;">7</span>000               515.     10    (1294497 468239.5)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">9</span>000   <span style="text-decoration: underline;">7</span>000               645.     10.5  (1294708 468081.9)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">10</span>000   <span style="text-decoration: underline;">7</span>000              <span style="text-decoration: underline;">1</span>497.     10.5  (1295576 467912.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         blk   new_blk    rm new_rm distance_…¹ eleva…²           geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;POINT [m]&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">1</span>000      0        874.   10.1  (1291542 469173.9)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">3</span>000   <span style="text-decoration: underline;">2</span>000        536.    9.69 (1292909 468665.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">4</span>000   <span style="text-decoration: underline;">5</span>000        754.    9.78 (1293268 467977.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">8</span>000   <span style="text-decoration: underline;">7</span>000        515.   10    (1294497 468239.5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001  <span style="text-decoration: underline;">9</span>000   <span style="text-decoration: underline;">7</span>000        645.   10.5  (1294708 468081.9)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 356<span style="text-decoration: underline;">308</span>001 356<span style="text-decoration: underline;">308</span>001 <span style="text-decoration: underline;">10</span>000   <span style="text-decoration: underline;">7</span>000       <span style="text-decoration: underline;">1</span>497.   10.5  (1295576 467912.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​distance_to_new_rm, ²​elevation</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
