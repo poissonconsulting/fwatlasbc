@@ -57,10 +57,13 @@ is_linestring <- function(x) {
 sample_linestring <- function(x, interval, end) {
   length <- sf::st_length(x) |> as.numeric()
   sample <- seq(0, length, by = interval)
-  if(length - sample[length(sample)] >= end) {
-    sample <- c(sample, floor(length))
+  end <- length - sample[length(sample)] >= end
+
+  if(end) {
+    sample <- c(sample, length)
   }
   sample <- sample / length
+
   points <- sf::st_geometry(x) |>
     sf::st_line_sample(sample = sample) |>
     sf::st_cast("POINT")
@@ -70,8 +73,9 @@ sample_linestring <- function(x, interval, end) {
     sf::st_set_geometry(points) |>
     dplyr::mutate(rm = (dplyr::row_number() - 1) * interval,
                   rm = as.integer(.data$rm))
-
-  x$rm[nrow(x)] <- as.integer(length)
+  if(end) {
+    x$rm[nrow(x)] <- as.integer(length)
+  }
   x
 }
 
