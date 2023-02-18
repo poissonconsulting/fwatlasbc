@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# fwatlasbc 0.0.1.9016
+
+- Added `snap_mouths = FALSE` to `fwa_snap_rms_to_rms()`.
+
+- Added `snap_mouths = FALSE` argument to `fwa_snap_rm_to_rms()`.
+
+
 # fwatlasbc 0.0.1.9015
 
 - Added `fwa_add_new_blk_rm_to_blk_rm()`.
