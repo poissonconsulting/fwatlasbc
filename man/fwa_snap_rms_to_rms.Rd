@@ -4,13 +4,15 @@
 \alias{fwa_snap_rms_to_rms}
 \title{Snap River Meters to River Meters}
 \usage{
-fwa_snap_rms_to_rms(x, rm)
+fwa_snap_rms_to_rms(x, rm, snap_mouths = FALSE)
 }
 \arguments{
 \item{x}{An sf object of spatial points with blk and rm columns and
 optional new_blk and new_rm integer column.}
 
 \item{rm}{An sf object of spatial point with blk and rm columns.}
+
+\item{snap_mouths}{A flag specifying whether to snap pairs of streams at their mouths (rm = 0) where new_rm is not already set.}
 }
 \value{
 A named list with an updated versions of x and rm with

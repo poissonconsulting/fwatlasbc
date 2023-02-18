@@ -68,6 +68,7 @@ resolve_multijoins <- function(rm) {
 #' @param x An sf object of spatial points with blk and rm columns and
 #' optional new_blk and new_rm integer column.
 #' @param rm An sf object of spatial point with blk and rm columns.
+#' @param snap_mouths A flag specifying whether to snap pairs of streams at their mouths (rm = 0) where new_rm is not already set.
 #' @return A named list with an updated versions of x and rm with
 #' integer columns blk, new_blk, rm and new_rm and
 #' numeric column distance_to_new_rm.
@@ -78,7 +79,7 @@ resolve_multijoins <- function(rm) {
 #' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
 #' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
 #' fwa_snap_rms_to_rms(x, rm)
-fwa_snap_rms_to_rms <- function(x, rm) {
+fwa_snap_rms_to_rms <- function(x, rm, snap_mouths = FALSE) {
   chk::chk_s3_class(rm, "sf")
 
   check_names(rm, c("blk", "rm"))
@@ -93,7 +94,7 @@ fwa_snap_rms_to_rms <- function(x, rm) {
   chk_not_any_na(rm$blk)
   chk_gt(rm$blk)
 
-  x <- fwa_snap_rm_to_rms(x, rm)
+  x <- fwa_snap_rm_to_rms(x, rm, snap_mouths = snap_mouths)
   geometry <- sf::st_geometry(x)
   x2 <- x |>
     as_tibble(x)
@@ -115,7 +116,7 @@ fwa_snap_rms_to_rms <- function(x, rm) {
   rm$..fwa_geometry <- NULL
 
   rm <- rm |>
-    fwa_snap_rm_to_rms(x)
+    fwa_snap_rm_to_rms(x, snap_mouths = snap_mouths)
 
   list(x = x, rm = rm)
 }
