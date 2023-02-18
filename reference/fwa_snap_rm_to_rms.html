@@ -61,7 +61,7 @@ river meters from multiple creeks can be assigned to the same creek
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_snap_rm_to_rms</span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_snap_rm_to_rms</span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span>, snap_mouths <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -72,6 +72,10 @@ river meters from multiple creeks can be assigned to the same creek
 
 <dt>rm</dt>
 <dd><p>An sf object of spatial point with blk and rm columns.</p></dd>
+
+
+<dt>snap_mouths</dt>
+<dd><p>A flag specifying whether to snap pairs of streams at their mouths (rm = 0) where new_rm is not already set.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -92,7 +96,7 @@ a provided new_rm are interpolated between the previous and subsequent
 new_rm values based on the original rm spacing and then snapped
 to the closest rm value in rm.</p>
 <p>To ensure that pairs of streams snap at their mouths set the new_rm
-to be 0 where the rm is 0.</p>
+to be 0 where the rm is 0 or set <code>snap_mouths = TRUE</code></p>
     </div>
 
     <div id="ref-examples">
