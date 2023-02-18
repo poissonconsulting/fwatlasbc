@@ -149,10 +149,11 @@ snap_rm_to_rms <- function(x, rms) {
 #' to the closest rm value in rm.
 #'
 #' To ensure that pairs of streams snap at their mouths set the new_rm
-#' to be 0 where the rm is 0.
+#' to be 0 where the rm is 0 or set `snap_mouths = TRUE`
 #'
 #' @param x An sf object of spatial points with blk and rm columns and optional new_rm integer and new_blk columns.
 #' @param rm An sf object of spatial point with blk and rm columns.
+#' @param snap_mouths A flag specifying whether to snap pairs of streams at their mouths (rm = 0) where new_rm is not already set.
 #' @return An updated version of x with integer columns blk, rm, new_blk, new_rm and numeric column distance_to_new_rm.
 #' @export
 #' @examples
@@ -160,13 +161,14 @@ snap_rm_to_rms <- function(x, rms) {
 #' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
 #' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
 #' fwa_snap_rm_to_rms(x, rm)
-fwa_snap_rm_to_rms <- function(x, rm) {
+fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(rm, "sf")
+  chk_flag(snap_mouths)
 
   check_names(x, c("blk", "rm"))
   check_names(rm, c("blk", "rm"))
-  chk_not_subset(colnames(x), c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm", "..fwa_x_rm"))
+  chk_not_subset(colnames(x), c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm", "..fwa_x_rm", "..fwa_mouth"))
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -236,6 +238,18 @@ fwa_snap_rm_to_rms <- function(x, rm) {
     tidyplus::add_missing_column(new_rm = NA_integer_)
 
   x$new_rm <- as.integer(x$new_rm)
+
+  if(snap_mouths) {
+    mouths <- rm |>
+      dplyr::as_tibble() |>
+      dplyr::filter(.data$rm == 0) |>
+      dplyr::select("blk", "rm") |>
+      dplyr::mutate(..fwa_mouth = 0)
+
+    x <- x |>
+      dplyr::left_join(mouths, by = c(rm = "rm", new_blk = "blk")) |>
+      tidyplus::coalesce_data(list(new_rm = c("new_rm", "..fwa_mouth")), quiet = TRUE)
+  }
 
   x |>
     dplyr::arrange("blk", "rm") |>

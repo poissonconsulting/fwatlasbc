@@ -4,12 +4,14 @@
 \alias{fwa_snap_rm_to_rms}
 \title{Snap River Meter to River Meters}
 \usage{
-fwa_snap_rm_to_rms(x, rm)
+fwa_snap_rm_to_rms(x, rm, snap_mouths = FALSE)
 }
 \arguments{
 \item{x}{An sf object of spatial points with blk and rm columns and optional new_rm integer and new_blk columns.}
 
 \item{rm}{An sf object of spatial point with blk and rm columns.}
+
+\item{snap_mouths}{A flag specifying whether to snap pairs of streams at their mouths (rm = 0) where new_rm is not already set.}
 }
 \value{
 An updated version of x with integer columns blk, rm, new_blk, new_rm and numeric column distance_to_new_rm.
@@ -36,7 +38,7 @@ new_rm values based on the original rm spacing and then snapped
 to the closest rm value in rm.
 
 To ensure that pairs of streams snap at their mouths set the new_rm
-to be 0 where the rm is 0.
+to be 0 where the rm is 0 or set \code{snap_mouths = TRUE}
 }
 \examples{
 rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
