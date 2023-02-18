@@ -51,7 +51,7 @@ rm must not have an existing new_rm column.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_snap_rms_to_rms</span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_snap_rms_to_rms</span><span class="op">(</span><span class="va">x</span>, <span class="va">rm</span>, snap_mouths <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,6 +63,10 @@ optional new_blk and new_rm integer column.</p></dd>
 
 <dt>rm</dt>
 <dd><p>An sf object of spatial point with blk and rm columns.</p></dd>
+
+
+<dt>snap_mouths</dt>
+<dd><p>A flag specifying whether to snap pairs of streams at their mouths (rm = 0) where new_rm is not already set.</p></dd>
 
 </dl></div>
     <div id="value">
