@@ -14,7 +14,7 @@ thin_points <- function(x, npoint) {
                   ..fwa_np = .data$..fwa_p * npoint,
                   ..fwa_np = ceiling(.data$..fwa_np),
                   ..fwa_np = pmax(.data$..fwa_np, 2L)) |>
-    dplyr::inner_join(x, by = "blk") |>
+    dplyr::inner_join(x, by = "blk", multiple = "all") |>
     dplyr::group_by(.data$blk) |>
     dplyr::mutate(..fwa_np = pmin(.data$..fwa_np, .data$..fwa_n)) |>
     dplyr::slice(round_up(seq(1, n(), length.out = .data$..fwa_np[1]))) |>

@@ -29,5 +29,5 @@ fwa_add_blks_to_stream_name <- function(x, stream_name = fwatlasbc::fwa_stream_n
   }
 
   x |>
-    left_join(stream_name, by = "stream_name")
+    left_join(stream_name, by = "stream_name", multiple = "all")
 }

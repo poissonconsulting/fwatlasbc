@@ -97,7 +97,7 @@ fwa_snap_rms_to_rms <- function(x, rm, snap_mouths = FALSE) {
   x <- fwa_snap_rm_to_rms(x, rm, snap_mouths = snap_mouths)
   geometry <- sf::st_geometry(x)
   x2 <- x |>
-    as_tibble(x)
+    as_tibble()
   x2 <- x2[c("blk", "new_rm", "rm")]
   x2$rm2 <- x2$rm
   x2$rm <- x2$new_rm
@@ -106,7 +106,7 @@ fwa_snap_rms_to_rms <- function(x, rm, snap_mouths = FALSE) {
   x2$..fwa_geometry <- geometry
 
   rm <- rm |>
-    dplyr::left_join(x2, by = c("blk", "rm"))
+    dplyr::left_join(x2, by = c("blk", "rm"), multiple = "all")
 
   rm <- rm |>
     group_split_sf(.data$blk) |>
