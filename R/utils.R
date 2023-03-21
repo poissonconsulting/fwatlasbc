@@ -89,9 +89,13 @@ sample_linestrings <- function(x, interval, end) {
 }
 
 reverse_linestrings <- function(x) {
+  crs <- sf::st_crs(x)
+
   linestrings <- sf::st_geometry(x) |>
     purrr::map(reverse_linestring) |>
-    sf::st_sfc()
+    sf::st_sfc() |>
+    sf::st_set_crs(crs)
+
   sf::st_set_geometry(x, linestrings)
 }
 
