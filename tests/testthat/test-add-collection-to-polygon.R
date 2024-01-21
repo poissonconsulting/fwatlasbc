@@ -68,7 +68,7 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
 
   # varies between operating systems
   expect_gte(nrow(x), 10L)
-  expect_lte(nrow(x), 11L)
+  expect_lte(nrow(x), 12L)
 
   expect_s3_class(x$geometry[[1]], "MULTILINESTRING")
 
