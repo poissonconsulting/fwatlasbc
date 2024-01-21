@@ -47,7 +47,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_join_stream_segments</span><span class="op">(</span><span class="va">x</span>, elevation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_join_stream_segments</span><span class="op">(</span><span class="va">x</span>, elevation <span class="op">=</span> <span class="cn">FALSE</span>, reverse <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -60,6 +60,11 @@
 <dd><p>A flag specifying whether to use the elevation
 from Google Maps to determine stream direction (or use the
 direction of the provided linestrings)</p></dd>
+
+
+<dt>reverse</dt>
+<dd><p>A whole numeric vector of streams to reverse direction
+ignoring elevation.</p></dd>
 
 </dl></div>
     <div id="value">

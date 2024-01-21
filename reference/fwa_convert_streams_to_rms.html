@@ -56,7 +56,8 @@ the linestrings and the unique integer identifier for each stream.</p>
 <span>  interval <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  gap <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  elevation <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  elevation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  reverse <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -85,6 +86,11 @@ To  default <code>end = NULL</code> (equivalent to <code>end = interval + 1</cod
 <dd><p>A flag specifying whether to use the elevation
 from Google Maps to determine stream direction (or use the
 direction of the provided linestrings)</p></dd>
+
+
+<dt>reverse</dt>
+<dd><p>A whole numeric vector of streams to reverse direction
+ignoring elevation.</p></dd>
 
 </dl></div>
     <div id="value">
