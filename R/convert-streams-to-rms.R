@@ -18,6 +18,10 @@ get_parent_blk_rm <- function(x, y, gap) {
     point <- sf::st_cast(span, "POINT") |>
       dplyr::nth(2)
 
+    if(distance > 0) {
+      point <- st_buffer(point, distance)
+    }
+
     parent_rm <- lwgeom::st_split(x$..fwa_linestring, point) |>
       sf::st_collection_extract("LINESTRING")
 
