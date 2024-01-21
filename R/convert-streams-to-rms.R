@@ -1,7 +1,7 @@
 get_parent_blk_rm <- function(x, y, gap) {
+
   y <- y |>
     dplyr::anti_join(as_tibble(x), by = "blk")
-
 
   x <- x |>
     dplyr::mutate(parent_blk = sf::st_nearest_feature(x, y),
@@ -21,8 +21,12 @@ get_parent_blk_rm <- function(x, y, gap) {
     parent_rm <- lwgeom::st_split(x$..fwa_linestring, point) |>
       sf::st_collection_extract("LINESTRING")
 
+    start <- sf::st_line_sample(x$..fwa_linestring, sample = 0)
+
+    intersects <- sf::st_intersects(parent_rm, start, sparse = FALSE)
+
     parent_rm <- parent_rm |>
-      dplyr::nth(2) |>
+      dplyr::nth(which(intersects)) |>
       sf::st_length() |>
       as.numeric()
 
