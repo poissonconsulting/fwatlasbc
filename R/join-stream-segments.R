@@ -20,10 +20,15 @@ join_strings <- function(x) {
     dplyr::filter(purrr::map_lgl(.data$geometry, is_linestring))
 }
 
-start_end_elevation <- function(x) {
+start_end_elevation <- function(x, reverse) {
   crs <- sf::st_crs(x)
 
+  x_swap <- x |>
+    dplyr::filter(.data$blk %in% reverse) |>
+    dplyr::mutate(reverse = TRUE)
+
   x <- x |>
+    dplyr::filter(!.data$blk %in% reverse) |>
     sf::st_sf(sf_column_name = "start") |>
     fwa_add_gm_elevation_to_point() |>
     dplyr::rename(start_elevation = "elevation") |>
@@ -31,7 +36,8 @@ start_end_elevation <- function(x) {
     fwa_add_gm_elevation_to_point() |>
     dplyr::rename(end_elevation = "elevation") |>
     dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
-    sf::st_sf()
+    sf::st_sf() |>
+    dplyr::bind_rows(x_swap)
 
   x |>
     dplyr::filter(.data$reverse) |>
@@ -41,16 +47,16 @@ start_end_elevation <- function(x) {
     sf::st_set_crs(crs)
 }
 
-start_points <- function(x, elevation) {
+start_points <- function(x, elevation, reverse) {
   x <- x |>
     dplyr::mutate(start = sf::st_line_sample(x, sample = 0),
                   end = sf::st_line_sample(x, sample = 1),
                   start = sf::st_cast(.data$start, "POINT"),
                   end = sf::st_cast(.data$end, "POINT"))
 
-  if(elevation) {
+  if(elevation || length(reverse)) {
     x <- x |>
-      start_end_elevation()
+      start_end_elevation(reverse)
   }
   x |>
     dplyr::select(!c("end", "start"))
@@ -64,6 +70,8 @@ start_points <- function(x, elevation) {
 #' @param elevation A flag specifying whether to use the elevation
 #' from Google Maps to determine stream direction (or use the
 #' direction of the provided linestrings)
+#' @param reverse A whole numeric vector of streams to reverse direction
+#' ignoring elevation.
 #' @return An sf tibble with the columns blk and sfc column point geometry.
 #' @export
 #' @seealso [`fwa_convert_streams_to_rms()`]
@@ -74,13 +82,25 @@ start_points <- function(x, elevation) {
 #' network <- select(network, blk = blue_line_key)
 #' fwa_join_stream_segments(network)
 #' }
-fwa_join_stream_segments <- function(x, elevation = FALSE) {
+fwa_join_stream_segments <- function(x, elevation = FALSE, reverse = integer()) {
   chk_s3_class(x, "sf")
   check_names(x, "blk")
 
+  check_names(x, "blk")
+
+  chk_whole_numeric(x$blk)
+  chk_not_any_na(x$blk)
+  chk_gt(x$blk)
+
   chk_flag(elevation)
+
+  chk_whole_numeric(reverse)
+  chk_not_any_na(reverse)
+  chk_gt(reverse)
+  chk_unique(reverse)
+  chk_subset(reverse, x$blk)
 
   x |>
     join_strings() |>
-    start_points(elevation)
+    start_points(elevation, reverse)
 }

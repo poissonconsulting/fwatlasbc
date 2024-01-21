@@ -9,7 +9,8 @@ fwa_convert_streams_to_rms(
   interval = 5,
   gap = 1,
   end = NULL,
-  elevation = FALSE
+  elevation = FALSE,
+  reverse = integer()
 )
 }
 \arguments{
@@ -27,6 +28,9 @@ To  default \code{end = NULL} (equivalent to \code{end = interval + 1}) excludes
 \item{elevation}{A flag specifying whether to use the elevation
 from Google Maps to determine stream direction (or use the
 direction of the provided linestrings)}
+
+\item{reverse}{A whole numeric vector of streams to reverse direction
+ignoring elevation.}
 }
 \value{
 An sf tibble with the columns blk, integer column rm
