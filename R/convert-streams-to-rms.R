@@ -19,7 +19,7 @@ get_parent_blk_rm <- function(x, y, gap) {
       dplyr::nth(2)
 
     if(distance > 0) {
-      point <- st_buffer(point, distance)
+      point <- sf::st_buffer(point, distance)
     }
 
     parent_rm <- lwgeom::st_split(x$..fwa_linestring, point) |>
