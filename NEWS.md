@@ -1,4 +1,13 @@
-<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+<!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
+
+# fwatlasbc 0.0.1.9017
+
+- Add `reverse` argument to allow streams to be reversed.
+
+- `fwa_convert_streams_to_rms()` now buffers to deal with inaccuracies in streams network.
+
+- Fix `fwa_convert_streams_to_rms()` getting wrong half of split!
+
 
 # fwatlasbc 0.0.1.9016
 
