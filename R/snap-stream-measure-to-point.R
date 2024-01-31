@@ -12,8 +12,7 @@ nearest_stream <- function(x, streams) {
   for(i in 1:nrow(x)) {
      split[i] <- lwgeom::st_split(streams[i,], point[i]) |> st_geometry()
   }
-  suppressWarnings(split <- purrr::list_transpose(split))
-  length <- split[[1]] |> purrr::map(sf::st_length) |> purrr::map(as.numeric) |>
+  length <- split |> purrr::map(1L) |> purrr::map(sf::st_length) |> purrr::map(as.numeric) |>
     unlist() |>
     round(6)
 
