@@ -2,8 +2,19 @@ nearest_stream <- function(x, streams) {
   index <- sf::st_nearest_feature(x, streams)
   streams <- streams[index,]
   x$..fwa_blk <- streams$blk
+
+  point <- sf::st_nearest_points(x, streams, pairwise = TRUE) |>
+    sf::st_line_sample(sample = 1) |>
+    sf::st_cast("POINT")
+
+  stream_measure <- split_string_pairwise(sf::st_geometry(streams), point) |>
+    sf::st_length() |>
+    as.numeric()
+
+  x$stream_measure <- stream_measure
   x$distance_to_stream <- sf::st_distance(x, streams, by_element = TRUE)
   x$distance_to_stream <- as.numeric(x$distance_to_stream)
+
   x
 }
 
@@ -34,9 +45,7 @@ snap_stream_measure_to_point <- function(x, streams) {
   if(!is.na(x$blk[1])) {
     streams <- streams[streams$blk == x$blk[1],]
   }
-  print(streams)
   streams <- adjust_streams(streams, x)
-  print(streams)
 
   if(!nrow(streams)) {
     x$stream_measure <- NA_real_
