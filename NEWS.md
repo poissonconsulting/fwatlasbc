@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# fwatlasbc 0.0.1.9018
+
+- Added `fwa_convert_stream_names_to_blks()`.
+
+
 # fwatlasbc 0.0.1.9017
 
 - Add `reverse` argument to allow streams to be reversed.
