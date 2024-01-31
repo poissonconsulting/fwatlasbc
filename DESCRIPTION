@@ -14,6 +14,7 @@ Depends:
     R (>= 4.1)
 Imports: 
     chk (>= 0.8.1.9001),
+    digest,
     dplyr,
     fwapgr (>= 0.1.0.9013),
     glue,
@@ -42,4 +43,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
