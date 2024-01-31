@@ -6,7 +6,7 @@ nearest_stream <- function(x, streams) {
   point <- sf::st_nearest_points(x, streams, pairwise = TRUE) |>
     sf::st_line_sample(sample = 1) |>
     sf::st_cast("POINT") |>
-    sf::st_buffer(0.001)
+    sf::st_buffer(0.0000001)
 
   split <- list()
   for(i in 1:nrow(x)) {
