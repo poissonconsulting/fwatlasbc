@@ -7,11 +7,16 @@ nearest_stream <- function(x, streams) {
     sf::st_line_sample(sample = 1) |>
     sf::st_cast("POINT")
 
-  stream_measure <- split_string_pairwise(sf::st_geometry(streams), point) |>
-    sf::st_length() |>
-    as.numeric()
+  split <- list()
+  for(i in 1:nrow(x)) {
+     pointi <- sf::st_buffer(point[i], 0.1)
+     split[i] <- lwgeom::st_split(streams[i,], pointi) |> st_geometry()
+  }
+  suppressWarnings(split <- purrr::transpose(split))
+  length <- split[[1]] |> purrr::map(sf::st_length) |> purrr::map(as.numeric) |>
+    unlist()
 
-  x$stream_measure <- stream_measure
+  x$stream_measure <- length
   x$distance_to_stream <- sf::st_distance(x, streams, by_element = TRUE)
   x$distance_to_stream <- as.numeric(x$distance_to_stream)
 
