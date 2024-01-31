@@ -9,7 +9,7 @@ nearest_stream <- function(x, streams) {
 
   split <- list()
   for(i in 1:nrow(x)) {
-     pointi <- sf::st_buffer(point[i], 0.1)
+     pointi <- sf::st_buffer(point[i], 0.001)
      split[i] <- lwgeom::st_split(streams[i,], pointi) |> st_geometry()
   }
   suppressWarnings(split <- purrr::transpose(split))
