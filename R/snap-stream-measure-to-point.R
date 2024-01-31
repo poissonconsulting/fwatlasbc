@@ -6,15 +6,16 @@ nearest_stream <- function(x, streams) {
   point <- sf::st_nearest_points(x, streams, pairwise = TRUE) |>
     sf::st_line_sample(sample = 1) |>
     sf::st_cast("POINT") |>
-    sf::st_buffer(0.0000001)
+    sf::st_buffer(1e-07)
 
   split <- list()
   for(i in 1:nrow(x)) {
      split[i] <- lwgeom::st_split(streams[i,], point[i]) |> st_geometry()
   }
-  suppressWarnings(split <- purrr::transpose(split))
+  suppressWarnings(split <- purrr::list_transpose(split))
   length <- split[[1]] |> purrr::map(sf::st_length) |> purrr::map(as.numeric) |>
-    unlist()
+    unlist() |>
+    round(6)
 
   x$stream_measure <- length
   x$distance_to_stream <- sf::st_distance(x, streams, by_element = TRUE)
