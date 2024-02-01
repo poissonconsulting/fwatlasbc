@@ -22,7 +22,13 @@ If the blue line key (blk) is missing then it is also assigned
 together with the distance to the stream (distance_to_stream) in m.
 }
 \examples{
-fwa_snap_rm_to_point(x, rm)
+\dontrun{
+watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
+network <- fwa_add_collection_to_polygon(watershed)
+network <- select(network, blk = blue_line_key)
+points <- fwa_convert_streams_to_rms(streams, interval = 500) |>
+fwa_snap_stream_measure_to_point(points)
+}
 }
 \seealso{
 \code{\link[=fwa_snap_rm_to_point]{fwa_snap_rm_to_point()}}

@@ -10,7 +10,7 @@ nearest_stream <- function(x, streams) {
 
   splits <- list()
   for(i in 1:nrow(x)) {
-     splits[i] <- lwgeom::st_split(streams[i,], point[i]) |> sf::st_geometry()
+    splits[i] <- lwgeom::st_split(streams[i,], point[i]) |> sf::st_geometry()
   }
 
   length <- splits |>
@@ -78,7 +78,13 @@ snap_stream_measure_to_point <- function(x, streams) {
 #' @seealso [fwa_snap_rm_to_point()]
 #' @export
 #' @examples
-#' fwa_snap_rm_to_point(x, rm)
+#' \dontrun{
+#' watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
+#' network <- fwa_add_collection_to_polygon(watershed)
+#' network <- select(network, blk = blue_line_key)
+#' points <- fwa_convert_streams_to_rms(streams, interval = 500) |>
+#' fwa_snap_stream_measure_to_point(points)
+#' }
 fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(streams, "sf")
@@ -106,8 +112,8 @@ fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
     return(x)
   }
 
-  chk_s3_class(st_geometry(x), "sfc_POINT")
-  chk_s3_class(st_geometry(streams), "sfc_LINESTRING")
+  chk_s3_class(sf::st_geometry(x), "sfc_POINT")
+  chk_s3_class(sf::st_geometry(streams), "sfc_LINESTRING")
 
   streams <- same_crs(streams, x)
 
@@ -117,14 +123,13 @@ fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
   x |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
     group_split_sf(.data$blk, ...) |>
-     lapply(snap_stream_measure_to_point, streams = streams) |>
+    lapply(snap_stream_measure_to_point, streams = streams) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::mutate(
       ..fwa_blk = as.integer(.data$..fwa_blk),
       blk = as.integer(.data$blk),
       blk = dplyr::if_else(is.na(.data$..fwa_blk), .data$blk, .data$..fwa_blk)) |>
-  #   dplyr::relocate("distance_to_stream", .after = "rm") |>
-     dplyr::select(!c("..fwa_id", "..fwa_blk")) |>
-  identity()
+    dplyr::select(!c("..fwa_id", "..fwa_blk")) |>
+    identity()
 }
