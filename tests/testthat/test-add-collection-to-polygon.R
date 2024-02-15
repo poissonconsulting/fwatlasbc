@@ -16,7 +16,7 @@ test_that("fwa_add_collection_to_polygon functions work", {
       "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
       "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
       "linear_feature_id", "local_watershed_code", "localcode_ltree",
-      "stream_magnitude", "stream_order", "stream_order_max", "stream_order_parent",
+      "stream_magnitude", "stream_order",
       "upstream_route_measure",
       "waterbody_key", "watershed_code_50k", "watershed_group_code",
       "watershed_group_code_50k", "watershed_group_id", "watershed_key",
@@ -38,7 +38,7 @@ test_that("fwa_add_collection_to_polygon function intersects work", {
       "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
       "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
       "linear_feature_id", "local_watershed_code", "localcode_ltree",
-      "stream_magnitude", "stream_order", "stream_order_max", "stream_order_parent",
+      "stream_magnitude", "stream_order",
       "upstream_route_measure",
       "waterbody_key", "watershed_code_50k", "watershed_group_code",
       "watershed_group_code_50k", "watershed_group_id", "watershed_key",
@@ -70,7 +70,7 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
   expect_gte(nrow(x), 10L)
   expect_lte(nrow(x), 12L)
 
-  expect_s3_class(x$geometry[[1]], "MULTILINESTRING")
+  expect_s3_class(x$geometry[[1]], "LINESTRING")
 
   skip_on_os("windows") # getting 'sfc_MULTILINESTRING'/'sfc' on windows!
   expect_s3_class(x$geometry, "sfc_GEOMETRY")

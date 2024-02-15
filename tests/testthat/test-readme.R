@@ -20,8 +20,8 @@ test_that("multiplication works", {
     "downstream_route_measure", "edge_type", "feature_code", "feature_source",
     "fwa_watershed_code", "gnis_id", "gnis_name", "gradient", "left_right_tributary",
     "length_metre", "linear_feature_id", "local_watershed_code",
-    "localcode_ltree", "stream_magnitude", "stream_order", "stream_order_max",
-    "stream_order_parent", "upstream_route_measure", "waterbody_key",
+    "localcode_ltree", "stream_magnitude", "stream_order",
+     "upstream_route_measure", "waterbody_key",
     "watershed_code_50k", "watershed_group_code", "watershed_group_code_50k",
     "watershed_group_id", "watershed_key", "watershed_key_50k", "wscode_ltree",
     "geometry"))
