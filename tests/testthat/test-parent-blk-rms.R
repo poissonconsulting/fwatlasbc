@@ -24,6 +24,6 @@ test_that("parent_blk_rms works called twice", {
 })
 
 test_that("parent_blk_rms errors if more than one parent_blk", {
-  rms <- data.frame(blk = c(10, 10), parent_blk = c(2,3))
+  rms <- data.frame(blk = c(10, 10), parent_blk = c(2, 3))
   chk::expect_chk_error(fwa_parent_blk_rms(10, rms))
 })

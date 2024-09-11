@@ -5,17 +5,17 @@ is_rooted_blk <- function(x, blk) {
 parent_blk <- function(x, blk, defined = FALSE, trib = NA) {
   chk_whole_number(blk) # +chk
 
-  trib <- if(is.na(trib)) rep(TRUE, nrow(x)) else x$..fwa_trib == trib
+  trib <- if (is.na(trib)) rep(TRUE, nrow(x)) else x$..fwa_trib == trib
   x <- unique(x$parent_blk[x$blk == blk & trib])
 
-  if(!length(x)) {
+  if (!length(x)) {
     abort_chk("`blk` ", blk, " is missing from `x`")
   }
 
-  if(length(x) > 1) {
+  if (length(x) > 1) {
     abort_chk("`parent_blk` is inconsistent for blk ", blk, " in `x`")
   }
-  if(defined & is.na(x)) {
+  if (defined & is.na(x)) {
     abort_chk("`parent_blk` is undefined for blk ", blk, " in `x`")
   }
   x
@@ -24,17 +24,17 @@ parent_blk <- function(x, blk, defined = FALSE, trib = NA) {
 parent_rm <- function(x, blk, defined = FALSE, trib = NA) {
   chk_whole_number(blk) # +chk
 
-  trib <- if(is.na(trib)) rep(TRUE, nrow(x)) else x$..fwa_trib == trib
+  trib <- if (is.na(trib)) rep(TRUE, nrow(x)) else x$..fwa_trib == trib
   x <- unique(x$parent_rm[x$blk == blk & trib])
 
-  if(!length(x)) {
+  if (!length(x)) {
     abort_chk("`blk` ", blk, " is missing from `x`")
   }
 
-  if(length(x) > 1) {
+  if (length(x) > 1) {
     abort_chk("`parent_rm` is inconsistent for blk ", blk, " in `x`")
   }
-  if(defined & is.na(x)) {
+  if (defined & is.na(x)) {
     abort_chk("`parent_rm` is undefined for blk ", blk, " in `x`")
   }
   x
@@ -75,7 +75,7 @@ swap_main <- function(x, blk) {
   parent_blk <- parent_blk(x, blk, TRUE)
   parent_rm <- parent_rm(x, blk, TRUE)
 
-  root <- x[x$blk == blk & x$rm == 0,]
+  root <- x[x$blk == blk & x$rm == 0, ]
   check_dim(root, nrow, values = 1L) # +chk
   root$blk <- parent_blk
   root$rm <- parent_rm
@@ -95,17 +95,17 @@ swap_main <- function(x, blk) {
 }
 
 adjust_points_blk <- function(x, blk) {
-  y <- x[x$blk == blk,]
-  if(nrow(y) < 2) return(x)
+  y <- x[x$blk == blk, ]
+  if (nrow(y) < 2) return(x)
 
   range <- range(y$rm)
   interval <- max(diff(sort(y$rm)))
   seq <- seq(0, range[2], by = interval)
   seq <- seq[seq >= range[1] & seq <= range[2]]
 
-  if(!length(seq)) return(x)
+  if (!length(seq)) return(x)
 
-  x <- x[x$blk != blk,]
+  x <- x[x$blk != blk, ]
 
   y <- y |>
     dplyr::arrange(rm)
@@ -134,7 +134,7 @@ adjust_points_blk <- function(x, blk) {
 }
 
 adjust_points <- function(x, blk, adjust_points) {
-  if(!adjust_points) return(x)
+  if (!adjust_points) return(x)
   parent_blk <- parent_blk(x, blk, TRUE)
   x |>
     adjust_points_blk(blk) |>
@@ -144,7 +144,7 @@ adjust_points <- function(x, blk, adjust_points) {
 swap_branches <- function(x, blk, adjust_points) {
   chk_whole_number(blk) # +chk
 
-  if(!is_rooted_blk(x, blk)) {
+  if (!is_rooted_blk(x, blk)) {
     abort_chk("`blk` ", blk, " from `x` is unrooted (missing rm == 0)")
   }
 
@@ -174,11 +174,11 @@ fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
   chk_data(x)
   chk_data(y)
   chk_flag(adjust_points)
-  if(!(vld_false(adjust_points) | vld_s3_class(x, "sf"))) {
+  if (!(vld_false(adjust_points) | vld_s3_class(x, "sf"))) {
     chkor_vld(vld_false(adjust_points), vld_s3_class(x, "sf"))
   }
 
-  if(vld_s3_class(x, "sf")) {
+  if (vld_s3_class(x, "sf")) {
     chk_s3_class(sf::st_geometry(x), "sfc_POINT")
   }
 
@@ -207,15 +207,16 @@ fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
 
   check_key(x, c("blk", "rm"))
 
-  if(!nrow(y)) return(x)
+  if (!nrow(y)) return(x)
 
   missing <- setdiff(y$blk, x$blk)
-  if(length(missing)) {
+  if (length(missing)) {
     abort_chk("The following %n blk%s %r missing from `x`:", cc(missing, conj = "and"),
-              n = length(missing))
+      n = length(missing)
+    )
   }
 
-  for(blk in y$blk) {
+  for (blk in y$blk) {
     x <- swap_branches(x, blk, adjust_points)
   }
   x |>

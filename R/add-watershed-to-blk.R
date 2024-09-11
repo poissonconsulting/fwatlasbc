@@ -1,20 +1,21 @@
 adjust_watershed <- function(wshed, x, epsg, nocache) {
-
-  if(x$..fwa_exclude && wshed$refine_method == "DROP") {
+  if (x$..fwa_exclude && wshed$refine_method == "DROP") {
     return(wshed)
   }
-  if(!x$..fwa_exclude && wshed$refine_method == "KEEP") {
+  if (!x$..fwa_exclude && wshed$refine_method == "KEEP") {
     return(wshed)
   }
 
-  fwshed <- fwa_watershed_hex(blue_line_key = x$blk,
-                              downstream_route_measure = x$rm,
-                              epsg = epsg, nocache = nocache)
+  fwshed <- fwa_watershed_hex(
+    blue_line_key = x$blk,
+    downstream_route_measure = x$rm,
+    epsg = epsg, nocache = nocache
+  )
 
 
   fgeometry <- sf::st_union(fwshed$geometry)
 
-  if(x$..fwa_exclude) {
+  if (x$..fwa_exclude) {
     wshed$geometry <- sf::st_difference(wshed$geometry, fgeometry)
   } else {
     wshed$geometry <- sf::st_union(wshed$geometry, fgeometry)
@@ -25,10 +26,12 @@ adjust_watershed <- function(wshed, x, epsg, nocache) {
 add_watershed_to_blk <- function(x, epsg, nocache) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
-  wshed <- fwa_watershed_at_measure(blue_line_key = x$blk,
-                                        downstream_route_measure = x$rm,
-                                        epsg = epsg,
-                                    nocache = nocache)
+  wshed <- fwa_watershed_at_measure(
+    blue_line_key = x$blk,
+    downstream_route_measure = x$rm,
+    epsg = epsg,
+    nocache = nocache
+  )
 
   wshed <- adjust_watershed(wshed, x, epsg, nocache = nocache)
 
@@ -66,7 +69,7 @@ fwa_add_watershed_to_blk <- function(x,
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
   chk_gt(x$blk)
-  if(!"rm" %in% names(x)) x$rm <- NA_real_
+  if (!"rm" %in% names(x)) x$rm <- NA_real_
   chk_numeric(x$rm)
   chk_gte(x$rm)
   x$rm[is.na(x$rm)] <- 0
@@ -80,8 +83,10 @@ fwa_add_watershed_to_blk <- function(x,
 
   x |>
     dplyr::as_tibble() |>
-    dplyr::mutate(..fwa_exclude = exclude,
-                  ..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(
+      ..fwa_exclude = exclude,
+      ..fwa_id = 1:dplyr::n()
+    ) |>
     group_split_sf(.data$blk) |>
     lapply(add_watershed_to_blk, epsg = epsg, nocache = nocache) |>
     dplyr::bind_rows() |>

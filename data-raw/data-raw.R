@@ -31,7 +31,8 @@ fwa_stream_name <- fwa_stream_name |>
   mutate(blk = as.integer(blk))
 
 chk::check_data(fwa_stream_name,
-                values = list(blk = 1L, stream_name = ""),
-                exclusive = TRUE, order = TRUE, key = "blk")
+  values = list(blk = 1L, stream_name = ""),
+  exclusive = TRUE, order = TRUE, key = "blk"
+)
 
 usethis::use_data(fwa_stream_name, overwrite = TRUE)

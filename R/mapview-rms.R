@@ -2,7 +2,7 @@ thin_points <- function(x, npoint) {
   x <- x |>
     dplyr::arrange(.data$blk, .data$rm)
 
-  if(nrow(x) <= npoint) {
+  if (nrow(x) <= npoint) {
     return(x)
   }
 
@@ -10,10 +10,12 @@ thin_points <- function(x, npoint) {
     dplyr::group_by(.data$blk) |>
     dplyr::summarise(..fwa_n = n()) |>
     dplyr::ungroup() |>
-    dplyr::mutate(..fwa_p = .data$..fwa_n / sum(.data$..fwa_n),
-                  ..fwa_np = .data$..fwa_p * npoint,
-                  ..fwa_np = ceiling(.data$..fwa_np),
-                  ..fwa_np = pmax(.data$..fwa_np, 2L)) |>
+    dplyr::mutate(
+      ..fwa_p = .data$..fwa_n / sum(.data$..fwa_n),
+      ..fwa_np = .data$..fwa_p * npoint,
+      ..fwa_np = ceiling(.data$..fwa_np),
+      ..fwa_np = pmax(.data$..fwa_np, 2L)
+    ) |>
     dplyr::inner_join(x, by = "blk", multiple = "all") |>
     dplyr::group_by(.data$blk) |>
     dplyr::mutate(..fwa_np = pmin(.data$..fwa_np, .data$..fwa_n)) |>
@@ -31,8 +33,7 @@ thin_points <- function(x, npoint) {
 #' @export
 fwa_mapview_rms <- function(x, layer = NULL, zcol = "rm", legend = FALSE, npoint = 250,
                             ...) {
-
-  if(!requireNamespace("mapview", quietly = TRUE)) {
+  if (!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")
   }
 
@@ -46,10 +47,10 @@ fwa_mapview_rms <- function(x, layer = NULL, zcol = "rm", legend = FALSE, npoint
   chk_whole_number(npoint)
   chk_gt(npoint)
 
-  if(!is.null(layer)) {
+  if (!is.null(layer)) {
     check_names(x, layer)
   }
-  if(!is.null(zcol)) {
+  if (!is.null(zcol)) {
     check_names(x, zcol)
   }
 

@@ -1,23 +1,23 @@
 merge_blocks <- function(df) {
-  if(nrow(df) == 1) return(df)
+  if (nrow(df) == 1) return(df)
   df$delete <- FALSE
-  for(i in 2:nrow(df)) {
-    if(df$values[i] == df$values[i-1]) {
-      df$start[i] <- df$start[i-1]
-      df$length[i] <- df$length[i] + df$length[i-1]
-      df$delete[i-1] <- TRUE
+  for (i in 2:nrow(df)) {
+    if (df$values[i] == df$values[i - 1]) {
+      df$start[i] <- df$start[i - 1]
+      df$length[i] <- df$length[i] + df$length[i - 1]
+      df$delete[i - 1] <- TRUE
     }
   }
-  df <- df[!df$delete,]
+  df <- df[!df$delete, ]
   df$delete <- NULL
-  df <- df[df$length > 1,]
+  df <- df[df$length > 1, ]
   df
 }
 
 select_closest <- function(rm, prev_new_rm) {
   chk_whole_number(prev_new_rm)
   rm$..fwa_keep[rm$new_rm < prev_new_rm] <- FALSE
-  if(!any(rm$..fwa_keep)) return(rm)
+  if (!any(rm$..fwa_keep)) return(rm)
 
   rm$..fwa_distance_to_rm <- sf::st_distance(rm, rm$..fwa_geometry, by_element = TRUE)
   rm$..fwa_distance_to_rm <- as.numeric(rm$..fwa_distance_to_rm)
@@ -38,20 +38,20 @@ resolve_multijoins <- function(rm) {
   df$end <- cumsum(df$length)
   df$start <- df$end - df$length + 1
 
-  df <- df[!is.na(df$values),]
-  if(!nrow(df)) return(rm)
+  df <- df[!is.na(df$values), ]
+  if (!nrow(df)) return(rm)
 
   df <- merge_blocks(df)
-  if(!nrow(df)) return(rm)
+  if (!nrow(df)) return(rm)
 
   prev_new_rm <- 0
   rm$..fwa_keep <- TRUE
-  for(i in 1:nrow(df)) {
+  for (i in 1:nrow(df)) {
     indices <- df$start[i]:df$end[i]
-    rm[indices,] <- select_closest(rm[indices,], prev_new_rm)
+    rm[indices, ] <- select_closest(rm[indices, ], prev_new_rm)
     prev_new_rm <- rm$new_rm[indices][rm$..fwa_keep[indices]]
   }
-  rm <- rm[rm$..fwa_keep,]
+  rm <- rm[rm$..fwa_keep, ]
   rm$..fwa_keep <- NULL
   rm
 }
@@ -76,8 +76,8 @@ resolve_multijoins <- function(rm) {
 #' @export
 #' @examples
 #' rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
-#' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-#' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+#' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+#' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000), ]
 #' fwa_snap_rms_to_rms(x, rm)
 fwa_snap_rms_to_rms <- function(x, rm, snap_mouths = FALSE) {
   chk::chk_s3_class(rm, "sf")

@@ -1,13 +1,13 @@
 test_that("fwa_swap_branches_rms works", {
-
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,
-    1,     0,    NA_integer_,   NA_integer_,
-    1,      1,    NA_integer_,   NA_integer_,
-    1,      2,    NA_integer_,   NA_integer_,
-    2,     0,    1,             1,
-    2,     1,    1,             1,
-    2,     2,    1,             1)
+    1, 0, NA_integer_, NA_integer_,
+    1, 1, NA_integer_, NA_integer_,
+    1, 2, NA_integer_, NA_integer_,
+    2, 0, 1, 1,
+    2, 1, 1, 1,
+    2, 2, 1, 1
+  )
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE)
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm"))
@@ -17,55 +17,61 @@ test_that("fwa_swap_branches_rms works", {
 })
 
 test_that("fwa_swap_branches_rms useful error message no points and adjust", {
-
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,
-    1,     0,    NA_integer_,   NA_integer_,
-    1,      1,    NA_integer_,   NA_integer_,
-    2,     0,    1,             1)
+    1, 0, NA_integer_, NA_integer_,
+    1, 1, NA_integer_, NA_integer_,
+    2, 0, 1, 1
+  )
 
-  chk::expect_chk_error(fwa_swap_branches_rms(rm, data.frame(blk = 2)),
-                   "`x` must inherit from S3 class 'sf'\\.$")
+  chk::expect_chk_error(
+    fwa_swap_branches_rms(rm, data.frame(blk = 2)),
+    "`x` must inherit from S3 class 'sf'\\.$"
+  )
 })
 
 test_that("fwa_swap_branches_rms useful error unrooted trib", {
-
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,
-    1,     0,    NA_integer_,   NA_integer_,
-    1,      1,    NA_integer_,   NA_integer_,
-    2,     1,    1,             1)
+    1, 0, NA_integer_, NA_integer_,
+    1, 1, NA_integer_, NA_integer_,
+    2, 1, 1, 1
+  )
 
-  chk::expect_chk_error(fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE),
-                        "^`blk` 2 from `x` is unrooted \\(missing rm == 0\\)\\.$")
+  chk::expect_chk_error(
+    fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE),
+    "^`blk` 2 from `x` is unrooted \\(missing rm == 0\\)\\.$"
+  )
 })
 
 
 test_that("fwa_swap_branches_rms useful error duplicates trib", {
-
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,
-    1,     0,    NA_integer_,   NA_integer_,
-    1,      1,    NA_integer_,   NA_integer_,
-    1,      1,    NA_integer_,   NA_integer_,
-    2,     0,    1,             1)
+    1, 0, NA_integer_, NA_integer_,
+    1, 1, NA_integer_, NA_integer_,
+    1, 1, NA_integer_, NA_integer_,
+    2, 0, 1, 1
+  )
 
-  chk::expect_chk_error(fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE),
-                        "^Columns 'blk' and 'rm' in `x` must be a unique key\\.$")
+  chk::expect_chk_error(
+    fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE),
+    "^Columns 'blk' and 'rm' in `x` must be a unique key\\.$"
+  )
 })
 
 test_that("fwa_swap_branches_rms works with a trib child", {
-
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,
-    1,     0,    NA_integer_,   NA_integer_,
-    1,      1,    NA_integer_,   NA_integer_,
-    1,      2,    NA_integer_,   NA_integer_,
-    2,     0,    1,             1,
-    2,     1,    1,             1,
-    2,     2,    1,             1,
-    3,     0,    2,             1,
-    3,     1,    2,             1)
+    1, 0, NA_integer_, NA_integer_,
+    1, 1, NA_integer_, NA_integer_,
+    1, 2, NA_integer_, NA_integer_,
+    2, 0, 1, 1,
+    2, 1, 1, 1,
+    2, 2, 1, 1,
+    3, 0, 2, 1,
+    3, 1, 2, 1
+  )
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE)
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm"))
@@ -75,17 +81,17 @@ test_that("fwa_swap_branches_rms works with a trib child", {
 })
 
 test_that("fwa_swap_branches_rms works with a main child", {
-
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,
-    1,     0,    NA_integer_,   NA_integer_,
-    1,      1,    NA_integer_,   NA_integer_,
-    1,      2,    NA_integer_,   NA_integer_,
-    2,     0,    1,             1,
-    2,     1,    1,             1,
-    2,     2,    1,             1,
-    3,     0,    1,             2,
-    3,     1,    1,             2)
+    1, 0, NA_integer_, NA_integer_,
+    1, 1, NA_integer_, NA_integer_,
+    1, 2, NA_integer_, NA_integer_,
+    2, 0, 1, 1,
+    2, 1, 1, 1,
+    2, 2, 1, 1,
+    3, 0, 1, 2,
+    3, 1, 1, 2
+  )
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE)
   expect_identical(colnames(x), c("blk", "rm", "parent_blk", "parent_rm"))
@@ -95,16 +101,16 @@ test_that("fwa_swap_branches_rms works with a main child", {
 })
 
 test_that("fwa_swap_branches_rms works with a trib child and part parent_rm", {
-
   rm <- dplyr::tribble(
     ~blk, ~rm, ~parent_blk, ~parent_rm,
-    1,     0,    NA_integer_,   NA_integer_,
-    1,      1,    NA_integer_,   NA_integer_,
-    1,      2,    NA_integer_,   NA_integer_,
-    1,      3,    NA_integer_,   NA_integer_,
-    2,     0,    1,             0.5,
-    2,     1,    1,             0.5,
-    2,     2,    1,             0.5)
+    1, 0, NA_integer_, NA_integer_,
+    1, 1, NA_integer_, NA_integer_,
+    1, 2, NA_integer_, NA_integer_,
+    1, 3, NA_integer_, NA_integer_,
+    2, 0, 1, 0.5,
+    2, 1, 1, 0.5,
+    2, 2, 1, 0.5
+  )
 
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE)
@@ -115,16 +121,16 @@ test_that("fwa_swap_branches_rms works with a trib child and part parent_rm", {
 })
 
 test_that("fwa_swap_branches_rms works with a trib child and part parent_rm and adjust points", {
-
   rm <- dplyr::tribble(
-    ~blk, ~rm, ~parent_blk, ~parent_rm,  ~x, ~y,
-    1,     0,    NA_integer_,   NA_integer_, 0, 0,
-    1,      1,    NA_integer_,   NA_integer_, 1, 0,
-    1,      2,    NA_integer_,   NA_integer_, 2, 0,
-    1,      3,    NA_integer_,   NA_integer_, 3, 0,
-    2,     0,    1,             0.5,          0.5, 0,
-    2,     1,    1,             0.5,          0.5, 1,
-    2,     2,    1,             0.5,          0.5, 2) |>
+    ~blk, ~rm, ~parent_blk, ~parent_rm, ~x, ~y,
+    1, 0, NA_integer_, NA_integer_, 0, 0,
+    1, 1, NA_integer_, NA_integer_, 1, 0,
+    1, 2, NA_integer_, NA_integer_, 2, 0,
+    1, 3, NA_integer_, NA_integer_, 3, 0,
+    2, 0, 1, 0.5, 0.5, 0,
+    2, 1, 1, 0.5, 0.5, 1,
+    2, 2, 1, 0.5, 0.5, 2
+  ) |>
     sf::st_as_sf(coords = c("x", "y"), dim = "XY")
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2))
@@ -136,16 +142,16 @@ test_that("fwa_swap_branches_rms works with a trib child and part parent_rm and 
 })
 
 test_that("fwa_swap_branches_rms preserves pops not adjust points", {
-
   rm <- dplyr::tribble(
-    ~blk, ~rm, ~parent_blk, ~parent_rm,  ~x, ~y, ~popn,
-    1,     0,    NA_integer_,   NA_integer_, 0, 0, "p1",
-    1,      1,    NA_integer_,   NA_integer_, 1, 0, "p2",
-    1,      2,    NA_integer_,   NA_integer_, 2, 0, "p3",
-    1,      3,    NA_integer_,   NA_integer_, 3, 0, "p4",
-    2,     0,    1,             0.5,          0.5, 0, "pa",
-    2,     1,    1,             0.5,          0.5, 1, "pb",
-    2,     2,    1,             0.5,          0.5, 2, "pc") |>
+    ~blk, ~rm, ~parent_blk, ~parent_rm, ~x, ~y, ~popn,
+    1, 0, NA_integer_, NA_integer_, 0, 0, "p1",
+    1, 1, NA_integer_, NA_integer_, 1, 0, "p2",
+    1, 2, NA_integer_, NA_integer_, 2, 0, "p3",
+    1, 3, NA_integer_, NA_integer_, 3, 0, "p4",
+    2, 0, 1, 0.5, 0.5, 0, "pa",
+    2, 1, 1, 0.5, 0.5, 1, "pb",
+    2, 2, 1, 0.5, 0.5, 2, "pc"
+  ) |>
     sf::st_as_sf(coords = c("x", "y"), dim = "XY")
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2), adjust_points = FALSE)
@@ -158,16 +164,16 @@ test_that("fwa_swap_branches_rms preserves pops not adjust points", {
 })
 
 test_that("fwa_swap_branches_rms preserves pops", {
-
   rm <- dplyr::tribble(
-    ~blk, ~rm, ~parent_blk, ~parent_rm,  ~x, ~y, ~popn,
-    1,     0,    NA_integer_,   NA_integer_, 0, 0, "p1",
-    1,      1,    NA_integer_,   NA_integer_, 1, 0, "p2",
-    1,      2,    NA_integer_,   NA_integer_, 2, 0, "p3",
-    1,      3,    NA_integer_,   NA_integer_, 3, 0, "p4",
-    2,     0,    1,             0.5,          0.5, 0, "pa",
-    2,     1,    1,             0.5,          0.5, 1, "pb",
-    2,     2,    1,             0.5,          0.5, 2, "pc") |>
+    ~blk, ~rm, ~parent_blk, ~parent_rm, ~x, ~y, ~popn,
+    1, 0, NA_integer_, NA_integer_, 0, 0, "p1",
+    1, 1, NA_integer_, NA_integer_, 1, 0, "p2",
+    1, 2, NA_integer_, NA_integer_, 2, 0, "p3",
+    1, 3, NA_integer_, NA_integer_, 3, 0, "p4",
+    2, 0, 1, 0.5, 0.5, 0, "pa",
+    2, 1, 1, 0.5, 0.5, 1, "pb",
+    2, 2, 1, 0.5, 0.5, 2, "pc"
+  ) |>
     sf::st_as_sf(coords = c("x", "y"), dim = "XY")
 
   x <- fwa_swap_branches_rms(rm, data.frame(blk = 2))

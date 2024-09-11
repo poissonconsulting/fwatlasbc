@@ -4,7 +4,7 @@ new_blk_to_blk <- function(x) {
     dplyr::rename(blk = "new_blk")
 }
 
-relocate_blks_new_rm <- function (data) {
+relocate_blks_new_rm <- function(data) {
   data |>
     dplyr::relocate("blk", "new_blk") |>
     dplyr::relocate("new_rm", .after = "rm") |>
@@ -13,20 +13,20 @@ relocate_blks_new_rm <- function (data) {
 
 distance_to_rm <- function(x, rms) {
   fac <- factor(rms$rm, levels = rms$rm)
-  rm <- rms[as.integer(factor(x$rm, levels = levels(fac))),]
+  rm <- rms[as.integer(factor(x$rm, levels = levels(fac))), ]
   x$distance_to_rm <- sf::st_distance(x, rm, by_element = TRUE)
   x$distance_to_rm <- as.numeric(x$distance_to_rm)
   x
 }
 
 prev_cummax <- function(x) {
-  if(!length(x)) return(x)
+  if (!length(x)) return(x)
   c(x[1], cummax(x)[-length(x)])
 }
 
 interpolate_block <- function(x, start, end) {
-  ax <- c(x$..fwa_x_rm[start-1], x$..fwa_x_rm[end+1])
-  ay <- c(x$rm[start-1], x$rm[end+1])
+  ax <- c(x$..fwa_x_rm[start - 1], x$..fwa_x_rm[end + 1])
+  ay <- c(x$rm[start - 1], x$rm[end + 1])
   indices <- start:end
   xout <- x$..fwa_x_rm[indices]
 
@@ -50,35 +50,35 @@ reallocate_blocks <- function(x, rms) {
   df$start <- df$end - df$length + 1
 
 
-  df <- df[!is.na(df$values) & df$length > 1,]
+  df <- df[!is.na(df$values) & df$length > 1, ]
 
-  if(!nrow(df)) return(x)
+  if (!nrow(df)) return(x)
 
-  if(df$start[1] == 1) {
+  if (df$start[1] == 1) {
     df$start[1] <- 2
     df$length[1] <- df$length[1] - 1
   }
 
   nrm <- length(x$rm)
   ndf <- nrow(df)
-  if(df$end[ndf] == nrm) {
+  if (df$end[ndf] == nrm) {
     df$end[ndf] <- nrm - 1
     df$length[ndf] <- df$length[ndf] - 1
   }
 
-  df <- df[df$length > 1,]
+  df <- df[df$length > 1, ]
 
-  if(!nrow(df)) return(x)
+  if (!nrow(df)) return(x)
 
   xrev <- x
-  for(i in nrow(df):1) {
+  for (i in nrow(df):1) {
     xrev <- interpolate_block(xrev, start = df$start[i], end = df$end[i])
   }
-  for(i in 1:nrow(df)) {
+  for (i in 1:nrow(df)) {
     x <- interpolate_block(x, start = df$start[i], end = df$end[i])
     indices <- df$start[i]:df$end[i]
     x$rm[indices] <- pmean(x$rm[indices], xrev$rm[indices])
-    for(j in indices) {
+    for (j in indices) {
       x$rm[j] <- rms$rm[which.min(abs(x$rm[j] - rms$rm))]
     }
   }
@@ -97,13 +97,13 @@ update_rms <- function(x, rms) {
   x$rm[provided] <- x$..fwa_provided_new_rm[provided]
 
   wch <- which(provided)
-  for(id in wch) {
+  for (id in wch) {
     x$rm[1:id] <- pmin(x$rm[1:id], x$rm[id])
   }
   x <- to_prev_max(x)
   x <- reallocate_blocks(x, rms)
   x <- to_prev_max(x)
-  if(!vld_sorted(x$rm)) {
+  if (!vld_sorted(x$rm)) {
     stop("generated new_rm should be sorted end")
   }
   x
@@ -158,8 +158,8 @@ snap_rm_to_rms <- function(x, rms) {
 #' @export
 #' @examples
 #' rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
-#' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-#' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+#' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+#' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000), ]
 #' fwa_snap_rm_to_rms(x, rm)
 fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
   chk::chk_s3_class(x, "sf")
@@ -188,15 +188,15 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
   chk_gte(rm$rm)
   check_key(rm, c("blk", "rm"))
 
-  if(has_name(x, "new_rm")) {
+  if (has_name(x, "new_rm")) {
     chk_whole_numeric(x$new_rm)
     chk_gte(x$new_rm)
-    if(!vld_join(x[!is.na(x$new_rm),], rm, c(blk = "blk", new_rm = "rm"))) {
+    if (!vld_join(x[!is.na(x$new_rm), ], rm, c(blk = "blk", new_rm = "rm"))) {
       chk::abort_chk("All `x$new_rm` values must be in `rm$rm` by `blk`")
     }
   }
 
-  if(has_name(x, "new_blk")) {
+  if (has_name(x, "new_blk")) {
     chk_whole_numeric(x$new_blk)
     chk_not_any_na(x$new_blk)
     chk_gt(x$new_blk)
@@ -207,24 +207,26 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
   blks <- x |>
     dplyr::distinct(.data$blk, .data$new_blk)
 
-  if(!vld_unique(blks$blk)) {
+  if (!vld_unique(blks$blk)) {
     abort_chk("Each blk in `x` must map to at most one new_blk.")
   }
 
-  if(!nrow(x)) {
+  if (!nrow(x)) {
     x <- x |>
       tidyplus::add_missing_column(
         new_rm = integer(0),
-        distance_to_new_rm = numeric(0)) |>
+        distance_to_new_rm = numeric(0)
+      ) |>
       relocate_blks_new_rm()
 
     return(x)
   }
-  if(!nrow(rm)) {
+  if (!nrow(rm)) {
     x <- x |>
       tidyplus::add_missing_column(
         new_rm = NA_integer_,
-        distance_to_new_rm = NA_real_) |>
+        distance_to_new_rm = NA_real_
+      ) |>
       relocate_blks_new_rm()
     return(x)
   }
@@ -239,7 +241,7 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
 
   x$new_rm <- as.integer(x$new_rm)
 
-  if(snap_mouths) {
+  if (snap_mouths) {
     mouths <- rm |>
       dplyr::as_tibble() |>
       dplyr::filter(.data$rm == 0) |>
@@ -254,18 +256,24 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
   x |>
     dplyr::arrange("blk", "rm") |>
     dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
-    dplyr::rename(..fwa_provided_new_rm = "new_rm",
-                  ..fwa_x_rm = "rm") |>
+    dplyr::rename(
+      ..fwa_provided_new_rm = "new_rm",
+      ..fwa_x_rm = "rm"
+    ) |>
     group_split_sf(.data$blk) |>
     lapply(snap_rm_to_rms, rm = rm) |>
     dplyr::bind_rows() |>
-    dplyr::rename(new_rm = "rm",
-                  distance_to_new_rm = "distance_to_rm",
-                  rm = "..fwa_x_rm") |>
-    dplyr::mutate(blk = as.integer(.data$blk),
-                  new_blk = as.integer(.data$new_blk),
-                  rm = as.integer(.data$rm),
-                  new_rm = as.integer(.data$new_rm)) |>
+    dplyr::rename(
+      new_rm = "rm",
+      distance_to_new_rm = "distance_to_rm",
+      rm = "..fwa_x_rm"
+    ) |>
+    dplyr::mutate(
+      blk = as.integer(.data$blk),
+      new_blk = as.integer(.data$new_blk),
+      rm = as.integer(.data$rm),
+      new_rm = as.integer(.data$new_rm)
+    ) |>
     dplyr::select(!c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm")) |>
     relocate_blks_new_rm() |>
     dplyr::arrange(.data$blk, .data$rm)

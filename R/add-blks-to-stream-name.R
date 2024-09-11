@@ -24,7 +24,7 @@ fwa_add_blks_to_stream_name <- function(x, stream_name = fwatlasbc::fwa_stream_n
     dplyr::select("blk", "stream_name") |>
     dplyr::distinct()
 
-  if(!"sf" %in% class(x) && !"tbl" %in% class(x)) {
+  if (!"sf" %in% class(x) && !"tbl" %in% class(x)) {
     x <- x |> as_tibble()
   }
 

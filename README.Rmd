@@ -52,7 +52,7 @@ There may be multiple streams with the same name.
 ```{r}
 blks <- fwa_add_blks_to_stream_name(streams)
 blks
-blks <- blks[blks$blk == 356534225,]
+blks <- blks[blks$blk == 356534225, ]
 ```
 
 Alternatively get the nearest blue line key and river meter (rm) from the longitude and latitude. 
@@ -79,8 +79,8 @@ network
 
 Convert the stream network into a table of blue line keys with regularly spaced river meters starting at 0.
 ```{r}
-#rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
-#rms
+# rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
+# rms
 ```
 
 Plot the watershed, network and river meters.
@@ -88,7 +88,7 @@ Plot the watershed, network and river meters.
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
   ggplot2::geom_sf(data = network, color = "blue") +
-#  ggplot2::geom_sf(data = rms) +
+  #  ggplot2::geom_sf(data = rms) +
   NULL
 ```
 
