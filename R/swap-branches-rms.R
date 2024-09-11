@@ -15,7 +15,7 @@ parent_blk <- function(x, blk, defined = FALSE, trib = NA) {
   if (length(x) > 1) {
     abort_chk("`parent_blk` is inconsistent for blk ", blk, " in `x`")
   }
-  if (defined & is.na(x)) {
+  if (defined && is.na(x)) {
     abort_chk("`parent_blk` is undefined for blk ", blk, " in `x`")
   }
   x
@@ -34,7 +34,7 @@ parent_rm <- function(x, blk, defined = FALSE, trib = NA) {
   if (length(x) > 1) {
     abort_chk("`parent_rm` is inconsistent for blk ", blk, " in `x`")
   }
-  if (defined & is.na(x)) {
+  if (defined && is.na(x)) {
     abort_chk("`parent_rm` is undefined for blk ", blk, " in `x`")
   }
   x
@@ -115,7 +115,7 @@ adjust_points_blk <- function(x, blk) {
     mutate(rm = y$rm)
 
   new_y <- y |>
-    dplyr::slice(1L:length(seq)) |>
+    dplyr::slice(seq_along(seq)) |>
     dplyr::mutate(rm = seq)
 
   X <- approx(coordinates$rm, coordinates$X, new_y$rm)$y
@@ -174,7 +174,7 @@ fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
   chk_data(x)
   chk_data(y)
   chk_flag(adjust_points)
-  if (!(vld_false(adjust_points) | vld_s3_class(x, "sf"))) {
+  if (!(vld_false(adjust_points) || vld_s3_class(x, "sf"))) {
     chkor_vld(vld_false(adjust_points), vld_s3_class(x, "sf"))
   }
 

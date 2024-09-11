@@ -71,10 +71,10 @@ reallocate_blocks <- function(x, rms) {
   if (!nrow(df)) return(x)
 
   xrev <- x
-  for (i in nrow(df):1) {
+  for (i in rev(seq_len(nrow(df)))) {
     xrev <- interpolate_block(xrev, start = df$start[i], end = df$end[i])
   }
-  for (i in 1:nrow(df)) {
+  for (i in seq_len(nrow(df))) {
     x <- interpolate_block(x, start = df$start[i], end = df$end[i])
     indices <- df$start[i]:df$end[i]
     x$rm[indices] <- pmean(x$rm[indices], xrev$rm[indices])
@@ -255,7 +255,7 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
 
   x |>
     dplyr::arrange("blk", "rm") |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     dplyr::rename(
       ..fwa_provided_new_rm = "new_rm",
       ..fwa_x_rm = "rm"

@@ -153,7 +153,7 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
 
   x |>
     add_parent_blk_rm() |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     group_split_sf(.data$..fwa_id) |>
     lapply(convert_stream_segment_to_rms, interval = interval) |>
     dplyr::bind_rows() |>

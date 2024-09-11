@@ -83,7 +83,7 @@ sample_linestring <- function(x, interval, end) {
 
 sample_linestrings <- function(x, interval, end) {
   x <- x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     dplyr::group_split(.data$..fwa_id) |>
     purrr::map(sample_linestring, interval, end = end) |>
     dplyr::bind_rows() |>

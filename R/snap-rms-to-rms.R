@@ -46,7 +46,7 @@ resolve_multijoins <- function(rm) {
 
   prev_new_rm <- 0
   rm$..fwa_keep <- TRUE
-  for (i in 1:nrow(df)) {
+  for (i in seq_len(nrow(df))) {
     indices <- df$start[i]:df$end[i]
     rm[indices, ] <- select_closest(rm[indices, ], prev_new_rm)
     prev_new_rm <- rm$new_rm[indices][rm$..fwa_keep[indices]]

@@ -48,7 +48,7 @@ fwa_add_gm_elevation_to_point <- function(x, chunk_size = 300L, digits = 7,
     return(x)
   }
 
-  x$..fwa_chunk <- 1:nrow(x) %/% chunk_size
+  x$..fwa_chunk <- seq_len(nrow(x)) %/% chunk_size
 
   x |>
     group_split_sf(.data$..fwa_chunk) |>

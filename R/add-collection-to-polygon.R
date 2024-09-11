@@ -89,7 +89,7 @@ fwa_add_collection_to_polygon <- function(
 
   x <- x |>
     dplyr::mutate(
-      ..fwa_id = 1:dplyr::n(),
+      ..fwa_id = seq_len(dplyr::n()),
       ..fwa_intersect = intersect
     ) |>
     group_split_sf(.data$..fwa_id) |>

@@ -82,7 +82,7 @@ fwa_add_rms_to_blk <- function(
       ..fwa_interval = interval,
       ..fwa_start = start,
       ..fwa_end = end,
-      ..fwa_id = 1:dplyr::n()
+      ..fwa_id = seq_len(dplyr::n())
     ) |>
     group_split_sf(.data$blk) |>
     lapply(add_rms_to_blk, epsg = epsg, nocache = nocache) |>

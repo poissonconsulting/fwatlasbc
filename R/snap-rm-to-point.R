@@ -99,7 +99,7 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
     dplyr::select(rm, "blk", "rm", ...)
 
   x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     group_split_sf(.data$blk, ...) |>
     lapply(snap_rm_to_point, rm = rm) |>
     dplyr::bind_rows() |>
