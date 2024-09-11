@@ -51,7 +51,7 @@ add_watershed_to_blk <- function(x, epsg, nocache) {
 #' @param exclude A logical vector specifying whether to exclude the
 #' fundamental watershed in which the start falls.
 #' @return A sf object
-#' @seealso \code{\link[fwapgr]{fwa_watershed_at_measure}}.
+#' @seealso [fwapgr::fwa_watershed_at_measure()].
 #' @export
 #' @examples
 #' \dontrun{

@@ -58,7 +58,7 @@ add_collection_to_polygon <- function(x, collection, filter, limit, offset,
 #' individual features with the polygon as opposed to just including
 #' the features that intersect it.
 #' @return An sf object
-#' @seealso \code{\link[fwapgr]{fwa_collection}}.
+#' @seealso [fwapgr::fwa_collection()].
 #' @export
 #' @examples
 #' \dontrun{
