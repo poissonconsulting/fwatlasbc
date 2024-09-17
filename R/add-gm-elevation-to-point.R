@@ -7,7 +7,7 @@ add_gm_elevation_to_point <- function(x, digits, key) {
     dplyr::mutate(lon = round(.data$lon, digits), lat = round(.data$lat, digits))
 
   elevation <- googleway::google_elevation(coords, key = key)$results$elevation
-  if(is.null(elevation)) {
+  if (is.null(elevation)) {
     err("Invalid Google Maps Elevation API key.")
   }
   x$elevation <- elevation
@@ -30,8 +30,7 @@ add_gm_elevation_to_point <- function(x, digits, key) {
 #' }
 fwa_add_gm_elevation_to_point <- function(x, chunk_size = 300L, digits = 7,
                                           key = Sys.getenv("GOOGLE_MAPS_ELEVATION_API_KEY")) {
-
-  if(!requireNamespace("googleway", quietly = TRUE)) {
+  if (!requireNamespace("googleway", quietly = TRUE)) {
     err("Package 'googleway' must be installed to get elevations from Google Maps.")
   }
 
@@ -44,16 +43,16 @@ fwa_add_gm_elevation_to_point <- function(x, chunk_size = 300L, digits = 7,
   chk_range(digits, c(0, 15))
   chk_string(key)
 
-  if(!nrow(x)) {
+  if (!nrow(x)) {
     x$elevation <- numeric(0)
     return(x)
   }
 
-  x$..fwa_chunk <- 1:nrow(x) %/% chunk_size
+  x$..fwa_chunk <- seq_len(nrow(x)) %/% chunk_size
 
   x |>
     group_split_sf(.data$..fwa_chunk) |>
     lapply(add_gm_elevation_to_point, digits = digits, key = key) |>
-     dplyr::bind_rows() |>
-     dplyr::select(!"..fwa_chunk")
+    dplyr::bind_rows() |>
+    dplyr::select(!"..fwa_chunk")
 }

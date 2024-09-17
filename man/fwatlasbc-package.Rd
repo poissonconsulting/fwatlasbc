@@ -10,6 +10,13 @@
 
 What the package does (one paragraph).
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://poissonconsulting.github.io/fwatlasbc/}
+}
+
+}
 \author{
 \strong{Maintainer}: Joe Thorley \email{joe@poissonconsulting.ca} (\href{https://orcid.org/0000-0002-7683-4592}{ORCID})
 

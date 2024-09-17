@@ -1,6 +1,6 @@
 nearest_rm <- function(x, rm) {
   index <- sf::st_nearest_feature(x, rm)
-  rm <- rm[index,]
+  rm <- rm[index, ]
   x$..fwa_blk <- rm$blk
   x$rm <- rm$rm
   x$distance_to_rm <- sf::st_distance(x, rm, by_element = TRUE)
@@ -9,7 +9,7 @@ nearest_rm <- function(x, rm) {
 }
 
 adjust_rm <- function(rm, x) {
-  if(ncol(rm) == 3) {
+  if (ncol(rm) == 3) {
     return(rm)
   }
 
@@ -24,7 +24,7 @@ adjust_rm <- function(rm, x) {
     dplyr::select(tidyselect::vars_select_helpers$where(function(x) !is.na(x[1]))) |>
     colnames()
 
-  if(!length(cols)) {
+  if (!length(cols)) {
     return(rm)
   }
   rm |>
@@ -32,12 +32,12 @@ adjust_rm <- function(rm, x) {
 }
 
 snap_rm_to_point <- function(x, rm) {
-  if(!is.na(x$blk[1])) {
-    rm <- rm[rm$blk == x$blk[1],]
+  if (!is.na(x$blk[1])) {
+    rm <- rm[rm$blk == x$blk[1], ]
   }
   rm <- adjust_rm(rm, x)
 
-  if(!nrow(rm)) {
+  if (!nrow(rm)) {
     x$rm <- NA_integer_
     x$distance_to_rm <- NA_real_
     return(x)
@@ -60,14 +60,14 @@ snap_rm_to_point <- function(x, rm) {
 #' @export
 #' @examples
 #' rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
-#' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-#' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000),]
+#' x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+#' rm <- rm[rm$rm %in% c(1000, 3000, 4000, 8000, 9000, 10000), ]
 #' fwa_snap_rm_to_point(x, rm)
 fwa_snap_rm_to_point <- function(x, rm, ...) {
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(rm, "sf")
 
-  if(!has_name(x, "blk")) x$blk <- NA_integer_
+  if (!has_name(x, "blk")) x$blk <- NA_integer_
 
   chk_whole_numeric(x$blk)
   chk_gt(x$blk)
@@ -82,12 +82,12 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
   chk_not_any_na(rm$rm)
   chk_gte(rm$rm)
 
-  if(!nrow(x)) {
+  if (!nrow(x)) {
     x$rm <- integer(0)
     x$distance_to_rm <- numeric(0)
     return(x)
   }
-  if(!nrow(rm)) {
+  if (!nrow(rm)) {
     x$rm <- NA_integer_
     x$distance_to_rm <- NA_real_
     return(x)
@@ -99,7 +99,7 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
     dplyr::select(rm, "blk", "rm", ...)
 
   x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     group_split_sf(.data$blk, ...) |>
     lapply(snap_rm_to_point, rm = rm) |>
     dplyr::bind_rows() |>
@@ -107,7 +107,8 @@ fwa_snap_rm_to_point <- function(x, rm, ...) {
     dplyr::mutate(
       ..fwa_blk = as.integer(.data$..fwa_blk),
       blk = as.integer(.data$blk),
-      blk = dplyr::if_else(is.na(.data$..fwa_blk), .data$blk, .data$..fwa_blk)) |>
+      blk = dplyr::if_else(is.na(.data$..fwa_blk), .data$blk, .data$..fwa_blk)
+    ) |>
     dplyr::relocate("distance_to_rm", .after = "rm") |>
     dplyr::select(!c("..fwa_id", "..fwa_blk"))
 }

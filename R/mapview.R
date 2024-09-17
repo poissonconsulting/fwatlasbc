@@ -10,12 +10,11 @@
 #' @param ... Additional arguments passed to `mapview::mapview()`.
 #' @export
 fwa_mapview <- function(x, layer = NULL, zcol = NULL, legend = FALSE, ...) {
-
-  if(!requireNamespace("mapview", quietly = TRUE)) {
+  if (!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")
   }
 
-  if(!requireNamespace("hms", quietly = TRUE)) {
+  if (!requireNamespace("hms", quietly = TRUE)) {
     err("Package 'hms' must be installed.")
   }
 
@@ -23,13 +22,13 @@ fwa_mapview <- function(x, layer = NULL, zcol = NULL, legend = FALSE, ...) {
 
   x <- x |>
     dplyr::mutate(
-      dplyr::across(tidyselect::vars_select_helpers$where(hms::is_hms), as.character))
+      dplyr::across(tidyselect::vars_select_helpers$where(hms::is_hms), as.character)
+    )
 
-  if(!is.null(layer)) {
+  if (!is.null(layer)) {
     x <- x |>
       split(x[[layer]], drop = TRUE)
   }
 
   mapview::mapview(x, zcol = zcol, legend = legend, ...)
 }
-

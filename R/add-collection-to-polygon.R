@@ -2,7 +2,7 @@ rename_collection <- function(collection) {
   chk_string(collection) # +chk
 
   wch <- which(fwatlasbc::fwa_collection_name$collection_name == collection)
-  if(!length(wch)) return(collection)
+  if (!length(wch)) return(collection)
   fwatlasbc::fwa_collection_name$collection[wch]
 }
 
@@ -15,20 +15,21 @@ add_collection_to_polygon <- function(x, collection, filter, limit, offset,
   bbox <- bbox(polygon)
 
   coll <- fwapgr::fwa_query_collection(collection,
-                                       filter = filter,
-                                       limit = limit,
-                                       offset = offset,
-                                       bbox = bbox,
-                                       properties = properties,
-                                       transform = transform,
-                                       epsg = epsg,
-                                       nocache = nocache)
+    filter = filter,
+    limit = limit,
+    offset = offset,
+    bbox = bbox,
+    properties = properties,
+    transform = transform,
+    epsg = epsg,
+    nocache = nocache
+  )
 
   polygon <- sf::st_transform(polygon, epsg)
   polygon <- sf::st_make_valid(polygon)
-  suppressMessages(coll <- coll[sf::st_intersects(coll, polygon, sparse = FALSE)[,1],])
+  suppressMessages(coll <- coll[sf::st_intersects(coll, polygon, sparse = FALSE)[, 1], ])
   coll <- sf::st_make_valid(coll)
-  if(x$..fwa_intersect) {
+  if (x$..fwa_intersect) {
     suppressWarnings(coll <- sf::st_intersection(coll, polygon, validate = TRUE))
     coll <- sf::st_make_valid(coll)
   }
@@ -58,7 +59,7 @@ add_collection_to_polygon <- function(x, collection, filter, limit, offset,
 #' individual features with the polygon as opposed to just including
 #' the features that intersect it.
 #' @return An sf object
-#' @seealso \code{\link[fwapgr]{fwa_collection}}.
+#' @seealso [fwapgr::fwa_collection()].
 #' @export
 #' @examples
 #' \dontrun{
@@ -87,16 +88,20 @@ fwa_add_collection_to_polygon <- function(
   collection <- rename_collection(collection)
 
   x <- x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n(),
-                  ..fwa_intersect = intersect) |>
+    dplyr::mutate(
+      ..fwa_id = seq_len(dplyr::n()),
+      ..fwa_intersect = intersect
+    ) |>
     group_split_sf(.data$..fwa_id) |>
-    lapply(add_collection_to_polygon, collection = collection,
-           filter = filter, limit = limit,
-           offset = offset, properties = properties, transform = transform,
-           epsg = epsg, nocache = nocache) |>
+    lapply(add_collection_to_polygon,
+      collection = collection,
+      filter = filter, limit = limit,
+      offset = offset, properties = properties, transform = transform,
+      epsg = epsg, nocache = nocache
+    ) |>
     dplyr::bind_rows()
 
-  if("blue_line_key" %in% colnames(x)) {
+  if ("blue_line_key" %in% colnames(x)) {
     x <- x |> mutate(blk = .data$blue_line_key)
   }
 

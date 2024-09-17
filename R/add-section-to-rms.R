@@ -40,7 +40,7 @@ fwa_add_section_to_rms <- function(x, y, section = "section") {
   x <- x |>
     dplyr::as_tibble()
 
-  if(!nrow(x)) {
+  if (!nrow(x)) {
     x[[section]] <- y[[section]][0]
     return(x)
   }
@@ -51,14 +51,14 @@ fwa_add_section_to_rms <- function(x, y, section = "section") {
     dplyr::filter(.data$blk %in% x$blk)
 
   x[[section]] <- y[[section]][0][1] # gets missing value
-  if(!nrow(y)) {
+  if (!nrow(y)) {
     return(x)
   }
 
-  for(i in seq_len(nrow(y))) {
-    x[[section]][x$blk == y$blk[i] & x$rm <= y$rm[i]] <-  y[[section]][i]
+  for (i in seq_len(nrow(y))) {
+    x[[section]][x$blk == y$blk[i] & x$rm <= y$rm[i]] <- y[[section]][i]
   }
-  if(!identical(sf_column_name, character(0))) {
+  if (!identical(sf_column_name, character(0))) {
     x <- x |>
       sf::st_sf(sf_column_name = sf_column_name)
   }

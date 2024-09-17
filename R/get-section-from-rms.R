@@ -31,18 +31,20 @@ fwa_get_section_from_rms <- function(x, section = "section") {
     as_tibble() |>
     dplyr::filter(!is.na(.data[[section]])) |>
     dplyr::group_by(.data$blk, .data[[section]]) |>
-    dplyr::summarise(length = max(.data$rm) - min(.data$rm),
-                     rm = max(.data$rm)) |>
+    dplyr::summarise(
+      length = max(.data$rm) - min(.data$rm),
+      rm = max(.data$rm)
+    ) |>
     dplyr::ungroup() |>
     dplyr::select(tidyselect::all_of(section), "blk", "rm", "length") |>
     dplyr::arrange(.data$blk, .data$rm)
 
-  if(!identical(sf_column_name, character(0))) {
+  if (!identical(sf_column_name, character(0))) {
     x <- x |>
       dplyr::select("blk", "rm")
-     y <- y |>
-       dplyr::inner_join(x, by = c("blk", "rm")) |>
-       sf::st_sf(sf_column_name = sf_column_name)
+    y <- y |>
+      dplyr::inner_join(x, by = c("blk", "rm")) |>
+      sf::st_sf(sf_column_name = sf_column_name)
   }
   y
 }

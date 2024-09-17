@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' fwa_find_stream_names("sangan")
-fwa_find_stream_names <- function(pattern = ".*", ignore_case = TRUE){
+fwa_find_stream_names <- function(pattern = ".*", ignore_case = TRUE) {
   chk_string(pattern)
   chk_flag(ignore_case)
 

@@ -81,5 +81,5 @@ fwa_add_collection_to_polygon(watershed)
 }
 }
 \seealso{
-\code{\link[fwapgr]{fwa_collection}}.
+\code{\link[fwapgr:fwa_query_collection]{fwapgr::fwa_collection()}}.
 }

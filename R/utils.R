@@ -1,11 +1,11 @@
 group_split_sf <- function(.tbl, ..., .keep = TRUE) {
   is_sf <- inherits(.tbl, "sf")
 
-  if(is_sf) {
+  if (is_sf) {
     sf_column_name <- attr(.tbl, "sf_column")
   }
   x <- dplyr::group_split(.tbl, ..., .keep = .keep)
-  if(is_sf) {
+  if (is_sf) {
     x <- x |>
       lapply(sf::st_sf, sf_column_name = sf_column_name)
   }
@@ -14,7 +14,7 @@ group_split_sf <- function(.tbl, ..., .keep = TRUE) {
 
 # https://stackoverflow.com/questions/43627679/round-any-equivalent-for-dplyr
 round_any <- function(x, accuracy, f = round) {
-  f(x/ accuracy) * accuracy
+  f(x / accuracy) * accuracy
 }
 
 # https://stackoverflow.com/questions/12688717/round-up-from-5
@@ -46,7 +46,7 @@ has_name <- function(x, name) {
   name %in% names(x)
 }
 
-is.sf <- function (x) {
+is.sf <- function(x) {
   inherits(x, "sf")
 }
 
@@ -59,7 +59,7 @@ sample_linestring <- function(x, interval, end) {
   sample <- seq(0, length, by = interval)
   end <- length - sample[length(sample)] >= end
 
-  if(end) {
+  if (end) {
     sample <- c(sample, length)
   }
   sample <- sample / length
@@ -71,9 +71,11 @@ sample_linestring <- function(x, interval, end) {
   x <- x |>
     dplyr::slice(rep(1, length(points))) |>
     sf::st_set_geometry(points) |>
-    dplyr::mutate(rm = (dplyr::row_number() - 1) * interval,
-                  rm = as.integer(.data$rm))
-  if(end) {
+    dplyr::mutate(
+      rm = (dplyr::row_number() - 1) * interval,
+      rm = as.integer(.data$rm)
+    )
+  if (end) {
     x$rm[nrow(x)] <- as.integer(length)
   }
   x
@@ -81,7 +83,7 @@ sample_linestring <- function(x, interval, end) {
 
 sample_linestrings <- function(x, interval, end) {
   x <- x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     dplyr::group_split(.data$..fwa_id) |>
     purrr::map(sample_linestring, interval, end = end) |>
     dplyr::bind_rows() |>
@@ -100,10 +102,10 @@ reverse_linestrings <- function(x) {
 }
 
 reverse_linestring <- function(x) {
-  sf::st_linestring(x[rev(seq_len(nrow(x))),])
+  sf::st_linestring(x[rev(seq_len(nrow(x))), ])
 }
 
-sf_column_name <- function (x) {
+sf_column_name <- function(x) {
   if (!is.sf(x) || is.null(attr(x, "sf_column"))) {
     return(character(0))
   }

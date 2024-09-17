@@ -23,7 +23,9 @@ join_points <- function(x, y) {
   z <- x |>
     dplyr::inner_join(y, by = c("blk" = "blk", "new_rm" = "rm"))
 
-  z$geometry <- sf::st_sfc(mapply(function(a,b){sf::st_cast(sf::st_union(a,b),"LINESTRING")}, z$..fwa_geometry1, z$..fwa_geometry2, SIMPLIFY=FALSE), crs = crs)
+  z$geometry <- sf::st_sfc(mapply(function(a, b) {
+    sf::st_cast(sf::st_union(a, b), "LINESTRING")
+  }, z$..fwa_geometry1, z$..fwa_geometry2, SIMPLIFY = FALSE), crs = crs)
 
   z |>
     dplyr::select(-"..fwa_geometry1", -"..fwa_geometry2") |>
@@ -40,8 +42,7 @@ join_points <- function(x, y) {
 #' @inheritParams fwa_mapview
 #' @export
 fwa_mapview_rms_to_rms <- function(x, y, zcol = "rm", npoint = 250) {
-
-  if(!requireNamespace("mapview", quietly = TRUE)) {
+  if (!requireNamespace("mapview", quietly = TRUE)) {
     err("Package 'mapview' must be installed.")
   }
 
@@ -58,7 +59,7 @@ fwa_mapview_rms_to_rms <- function(x, y, zcol = "rm", npoint = 250) {
   chk_whole_number(npoint)
   chk_gt(npoint)
 
-  if(!is.null(zcol)) {
+  if (!is.null(zcol)) {
     check_names(x, zcol)
   }
 

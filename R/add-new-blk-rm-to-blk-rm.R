@@ -29,7 +29,6 @@ fwa_add_new_blk_rm_to_blk_rm <- function(
     new_rm = "new_rm",
     new_blk_to = new_blk,
     new_rm_to = new_rm) {
-
   chk_data(x)
   chk_data(y)
 
@@ -42,7 +41,7 @@ fwa_add_new_blk_rm_to_blk_rm <- function(
   chk_null_or(new_blk_to, vld = vld_string)
   chk_string(new_rm_to)
 
-  if(vld_string(new_blk) && new_blk == blk2) {
+  if (vld_string(new_blk) && new_blk == blk2) {
     new_blk <- NULL
     new_blk_to <- NULL
   }
@@ -71,7 +70,7 @@ fwa_add_new_blk_rm_to_blk_rm <- function(
 
   check_key(y, c(blk2, rm2))
 
-  if(!is.null(new_blk)) {
+  if (!is.null(new_blk)) {
     chk_whole_numeric(y[[new_blk]])
     chk_gt(y[[new_blk]])
   }

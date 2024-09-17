@@ -8,7 +8,7 @@ test_that("convert_rms_to_streams works", {
   expect_identical(nrow(x), 39L)
 
   # drop those streams that single points.... not sure why necessary
-  x <- sf::st_cast(x[-c(3,6,11,16),], "MULTIPOINT")
+  x <- sf::st_cast(x[-c(3, 6, 11, 16), ], "MULTIPOINT")
   expect_warning(x <- sf::st_cast(x, "POINT"))
 
   expect_s3_class(x$geometry, "sfc_POINT")

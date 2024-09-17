@@ -3,8 +3,8 @@ test_that("fwa_add_new_blk_to_blk_rm works", {
 
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
-  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000),]
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000), ]
   x <- fwa_snap_rms_to_rms(x, rm)
   rm <- x$rm
   x <- x$x
@@ -31,8 +31,8 @@ test_that("fwa_add_new_blk_to_blk_rm works tibble and missing values", {
 
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
-  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000),]
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000), ]
   x <- fwa_snap_rms_to_rms(x, rm)
   rm <- x$rm
   x <- x$x
@@ -59,16 +59,18 @@ test_that("fwa_add_new_blk_to_blk_rm works different names", {
 
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
-  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000),]
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000), ]
   x <- fwa_snap_rms_to_rms(x, rm)
   rm <- x$rm
   x <- x$x
 
   rm <- x |>
     dplyr::slice(-2) |>
-    dplyr::rename(rm2 = rm, blk2 = blk,
-                  old_rm = new_rm, old_blk = new_blk)
+    dplyr::rename(
+      rm2 = rm, blk2 = blk,
+      old_rm = new_rm, old_blk = new_blk
+    )
 
   x <- x |>
     dplyr::as_tibble() |>
@@ -76,9 +78,11 @@ test_that("fwa_add_new_blk_to_blk_rm works different names", {
     dplyr::rename(rm1 = rm, blk1 = blk)
 
 
-  x <- fwa_add_new_blk_rm_to_blk_rm(x, rm, rm = "rm1", blk = "blk1",
-                                    rm2 = "rm2", blk2 = "blk2",
-                                    new_rm = "old_rm", new_blk = "old_blk")
+  x <- fwa_add_new_blk_rm_to_blk_rm(x, rm,
+    rm = "rm1", blk = "blk1",
+    rm2 = "rm2", blk2 = "blk2",
+    new_rm = "old_rm", new_blk = "old_blk"
+  )
 
   expect_s3_class(x, "tbl_df")
   expect_identical(colnames(x), c("blk1", "rm1", "old_blk", "old_rm", "elevation"))
@@ -94,8 +98,8 @@ test_that("fwa_add_new_blk_to_blk_rm works same blk2", {
 
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
-  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000),]
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000), ]
   x <- fwa_snap_rms_to_rms(x, rm)
   rm <- x$rm
   x <- x$x
@@ -122,8 +126,8 @@ test_that("fwa_add_new_blk_to_blk_rm works new_blk = NULL", {
 
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
-  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000),]
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000), ]
   x <- fwa_snap_rms_to_rms(x, rm)
   rm <- x$rm
   x <- x$x
@@ -150,8 +154,8 @@ test_that("fwa_add_new_blk_to_blk_rm works rename", {
 
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 
-  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000),]
-  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000),]
+  x <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000), ]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000), ]
   x <- fwa_snap_rms_to_rms(x, rm)
   rm <- x$rm
   x <- x$x
@@ -165,8 +169,10 @@ test_that("fwa_add_new_blk_to_blk_rm works rename", {
     dplyr::select(blk, rm, elevation)
 
 
-  x <- fwa_add_new_blk_rm_to_blk_rm(x, rm, new_blk_to = "zz_blk",
-                                    new_rm_to = "aa")
+  x <- fwa_add_new_blk_rm_to_blk_rm(x, rm,
+    new_blk_to = "zz_blk",
+    new_rm_to = "aa"
+  )
 
   expect_s3_class(x, "tbl_df")
   expect_identical(colnames(x), c("blk", "rm", "zz_blk", "aa", "elevation"))

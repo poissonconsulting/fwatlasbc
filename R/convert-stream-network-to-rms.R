@@ -19,9 +19,11 @@ add_parent_blk_rm <- function(x) {
     dplyr::filter(!str_detect(.data$fwa_watershed_code, "^999")) |>
     dplyr::mutate(fwa_watershed_code = strip_trailing_0s(.data$fwa_watershed_code)) |>
     dplyr::group_by(.data$blue_line_key, .data$fwa_watershed_code) |>
-    dplyr::summarise(min_rm = min(.data$upstream_route_measure),
-                     max_rm = max(.data$upstream_route_measure),
-                     max_stream_order = max(.data$stream_order)) |>
+    dplyr::summarise(
+      min_rm = min(.data$upstream_route_measure),
+      max_rm = max(.data$upstream_route_measure),
+      max_stream_order = max(.data$stream_order)
+    ) |>
     dplyr::ungroup() |>
     dplyr::filter(.data$min_rm != 0)
 
@@ -34,9 +36,11 @@ add_parent_blk_rm <- function(x) {
   child <- parent |>
     dplyr::mutate(
       parent_code = get_parent_code(.data$fwa_watershed_code),
-      parent_proportion = get_parent_proportion(.data$fwa_watershed_code)) |>
+      parent_proportion = get_parent_proportion(.data$fwa_watershed_code)
+    ) |>
     dplyr::select(
-      child_blk = "blue_line_key", "parent_code", "parent_proportion")
+      child_blk = "blue_line_key", "parent_code", "parent_proportion"
+    )
 
   parent <- parent |>
     dplyr::filter(.data$max_stream_order > 1)
@@ -58,7 +62,7 @@ convert_stream_segment_to_rms <- function(x, interval) {
   down_rm <- round_any(down, interval, ceiling)
   up_rm <- round_any(up, interval, floor)
 
-  if(down_rm > up_rm) {
+  if (down_rm > up_rm) {
     rm <- integer(0)
     sample <- numeric(0)
   } else {
@@ -69,17 +73,17 @@ convert_stream_segment_to_rms <- function(x, interval) {
   y <- x |>
     dplyr::as_tibble()
 
-  if("geometry" %in% names(y))
+  if ("geometry" %in% names(y))
     y$geometry <- NULL
 
-  if("rm" %in% names(y))
+  if ("rm" %in% names(y))
     y$rm <- NULL
 
   x <- x |>
     sf::st_line_sample(sample = sample) |>
     sf::st_cast("POINT")
 
-  dplyr::tibble(geometry = x, rm  = rm) |>
+  dplyr::tibble(geometry = x, rm = rm) |>
     sf::st_sf() |>
     dplyr::mutate(id = y$id) |>
     dplyr::left_join(y, by = "id") |>
@@ -113,8 +117,10 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
   chk_number(tolerance)
   chk_gte(tolerance)
 
-  check_names(x, c("linear_feature_id", "blue_line_key", "downstream_route_measure",
-                   "upstream_route_measure", "fwa_watershed_code"))
+  check_names(x, c(
+    "linear_feature_id", "blue_line_key", "downstream_route_measure",
+    "upstream_route_measure", "fwa_watershed_code"
+  ))
   chk_not_subset(colnames(x), "..fwa_id")
 
   x$id <- x$linear_feature_id
@@ -141,13 +147,13 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
   diff <- diff - as.numeric(sf::st_length(x$geometry))
   diff <- abs(diff)
 
-  if(any(diff > tolerance)) {
+  if (any(diff > tolerance)) {
     abort_chk("Difference between and upstream and down route measures and length of geometry exceeds tolerance in `x`")
   }
 
   x |>
     add_parent_blk_rm() |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     group_split_sf(.data$..fwa_id) |>
     lapply(convert_stream_segment_to_rms, interval = interval) |>
     dplyr::bind_rows() |>

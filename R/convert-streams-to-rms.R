@@ -1,24 +1,25 @@
 get_parent_blk_rm <- function(x, y, gap) {
-
   y <- y |>
     dplyr::anti_join(as_tibble(x), by = "blk")
 
   x <- x |>
-    dplyr::mutate(parent_blk = sf::st_nearest_feature(x, y),
-                  parent_blk = y$blk[.data$parent_blk]) |>
+    dplyr::mutate(
+      parent_blk = sf::st_nearest_feature(x, y),
+      parent_blk = y$blk[.data$parent_blk]
+    ) |>
     dplyr::left_join(as_tibble(y), by = c("parent_blk" = "blk"))
 
   span <- sf::st_nearest_points(x$geometry, x$..fwa_linestring, pairwise = TRUE)
   distance <- sf::st_length(span) |> as.numeric()
 
-  if(distance > gap) {
+  if (distance > gap) {
     x$parent_blk <- NA_integer_
     x$parent_rm <- NA_real_
   } else {
     point <- sf::st_cast(span, "POINT") |>
       dplyr::nth(2)
 
-    if(distance > 0) {
+    if (distance > 0) {
       point <- sf::st_buffer(point, distance)
     }
 
@@ -99,7 +100,7 @@ fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, end = NULL, ele
   chk_gt(x$blk)
 
   chk_null_or(end, vld = vld_whole_number)
-  if(is.null(end)) {
+  if (is.null(end)) {
     end <- interval + 1
   }
   chk_gt(end)

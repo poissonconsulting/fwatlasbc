@@ -16,7 +16,7 @@ fwa_prune_rms <- function(x, y) {
   y$name <- "..fwa_prune"
 
   n <- nrow(y)
-  for(i in seq_len(n)) {
+  for (i in seq_len(n)) {
     z <- y |> dplyr::slice(n)
     x <- x |>
       fwa_add_upstream_split_to_rms(z) |>
