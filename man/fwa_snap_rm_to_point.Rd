@@ -24,7 +24,7 @@ together with the distance to the river meter (distance_to_rm) in m.
 }
 \examples{
 rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
-x <- rm[rm$rm \%in\% c(0, 2000, 5000, 6000, 7000),]
-rm <- rm[rm$rm \%in\% c(1000, 3000, 4000, 8000, 9000, 10000),]
+x <- rm[rm$rm \%in\% c(0, 2000, 5000, 6000, 7000), ]
+rm <- rm[rm$rm \%in\% c(1000, 3000, 4000, 8000, 9000, 10000), ]
 fwa_snap_rm_to_point(x, rm)
 }
