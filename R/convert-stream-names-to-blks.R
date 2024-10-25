@@ -15,7 +15,7 @@
 #' fwa_convert_stream_names_to_blks(c("a stream name", "a stream name2"))
 fwa_convert_stream_names_to_blks <- function(names) {
   chk_null_or(names, vld = vld_character_or_factor)
-  if(!length(names) || is.null(names)) return(integer())
+  if (!length(names) || is.null(names)) return(integer())
   names_chr <- as.character(names)
   names_na <- is.na(names_chr)
   names_int <- abs(digest::digest2int(names_chr))

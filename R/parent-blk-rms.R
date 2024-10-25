@@ -23,12 +23,12 @@ fwa_parent_blk_rms <- function(x, rms) {
   rms <- rms |>
     dplyr::distinct(.data$blk, .data$parent_blk)
 
-  if(anyDuplicated(rms$blk)) {
+  if (anyDuplicated(rms$blk)) {
     abort_chk("Each blk in `rms` must have one parent_blk value.")
   }
 
-  if(!length(x)) return(integer(0))
-  if(!nrow(rms)) return(rep(NA_integer_, length(x)))
+  if (!length(x)) return(integer(0))
+  if (!nrow(rms)) return(rep(NA_integer_, length(x)))
 
   x <- dplyr::tibble(blk = x) |>
     dplyr::left_join(rms, by = "blk")
