@@ -30,8 +30,8 @@ that the links between x and rm are bidirectional as much as possible.
 }
 \examples{
 rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
-x <- rm[rm$rm \%in\% c(0, 2000, 5000, 6000, 7000),]
-rm <- rm[rm$rm \%in\% c(1000, 3000, 4000, 8000, 9000, 10000),]
+x <- rm[rm$rm \%in\% c(0, 2000, 5000, 6000, 7000), ]
+rm <- rm[rm$rm \%in\% c(1000, 3000, 4000, 8000, 9000, 10000), ]
 fwa_snap_rms_to_rms(x, rm)
 }
 \seealso{

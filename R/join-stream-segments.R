@@ -49,12 +49,14 @@ start_end_elevation <- function(x, reverse) {
 
 start_points <- function(x, elevation, reverse) {
   x <- x |>
-    dplyr::mutate(start = sf::st_line_sample(x, sample = 0),
-                  end = sf::st_line_sample(x, sample = 1),
-                  start = sf::st_cast(.data$start, "POINT"),
-                  end = sf::st_cast(.data$end, "POINT"))
+    dplyr::mutate(
+      start = sf::st_line_sample(x, sample = 0),
+      end = sf::st_line_sample(x, sample = 1),
+      start = sf::st_cast(.data$start, "POINT"),
+      end = sf::st_cast(.data$end, "POINT")
+    )
 
-  if(elevation || length(reverse)) {
+  if (elevation || length(reverse)) {
     x <- x |>
       start_end_elevation(reverse)
   }

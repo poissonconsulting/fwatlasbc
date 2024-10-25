@@ -8,7 +8,8 @@
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/poissonconsulting/fwatlasbc/branch/main/graph/badge.svg?token=x3TrvhuMbK)](https://codecov.io/gh/poissonconsulting/fwatlasbc)
+[![Codecov test
+coverage](https://codecov.io/gh/poissonconsulting/fwatlasbc/graph/badge.svg)](https://app.codecov.io/gh/poissonconsulting/fwatlasbc)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
@@ -61,7 +62,7 @@ blks
 #> 2 Steep Creek        356362258
 #> 3 Steep Creek        356534225
 #> 4 Steep Creek        356570155
-blks <- blks[blks$blk == 356534225,]
+blks <- blks[blks$blk == 356534225, ]
 ```
 
 Alternatively get the nearest blue line key and river meter (rm) from
@@ -78,7 +79,7 @@ fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #> Projected CRS: NAD83 / BC Albers
 #> # A tibble: 1 × 6
 #>     lon   lat       blk    rm distance_to_lon_lat            geometry
-#>   <dbl> <dbl>     <dbl> <dbl>               <dbl>         <POINT [m]>
+#>   <dbl> <dbl>     <int> <dbl>               <dbl>         <POINT [m]>
 #> 1 -132.  53.4 360824839 1118.                508. (585153.6 946162.9)
 ```
 
@@ -92,12 +93,12 @@ wshed
 #> Simple feature collection with 1 feature and 3 fields
 #> Geometry type: POLYGON
 #> Dimension:     XY
-#> Bounding box:  xmin: 1656218 ymin: 725423.1 xmax: 1661726 ymax: 732146.2
+#> Bounding box:  xmin: 1656219 ymin: 725423.4 xmax: 1661727 ymax: 732146.6
 #> Projected CRS: NAD83 / BC Albers
 #> # A tibble: 1 × 4
 #>   stream_name       blk    rm                                           geometry
 #>   <chr>           <int> <dbl>                                      <POLYGON [m]>
-#> 1 Steep Creek 356534225     0 ((1658107 728964.9, 1658107 728964.9, 1658179 728…
+#> 1 Steep Creek 356534225     0 ((1658107 728965.2, 1658107 728965.2, 1658180 728…
 ```
 
 Get stream network for the watershed polygon. Note that rm is from the
@@ -107,39 +108,39 @@ equivalents for the stream segment in the network.
 ``` r
 network <- fwa_add_collection_to_polygon(wshed, "stream_network")
 network
-#> Simple feature collection with 76 features and 31 fields
+#> Simple feature collection with 76 features and 29 fields
 #> Geometry type: LINESTRING
 #> Dimension:     XY
-#> Bounding box:  xmin: 1656200 ymin: 725423.1 xmax: 1661368 ymax: 731602.7
+#> Bounding box:  xmin: 1656200 ymin: 725423.4 xmax: 1661368 ymax: 731603
 #> Projected CRS: NAD83 / BC Albers
-#> # A tibble: 76 × 32
-#>    stream…¹    blk    rm blue_…² blue_…³ downs…⁴ edge_…⁵ featu…⁶ featu…⁷ fwa_w…⁸
-#>    <chr>     <dbl> <dbl>   <dbl>   <dbl>   <dbl>   <dbl> <chr>   <chr>   <chr>  
-#>  1 Steep C… 3.57e8     0  3.57e8    1130  2931.     1250 WA2411… areal … 300-90…
-#>  2 Steep C… 3.56e8     0  3.56e8      NA  1110.     1000 GA2485… linear… 300-90…
-#>  3 Steep C… 3.57e8     0  3.57e8      NA     0      1000 GA2485… linear… 300-90…
-#>  4 Steep C… 3.57e8     0  3.57e8    1142  2594.     1000 GA2485… linear… 300-90…
-#>  5 Steep C… 3.57e8     0  3.57e8    1142  2251.     1000 GA2485… linear… 300-90…
-#>  6 Steep C… 3.56e8     0  3.56e8      NA     0      1000 GA2485… linear… 300-90…
-#>  7 Steep C… 3.56e8     0  3.56e8      NA     0      1000 GA2485… linear… 300-90…
-#>  8 Steep C… 3.57e8     0  3.57e8    1131    51.8    1000 GA2485… linear… 300-90…
-#>  9 Steep C… 3.57e8     0  3.57e8    1130   751.     1250 WA2411… areal … 300-90…
-#> 10 Steep C… 3.56e8     0  3.56e8      NA   346.     1000 GA2485… linear… 300-90…
-#> # … with 66 more rows, 22 more variables: gnis_id <dbl>, gnis_name <chr>,
-#> #   gradient <dbl>, left_right_tributary <chr>, length_metre <dbl>,
-#> #   linear_feature_id <dbl>, local_watershed_code <chr>, localcode_ltree <chr>,
-#> #   stream_magnitude <dbl>, stream_order <dbl>, stream_order_max <dbl>,
-#> #   stream_order_parent <dbl>, upstream_route_measure <dbl>,
-#> #   waterbody_key <dbl>, watershed_code_50k <chr>, watershed_group_code <chr>,
-#> #   watershed_group_code_50k <chr>, watershed_group_id <dbl>, …
+#> # A tibble: 76 × 30
+#>    stream_name       blk    rm blue_line_key blue_line_key_50k
+#>    <chr>           <int> <dbl>         <int>             <int>
+#>  1 Steep Creek 356436505     0     356436505                NA
+#>  2 Steep Creek 356526193     0     356526193               873
+#>  3 Steep Creek 356566041     0     356566041              1130
+#>  4 Steep Creek 356549188     0     356549188              1131
+#>  5 Steep Creek 356566041     0     356566041              1130
+#>  6 Steep Creek 356394005     0     356394005                NA
+#>  7 Steep Creek 356534225     0     356534225              1142
+#>  8 Steep Creek 356549188     0     356549188              1131
+#>  9 Steep Creek 356526193     0     356526193               873
+#> 10 Steep Creek 356566041     0     356566041              1130
+#> # ℹ 66 more rows
+#> # ℹ 25 more variables: downstream_route_measure <dbl>, edge_type <dbl>,
+#> #   feature_code <chr>, feature_source <chr>, fwa_watershed_code <chr>,
+#> #   gnis_id <int>, gnis_name <chr>, gradient <dbl>, left_right_tributary <chr>,
+#> #   length_metre <dbl>, linear_feature_id <int>, local_watershed_code <chr>,
+#> #   localcode_ltree <chr>, stream_magnitude <dbl>, stream_order <dbl>,
+#> #   upstream_route_measure <dbl>, waterbody_key <dbl>, …
 ```
 
 Convert the stream network into a table of blue line keys with regularly
 spaced river meters starting at 0.
 
 ``` r
-#rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
-#rms
+# rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
+# rms
 ```
 
 Plot the watershed, network and river meters.
@@ -148,7 +149,7 @@ Plot the watershed, network and river meters.
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
   ggplot2::geom_sf(data = network, color = "blue") +
-#  ggplot2::geom_sf(data = rms) +
+  #  ggplot2::geom_sf(data = rms) +
   NULL
 ```
 

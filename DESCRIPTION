@@ -10,6 +10,7 @@ Authors@R: c(
   )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
+URL: https://poissonconsulting.github.io/fwatlasbc/
 Depends: 
     R (>= 4.1)
 Imports: 
@@ -25,8 +26,8 @@ Imports:
     stats,
     stringr,
     tibble,
-    tidyselect,
-    tidyplus
+    tidyplus,
+    tidyselect
 Suggests: 
     covr,
     googleway,

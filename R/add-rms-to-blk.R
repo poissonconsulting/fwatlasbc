@@ -5,24 +5,27 @@ add_rms_to_blk <- function(x, epsg, nocache) {
   start <- x$..fwa_start
   end <- x$..fwa_end
 
-  if(is.infinite(end)) end <- NULL
+  if (is.infinite(end)) end <- NULL
 
   rm <- fwa_locate_along_interval(x$blk,
-                                  interval_length = interval,
-                                  start_measure = start,
-                                  end_measure = end,
-                                  epsg = epsg,
-                                  nocache = nocache) |>
-    dplyr::mutate(rm = .data$index * interval + start,
-                  rm = as.integer(.data$rm),
-                  elevation = unname(sf::st_coordinates(.data$geometry)[,"Z"])) |>
+    interval_length = interval,
+    start_measure = start,
+    end_measure = end,
+    epsg = epsg,
+    nocache = nocache
+  ) |>
+    dplyr::mutate(
+      rm = .data$index * interval + start,
+      rm = as.integer(.data$rm),
+      elevation = unname(sf::st_coordinates(.data$geometry)[, "Z"])
+    ) |>
     sf::st_zm(x) |>
     dplyr::select("rm", "elevation", "geometry")
 
-  if(!is.null(end)) {
+  if (!is.null(end)) {
     lim <- floor((end - start) / interval)
 
-    if(nrow(x) < lim)
+    if (nrow(x) < lim)
       chk::wrn("`end` was not reached for blk ", x$blk)
   }
   x |>
@@ -51,7 +54,7 @@ add_rms_to_blk <- function(x, epsg, nocache) {
 #' }
 fwa_add_rms_to_blk <- function(
     x, interval = 1000, start = 0, end = Inf,
-    epsg = getOption("fwa.epsg", 3005), nocache = getOption("fwa.nocache", FALSE)){
+    epsg = getOption("fwa.epsg", 3005), nocache = getOption("fwa.nocache", FALSE)) {
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
   chk_whole_numeric(x$blk)
@@ -59,8 +62,10 @@ fwa_add_rms_to_blk <- function(
   chk_gt(x$blk)
   chk_unique(x$blk)
   chk_not_subset(colnames(x), c("rm", "elevation", "geometry"))
-  chk_not_subset(colnames(x), c("..fwa_interval", "..fwa_start",
-                                "..fwa_end", "..fwa_id"))
+  chk_not_subset(colnames(x), c(
+    "..fwa_interval", "..fwa_start",
+    "..fwa_end", "..fwa_id"
+  ))
 
   chk_whole_number(interval)
   chk_gt(interval)
@@ -73,14 +78,18 @@ fwa_add_rms_to_blk <- function(
 
   x |>
     dplyr::as_tibble() |>
-    dplyr::mutate(..fwa_interval = interval,
-                  ..fwa_start = start,
-                  ..fwa_end = end,
-                  ..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(
+      ..fwa_interval = interval,
+      ..fwa_start = start,
+      ..fwa_end = end,
+      ..fwa_id = seq_len(dplyr::n())
+    ) |>
     group_split_sf(.data$blk) |>
     lapply(add_rms_to_blk, epsg = epsg, nocache = nocache) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id, .data$rm) |>
-    dplyr::select(!c("..fwa_interval", "..fwa_start",
-                     "..fwa_end", "..fwa_id"))
+    dplyr::select(!c(
+      "..fwa_interval", "..fwa_start",
+      "..fwa_end", "..fwa_id"
+    ))
 }

@@ -24,30 +24,44 @@ test_that("fwa_add_stream_names_to_blk works missing values", {
 })
 
 test_that("fwa_add_stream_names_to_blk works custom", {
-  x <- fwa_add_stream_names_to_blk(data.frame(blk = 356235759),
-                                   data.frame(blk = 356235759, stream_name = "A Creek"))
-  expect_identical(x, dplyr::tibble(blk = 356235759,
-                                     stream_name = "A Creek"))
+  x <- fwa_add_stream_names_to_blk(
+    data.frame(blk = 356235759),
+    data.frame(blk = 356235759, stream_name = "A Creek")
+  )
+  expect_identical(x, dplyr::tibble(
+    blk = 356235759,
+    stream_name = "A Creek"
+  ))
 })
 
 test_that("fwa_add_stream_names_to_blk removes duplicates custom", {
-  stream_name <- data.frame(blk = c(356235759, 356235759, 356235759),
-                            stream_name = c("A Creek", "A Creek", "A Different Creek"))
+  stream_name <- data.frame(
+    blk = c(356235759, 356235759, 356235759),
+    stream_name = c("A Creek", "A Creek", "A Different Creek")
+  )
 
   x <- fwa_add_stream_names_to_blk(data.frame(blk = 356235759),
-                                   stream_name = stream_name)
+    stream_name = stream_name
+  )
 
-  expect_identical(x, dplyr::tibble(blk = c(356235759, 356235759),
-                                     stream_name = c("A Creek", "A Different Creek")))
+  expect_identical(x, dplyr::tibble(
+    blk = c(356235759, 356235759),
+    stream_name = c("A Creek", "A Different Creek")
+  ))
 })
 
 test_that("fwa_add_stream_names_to_blk deals with missing blk", {
-  stream_name <- data.frame(blk = 356235759,
-                            stream_name = "A Creek")
+  stream_name <- data.frame(
+    blk = 356235759,
+    stream_name = "A Creek"
+  )
 
   x <- fwa_add_stream_names_to_blk(data.frame(blk = 356235760),
-                                   stream_name = stream_name)
+    stream_name = stream_name
+  )
 
-  expect_identical(x, dplyr::tibble(blk = 356235760,
-                                     stream_name = NA_character_))
+  expect_identical(x, dplyr::tibble(
+    blk = 356235760,
+    stream_name = NA_character_
+  ))
 })

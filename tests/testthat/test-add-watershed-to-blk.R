@@ -27,7 +27,8 @@ test_that("fwa_add_watershed_to_blk exclude excludes", {
   rlang::local_options(nocache = TRUE)
 
   x <- fwa_add_watershed_to_blk(data.frame(blk = 360883036, rm = 10),
-                                exclude = TRUE)
+    exclude = TRUE
+  )
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "rm", "geometry"))
   expect_identical(x$rm, 10)

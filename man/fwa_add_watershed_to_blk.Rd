@@ -39,5 +39,5 @@ fwa_add_watershed_to_blk(data.frame(blk = 356308001))
 }
 }
 \seealso{
-\code{\link[fwapgr]{fwa_watershed_at_measure}}.
+\code{\link[fwapgr:fwa_watershed_at_measure]{fwapgr::fwa_watershed_at_measure()}}.
 }
