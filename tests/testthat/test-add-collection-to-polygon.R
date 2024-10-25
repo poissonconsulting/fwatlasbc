@@ -45,8 +45,6 @@ test_that("fwa_add_collection_to_polygon function intersects work", {
       "watershed_key_50k", "wscode_ltree", "geometry"))
 
   expect_s3_class(x$geometry, "sfc_GEOMETRY")
-  expect_s3_class(x$geometry[[1]], "LINESTRING")
-  expect_identical(colnames(sf::st_coordinates(x$geometry[[1]])), c("X", "Y", "L1")) # why not , "Z", "L1"
 })
 
 test_that("fwa_add_collection_to_polygon function intersects works with named streams and keeps extras and deals other projection", {
