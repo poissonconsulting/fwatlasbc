@@ -40,7 +40,7 @@ test_that("fwa_snap_stream_measure_to_point", {
   expect_identical(stream_measure_no_blk$blk, stream_measure$blk)
 
   points_no_blk_off <- points_no_blk
-  points_no_blk_off$geometry <- st_set_crs(points_no_blk_off$geometry - 1000, st_crs(points))
+  points_no_blk_off$geometry <- st_set_crs(points_no_blk_off$geometry - 5000, st_crs(points))
 
   stream_measure_no_blk_off <- fwa_snap_stream_measure_to_point(points_no_blk_off, streams)
   expect_identical(nrow(stream_measure_no_blk_off), nrow(points))
