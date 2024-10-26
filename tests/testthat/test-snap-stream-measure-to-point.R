@@ -45,4 +45,11 @@ test_that("fwa_snap_stream_measure_to_point", {
   stream_measure_no_blk_off <- fwa_snap_stream_measure_to_point(points_no_blk_off, streams)
   expect_identical(nrow(stream_measure_no_blk_off), nrow(points))
   expect_snapshot_data(stream_measure_no_blk_off, "stream_measure_no_blk_off")
+
+  points_blk_diff <- points
+  points_blk_diff$blk[points_blk_diff$blk == 355992255] <- 356308001
+
+  stream_measure_blk_diff <- fwa_snap_stream_measure_to_point(points_blk_diff, streams)
+  expect_identical(nrow(stream_measure_blk_diff), nrow(points))
+  expect_snapshot_data(stream_measure_blk_diff, "stream_measure_blk_diff")
 })
