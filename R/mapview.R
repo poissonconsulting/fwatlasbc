@@ -10,13 +10,8 @@
 #' @param ... Additional arguments passed to `mapview::mapview()`.
 #' @export
 fwa_mapview <- function(x, layer = NULL, zcol = NULL, legend = FALSE, ...) {
-  if (!requireNamespace("mapview", quietly = TRUE)) {
-    err("Package 'mapview' must be installed.")
-  }
-
-  if (!requireNamespace("hms", quietly = TRUE)) {
-    err("Package 'hms' must be installed.")
-  }
+  rlang::check_installed("mapview")
+  rlang::check_installed("hms")
 
   chk_s3_class(x, "sf")
 

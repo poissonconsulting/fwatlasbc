@@ -42,9 +42,7 @@ join_points <- function(x, y) {
 #' @inheritParams fwa_mapview
 #' @export
 fwa_mapview_rms_to_rms <- function(x, y, zcol = "rm", npoint = 250) {
-  if (!requireNamespace("mapview", quietly = TRUE)) {
-    err("Package 'mapview' must be installed.")
-  }
+  rlang::check_installed("mapview")
 
   chk_s3_class(x, "sf")
   chk_s3_class(sf::st_geometry(x), "sfc_POINT")

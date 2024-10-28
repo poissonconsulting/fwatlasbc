@@ -33,9 +33,7 @@ thin_points <- function(x, npoint) {
 #' @export
 fwa_mapview_rms <- function(x, layer = NULL, zcol = "rm", legend = FALSE, npoint = 250,
                             ...) {
-  if (!requireNamespace("mapview", quietly = TRUE)) {
-    err("Package 'mapview' must be installed.")
-  }
+  rlang::check_installed("mapview")
 
   chk_s3_class(x, "sf")
   chk_s3_class(sf::st_geometry(x), "sfc_POINT")
