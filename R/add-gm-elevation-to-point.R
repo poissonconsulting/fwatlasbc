@@ -30,9 +30,7 @@ add_gm_elevation_to_point <- function(x, digits, key) {
 #' }
 fwa_add_gm_elevation_to_point <- function(x, chunk_size = 300L, digits = 7,
                                           key = Sys.getenv("GOOGLE_MAPS_ELEVATION_API_KEY")) {
-  if (!requireNamespace("googleway", quietly = TRUE)) {
-    err("Package 'googleway' must be installed to get elevations from Google Maps.")
-  }
+  rlang::check_installed("googleway", reason = "to get elevations from Google Maps.")
 
   chk_s3_class(x, "sf")
   chk_s3_class(sf::st_geometry(x), "sfc_POINT")
