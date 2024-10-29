@@ -25,9 +25,10 @@ together with the distance to the stream (distance_to_stream) in m.
 \dontrun{
 watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
 network <- fwa_add_collection_to_polygon(watershed)
-network <- select(network, blk = blue_line_key)
-points <- fwa_convert_streams_to_rms(streams, interval = 500) |>
-fwa_snap_stream_measure_to_point(points)
+network$blk <- network$blue_line_key
+streams <- fwa_join_stream_segments(network)
+points <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+fwa_snap_stream_measure_to_point(points, streams)
 }
 }
 \seealso{

@@ -53,3 +53,13 @@ test_that("fwa_snap_stream_measure_to_point", {
   expect_identical(nrow(stream_measure_blk_diff), nrow(points))
   expect_snapshot_data(stream_measure_blk_diff, "stream_measure_blk_diff")
 })
+
+test_that("fwa_snap_stream_measure_to_point example", {
+  watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
+  network <- fwa_add_collection_to_polygon(watershed)
+  network$blk <- network$blue_line_key
+  streams <- fwa_join_stream_segments(network)
+  points <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+  stream_measure <- fwa_snap_stream_measure_to_point(points, streams)
+  expect_snapshot_data(stream_measure, "stream_measure_example")
+})
