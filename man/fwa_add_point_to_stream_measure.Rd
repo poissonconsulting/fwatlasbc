@@ -2,24 +2,26 @@
 % Please edit documentation in R/add-point-to-stream-measure.R
 \name{fwa_add_point_to_stream_measure}
 \alias{fwa_add_point_to_stream_measure}
-\title{Snap Stream Measure to Point}
+\title{Add Point to Stream Measure to Point}
 \usage{
 fwa_add_point_to_stream_measure(x, streams, ...)
 }
 \arguments{
-\item{x}{An sf object of spatial points with optional integer column blk.}
+\item{x}{An data frame with columns blk and stream_measure.}
 
 \item{streams}{An sf object of spatial linestrings with blk column.}
 
 \item{...}{Additional columns to group by when assigning.}
 }
 \value{
-An updated version of x with integer columns blk and stream_measure and numeric column distance_to_stream.
+An updated version of x with numeric column proportion
+giving the proportion of the stream measure along the stream
+and a geometry column.
 }
 \description{
-Assigns closest stream measure in m to each spatial point.
-If the blue line key (blk) is missing then it is also assigned
-together with the distance to the stream (distance_to_stream) in m.
+Adds geometry for stream measure in m based on the blue line key (blk)
+as well as the proportion of the stream measure along the stream (proportion).
+If proportion is >= 1 then the geometry is the top of the stream.
 }
 \examples{
 \dontrun{
@@ -34,5 +36,5 @@ fwa_add_point_to_stream_measure(points, streams)
 }
 }
 \seealso{
-\code{\link[=fwa_snap_rm_to_point]{fwa_snap_rm_to_point()}}
+\code{\link[=fwa_snap_stream_measure_to_point]{fwa_snap_stream_measure_to_point()}}
 }

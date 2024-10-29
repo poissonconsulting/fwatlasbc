@@ -1,23 +1,25 @@
 add_point_to_stream_measure <- function(x, streams) {
   stream <- streams[streams$blk == x$blk[1],]
-  sample <- x$stream_measure / stream$length
+  x$proportion <- x$stream_measure / stream$length
   x$geometry <- stream |>
-    sf::st_line_sample(sample = sample) |>
+    sf::st_line_sample(sample = x$proportion) |>
     sf::st_cast("POINT")
   x
 }
 
-#' Snap Stream Measure to Point
+#' Add Point to Stream Measure to Point
 #'
-#' Assigns closest stream measure in m to each spatial point.
-#' If the blue line key (blk) is missing then it is also assigned
-#' together with the distance to the stream (distance_to_stream) in m.
+#' Adds geometry for stream measure in m based on the blue line key (blk)
+#' as well as the proportion of the stream measure along the stream (proportion).
+#' If proportion is >= 1 then the geometry is the top of the stream.
 #'
-#' @param x An sf object of spatial points with optional integer column blk.
+#' @param x An data frame with columns blk and stream_measure.
 #' @param streams An sf object of spatial linestrings with blk column.
 #' @param ... Additional columns to group by when assigning.
-#' @return An updated version of x with integer columns blk and stream_measure and numeric column distance_to_stream.
-#' @seealso [fwa_snap_rm_to_point()]
+#' @return An updated version of x with numeric column proportion
+#' giving the proportion of the stream measure along the stream
+#' and a geometry column.
+#' @seealso [fwa_snap_stream_measure_to_point()]
 #' @export
 #' @examples
 #' \dontrun{
@@ -35,7 +37,7 @@ fwa_add_point_to_stream_measure <- function(x, streams, ...) {
   chk::chk_s3_class(streams, "sf")
 
   check_names(x, c("blk", "stream_measure"))
-  chk_not_subset(colnames(x), c("..fwa_id"))
+  chk_not_subset(colnames(x), "..fwa_id")
   chk_whole_numeric(x$blk)
   chk_gt(x$blk)
   chk_numeric(x$stream_measure)
