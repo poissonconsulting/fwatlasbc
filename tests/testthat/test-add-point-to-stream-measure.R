@@ -35,5 +35,5 @@ test_that("example add point to stream measure", {
   points <- fwa_snap_stream_measure_to_point(points, streams)
   points <- points[c("blk", "stream_measure")]
   points <- fwa_add_point_to_stream_measure(points, streams)
-  expect_snapshot_data(points, "fwa_add_point_to_stream_measure_example")
+  expect_snapshot_data(points, "apsm")
 })
