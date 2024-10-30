@@ -7,7 +7,7 @@ add_point_to_stream_measure <- function(x, streams) {
   x
 }
 
-#' Add Point to Stream Measure to Point
+#' Add Point to Stream Measure
 #'
 #' Adds geometry for stream measure in m based on the blue line key (blk)
 #' as well as the proportion of the stream measure along the stream (proportion).
