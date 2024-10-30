@@ -10,7 +10,7 @@ add_point_to_stream_measure <- function(x, streams) {
 #' Add Point to Stream Measure
 #'
 #' Adds geometry for stream measure in m based on the blue line key (blk)
-#' as well as the proportion of the stream measure along the stream (proportion).
+#' and the proportion of the stream measure along the stream.
 #' If proportion is >= 1 then the geometry is the top of the stream.
 #'
 #' @param x An data frame with columns blk and stream_measure.
