@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/poissonconsulting/fwatlasbc/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/poissonconsulting/fwatlasbc/graph/badge.svg)](https://app.codecov.io/gh/poissonconsulting/fwatlasbc)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
 <!-- badges: end -->
 
 `fwatlasbc` is an R package for querying data from the [Freshwater Atlas](https://www2.gov.bc.ca/gov/content/data/geographic-data-services/topographic-data/freshwater) (FWA) of British Columbia. 
