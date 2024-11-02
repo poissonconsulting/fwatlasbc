@@ -13,7 +13,7 @@ add_point_to_stream_measure <- function(x, streams) {
 #' and the proportion of the stream measure along the stream.
 #' If proportion is >= 1 then the geometry is the top of the stream.
 #'
-#' @param x An data frame with columns blk and stream_measure.
+#' @param x A data frame with columns blk and stream_measure.
 #' @param streams An sf object of spatial linestrings with blk column.
 #' @param ... Additional columns to group by when assigning.
 #' @return An updated version of x with numeric column proportion
