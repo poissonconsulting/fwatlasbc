@@ -14,7 +14,7 @@ URL: https://poissonconsulting.github.io/fwatlasbc/
 Depends: 
     R (>= 4.1)
 Imports: 
-    chk (>= 0.8.1.9001),
+    chk,
     digest,
     dplyr,
     fwapgr (>= 0.1.0.9013),
@@ -27,7 +27,8 @@ Imports:
     stringr,
     tibble,
     tidyplus,
-    tidyselect
+    tidyselect,
+    units
 Suggests: 
     covr,
     googleway,
@@ -37,7 +38,6 @@ Suggests:
     rlang,
     testthat (>= 3.0.0)
 Remotes:
-    poissonconsulting/chk,
     poissonconsulting/fwapgr
 Config/testthat/edition: 3
 Encoding: UTF-8
