@@ -1,5 +1,5 @@
 add_point_to_stream_measure <- function(x, streams) {
-  stream <- streams[streams$blk == x$blk[1],]
+  stream <- streams[streams$blk == x$blk[1], ]
   x$proportion <- x$stream_measure / stream$length
   x$geometry <- stream |>
     sf::st_line_sample(sample = x$proportion) |>
@@ -63,9 +63,11 @@ fwa_add_point_to_stream_measure <- function(x, streams, ...) {
   chk_not_subset(colnames(x), c("geometry"))
 
   streams <- streams |>
-    dplyr::mutate(length = sf::st_length(streams),
-                  length = units::set_units(.data$length, "m"),
-                  length = as.numeric(length)) |>
+    dplyr::mutate(
+      length = sf::st_length(streams),
+      length = units::set_units(.data$length, "m"),
+      length = as.numeric(length)
+    ) |>
     dplyr::select("blk", "length")
 
   x |>

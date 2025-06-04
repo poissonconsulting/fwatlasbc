@@ -7,26 +7,26 @@ test_that("fwa_snap_stream_measure_to_point", {
   points <- fwa_convert_streams_to_rms(streams, interval = 500) |>
     dplyr::select(blk, old_rm = rm)
 
-  pointsFT <- fwa_snap_stream_measure_to_point(points[FALSE,], streams)
+  pointsFT <- fwa_snap_stream_measure_to_point(points[FALSE, ], streams)
   expect_identical(nrow(pointsFT), 0L)
   expect_snapshot_data(pointsFT, "pointsFT")
-  pointsTF <- fwa_snap_stream_measure_to_point(points, streams[FALSE,])
+  pointsTF <- fwa_snap_stream_measure_to_point(points, streams[FALSE, ])
   expect_identical(nrow(pointsTF), nrow(points))
   expect_snapshot_data(pointsTF, "pointsTF")
-  pointsFF <- fwa_snap_stream_measure_to_point(points[FALSE,], streams[FALSE,])
+  pointsFF <- fwa_snap_stream_measure_to_point(points[FALSE, ], streams[FALSE, ])
   expect_identical(nrow(pointsFF), 0L)
   expect_snapshot_data(pointsFF, "pointsFF")
 
   points$extra <- 1:nrow(points)
 
   points_no_blk <- points |> dplyr::select(!blk)
-  pointsFT_no_blk <- fwa_snap_stream_measure_to_point(points_no_blk[FALSE,], streams)
+  pointsFT_no_blk <- fwa_snap_stream_measure_to_point(points_no_blk[FALSE, ], streams)
   expect_identical(nrow(pointsFT_no_blk), 0L)
   expect_snapshot_data(pointsFT_no_blk, "pointsFT_no_blk")
-  pointsTF_no_blk <- fwa_snap_stream_measure_to_point(points_no_blk, streams[FALSE,])
+  pointsTF_no_blk <- fwa_snap_stream_measure_to_point(points_no_blk, streams[FALSE, ])
   expect_identical(nrow(pointsTF_no_blk), nrow(points))
   expect_snapshot_data(pointsTF_no_blk, "pointsTF_no_blk")
-  pointsFF_no_blk <- fwa_snap_stream_measure_to_point(points_no_blk[FALSE,], streams[FALSE,])
+  pointsFF_no_blk <- fwa_snap_stream_measure_to_point(points_no_blk[FALSE, ], streams[FALSE, ])
   expect_identical(nrow(pointsFF_no_blk), 0L)
   expect_snapshot_data(pointsFF_no_blk, "pointsFF_no_blk")
 

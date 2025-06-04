@@ -27,8 +27,10 @@ test_that("fwa_snap_rm_to_point handles different projection", {
   expect_equal(x$blk, rep(356308001, 5))
   expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
   skip_on_os("linux")
-  expect_equal(x$distance_to_rm, c(873.508858502692, 535.637650105008, 754.230245890098, 610.731097003085,
-                                   514.952511355012))
+  expect_equal(x$distance_to_rm, c(
+    873.508858502692, 535.637650105008, 754.230245890098, 610.731097003085,
+    514.952511355012
+  ))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -44,8 +46,10 @@ test_that("fwa_snap_rm_to_point handles different projection x", {
   expect_equal(x$blk, rep(356308001, 5))
   expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
   skip_on_os("linux")
-  expect_equal(x$distance_to_rm, c(870.660879112366, 534.199200145354, 754.770979129562, 609.168343854411,
-                                   513.588145818887))
+  expect_equal(x$distance_to_rm, c(
+    870.660879112366, 534.199200145354, 754.770979129562, 609.168343854411,
+    513.588145818887
+  ))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 

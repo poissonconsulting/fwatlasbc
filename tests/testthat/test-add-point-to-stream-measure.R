@@ -17,7 +17,7 @@ test_that("test fwa_add_point_to_stream_measure", {
   x2 <- fwa_add_point_to_stream_measure(x2, streams)
   expect_snapshot_data(x2, "add_point_x2")
 
-  x2s <- data.frame(blk = c(356308001, 355992254), stream_measure = c(0,1))
+  x2s <- data.frame(blk = c(356308001, 355992254), stream_measure = c(0, 1))
   x2s <- fwa_add_point_to_stream_measure(x2s, streams)
   expect_snapshot_data(x2s, "add_point_x2s")
 
