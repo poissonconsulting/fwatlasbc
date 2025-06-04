@@ -71,7 +71,7 @@ fwa_add_point_to_stream_measure <- function(x, streams, ...) {
     dplyr::select("blk", "length")
 
   x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     group_split_sf(.data$blk, ...) |>
     lapply(add_point_to_stream_measure, streams = streams) |>
     dplyr::bind_rows() |>

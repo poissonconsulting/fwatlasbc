@@ -9,7 +9,7 @@ nearest_stream <- function(x, streams) {
     sf::st_buffer(1e-07)
 
   splits <- list()
-  for (i in 1:nrow(x)) {
+  for (i in seq_len(nrow(x))) {
     splits[i] <- lwgeom::st_split(streams[i, ], point[i]) |> sf::st_geometry()
   }
 
@@ -122,7 +122,7 @@ fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
     dplyr::select("blk", ...)
 
   x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     group_split_sf(.data$blk, ...) |>
     lapply(snap_stream_measure_to_point, streams = streams) |>
     dplyr::bind_rows() |>

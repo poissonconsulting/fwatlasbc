@@ -17,7 +17,7 @@ test_that("fwa_snap_stream_measure_to_point", {
   expect_identical(nrow(pointsFF), 0L)
   expect_snapshot_data(pointsFF, "pointsFF")
 
-  points$extra <- 1:nrow(points)
+  points$extra <- seq_len(nrow(points))
 
   points_no_blk <- points |> dplyr::select(!blk)
   pointsFT_no_blk <- fwa_snap_stream_measure_to_point(points_no_blk[FALSE, ], streams)
