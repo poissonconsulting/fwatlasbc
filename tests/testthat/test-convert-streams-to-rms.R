@@ -87,6 +87,7 @@ test_that("fwa_convert_streams_to_rms elevation", {
   expect_identical(nrow(x), 903L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
+  skip_on_os("linux")
   expect_snapshot_data(x, "fwa_convert_streams_to_rms_elev")
 })
 

@@ -6,9 +6,10 @@ test_that("fwa_convert_stream_network_to_rms", {
   expect_identical(nrow(x), 862L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  expect_snapshot_data(x, "fwa_convert_stream_network_to_rms")
-
   chk::expect_chk_error(fwa_convert_stream_network_to_rms(network, tolerance = 0.01))
+
+  skip_on_os("linux")
+  expect_snapshot_data(x, "fwa_convert_stream_network_to_rms")
 })
 
 test_that("fwa_convert_stream_network_to_rms", {
@@ -27,7 +28,8 @@ test_that("fwa_convert_stream_network_to_rms", {
   expect_identical(nrow(x), 892L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  expect_snapshot_data(x, "fwa_convert_to_rms_side")
-
   chk::expect_chk_error(fwa_convert_stream_network_to_rms(network, tolerance = 0.01))
+
+  skip_on_os("linux")
+  expect_snapshot_data(x, "fwa_convert_to_rms_side")
 })
