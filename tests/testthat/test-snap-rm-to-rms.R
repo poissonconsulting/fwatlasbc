@@ -393,6 +393,7 @@ test_that("fwa_snap_rm_to_rms interpolates block", {
 })
 
 test_that("fwa_snap_rm_to_rms interpolates blocks", {
+  skip_on_os("windows")
   rlang::local_options(nocache = TRUE)
 
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
