@@ -1,6 +1,6 @@
 nearest_stream <- function(x, streams) {
   index <- sf::st_nearest_feature(x, streams)
-  streams <- streams[index,]
+  streams <- streams[index, ]
   x$..fwa_blk <- streams$blk
 
   point <- sf::st_nearest_points(x, streams, pairwise = TRUE) |>
@@ -9,8 +9,8 @@ nearest_stream <- function(x, streams) {
     sf::st_buffer(1e-07)
 
   splits <- list()
-  for(i in 1:nrow(x)) {
-    splits[i] <- lwgeom::st_split(streams[i,], point[i]) |> sf::st_geometry()
+  for (i in seq_len(nrow(x))) {
+    splits[i] <- lwgeom::st_split(streams[i, ], point[i]) |> sf::st_geometry()
   }
 
   length <- splits |>
@@ -28,7 +28,7 @@ nearest_stream <- function(x, streams) {
 }
 
 adjust_streams <- function(streams, x) {
-  if(ncol(streams) == 2) {
+  if (ncol(streams) == 2) {
     return(streams)
   }
 
@@ -43,7 +43,7 @@ adjust_streams <- function(streams, x) {
     dplyr::select(tidyselect::vars_select_helpers$where(function(x) !is.na(x[1]))) |>
     colnames()
 
-  if(!length(cols)) {
+  if (!length(cols)) {
     return(streams)
   }
   streams |>
@@ -51,12 +51,12 @@ adjust_streams <- function(streams, x) {
 }
 
 snap_stream_measure_to_point <- function(x, streams) {
-  if(!is.na(x$blk[1])) {
-    streams <- streams[streams$blk == x$blk[1],]
+  if (!is.na(x$blk[1])) {
+    streams <- streams[streams$blk == x$blk[1], ]
   }
   streams <- adjust_streams(streams, x)
 
-  if(!nrow(streams)) {
+  if (!nrow(streams)) {
     x$stream_measure <- NA_real_
     x$distance_to_stream <- NA_real_
     return(x)
@@ -90,7 +90,7 @@ fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(streams, "sf")
 
-  if(!has_name(x, "blk")) x$blk <- NA_integer_
+  if (!has_name(x, "blk")) x$blk <- NA_integer_
 
   chk_whole_numeric(x$blk)
   chk_gt(x$blk)
@@ -102,12 +102,12 @@ fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
   chk_gt(streams$blk)
   check_key(streams, "blk")
 
-  if(!nrow(x)) {
+  if (!nrow(x)) {
     x$stream_measure <- double(0)
     x$distance_to_stream <- numeric(0)
     return(x)
   }
-  if(!nrow(streams)) {
+  if (!nrow(streams)) {
     x$stream_measure <- NA_real_
     x$distance_to_stream <- NA_real_
     return(x)
@@ -122,7 +122,7 @@ fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
     dplyr::select("blk", ...)
 
   x |>
-    dplyr::mutate(..fwa_id = 1:dplyr::n()) |>
+    dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     group_split_sf(.data$blk, ...) |>
     lapply(snap_stream_measure_to_point, streams = streams) |>
     dplyr::bind_rows() |>
@@ -130,7 +130,8 @@ fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
     dplyr::mutate(
       ..fwa_blk = as.integer(.data$..fwa_blk),
       blk = as.integer(.data$blk),
-      blk = dplyr::if_else(is.na(.data$..fwa_blk), .data$blk, .data$..fwa_blk)) |>
+      blk = dplyr::if_else(is.na(.data$..fwa_blk), .data$blk, .data$..fwa_blk)
+    ) |>
     dplyr::select(!c("..fwa_id", "..fwa_blk")) |>
     identity()
 }

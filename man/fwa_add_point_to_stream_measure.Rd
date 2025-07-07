@@ -2,12 +2,12 @@
 % Please edit documentation in R/add-point-to-stream-measure.R
 \name{fwa_add_point_to_stream_measure}
 \alias{fwa_add_point_to_stream_measure}
-\title{Add Point to Stream Measure to Point}
+\title{Add Point to Stream Measure}
 \usage{
 fwa_add_point_to_stream_measure(x, streams, ...)
 }
 \arguments{
-\item{x}{An data frame with columns blk and stream_measure.}
+\item{x}{A data frame with columns blk and stream_measure.}
 
 \item{streams}{An sf object of spatial linestrings with blk column.}
 
@@ -19,9 +19,9 @@ giving the proportion of the stream measure along the stream
 and a geometry column.
 }
 \description{
-Adds geometry for stream measure in m based on the blue line key (blk)
-as well as the proportion of the stream measure along the stream (proportion).
-If proportion is >= 1 then the geometry is the top of the stream.
+Adds point geometry for stream measure in m based on the blue line key (blk)
+and the proportion of the stream measure along the stream.
+If the proportion is >= 1 then the geometry is set to the top of the stream.
 }
 \examples{
 \dontrun{
