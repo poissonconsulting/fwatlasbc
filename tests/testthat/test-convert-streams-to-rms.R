@@ -12,6 +12,8 @@ test_that("fwa_convert_streams_to_rms", {
 })
 
 test_that("fwa_convert_streams_to_rms reverse", {
+  skip_on_runiverse()
+
   watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
   network <- fwa_add_collection_to_polygon(watershed)
   streams <- dplyr::select(network, blk = blue_line_key) |>
@@ -79,6 +81,8 @@ test_that("fwa_convert_streams_to_rms not make end", {
 })
 
 test_that("fwa_convert_streams_to_rms elevation", {
+  skip_on_runiverse()
+
   watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
   network <- fwa_add_collection_to_polygon(watershed)
   streams <- dplyr::select(network, blk = blue_line_key)
