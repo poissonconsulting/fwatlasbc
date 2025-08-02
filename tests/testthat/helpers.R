@@ -13,7 +13,7 @@ expect_snapshot_data <- function(x, name) {
 }
 
 skip_on_runiverse <- function() {
-  if (nzchar(Sys.getenv("CI")) && grepl("r-universe", tolower(Sys.getenv("REPOSITORY_OWNER")))) {
+  if (nzchar(Sys.getenv("UNIVERSE_NAME"))) {
     testthat::skip("Skipping test on R-universe")
   }
 }
