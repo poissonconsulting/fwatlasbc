@@ -1,4 +1,6 @@
 test_that("fwa_add_gm_elevation_to_point works few", {
+  skip_on_runiverse()
+
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), interval = 1000)
 
   x <- fwa_add_gm_elevation_to_point(rm)
@@ -17,6 +19,8 @@ test_that("fwa_add_gm_elevation_to_point works few", {
 })
 
 test_that("fwa_add_gm_elevation_to_point works digits", {
+  skip_on_runiverse()
+
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), interval = 1000)
 
   x <- fwa_add_gm_elevation_to_point(rm, digits = 3)
@@ -35,6 +39,8 @@ test_that("fwa_add_gm_elevation_to_point works digits", {
 })
 
 test_that("fwa_add_gm_elevation_to_point works almost 1000 (slightly different linux!)", {
+  skip_on_runiverse()
+
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), interval = 20)
 
   x <- fwa_add_gm_elevation_to_point(rm)
@@ -46,6 +52,8 @@ test_that("fwa_add_gm_elevation_to_point works almost 1000 (slightly different l
 })
 
 test_that("fwa_add_gm_elevation_to_point errors with chunk size of 320", {
+  skip_on_runiverse()
+
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), interval = 20)
 
   expect_error(fwa_add_gm_elevation_to_point(rm, chunk_size = 320))

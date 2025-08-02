@@ -11,3 +11,9 @@ expect_snapshot_data <- function(x, name) {
   path <- save_csv(x)
   testthat::expect_snapshot_file(path, paste0(name, ".csv"))
 }
+
+skip_on_runiverse <- function() {
+  if (nzchar(Sys.getenv("CI")) && grepl("r-universe", tolower(Sys.getenv("REPOSITORY_OWNER")))) {
+    testthat::skip("Skipping test on R-universe")
+  }
+}
