@@ -22,6 +22,7 @@ Imports:
     lifecycle,
     lwgeom,
     purrr,
+    rlang,
     sf,
     stats,
     stringr,
@@ -35,7 +36,6 @@ Suggests:
     hms,
     mapview,
     readr,
-    rlang,
     testthat (>= 3.0.0)
 Remotes:
     poissonconsulting/fwapgr
