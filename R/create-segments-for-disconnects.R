@@ -1,44 +1,97 @@
-#' Title
+#' Stitch Segments
+#'
+#' Adds segments between the disconnected parts of a MULTILINESTRING.
 #'
 #' @param x A multiline string for a stream.
+#' @param ... Unused.
 #' @param tolerance
 #'
-#' @returns
+#' @returns A data frame with the stitched segments added into the geometries.
 #' @export
+#' @details
+#' The `fwa_stitch_segments()` assumes that the segments within the
+#' MULTILINESTRING are in order and the correct direction to be stitched
+#' together.
+#'
+#' If the segments could not be joined they will be returned as a MULTILINESTRING,
+#' if the segments have no gaps left the row will be returned as a LINESTRING.
+#'
+#'
 #'
 #' @examples
-create_segments_for_disconnects <- function(x, tolerance = 1) {
+fwa_stitch_segments <- function(x, ..., tolerance = 1) {
+  chk_s3_class(x, "data.frame")
+  chk_s3_class(x, "sf")
+  check_data(x, nrow = TRUE)
+  chk_unused(...)
+  chk_gt(tolerance)
 
-  segments <- st_cast(x, "LINESTRING")
-  df_distances <- segment_end_to_start_distance(segments)
+  # error handling for when no stiching or things don't have gaps - test to figure out what happens and then build in error handling
 
-  new_segments <- list()
-  for (i in 1:nrow(df_distances)) {
+  sf_column_name <- sf_column_name(x)
 
-    if (df_distances[i, ]$distance >= tolerance) {
-      next
-    }
-
-    end <- st_line_sample(segments[df_distances[i,]$end], n = 1, density = 1, sample = 1)
-    start <- st_line_sample(segments[df_distances[i,]$start], n = 1, density = 1, sample = 0)
-
-    line <- st_linestring(rbind(st_coordinates(start), st_coordinates(end)))
-    new_segments <- c(new_segments, list(line))
+  # if all linestrings then exit
+  if (inherits(x[[sf_column_name]], "sfc_LINESTRING")) {
+    msg("All geometries are LINESTRING nothing to stitch. \n", tidy = FALSE)
+    return(x)
   }
 
-  new_sf <- st_sfc(new_segments, crs = st_crs(x))
-  new_sf <- st_sf(geometry = new_sf) %>%
-    st_zm()
+  split_df <-
+    x |>
+    sf::st_zm() |>
+    sf::st_sf() |>
+    dplyr::rename(geometry := !!sf_column_name) |>
+    dplyr::rowwise() |>
+    dplyr::group_split()
 
-  all_segments <- rbind(data.frame(segments), new_sf) %>%
-    st_sf()
+  stiched_streams <- list()
+  for (i in 1:length(split_df)) {
 
-  multi <- st_combine(all_segments)
-  multi <- st_cast(multi, "MULTILINESTRING")
-  multi_sf <- st_sf(geometry = multi) %>%
-    sf::st_line_merge()
+    segments <- st_cast(split_df[[i]][["geometry"]], "LINESTRING")
+    df_distances <- segment_end_to_start_distance(segments)
 
-  multi_sf
+    new_segments <- list()
+    for (j in 1:nrow(df_distances)) {
+
+      if (df_distances[i, ]$distance >= tolerance) {
+        next
+      }
+
+      end <- st_line_sample(segments[df_distances[j,]$end], sample = 1)
+      start <- st_line_sample(segments[df_distances[j,]$start], sample = 0)
+
+      line <- st_linestring(rbind(st_coordinates(start), st_coordinates(end)))
+      new_segments <- c(new_segments, list(line))
+    }
+
+    new_sf <- st_sfc(new_segments, crs = st_crs(x))
+    new_sf <- st_sf(geometry = new_sf) |>
+      st_zm()
+
+    all_segments <- dplyr::bind_rows(split_df[[i]], new_sf) |>
+      st_sf()
+
+    multi <- st_combine(all_segments)
+    multi <- st_cast(multi, "MULTILINESTRING")
+    multi_sf <- st_sf(geometry = multi) |>
+      sf::st_line_merge()
+
+    stiched_df <-
+      split_df[[i]] |>
+      tibble::tibble() |>
+      dplyr::mutate(
+        multi_sf
+      )
+
+    stiched_df
+
+    stiched_streams <- c(stiched_streams, list(stiched_df))
+  }
+
+  dplyr::bind_rows(stiched_streams) |>
+    dplyr::rename(!!sf_column_name := geometry) |>
+    sf::st_set_geometry(sf_column_name)
+
 }
 
 
@@ -62,102 +115,3 @@ segment_end_to_start_distance <- function(segments) {
 
   return(df)
 }
-#
-#
-#
-#
-#
-#
-#
-#
-# # Function assumes
-# # 1. Segments are in order within the multiline string
-# # 2. Direction of segments are correct
-# # 3. Ending criteria is based on tolerance, try 5 m as starting value
-# # Function takes in a multiline string
-# # Function outputs a linestring if everything was combined other multiline string of the value
-#
-#
-# library(sf)
-#
-# # example 1, 3 segments straight line
-# seg_1 <-
-#   st_linestring(
-#     matrix(
-#       c(
-#         0,   0,
-#         1,   1
-#       ),
-#       ncol = 2,
-#       byrow = TRUE
-#     )
-#   )
-#
-# seg_2 <- st_linestring(matrix(c(
-#   1.05, 1.05,
-#   2,    2
-# ), ncol = 2, byrow = TRUE))
-#
-# seg_3 <- st_linestring(matrix(c(
-#   2.1,  2.1,
-#   3,    3
-# ), ncol = 2, byrow = TRUE))
-#
-#
-# test_stream_1 <- st_sfc(
-#   st_multilinestring(c(seg_1, seg_2, seg_3)),
-#   crs = 26911
-# )
-#
-# test_1 <- tibble::tibble(
-#   stream = "stream a",
-#   geometry = test_stream_1
-# ) %>%
-#   poisspatial::ps_activate_sfc()
-#
-# mapview::mapview(test_stream_1)
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-# # takes multiline string and creats a set of line strings for it
-# segments <- st_cast(test_1[["geometry"]], "LINESTRING")
-#
-# segments <- st_cast(segments, "LINESTRING")
-#
-#
-#
-# distance_df <- segment_end_to_start_distance(test_1$geometry)
-#
-#
-# new_segments <- list()
-# for (i in 1:nrow(distance_df)) {
-#   end <- st_line_sample(segments[distance_df[i,]$end], n = 1, density = 1, sample = 1)
-#   start <- st_line_sample(segments[distance_df[i,]$start], n = 1, density = 1, sample = 0)
-#
-#   line <- st_linestring(rbind(st_coordinates(start), st_coordinates(end)))
-#   new_segments <- c(new_segments, list(line))
-# }
-#
-#
-#
-# new_sf <- st_sfc(new_segments, crs = st_crs(segments))
-# new_sf <- st_sf(geometry = new_sf) %>%
-#   st_zm()
-#
-# all_segments <- rbind(data.frame(segments), new_sf)
-#
-# multi <- st_combine(all_segments)
-# multi <- st_cast(multi, "MULTILINESTRING")
-# multi_sf <- st_sf(geometry = multi) %>%
-#   sf::st_line_merge()
-#
-#
-# mapview(multi_sf)
-#
