@@ -19,20 +19,23 @@
 #'
 #'
 #' @examples
-fwa_stitch_segments <- function(x, ..., tolerance = 1) {
+fwa_stitch_segments <- function(x, ..., tolerance = 5) {
   chk_s3_class(x, "data.frame")
   chk_s3_class(x, "sf")
-  check_data(x, nrow = TRUE)
   chk_unused(...)
   chk_gt(tolerance)
 
-  # error handling for when no stiching or things don't have gaps - test to figure out what happens and then build in error handling
-
   sf_column_name <- sf_column_name(x)
 
-  # if all linestrings then exit
+  # TODO check if geometry column is there already and not the active, rename to reserved name
+
+  # if no rows then return
+  if (nrow(x) == 0){
+    return(x)
+  }
+
+  # if all LINESTRINGS then return
   if (inherits(x[[sf_column_name]], "sfc_LINESTRING")) {
-    msg("All geometries are LINESTRING nothing to stitch. \n", tidy = FALSE)
     return(x)
   }
 
@@ -47,13 +50,21 @@ fwa_stitch_segments <- function(x, ..., tolerance = 1) {
   stiched_streams <- list()
   for (i in 1:length(split_df)) {
 
+    # TODO only do thing if its a multilinestring
+
+    # early exit if already a linestring
+    if (inherits(split_df[[i]][["geometry"]], "sfc_LINESTRING")) {
+      stiched_streams <- c(stiched_streams, list(split_df[[i]]))
+      next
+    }
+
     segments <- st_cast(split_df[[i]][["geometry"]], "LINESTRING")
     df_distances <- segment_end_to_start_distance(segments)
 
     new_segments <- list()
     for (j in 1:nrow(df_distances)) {
 
-      if (df_distances[i, ]$distance >= tolerance) {
+      if (df_distances[j, ]$distance >= tolerance) {
         next
       }
 
@@ -91,7 +102,6 @@ fwa_stitch_segments <- function(x, ..., tolerance = 1) {
   dplyr::bind_rows(stiched_streams) |>
     dplyr::rename(!!sf_column_name := geometry) |>
     sf::st_set_geometry(sf_column_name)
-
 }
 
 
