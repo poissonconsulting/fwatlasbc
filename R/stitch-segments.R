@@ -53,7 +53,16 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
 
   sf_column_name <- sf_column_name(x)
 
-  # TODO check if geometry column is there already and not the active, rename to reserved name
+  rename_flag <- FALSE
+  # if the sfc column isn't geometry
+  if (sf_column_name != "geometry") {
+    # check if geometry is in the other column names
+    if ("geometry" %in% colnames(x)) {
+      # if so rename to reserved name
+      rename_flag <- TRUE
+      x <- rename(x, ".dsklsjhtiu3" = "geometry")
+    }
+  }
 
   # if no rows then return
   if (nrow(x) == 0){
@@ -76,10 +85,8 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
   stiched_streams <- list()
   for (i in 1:length(split_df)) {
 
-    # TODO only do thing if its a multilinestring
-
-    # early exit if already a linestring
-    if (inherits(split_df[[i]][["geometry"]], "sfc_LINESTRING")) {
+    # early exit if not a MULTILINESTRING
+    if (!inherits(split_df[[i]][["geometry"]], "sfc_MULTILINESTRING")) {
       stiched_streams <- c(stiched_streams, list(split_df[[i]]))
       next
     }
@@ -124,10 +131,15 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
 
     stiched_streams <- c(stiched_streams, list(stiched_df))
   }
-
-  dplyr::bind_rows(stiched_streams) |>
+  x <- dplyr::bind_rows(stiched_streams) |>
     dplyr::rename(!!sf_column_name := "geometry") |>
     sf::st_set_geometry(sf_column_name)
+
+  if (rename_flag) {
+    x <- rename(x, "geometry" = ".dsklsjhtiu3")
+  }
+
+  x
 }
 
 

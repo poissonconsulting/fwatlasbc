@@ -352,3 +352,31 @@ test_that("behaviour if nothing to stitch", {
   expect_s3_class(output$geometry, "sfc_LINESTRING")
   expect_equal(nrow(output), 1)
 })
+
+test_that("when geometry column is present but not your active sfc column it returns both", {
+  test_stream_1 <- sf::st_sfc(
+    sf::st_multilinestring(
+      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+        sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE)),
+        sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE))
+      )
+    ),
+    crs = 26911
+  )
+
+  df <- data.frame(
+    name = c("stream 1"),
+    blk = c(1),
+    geometry = c(test_stream_1)
+  ) |>
+    sf::st_set_geometry("geometry") |>
+    dplyr::rename(stuff = geometry, geometry = blk)
+
+  output <- fwa_stitch_segments(df)
+
+  expect_s3_class(output, "data.frame")
+  expect_s3_class(output, "sf")
+  expect_equal(colnames(output), c("name", "geometry", "stuff"))
+  expect_s3_class(output$stuff, "sfc_LINESTRING")
+  expect_equal(nrow(output), 1)
+})
