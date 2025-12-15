@@ -7,7 +7,7 @@
 fwa_stitch_segments(x, ..., tolerance = 5)
 }
 \arguments{
-\item{x}{A multiline string for a stream.}
+\item{x}{A spatial data frame.}
 
 \item{...}{Unused.}
 
