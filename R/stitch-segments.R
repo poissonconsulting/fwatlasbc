@@ -2,7 +2,7 @@
 #'
 #' Adds segments between the disconnected parts of a MULTILINESTRING.
 #'
-#' @param x A multiline string for a stream.
+#' @param x A spatial data frame.
 #' @param ... Unused.
 #' @param tolerance A numeric value for the maximum euclidean distance between
 #'   the end a segment to the start of a segment that will create a stitched
@@ -127,8 +127,6 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
         multi_sf
       )
 
-    stiched_df
-
     stiched_streams <- c(stiched_streams, list(stiched_df))
   }
   x <- dplyr::bind_rows(stiched_streams) |>
@@ -141,7 +139,6 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
 
   x
 }
-
 
 segment_end_to_start_distance <- function(segments) {
 
