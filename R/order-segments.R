@@ -196,5 +196,3 @@ order_segments_dynamic <- function(segments, distance_df) {
   }
   segment_order
 }
-
-#covr::file_report(covr::file_coverage("R/order-segments.R", "tests/testthat/test-order-segments.R"))
