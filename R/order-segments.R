@@ -76,13 +76,10 @@ fwa_order_segments <- function(x) {
       next
     }
 
-  df_df <- split_multilinestring(split_df[[i]][["geometry"]])
-  distance_df <- calculate_end_to_start_distances(df_df)
-
+  segment_start_ends <- split_multilinestring(split_df[[i]][["geometry"]])
+  distance_df <- calculate_end_to_start_distances(segment_start_ends)
   segments <- sf::st_cast(split_df[[i]][["geometry"]], "LINESTRING")
-
   segment_order <- order_segments_dynamic(segments, distance_df)
-
 
   multi <- sf::st_combine(segments[segment_order])
   multi <- sf::st_cast(multi, "MULTILINESTRING")
@@ -108,47 +105,71 @@ fwa_order_segments <- function(x) {
   x
 }
 
-split_multilinestring <- function(mls) {
+split_multilinestring <- function(geometry) {
 
-  segs <- sf::st_cast(mls, "LINESTRING")
+  # segments <- sf::st_cast(geometry, "LINESTRING")
+  #
+  # # Remove empty or degenerate segments
+  # segments <- segments[!sf::st_is_empty(segments)]
+  # coords_list <- lapply(segments, sf::st_coordinates)
+  # segments <- segments[sapply(coords_list, nrow) >= 2]
+  # coords_list <- coords_list[sapply(coords_list, nrow) >= 2]
+  #
+  # # Extract start and end coordinates
+  # starts <- lapply(coords_list, function(c) c[1, 1:2])
+  # ends <- lapply(coords_list, function(c) c[nrow(c), 1:2])
+  #
+  # tibble::tibble(
+  #   linestring = segments,
+  #   x_start = purrr::map_dbl(starts, 1),
+  #   y_start = purrr::map_dbl(starts, 2),
+  #   x_end = purrr::map_dbl(ends,   1),
+  #   y_end = purrr::map_dbl(ends,   2)
+  # )
 
-  # Remove empty or degenerate segments
-  segs <- segs[!sf::st_is_empty(segs)]
-  coords_list <- lapply(segs, sf::st_coordinates)
-  segs <- segs[sapply(coords_list, nrow) >= 2]
-  coords_list <- coords_list[sapply(coords_list, nrow) >= 2]
+  segments <- sf::st_cast(geometry, "LINESTRING")
+  segments <- segments[!sf::st_is_empty(segments)]
 
-  # Extract start and end coordinates
-  starts <- lapply(coords_list, function(c) c[1, 1:2])
-  ends   <- lapply(coords_list, function(c) c[nrow(c), 1:2])
+  coords <- lapply(segments, sf::st_coordinates)
+  keep <- lengths(coords) >= 2
 
-  # Build tibble
-  tibble::tibble(
-    linestring = segs,
-    x_start = purrr::map_dbl(starts, 1),
-    y_start = purrr::map_dbl(starts, 2),
-    x_end   = purrr::map_dbl(ends,   1),
-    y_end   = purrr::map_dbl(ends,   2)
+  segments <- segments[keep]
+  coords   <- coords[keep]
+
+  starts <- lapply(coords, \(c) c[1, 1:2])
+  ends   <- lapply(coords, \(c) c[nrow(c), 1:2])
+
+  x <- tibble::tibble(
+    linestring = segments,
+    start_pt = sf::st_sfc(lapply(starts, sf::st_point), crs = sf::st_crs(geometry)),
+    end_pt   = sf::st_sfc(lapply(ends,   sf::st_point), crs = sf::st_crs(geometry))
   )
+  x
 }
 
 
 calculate_end_to_start_distances <- function(df) {
 
-  n <- nrow(df)
+  dmat <- sf::st_distance(
+    df$end_pt,
+    df$start_pt,
+    which = "Euclidean"
+  )
 
-  # Create all combinations of lines where i != j
-  combos <- expand.grid(i = 1:n, j = 1:n) |>
-    dplyr::filter(.data$i != .data$j)
-
-  # Compute Euclidean distance from end of line i to start of line j
-  dist_df <- combos |>
-    dplyr::mutate(
-      distance = sqrt((df$x_end[.data$i] - df$x_start[.data$j])^2 + (df$y_end[.data$i] - df$y_start[.data$j])^2)
+  # Convert to long form and drop self-pairs
+  tibble::as_tibble(dmat, rownames = "from") |>
+    dplyr::mutate(across(dplyr::starts_with("V"), as.numeric)) |>
+    tidyr::pivot_longer(
+      dplyr::starts_with("V"),
+      names_to = "to",
+      values_to = "distance"
     ) |>
-    dplyr::select(from = "i", to = "j", "distance")
-
-  dist_df
+    dplyr::mutate(
+      from = as.integer(from),
+      to = as.integer(stringr::str_extract(to, "\\d")),
+      distance = as.numeric(distance)
+    ) |>
+    dplyr::filter(from != to)
 }
 
 order_segments_dynamic <- function(segments, distance_df) {
@@ -158,7 +179,6 @@ order_segments_dynamic <- function(segments, distance_df) {
   # Start with the longest segment
   longest_segment <- which.max(segment_length)
   orders_used <- longest_segment
-
   segment_order <- longest_segment
 
   # Copy of distance_df to filter each pass
@@ -166,18 +186,18 @@ order_segments_dynamic <- function(segments, distance_df) {
 
   while(length(orders_used) < number_of_segments) {
 
-    # Find all distances involving any currently used segment
+    # Find all distances involving any current segments
     current_search <- remaining_distances |>
       dplyr::filter(.data$from %in% orders_used | .data$to %in% orders_used)
 
-    if(nrow(current_search) == 0) break
+    if (nrow(current_search) == 0) break
 
     # Pick the shortest distance
     next_df <- current_search |>
       dplyr::arrange(.data$distance) |>
       dplyr::slice(1)
 
-    # Add the connected segments
+    # Track the order of the segments
     current_from_to <- c(next_df$from, next_df$to)
     new_segment <- setdiff(current_from_to, orders_used)
 
@@ -187,6 +207,7 @@ order_segments_dynamic <- function(segments, distance_df) {
       segment_order <- c(segment_order, next_df$to)
     )
 
+    # Track which segments have been used
     orders_used <- unique(c(orders_used, next_df$from, next_df$to))
 
     # Remove distances involving used segments (to avoid reusing)
@@ -194,11 +215,7 @@ order_segments_dynamic <- function(segments, distance_df) {
       dplyr::filter(next_df$from != .data$from) |>
       dplyr::filter(next_df$to != .data$to)
   }
-
   segment_order
 }
 
-# this take the first one in the list
-which.max(c(1L, 2L, 55L, 55L))
-
-
+#covr::file_report(covr::file_coverage("R/order-segments.R", "tests/testthat/test-order-segments.R"))
