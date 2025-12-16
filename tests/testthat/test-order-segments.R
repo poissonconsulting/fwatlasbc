@@ -209,3 +209,76 @@ test_that("table geometry column can be named something else", {
     sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE))
   )
 })
+
+test_that("early exit if only linestring", {
+  test_stream <- sf::st_sfc(
+      sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)
+    ),
+    crs = 26911
+  )
+
+  df <- data.frame(
+    name = "stream 1",
+    blk = 1,
+    geometry = test_stream
+  ) |>
+    sf::st_set_geometry("geometry")
+
+  output <- fwa_order_segments(df)
+
+  expect_s3_class(output, "data.frame")
+  expect_s3_class(output, "sf")
+  expect_equal(colnames(output), c("name", "blk", "geometry"))
+  expect_s3_class(output$geometry, "sfc_LINESTRING")
+  expect_equal(nrow(output), 1)
+})
+
+test_that("can handle different geometry types", {
+  test_stream_1 <- sf::st_sfc(
+    sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)
+    ),
+    crs = 26911
+  )
+
+  test_stream_2 <- sf::st_sfc(
+    sf::st_multilinestring(
+      c(sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE)),
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+        sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE))
+      )
+    ),
+    crs = 26911
+  )
+
+  df <- data.frame(
+    name = c("stream 1", "stream 2"),
+    blk = c(1, 2),
+    geometry = c(test_stream_1, test_stream_2)
+  ) |>
+    sf::st_set_geometry("geometry")
+
+  output <- fwa_order_segments(df)
+
+  expect_s3_class(output, "data.frame")
+  expect_s3_class(output, "sf")
+  expect_equal(colnames(output), c("name", "blk", "geometry"))
+  expect_equal(as.character(sf::st_geometry_type(output)), c("LINESTRING", "MULTILINESTRING"))
+  expect_equal(nrow(output), 2)
+  expect_equal(
+    output$geometry[[1]],
+    sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE))
+  )
+  segments <- sf::st_cast(output$geometry[2], "LINESTRING")
+  expect_equal(
+    segments[[1]],
+    sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE))
+  )
+  expect_equal(
+    segments[[2]],
+    sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE))
+  )
+  expect_equal(
+    segments[[3]],
+    sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE))
+  )
+})
