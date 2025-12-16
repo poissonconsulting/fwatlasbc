@@ -28,6 +28,7 @@ Imports:
     stringr,
     tibble,
     tidyplus,
+    tidyr,
     tidyselect,
     units
 Suggests: 
