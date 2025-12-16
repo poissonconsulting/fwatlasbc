@@ -107,26 +107,6 @@ fwa_order_segments <- function(x) {
 
 split_multilinestring <- function(geometry) {
 
-  # segments <- sf::st_cast(geometry, "LINESTRING")
-  #
-  # # Remove empty or degenerate segments
-  # segments <- segments[!sf::st_is_empty(segments)]
-  # coords_list <- lapply(segments, sf::st_coordinates)
-  # segments <- segments[sapply(coords_list, nrow) >= 2]
-  # coords_list <- coords_list[sapply(coords_list, nrow) >= 2]
-  #
-  # # Extract start and end coordinates
-  # starts <- lapply(coords_list, function(c) c[1, 1:2])
-  # ends <- lapply(coords_list, function(c) c[nrow(c), 1:2])
-  #
-  # tibble::tibble(
-  #   linestring = segments,
-  #   x_start = purrr::map_dbl(starts, 1),
-  #   y_start = purrr::map_dbl(starts, 2),
-  #   x_end = purrr::map_dbl(ends,   1),
-  #   y_end = purrr::map_dbl(ends,   2)
-  # )
-
   segments <- sf::st_cast(geometry, "LINESTRING")
   segments <- segments[!sf::st_is_empty(segments)]
 
@@ -139,12 +119,11 @@ split_multilinestring <- function(geometry) {
   starts <- lapply(coords, \(c) c[1, 1:2])
   ends   <- lapply(coords, \(c) c[nrow(c), 1:2])
 
-  x <- tibble::tibble(
+  tibble::tibble(
     linestring = segments,
     start_pt = sf::st_sfc(lapply(starts, sf::st_point), crs = sf::st_crs(geometry)),
     end_pt   = sf::st_sfc(lapply(ends,   sf::st_point), crs = sf::st_crs(geometry))
   )
-  x
 }
 
 
@@ -165,11 +144,11 @@ calculate_end_to_start_distances <- function(df) {
       values_to = "distance"
     ) |>
     dplyr::mutate(
-      from = as.integer(from),
-      to = as.integer(stringr::str_extract(to, "\\d")),
-      distance = as.numeric(distance)
+      from = as.integer(.data$from),
+      to = as.integer(stringr::str_extract(.data$to, "\\d")),
+      distance = as.numeric(.data$distance)
     ) |>
-    dplyr::filter(from != to)
+    dplyr::filter(.data$from != .data$to)
 }
 
 order_segments_dynamic <- function(segments, distance_df) {
