@@ -8,7 +8,7 @@ test_that("fwa_convert_streams_to_rms", {
   expect_identical(nrow(x), 235L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  expect_snapshot_data(x, "fwa_convert_streams_to_rms")
+  expect_snapshot_data(x, "fwa_convert_streams_to_rms", digits = 9)
 })
 
 test_that("fwa_convert_streams_to_rms reverse", {
@@ -23,7 +23,7 @@ test_that("fwa_convert_streams_to_rms reverse", {
   expect_identical(nrow(x), 235L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  expect_snapshot_data(x, "fwa_convert_streams_to_rms_rev")
+  expect_snapshot_data(x, "fwa_convert_streams_to_rms_rev", digits = 9)
 })
 
 test_that("fwa_convert_streams_to_rms inaccuracy", {
@@ -37,7 +37,7 @@ test_that("fwa_convert_streams_to_rms inaccuracy", {
   expect_identical(nrow(x), 235L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  expect_snapshot_data(x, "fwa_convert_streams_to_rms_inaccuracy")
+  expect_snapshot_data(x, "fwa_convert_streams_to_rms_inaccuracy", digits = 9)
 })
 
 test_that("fwa_convert_streams_to_rms tiny inaccuracy", {
@@ -51,7 +51,7 @@ test_that("fwa_convert_streams_to_rms tiny inaccuracy", {
   expect_identical(nrow(x), 235L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  expect_snapshot_data(x, "fwa_convert_streams_to_rms_tinac")
+  expect_snapshot_data(x, "fwa_convert_streams_to_rms_tinac", digits = 9)
 })
 
 test_that("fwa_convert_streams_to_rms just make end", {
@@ -64,7 +64,7 @@ test_that("fwa_convert_streams_to_rms just make end", {
   expect_identical(nrow(x), 235L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  expect_snapshot_data(x, "fwa_convert_streams_to_rms_34")
+  expect_snapshot_data(x, "fwa_convert_streams_to_rms_34", digits = 9)
 })
 
 test_that("fwa_convert_streams_to_rms not make end", {
@@ -77,7 +77,7 @@ test_that("fwa_convert_streams_to_rms not make end", {
   expect_identical(nrow(x), 234L)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  expect_snapshot_data(x, "fwa_convert_streams_to_rms_35")
+  expect_snapshot_data(x, "fwa_convert_streams_to_rms_35", digits = 9)
 })
 
 test_that("fwa_convert_streams_to_rms elevation", {
@@ -92,7 +92,7 @@ test_that("fwa_convert_streams_to_rms elevation", {
   expect_s3_class(x$geometry, "sfc_POINT")
 
   skip_on_os("linux")
-  expect_snapshot_data(x, "fwa_convert_streams_to_rms_elev")
+  expect_snapshot_data(x, "fwa_convert_streams_to_rms_elev", digits = 9)
 })
 
 test_that("fwa_convert_streams_to_rms diff_name and end = NULL", {
