@@ -5,17 +5,7 @@ test_that("fwa_add_gm_elevation_to_point works few", {
 
   x <- fwa_add_gm_elevation_to_point(rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "rm", "elevation", "geometry"))
-  skip_on_os("linux")
-  expect_equal(
-    x$elevation,
-    c(
-      5, 5, 5, 5, 5, 10.4482297897339, 5.37834215164185, 5, 9.25851440429688,
-      7.17906618118286, 7.01196908950806, 8.31775856018066, 10.8424005508423,
-      10.237512588501, 11.2183532714844, 11.2872858047485, 10.5328788757324,
-      75.5071563720703, 165.420700073242, 208.490798950195
-    )
-  )
+  expect_snapshot_data(x, "elevation_to_point")
 })
 
 test_that("fwa_add_gm_elevation_to_point works digits", {

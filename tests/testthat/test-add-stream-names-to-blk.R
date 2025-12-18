@@ -10,7 +10,7 @@ test_that("fwa_add_stream_names_to_blk preserves sf", {
   x <- fwa_add_stream_names_to_blk(sf)
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("blk", "stream_name", "geometry"))
-  expect_snapshot_data(x, "add_stream_names_sf")
+  expect_snapshot_data(x, "add_stream_names_sf", digits = 9)
 })
 
 test_that("fwa_add_stream_names_to_blk works no rows", {

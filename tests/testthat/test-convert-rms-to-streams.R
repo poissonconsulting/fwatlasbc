@@ -12,5 +12,5 @@ test_that("convert_rms_to_streams works", {
   expect_warning(x <- sf::st_cast(x, "POINT"))
 
   expect_s3_class(x$geometry, "sfc_POINT")
-  expect_snapshot_data(x, "convert_rms_to_streams")
+  expect_snapshot_data(x, "convert_rms_to_streams", digits = 9)
 })

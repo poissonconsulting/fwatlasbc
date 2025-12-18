@@ -23,14 +23,8 @@ test_that("fwa_snap_rm_to_point handles different projection", {
   rm <- sf::st_transform(rm, 4326L)
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry"))
-  expect_equal(x$blk, rep(356308001, 5))
-  expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
-  skip_on_os("linux")
-  expect_equal(
-    x$distance_to_rm,
-    c(873.234910731725, 535.423300274043, 754.094196817856, 610.927151569611, 514.650461142391))
   expect_s3_class(x$geometry, "sfc_POINT")
+  expect_snapshot_data(x, "snap_rm_to_point")
 })
 
 test_that("fwa_snap_rm_to_point handles different projection x", {
@@ -41,15 +35,8 @@ test_that("fwa_snap_rm_to_point handles different projection x", {
   x <- sf::st_transform(x, 4326L)
   x <- fwa_snap_rm_to_point(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "rm", "distance_to_rm", "elevation", "geometry"))
-  expect_equal(x$blk, rep(356308001, 5))
-  expect_equal(x$rm, c(1000, 3000, 4000, 4000, 8000))
-  skip_on_os("linux")
-  expect_equal(
-    x$distance_to_rm,
-    c(870.669835176914, 534.213451636373, 754.759413128671, 609.184795519045, 513.580260462066)
-  )
   expect_s3_class(x$geometry, "sfc_POINT")
+  expect_snapshot_data(x, "snap_rm_to_point_diff_proj")
 })
 
 test_that("fwa_snap_rm_to_point handles missing blk", {
