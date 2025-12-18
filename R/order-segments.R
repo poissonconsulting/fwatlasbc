@@ -76,29 +76,29 @@ fwa_order_segments <- function(x) {
 
 order_segments <- function(x) {
 
-  split_df <- x |>
+  x <- x |>
     dplyr::rowwise() |>
     dplyr::group_split()
         
   stitched_streams <- list()
-  for (i in 1:length(split_df)) {
+  for (i in 1:length(x)) {
 
     ## early exit if not a MULTILINESTRING
-    if (!inherits(split_df[[i]][["geometry"]], "sfc_MULTILINESTRING")) {
-      stitched_streams <- c(stitched_streams, list(split_df[[i]]))
+    if (!inherits(x[[i]][["geometry"]], "sfc_MULTILINESTRING")) {
+      stitched_streams <- c(stitched_streams, list(x[[i]]))
       next
     }
 
-  segment_start_ends <- split_multilinestring(split_df[[i]][["geometry"]])
+  segment_start_ends <- split_multilinestring(x[[i]][["geometry"]])
   distance_df <- calculate_end_to_start_distances(segment_start_ends)
-  segments <- sf::st_cast(split_df[[i]][["geometry"]], "LINESTRING")
+  segments <- sf::st_cast(x[[i]][["geometry"]], "LINESTRING")
   segment_order <- order_segments_dynamic(segments, distance_df)
 
   multi <- sf::st_combine(segments[segment_order])
   multi <- sf::st_cast(multi, "MULTILINESTRING")
 
   stitched_df <-
-    split_df[[i]] |>
+    x[[i]] |>
     tibble::tibble() |>
     dplyr::mutate(
       geometry = multi
