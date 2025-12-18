@@ -127,8 +127,8 @@ stitch_segs <- function(x, tolerance) {
     all_segments <- dplyr::bind_rows(x, new_sf) |>
       sf::st_sf()
 
-    multi <- sf::st_combine(all_segments)
-    multi <- sf::st_cast(multi, "MULTILINESTRING")
+    multi <- sf::st_combine(all_segments) |>
+      sf::st_cast("MULTILINESTRING")
     multi_sf <- sf::st_sf(geometry = multi) |>
       sf::st_line_merge()
 
@@ -145,17 +145,14 @@ segment_end_to_start_distance <- function(segments) {
   end_points <- sf::st_sfc(lapply(coords_list[-length(coords_list)], function(x) sf::st_point(x[nrow(x), 1:2])), crs = sf::st_crs(segments))
   start_points <- sf::st_sfc(lapply(coords_list[-1], function(x) sf::st_point(x[1, 1:2])), crs = sf::st_crs(segments))
 
-
   distances <- numeric(length(end_points))
   for(i in seq_along(end_points)) {
     distances[i] <- as.numeric(sf::st_distance(end_points[i], start_points[i], which = "Euclidean"))
   }
 
-  df <- data.frame(
+  data.frame(
     end = 1:(length(segments) - 1),
     start = 2:length(segments),
     distance = distances
   )
-
-  df
 }
