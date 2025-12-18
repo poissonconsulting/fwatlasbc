@@ -37,12 +37,15 @@ fwa_order_segments <- function(x) {
   chk_s3_class(x, "sf")
   chk_not_subset(colnames(x), "..geometry")
 
-  sf_column_name <- sf_column_name(x)
-
+  x <- x |>
+    sf::st_zm()
+        
   ## if no rows then return
   if (nrow(x) == 0){
     return(x)
   }
+
+  sf_column_name <- sf_column_name(x)
 
   ## if all LINESTRINGS then return
   if (inherits(x[[sf_column_name]], "sfc_LINESTRING")) {
@@ -59,7 +62,6 @@ fwa_order_segments <- function(x) {
 
   stitched_streams <-
     x |>
-    sf::st_zm() |>
     sf::st_sf() |>
     dplyr::rename("geometry" := !!sf_column_name) |>
     order_segments()
