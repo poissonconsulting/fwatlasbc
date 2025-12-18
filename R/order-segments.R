@@ -50,14 +50,11 @@ fwa_order_segments <- function(x) {
   }
 
   rename_flag <- FALSE
-  ## if the sfc column isn't geometry
-  if (sf_column_name != "geometry") {
-    ## check if geometry is in the other column names
-    if ("geometry" %in% colnames(x)) {
-      ## if so rename to reserved name
-      rename_flag <- TRUE
-      x <- rename(x, "..geometry" = "geometry")
-    }
+  ## if the sfc column isn't geometry check if geometry is in the other column names
+  if (sf_column_name != "geometry" && "geometry" %in% colnames(x)) {
+    ## if so rename to reserved name
+    rename_flag <- TRUE
+    x <- rename(x, "..geometry" = "geometry")
   }
 
   split_df <-
