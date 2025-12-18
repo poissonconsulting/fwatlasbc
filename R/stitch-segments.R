@@ -89,20 +89,21 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
 }
 
 stitch_segments <- function(x, tolerance) {
-  split_df <- x |>
+  x |>
     dplyr::rowwise() |>
-    dplyr::group_split()
+    dplyr::group_split() |>
+    purrr::map(stitch_segs, tolerance = tolerance) |>
+    dplyr::bind_rows()
+}
 
-  stitched_streams <- list()
-  for (i in 1:length(split_df)) {
-
+stitch_segs <- function(x, tolerance) {
+  sfc <- x[["geometry"]]
     # early exit if not a MULTILINESTRING
-    if (!inherits(split_df[[i]][["geometry"]], "sfc_MULTILINESTRING")) {
-      stitched_streams <- c(stitched_streams, list(split_df[[i]]))
-      next
+    if (!inherits(sfc, "sfc_MULTILINESTRING")) {
+      return(x)
     }
 
-    segments <- sf::st_cast(split_df[[i]][["geometry"]], "LINESTRING")
+    segments <- sf::st_cast(sfc, "LINESTRING")
     df_distances <- segment_end_to_start_distance(segments)
 
     new_segments <- list()
@@ -123,7 +124,7 @@ stitch_segments <- function(x, tolerance) {
     new_sf <- sf::st_sf(geometry = new_sf) |>
       sf::st_zm()
 
-    all_segments <- dplyr::bind_rows(split_df[[i]], new_sf) |>
+    all_segments <- dplyr::bind_rows(x, new_sf) |>
       sf::st_sf()
 
     multi <- sf::st_combine(all_segments)
@@ -131,16 +132,11 @@ stitch_segments <- function(x, tolerance) {
     multi_sf <- sf::st_sf(geometry = multi) |>
       sf::st_line_merge()
 
-    stitched_df <-
-      split_df[[i]] |>
+    x |>
       tibble::tibble() |>
       dplyr::mutate(
         multi_sf
       )
-
-    stitched_streams <- c(stitched_streams, list(stitched_df))
-  }
-  dplyr::bind_rows(stitched_streams)
 }
 
 segment_end_to_start_distance <- function(segments) {
