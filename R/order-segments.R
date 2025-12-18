@@ -61,11 +61,9 @@ fwa_order_segments <- function(x) {
     x <- rename(x, "..geometry" = "geometry")
   }
 
-  ordered_segments <- x |>
+  x <- x |>
     dplyr::rename("geometry" := !!sf_column_name) |>
-    order_segments()
-
-  x <- dplyr::bind_rows(ordered_segments) |>
+    order_segments() |>
     dplyr::rename(!!sf_column_name := "geometry") |>
     sf::st_set_geometry(sf_column_name)
 
@@ -108,7 +106,8 @@ order_segments <- function(x) {
 
   stitched_streams <- c(stitched_streams, list(stitched_df))
   }
-  stitched_streams
+  stitched_streams |>
+    dplyr::bind_rows()
 }
 
 split_multilinestring <- function(geometry) {
