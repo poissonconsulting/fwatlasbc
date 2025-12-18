@@ -38,7 +38,8 @@ fwa_order_segments <- function(x) {
   chk_not_subset(colnames(x), "..geometry")
 
   x <- x |>
-    sf::st_zm()
+    sf::st_zm() |>
+    sf::st_sf()
        
   ## if no rows then return
   if (nrow(x) == 0){
