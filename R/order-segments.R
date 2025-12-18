@@ -79,25 +79,22 @@ fwa_order_segments <- function(x) {
 
 order_segments <- function(x) {
   sfc <- x[["geometry"]]
+
   ## early exit if not a MULTILINESTRING
   if (!inherits(sfc, "sfc_MULTILINESTRING")) {
     return(x)
   }
   
-  segment_start_ends <- split_multilinestring(sfc)
-  distance_df <- calculate_end_to_start_distances(segment_start_ends)
-  segments <- sf::st_cast(sfc, "LINESTRING")
-  segment_order <- order_segments_dynamic(segments, distance_df)
+  distance_df <- calculate_end_to_start_distances(sfc)
+  sfc <- sf::st_cast(sfc, "LINESTRING")
+  segment_order <- order_segments_dynamic(sfc, distance_df)
   
-  multi <- segments[segment_order] |>
+  sfc <- sfc[segment_order] |>
     sf::st_combine() |>
     sf::st_cast("MULTILINESTRING")
   
-  x |>
-  tibble::tibble() |>
-  dplyr::mutate(
-    geometry = multi
-  )
+  x[["geometry"]] <- sfc
+  x
 }
 
 split_multilinestring <- function(geometry) {
@@ -122,8 +119,8 @@ split_multilinestring <- function(geometry) {
 }
 
 
-calculate_end_to_start_distances <- function(df) {
-  
+calculate_end_to_start_distances <- function(sfc) {
+  df <- split_multilinestring(sfc)
   dmat <- sf::st_distance(
     df$end_pt,
     df$start_pt,
