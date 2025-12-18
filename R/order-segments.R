@@ -53,11 +53,9 @@ fwa_order_segments <- function(x) {
     return(x)
   }
   
-  rename_flag <- FALSE
   ## if the sfc column isn't geometry check if geometry is in the other column names
   if (sf_column_name != "geometry" && "geometry" %in% colnames(x)) {
     ## if so rename to reserved name
-    rename_flag <- TRUE
     x <- rename(x, "..geometry" = "geometry")
   }
   
@@ -70,7 +68,7 @@ fwa_order_segments <- function(x) {
   dplyr::rename(!!sf_column_name := "geometry") |>
   sf::st_set_geometry(sf_column_name)
   
-  if (rename_flag) {
+  if ("..geometry" %in% colnames(x)) {
     x <- rename(x, "geometry" = "..geometry")
   }
   
