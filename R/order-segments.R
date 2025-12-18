@@ -192,7 +192,8 @@ order_segments_dynamic <- function(segments, distance_df) {
     # Remove distances involving used segments (to avoid reusing)
     remaining_distances <- remaining_distances |>
       dplyr::filter(next_df$from != .data$from) |>
-      dplyr::filter(next_df$to != .data$to)
+      dplyr::filter(next_df$to != .data$to) |>
+      dplyr::filter(!(.data$from == next_df$to & .data$to == next_df$from))
   }
   segment_order
 }
