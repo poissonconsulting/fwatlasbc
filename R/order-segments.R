@@ -39,7 +39,7 @@ fwa_order_segments <- function(x) {
 
   x <- x |>
     sf::st_zm()
-        
+       
   ## if no rows then return
   if (nrow(x) == 0){
     return(x)
@@ -60,9 +60,7 @@ fwa_order_segments <- function(x) {
     x <- rename(x, "..geometry" = "geometry")
   }
 
-  ordered_segments <-
-    x |>
-    sf::st_sf() |>
+  ordered_segments <- x |>
     dplyr::rename("geometry" := !!sf_column_name) |>
     order_segments()
 
