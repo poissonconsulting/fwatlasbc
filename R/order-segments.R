@@ -68,12 +68,12 @@ fwa_order_segments <- function(x) {
     dplyr::rowwise() |>
     dplyr::group_split()
 
-  stiched_streams <- list()
+  stitched_streams <- list()
   for (i in 1:length(split_df)) {
 
     ## early exit if not a MULTILINESTRING
     if (!inherits(split_df[[i]][["geometry"]], "sfc_MULTILINESTRING")) {
-      stiched_streams <- c(stiched_streams, list(split_df[[i]]))
+      stitched_streams <- c(stitched_streams, list(split_df[[i]]))
       next
     }
 
@@ -85,17 +85,17 @@ fwa_order_segments <- function(x) {
   multi <- sf::st_combine(segments[segment_order])
   multi <- sf::st_cast(multi, "MULTILINESTRING")
 
-  stiched_df <-
+  stitched_df <-
     split_df[[i]] |>
     tibble::tibble() |>
     dplyr::mutate(
       geometry = multi
     )
 
-  stiched_streams <- c(stiched_streams, list(stiched_df))
+  stitched_streams <- c(stitched_streams, list(stitched_df))
   }
 
-  x <- dplyr::bind_rows(stiched_streams) |>
+  x <- dplyr::bind_rows(stitched_streams) |>
     dplyr::rename(!!sf_column_name := "geometry") |>
     sf::st_set_geometry(sf_column_name)
 
