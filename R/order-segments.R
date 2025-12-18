@@ -39,6 +39,16 @@ fwa_order_segments <- function(x) {
 
   sf_column_name <- sf_column_name(x)
 
+  ## if no rows then return
+  if (nrow(x) == 0){
+    return(x)
+  }
+
+  ## if all LINESTRINGS then return
+  if (inherits(x[[sf_column_name]], "sfc_LINESTRING")) {
+    return(x)
+  }
+
   rename_flag <- FALSE
   ## if the sfc column isn't geometry
   if (sf_column_name != "geometry") {
@@ -48,16 +58,6 @@ fwa_order_segments <- function(x) {
       rename_flag <- TRUE
       x <- rename(x, "..geometry" = "geometry")
     }
-  }
-
-  ## if no rows then return
-  if (nrow(x) == 0){
-    return(x)
-  }
-
-  ## if all LINESTRINGS then return
-  if (inherits(x[[sf_column_name]], "sfc_LINESTRING")) {
-    return(x)
   }
 
   split_df <-
