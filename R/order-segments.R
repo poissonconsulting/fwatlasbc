@@ -35,26 +35,27 @@ fwa_order_segments <- function(x) {
 
   chk_s3_class(x, "data.frame")
   chk_s3_class(x, "sf")
+  chk_not_subset(colnames(x), "..geometry")
 
   sf_column_name <- sf_column_name(x)
 
   rename_flag <- FALSE
-  # if the sfc column isn't geometry
+  ## if the sfc column isn't geometry
   if (sf_column_name != "geometry") {
-    # check if geometry is in the other column names
+    ## check if geometry is in the other column names
     if ("geometry" %in% colnames(x)) {
-      # if so rename to reserved name
+      ## if so rename to reserved name
       rename_flag <- TRUE
-      x <- rename(x, ".dsklsjhtiu3" = "geometry")
+      x <- rename(x, "..geometry" = "geometry")
     }
   }
 
-  # if no rows then return
+  ## if no rows then return
   if (nrow(x) == 0){
     return(x)
   }
 
-  # if all LINESTRINGS then return
+  ## if all LINESTRINGS then return
   if (inherits(x[[sf_column_name]], "sfc_LINESTRING")) {
     return(x)
   }
@@ -70,7 +71,7 @@ fwa_order_segments <- function(x) {
   stiched_streams <- list()
   for (i in 1:length(split_df)) {
 
-    # early exit if not a MULTILINESTRING
+    ## early exit if not a MULTILINESTRING
     if (!inherits(split_df[[i]][["geometry"]], "sfc_MULTILINESTRING")) {
       stiched_streams <- c(stiched_streams, list(split_df[[i]]))
       next
@@ -99,7 +100,7 @@ fwa_order_segments <- function(x) {
     sf::st_set_geometry(sf_column_name)
 
   if (rename_flag) {
-    x <- rename(x, "geometry" = ".dsklsjhtiu3")
+    x <- rename(x, "geometry" = "..geometry")
   }
 
   x
@@ -135,7 +136,7 @@ calculate_end_to_start_distances <- function(df) {
     which = "Euclidean"
   )
 
-  # Convert to long form and drop self-pairs
+  ## Convert to long form and drop self-pairs
   tibble::as_tibble(dmat, rownames = "from") |>
     dplyr::mutate(across(dplyr::starts_with("V"), as.numeric)) |>
     tidyr::pivot_longer(
@@ -160,23 +161,23 @@ order_segments_dynamic <- function(segments, distance_df) {
   orders_used <- longest_segment
   segment_order <- longest_segment
 
-  # Copy of distance_df to filter each pass
+  ## Copy of distance_df to filter each pass
   remaining_distances <- distance_df
 
   while(length(orders_used) < number_of_segments) {
 
-    # Find all distances involving any current segments
+    ## Find all distances involving any current segments
     current_search <- remaining_distances |>
       dplyr::filter(.data$from %in% orders_used | .data$to %in% orders_used)
 
     if (nrow(current_search) == 0) break
 
-    # Pick the shortest distance
+    ## Pick the shortest distance
     next_df <- current_search |>
       dplyr::arrange(.data$distance) |>
       dplyr::slice(1)
 
-    # Track the order of the segments
+    ## Track the order of the segments
     current_from_to <- c(next_df$from, next_df$to)
     new_segment <- setdiff(current_from_to, orders_used)
 
@@ -186,10 +187,10 @@ order_segments_dynamic <- function(segments, distance_df) {
       segment_order <- c(segment_order, next_df$to)
     )
 
-    # Track which segments have been used
+    ## Track which segments have been used
     orders_used <- unique(c(orders_used, next_df$from, next_df$to))
 
-    # Remove distances involving used segments (to avoid reusing)
+    ## Remove distances involving used segments (to avoid reusing)
     remaining_distances <- remaining_distances |>
       dplyr::filter(next_df$from != .data$from) |>
       dplyr::filter(next_df$to != .data$to) |>
