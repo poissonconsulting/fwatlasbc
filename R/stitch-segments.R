@@ -48,36 +48,35 @@
 fwa_stitch_segments <- function(x, ..., tolerance = 5) {
   chk_s3_class(x, "data.frame")
   chk_s3_class(x, "sf")
+  chk_not_subset(colnames(x), "..geometry")
   chk_unused(...)
   chk_gt(tolerance)
 
-  sf_column_name <- sf_column_name(x)
-
-  rename_flag <- FALSE
-  # if the sfc column isn't geometry
-  if (sf_column_name != "geometry") {
-    # check if geometry is in the other column names
-    if ("geometry" %in% colnames(x)) {
-      # if so rename to reserved name
-      rename_flag <- TRUE
-      x <- rename(x, ".dsklsjhtiu3" = "geometry")
-    }
-  }
-
+  x <- x |>
+    sf::st_zm() |>
+    sf::st_sf()
+      
   # if no rows then return
   if (nrow(x) == 0){
     return(x)
   }
+
+  sf_column_name <- sf_column_name(x)
 
   # if all LINESTRINGS then return
   if (inherits(x[[sf_column_name]], "sfc_LINESTRING")) {
     return(x)
   }
 
+  # if the sfc column isn't geometry
+  # check if geometry is in the other column names
+  if (sf_column_name != "geometry" & "geometry" %in% colnames(x)) {
+    # if so rename to reserved name
+    x <- rename(x, "..geometry" = "geometry")
+  }
+
   split_df <-
     x |>
-    sf::st_zm() |>
-    sf::st_sf() |>
     dplyr::rename("geometry" := !!sf_column_name) |>
     dplyr::rowwise() |>
     dplyr::group_split()
@@ -133,8 +132,8 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
     dplyr::rename(!!sf_column_name := "geometry") |>
     sf::st_set_geometry(sf_column_name)
 
-  if (rename_flag) {
-    x <- rename(x, "geometry" = ".dsklsjhtiu3")
+  if ("..geometry" %in% colnames(x)) {
+    x <- rename(x, "geometry" = "..geometry")
   }
 
   x
