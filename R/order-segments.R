@@ -60,13 +60,13 @@ fwa_order_segments <- function(x) {
     x <- rename(x, "..geometry" = "geometry")
   }
 
-  stitched_streams <-
+  ordered_segments <-
     x |>
     sf::st_sf() |>
     dplyr::rename("geometry" := !!sf_column_name) |>
     order_segments()
 
-  x <- dplyr::bind_rows(stitched_streams) |>
+  x <- dplyr::bind_rows(ordered_segments) |>
     dplyr::rename(!!sf_column_name := "geometry") |>
     sf::st_set_geometry(sf_column_name)
 
