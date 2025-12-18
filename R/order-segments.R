@@ -57,14 +57,28 @@ fwa_order_segments <- function(x) {
     x <- rename(x, "..geometry" = "geometry")
   }
 
-  split_df <-
+  stitched_streams <-
     x |>
     sf::st_zm() |>
     sf::st_sf() |>
     dplyr::rename("geometry" := !!sf_column_name) |>
     dplyr::rowwise() |>
-    dplyr::group_split()
+    dplyr::group_split() |>
+    stitch_streams()
 
+
+  x <- dplyr::bind_rows(stitched_streams) |>
+    dplyr::rename(!!sf_column_name := "geometry") |>
+    sf::st_set_geometry(sf_column_name)
+
+  if (rename_flag) {
+    x <- rename(x, "geometry" = "..geometry")
+  }
+
+  x
+}
+
+stitch_streams <- function(split_df) {
   stitched_streams <- list()
   for (i in 1:length(split_df)) {
 
@@ -91,16 +105,7 @@ fwa_order_segments <- function(x) {
 
   stitched_streams <- c(stitched_streams, list(stitched_df))
   }
-
-  x <- dplyr::bind_rows(stitched_streams) |>
-    dplyr::rename(!!sf_column_name := "geometry") |>
-    sf::st_set_geometry(sf_column_name)
-
-  if (rename_flag) {
-    x <- rename(x, "geometry" = "..geometry")
-  }
-
-  x
+  stitched_streams
 }
 
 split_multilinestring <- function(geometry) {
