@@ -78,14 +78,15 @@ fwa_order_segments <- function(x) {
 }
 
 order_segments <- function(x) {
+  sfc <- x[["geometry"]]
   ## early exit if not a MULTILINESTRING
-  if (!inherits(x[["geometry"]], "sfc_MULTILINESTRING")) {
+  if (!inherits(sfc, "sfc_MULTILINESTRING")) {
     return(x)
   }
   
-  segment_start_ends <- split_multilinestring(x[["geometry"]])
+  segment_start_ends <- split_multilinestring(sfc)
   distance_df <- calculate_end_to_start_distances(segment_start_ends)
-  segments <- sf::st_cast(x[["geometry"]], "LINESTRING")
+  segments <- sf::st_cast(sfc, "LINESTRING")
   segment_order <- order_segments_dynamic(segments, distance_df)
   
   multi <- segments[segment_order] |>
