@@ -75,9 +75,21 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
     x <- rename(x, "..geometry" = "geometry")
   }
 
-  split_df <-
-    x |>
+  x <- x |>
     dplyr::rename("geometry" := !!sf_column_name) |>
+    stitch_segments(tolerance) |>
+    dplyr::rename(!!sf_column_name := "geometry") |>
+    sf::st_set_geometry(sf_column_name)
+
+  if ("..geometry" %in% colnames(x)) {
+    x <- rename(x, "geometry" = "..geometry")
+  }
+
+  x
+}
+
+stitch_segments <- function(x, tolerance) {
+  split_df <- x |>
     dplyr::rowwise() |>
     dplyr::group_split()
 
@@ -128,15 +140,7 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
 
     stitched_streams <- c(stitched_streams, list(stitched_df))
   }
-  x <- dplyr::bind_rows(stitched_streams) |>
-    dplyr::rename(!!sf_column_name := "geometry") |>
-    sf::st_set_geometry(sf_column_name)
-
-  if ("..geometry" %in% colnames(x)) {
-    x <- rename(x, "geometry" = "..geometry")
-  }
-
-  x
+  dplyr::bind_rows(stitched_streams)
 }
 
 segment_end_to_start_distance <- function(segments) {
