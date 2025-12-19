@@ -109,12 +109,12 @@ stitch_segs <- function(x, tolerance) {
     new_segments <- list()
     for (j in 1:nrow(df_distances)) {
 
-      if (df_distances[j, ]$distance >= tolerance) {
+      if (df_distances$distance[j] >= tolerance) {
         next
       }
 
-      end <- sf::st_line_sample(segments[df_distances[j,]$end], sample = 1)
-      start <- sf::st_line_sample(segments[df_distances[j,]$start], sample = 0)
+      end <- sf::st_line_sample(segments[df_distances$end[j]], sample = 1)
+      start <- sf::st_line_sample(segments[df_distances$start[j]], sample = 0)
 
       line <- sf::st_linestring(rbind(sf::st_coordinates(start), sf::st_coordinates(end)))
       new_segments <- c(new_segments, list(line))
