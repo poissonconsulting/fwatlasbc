@@ -48,61 +48,73 @@
 fwa_stitch_segments <- function(x, ..., tolerance = 5) {
   chk_s3_class(x, "data.frame")
   chk_s3_class(x, "sf")
+  chk_not_subset(colnames(x), "..geometry")
   chk_unused(...)
   chk_gt(tolerance)
 
-  sf_column_name <- sf_column_name(x)
-
-  rename_flag <- FALSE
-  # if the sfc column isn't geometry
-  if (sf_column_name != "geometry") {
-    # check if geometry is in the other column names
-    if ("geometry" %in% colnames(x)) {
-      # if so rename to reserved name
-      rename_flag <- TRUE
-      x <- rename(x, ".dsklsjhtiu3" = "geometry")
-    }
-  }
+  x <- x |>
+    sf::st_zm() |>
+    sf::st_sf()
 
   # if no rows then return
   if (nrow(x) == 0){
     return(x)
   }
 
+  sf_column_name <- sf_column_name(x)
+
   # if all LINESTRINGS then return
   if (inherits(x[[sf_column_name]], "sfc_LINESTRING")) {
     return(x)
   }
 
-  split_df <-
-    x |>
-    sf::st_zm() |>
-    sf::st_sf() |>
+  # if the sfc column isn't geometry
+  # check if geometry is in the other column names
+  if (sf_column_name != "geometry" && "geometry" %in% colnames(x)) {
+    # if so rename to reserved name
+    x <- rename(x, "..geometry" = "geometry")
+  }
+
+  x <- x |>
     dplyr::rename("geometry" := !!sf_column_name) |>
+    stitch_segments(tolerance) |>
+    dplyr::rename(!!sf_column_name := "geometry") |>
+    sf::st_set_geometry(sf_column_name)
+
+  if ("..geometry" %in% colnames(x)) {
+    x <- rename(x, "geometry" = "..geometry")
+  }
+
+  x
+}
+
+stitch_segments <- function(x, tolerance) {
+  x |>
     dplyr::rowwise() |>
-    dplyr::group_split()
+    dplyr::group_split() |>
+    purrr::map(stitch_segs, tolerance = tolerance) |>
+    dplyr::bind_rows()
+}
 
-  stiched_streams <- list()
-  for (i in 1:length(split_df)) {
-
+stitch_segs <- function(x, tolerance) {
+  sfc <- x[["geometry"]]
     # early exit if not a MULTILINESTRING
-    if (!inherits(split_df[[i]][["geometry"]], "sfc_MULTILINESTRING")) {
-      stiched_streams <- c(stiched_streams, list(split_df[[i]]))
-      next
+    if (!inherits(sfc, "sfc_MULTILINESTRING")) {
+      return(x)
     }
 
-    segments <- sf::st_cast(split_df[[i]][["geometry"]], "LINESTRING")
+    segments <- sf::st_cast(sfc, "LINESTRING")
     df_distances <- segment_end_to_start_distance(segments)
 
     new_segments <- list()
     for (j in 1:nrow(df_distances)) {
 
-      if (df_distances[j, ]$distance >= tolerance) {
+      if (df_distances$distance[j] >= tolerance) {
         next
       }
 
-      end <- sf::st_line_sample(segments[df_distances[j,]$end], sample = 1)
-      start <- sf::st_line_sample(segments[df_distances[j,]$start], sample = 0)
+      end <- sf::st_line_sample(segments[df_distances$end[j]], sample = 1)
+      start <- sf::st_line_sample(segments[df_distances$start[j]], sample = 0)
 
       line <- sf::st_linestring(rbind(sf::st_coordinates(start), sf::st_coordinates(end)))
       new_segments <- c(new_segments, list(line))
@@ -112,32 +124,19 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
     new_sf <- sf::st_sf(geometry = new_sf) |>
       sf::st_zm()
 
-    all_segments <- dplyr::bind_rows(split_df[[i]], new_sf) |>
+    all_segments <- dplyr::bind_rows(x, new_sf) |>
       sf::st_sf()
 
-    multi <- sf::st_combine(all_segments)
-    multi <- sf::st_cast(multi, "MULTILINESTRING")
+    multi <- sf::st_combine(all_segments) |>
+      sf::st_cast("MULTILINESTRING")
     multi_sf <- sf::st_sf(geometry = multi) |>
       sf::st_line_merge()
 
-    stiched_df <-
-      split_df[[i]] |>
+    x |>
       tibble::tibble() |>
       dplyr::mutate(
         multi_sf
       )
-
-    stiched_streams <- c(stiched_streams, list(stiched_df))
-  }
-  x <- dplyr::bind_rows(stiched_streams) |>
-    dplyr::rename(!!sf_column_name := "geometry") |>
-    sf::st_set_geometry(sf_column_name)
-
-  if (rename_flag) {
-    x <- rename(x, "geometry" = ".dsklsjhtiu3")
-  }
-
-  x
 }
 
 segment_end_to_start_distance <- function(segments) {
@@ -146,17 +145,14 @@ segment_end_to_start_distance <- function(segments) {
   end_points <- sf::st_sfc(lapply(coords_list[-length(coords_list)], function(x) sf::st_point(x[nrow(x), 1:2])), crs = sf::st_crs(segments))
   start_points <- sf::st_sfc(lapply(coords_list[-1], function(x) sf::st_point(x[1, 1:2])), crs = sf::st_crs(segments))
 
-
   distances <- numeric(length(end_points))
   for(i in seq_along(end_points)) {
     distances[i] <- as.numeric(sf::st_distance(end_points[i], start_points[i], which = "Euclidean"))
   }
 
-  df <- data.frame(
+  data.frame(
     end = 1:(length(segments) - 1),
     start = 2:length(segments),
     distance = distances
   )
-
-  df
 }
