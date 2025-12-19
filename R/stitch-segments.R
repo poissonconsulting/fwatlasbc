@@ -55,7 +55,7 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
   x <- x |>
     sf::st_zm() |>
     sf::st_sf()
-      
+
   # if no rows then return
   if (nrow(x) == 0){
     return(x)
@@ -70,7 +70,7 @@ fwa_stitch_segments <- function(x, ..., tolerance = 5) {
 
   # if the sfc column isn't geometry
   # check if geometry is in the other column names
-  if (sf_column_name != "geometry" & "geometry" %in% colnames(x)) {
+  if (sf_column_name != "geometry" && "geometry" %in% colnames(x)) {
     # if so rename to reserved name
     x <- rename(x, "..geometry" = "geometry")
   }
