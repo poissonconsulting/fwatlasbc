@@ -61,10 +61,7 @@ fwa_order_segments <- function(x) {
 
   x <- x |>
     dplyr::rename("geometry" := !!sf_column_name) |>
-    dplyr::rowwise() |>
-    dplyr::group_split() |>
-    purrr::map(order_segments) |>
-    dplyr::bind_rows() |>
+    order_segments() |>
     dplyr::rename(!!sf_column_name := "geometry") |>
     sf::st_set_geometry(sf_column_name)
 
@@ -76,6 +73,14 @@ fwa_order_segments <- function(x) {
 }
 
 order_segments <- function(x) {
+  x |>
+    dplyr::rowwise() |>
+    dplyr::group_split() |>
+    purrr::map(order_segs) |>
+    dplyr::bind_rows()
+}
+
+order_segs <- function(x) {
   sfc <- x[["geometry"]]
 
   ## early exit if not a MULTILINESTRING
