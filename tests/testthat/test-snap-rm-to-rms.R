@@ -411,8 +411,6 @@ test_that("fwa_snap_rm_to_rms interpolates blocks", {
   expect_equal(x$rm, 1:15)
   expect_s3_class(x$geometry, "sfc_POINT")
 
-  skip_on_os(c("linux", "windows"))
-
   # TODO Joe to look into
   expect_equal(x$new_rm, c(1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 13, 14, 15))
 
