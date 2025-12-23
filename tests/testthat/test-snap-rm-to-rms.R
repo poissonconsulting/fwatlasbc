@@ -405,7 +405,7 @@ test_that("fwa_snap_rm_to_rms interpolates blocks", {
   rm <- x
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  çexpect_snapshot_data(x, "interp_blocks")
+  expect_snapshot_data(x, "interp_blocks")
 })
 
 test_that("fwa_snap_rm_to_rms multiple blks to 1 blk", {
