@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# fwatlasbc 0.0.1.9020
+
+- Adding `fwa_stitch_segments()` creates a new segment to join disconnected segments.
+- Adding `fwa_order_segments()` orders segments within a stream based on the start and end point of each segment.
+- Skipping failing tests and reported bug (#56)[https://github.com/poissonconsulting/fwatlasbc/issues/96]
+
 # fwatlasbc 0.0.1.9019
 
 - Skipped failing tests on R-universe.
