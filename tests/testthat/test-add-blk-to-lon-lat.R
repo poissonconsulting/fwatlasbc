@@ -19,7 +19,7 @@ test_that("fwa_add_blk_to_lon_lat works multiple ", {
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), c("lon", "lat", "blk", "rm", "distance_to_lon_lat", "geometry"))
   expect_identical(nrow(x), 6L)
-  expect_snapshot_data(x, "multiple")
+  expect_snapshot_data(x, "multiple", digits = 9)
 })
 
 test_that("fwa_add_blk_to_lon_lat works none ", {

@@ -22,11 +22,13 @@ Imports:
     lifecycle,
     lwgeom,
     purrr,
+    rlang,
     sf,
     stats,
     stringr,
     tibble,
     tidyplus,
+    tidyr,
     tidyselect,
     units
 Suggests: 
@@ -35,7 +37,6 @@ Suggests:
     hms,
     mapview,
     readr,
-    rlang,
     testthat (>= 3.0.0)
 Remotes:
     poissonconsulting/fwapgr
