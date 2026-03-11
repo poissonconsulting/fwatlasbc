@@ -31,9 +31,13 @@ start_end_elevation <- function(x, reverse) {
     dplyr::filter(!.data$blk %in% reverse) |>
     sf::st_sf(sf_column_name = "start") |>
     fwa_add_gm_elevation_to_point() |>
+    ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
+    as_tibble() |> 
     dplyr::rename(start_elevation = "elevation") |>
     sf::st_sf(sf_column_name = "end") |>
     fwa_add_gm_elevation_to_point() |>
+    ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
+    as_tibble() |>
     dplyr::rename(end_elevation = "elevation") |>
     dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
     sf::st_sf() |>
