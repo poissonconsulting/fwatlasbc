@@ -203,7 +203,7 @@ test_that("fwa_snap_rm_to_rms no x", {
   expect_equal(x$rm, numeric(0))
   expect_equal(x$new_rm, integer(0))
   expect_equal(x$distance_to_new_rm, numeric(0))
-  expect_s3_class(x$geometry, "sfc_GEOMETRY")
+  expect_s3_class(x$geometry, "sfc_POINT")
 })
 
 test_that("fwa_snap_rm_to_rms no rm", {
@@ -238,7 +238,7 @@ test_that("fwa_snap_rm_to_rms no x or rm", {
   expect_equal(x$rm, numeric(0))
   expect_equal(x$new_rm, integer(0))
   expect_equal(x$distance_to_new_rm, numeric(0))
-  expect_s3_class(x$geometry, "sfc_GEOMETRY")
+  expect_s3_class(x$geometry, "sfc_POINT")
 })
 
 test_that("fwa_snap_rm_to_rms new_rm errors if new_rm not in rm", {

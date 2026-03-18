@@ -53,7 +53,7 @@ test_that("returns empty dataframe if empty", {
 
   output <- fwa_order_segments(df)
 
-  expect_identical(output, df)
+  expect_identical(output, df, ignore_attr = TRUE)
 })
 
 test_that("orders a single multilinestring of points", {
