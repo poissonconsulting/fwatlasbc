@@ -15,14 +15,14 @@
 
 ## Citation
 
-Thorley J, Dalgarno S (2025). *fwatlasbc: Freshwater Atlas British
+Thorley J, Dalgarno S (2026). *fwatlasbc: Freshwater Atlas British
 Columbia*. R package version 0.0.1.9020,
 <https://poissonconsulting.github.io/fwatlasbc/>.
 
     @Manual{,
       title = {fwatlasbc: Freshwater Atlas British Columbia},
       author = {Joe Thorley and Sebastian Dalgarno},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.0.1.9020},
       url = {https://poissonconsulting.github.io/fwatlasbc/},
     }
