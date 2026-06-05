@@ -15,6 +15,7 @@ You can install the latest version of `fwatlasbc` from
 [GitHub](https://github.com/poissonconsulting/fwatlasbc) with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("poissonconsulting/fwatlasbc")
 ```
@@ -25,6 +26,7 @@ Find stream names using regular expression. There may be more than one
 stream name that matches the regular expression.
 
 ``` r
+
 library(fwatlasbc)
 streams <- fwa_find_stream_names("steep c")
 streams
@@ -39,6 +41,7 @@ Add blue line keys (blk) to stream names. There may be multiple streams
 with the same name.
 
 ``` r
+
 blks <- fwa_add_blks_to_stream_name(streams)
 blks
 #> # A tibble: 4 × 2
@@ -57,6 +60,7 @@ the fish swims from the mouth of the river. The distance_to_lon_lat is
 the how far the original point was from the stream in meters.
 
 ``` r
+
 fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #> Simple feature collection with 1 feature and 5 fields
 #> Geometry type: POINT
@@ -74,6 +78,7 @@ key and river meter (by default 0). If it errors try increasing the
 river meter.
 
 ``` r
+
 wshed <- fwa_add_watershed_to_blk(blks)
 wshed
 #> Simple feature collection with 1 feature and 3 fields
@@ -92,6 +97,7 @@ original watershed while downstream/upstream_route_measure are the
 equivalents for the stream segment in the network.
 
 ``` r
+
 network <- fwa_add_collection_to_polygon(wshed, "stream_network")
 network
 #> Simple feature collection with 76 features and 29 fields
@@ -125,6 +131,7 @@ Convert the stream network into a table of blue line keys with regularly
 spaced river meters starting at 0.
 
 ``` r
+
 # rms <- fwa_convert_stream_network_to_rms(network, interval = 100)
 # rms
 ```
@@ -132,6 +139,7 @@ spaced river meters starting at 0.
 Plot the watershed, network and river meters.
 
 ``` r
+
 ggplot2::ggplot() +
   ggplot2::geom_sf(data = wshed) +
   ggplot2::geom_sf(data = network, color = "blue") +
