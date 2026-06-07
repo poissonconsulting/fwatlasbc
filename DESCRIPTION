@@ -3,9 +3,9 @@ Title: Freshwater Atlas British Columbia
 Version: 0.0.1.9020
 Authors@R: c(
     person("Joe", "Thorley", , "joe@poissonconsulting.ca", role = c("aut", "cre"),
-           comment = c(ORCID = "https://orcid.org/0000-0002-7683-4592")),
+           comment = c(ORCID = "0000-0002-7683-4592")),
     person("Sebastian", "Dalgarno", , "dalgarno@unbc.ca", role = "aut",
-           comment = c(ORCID = "https://orcid.org/0000-0002-3658-4517")),
+           comment = c(ORCID = "0000-0002-3658-4517")),
     person("Poisson Consulting", role = c("cph", "fnd"))
   )
 Description: What the package does (one paragraph).
