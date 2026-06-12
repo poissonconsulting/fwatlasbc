@@ -4,11 +4,10 @@
 
 - **[Joe
   Thorley](https://www.poissonconsulting.ca/author/joe-thorley/)**.
-  Author, maintainer.
-  [](https://orcid.org/https://orcid.org/0000-0002-7683-4592)
+  Author, maintainer. [](https://orcid.org/0000-0002-7683-4592)
 
 - **Sebastian Dalgarno**. Author.
-  [](https://orcid.org/https://orcid.org/0000-0002-3658-4517)
+  [](https://orcid.org/0000-0002-3658-4517)
 
 - **[![](https://github.com/poissonconsulting.png)](https://www.poissonconsulting.ca/)**.
   Copyright holder, funder.
