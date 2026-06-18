@@ -1,5 +1,10 @@
 # Changelog
 
+## fwatlasbc 0.0.1.9021
+
+- Add fledge-bump workflow
+- Add fledge-tag-on-merge workflow
+
 ## fwatlasbc 0.0.1.9020
 
 - Adding
