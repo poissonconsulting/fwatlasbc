@@ -12,10 +12,9 @@ permissions: read-all
 
 jobs:
   test-coverage:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      GOOGLE_MAPS_ELEVATION_API_KEY: ${{ secrets.GOOGLE_MAPS_ELEVATION_API_KEY }}
 
     steps:
       - uses: actions/checkout@v4

@@ -2,11 +2,9 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: main
+    branches: [main, master]
   pull_request:
-    branches: main
-  schedule:
-    - cron: '0 8 * * 0' # Every Sunday at midnight PST = Monday at 08:00 UTC
+    branches: [main, master]
 
 name: R-CMD-check
 
@@ -15,6 +13,7 @@ permissions: read-all
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
+
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
@@ -28,7 +27,7 @@ jobs:
           - {os: ubuntu-latest,   r: 'oldrel-1'}
 
     env:
-      GOOGLE_MAPS_ELEVATION_API_KEY: ${{ secrets.GOOGLE_MAPS_ELEVATION_API_KEY }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
 
     steps:
@@ -48,42 +47,6 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
-        if: github.event_name != 'schedule'
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
-
-      - name: 🧪 Run R-CMD-check and save summary
-        if: github.event_name == 'schedule'
-        env:
-          OS: ${{ matrix.config.os }}
-          R: ${{ matrix.config.r }}
-        run: |
-          check <- rcmdcheck::rcmdcheck(
-            args = "--no-manual",
-            error_on = "never"
-          )
-          result <- toupper(check$status)
-          log_text <- paste(
-            utils::capture.output(print(check)),
-            collapse = "\n"
-          )
-          filename <- paste0(Sys.getenv("OS"), "-R-", Sys.getenv("R"), ".txt")
-          cat(result, "\n---\n", log_text, "\n", file = filename)
-        shell: Rscript {0}
-
-      - name: 💾 Upload status artifact
-        if: github.event_name == 'schedule'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.config.os }}-R-${{ matrix.config.r }}
-          path: ${{ matrix.config.os }}-R-${{ matrix.config.r }}.txt
-          retention-days: 6
-
-      - name: 💾 Upload snapshot artifacts
-        if: github.event_name == 'schedule'
-        uses: actions/upload-artifact@v4
-        with:
-          name: snapshots-${{ matrix.config.os }}-R-${{ matrix.config.r }}
-          path: tests/testthat/_snaps
-          retention-days: 6
