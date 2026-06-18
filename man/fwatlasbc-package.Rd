@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Joe Thorley \email{joe@poissonconsulting.ca} (\href{https://orcid.org/0000-0002-7683-4592}{ORCID})
   \item Sebastian Dalgarno \email{dalgarno@unbc.ca} (\href{https://orcid.org/0000-0002-3658-4517}{ORCID})
 }
 
