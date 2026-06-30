@@ -417,6 +417,32 @@ test_that("fwa_snap_rm_to_rms respects new_rm and only allow increasing order", 
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
+test_that("fwa_snap_rm_to_rms respects new_rm and only allows increasing order when points are shifted away from the reference rms", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), nocache = FALSE)
+
+  rm <- rm[rm$rm %in% c(15000, 16000, 17000, 18000, 19000), ]
+
+  x <- rm
+  crs <- sf::st_crs(x)
+  sf::st_geometry(x) <- sf::st_geometry(x) + c(1000, 1000)
+  sf::st_crs(x) <- crs
+
+  x$new_rm <- c(15000, rep(NA, 4))
+
+  x <- fwa_snap_rm_to_rms(x, rm)
+
+  expect_s3_class(x, "sf")
+  expect_identical(
+    colnames(x),
+    c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry")
+  )
+  expect_equal(x$blk, rep(356308001, 5))
+  expect_identical(x$new_blk, x$blk)
+  expect_equal(x$rm, c(15000, 16000, 17000, 18000, 19000))
+  expect_equal(x$new_rm, x$rm)
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
 test_that("fwa_snap_rm_to_rms interpolates block", {
   rlang::local_options(nocache = TRUE)
 
@@ -465,3 +491,14 @@ test_that("fwa_snap_rm_to_rms multiple blks to 1 blk", {
   expect_equal(x$distance_to_new_rm, c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
+
+
+rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+x <- rm[c(1:5, 1:5, 1:5), ]
+x$rm <- c(c(1, 4, 7, 10, 13), c(2, 5, 8, 11, 14), c(3, 6, 9, 12, 15))
+x <- x[order(x$rm), ]
+x$new_rm <- c(1, rep(NA, 14))
+
+rm <- x
+
