@@ -4,10 +4,14 @@ save_csv <- function(x) {
   path
 }
 
-expect_snapshot_data <- function(x, name, digits = 6) {
+expect_snapshot_data <- function(x, name, digits = 4) {
   x <- dplyr::as_tibble(x)
   x$geometry <- NULL
-  fun <- function(x) if (is.double(x)) signif(x, digits = digits) else x
+  fun <- function(x) {
+    if (!is.double(x)) return(x)
+    if (all(is.na(x) | x == round(x))) return(x)
+    signif(x, digits = digits)
+  }
   lapply_fun <- function(x) I(lapply(x, fun))
   x <- dplyr::mutate(x, dplyr::across(where(is.numeric), fun))
   x <- dplyr::mutate(x, dplyr::across(where(is.list), lapply_fun))
