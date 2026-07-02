@@ -188,6 +188,11 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
   chk_gte(rm$rm)
   check_key(rm, c("blk", "rm"))
 
+  rm_coords <- sf::st_coordinates(rm)
+  if (anyDuplicated(data.frame(blk = rm$blk, x = rm_coords[, 1], y = rm_coords[, 2]))) {
+    abort_chk("Each `rm` in `blk` must have unique geometries.")
+  }
+
   if (has_name(x, "new_rm")) {
     chk_whole_numeric(x$new_rm)
     chk_gte(x$new_rm)
