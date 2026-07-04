@@ -1,5 +1,9 @@
 # Changelog
 
+## fwatlasbc 0.0.1.9022
+
+- Same as previous version.
+
 ## fwatlasbc 0.0.1.9021
 
 - Add fledge-bump workflow
