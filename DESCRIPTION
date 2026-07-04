@@ -1,6 +1,6 @@
 Package: fwatlasbc
 Title: Freshwater Atlas British Columbia
-Version: 0.0.1.9021
+Version: 0.0.1.9022
 Authors@R: c(
     person("Joe", "Thorley", , "joe@poissonconsulting.ca", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7683-4592")),
