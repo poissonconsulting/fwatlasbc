@@ -15,6 +15,9 @@ Useful links:
 
 Authors:
 
+- Joe Thorley <joe@poissonconsulting.ca>
+  ([ORCID](https://orcid.org/0000-0002-7683-4592))
+
 - Sebastian Dalgarno <dalgarno@unbc.ca>
   ([ORCID](https://orcid.org/0000-0002-3658-4517))
 
