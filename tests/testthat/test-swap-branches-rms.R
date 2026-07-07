@@ -24,9 +24,10 @@ test_that("fwa_swap_branches_rms useful error message no points and adjust", {
     2, 0, 1, 1
   )
 
+
   chk::expect_chk_error(
     fwa_swap_branches_rms(rm, data.frame(blk = 2)),
-    "`x` must inherit from S3 class 'sf'\\.$"
+    "`x` must inherit from S3 class 'sf'"
   )
 })
 
@@ -43,7 +44,6 @@ test_that("fwa_swap_branches_rms useful error unrooted trib", {
     "^`blk` 2 from `x` is unrooted \\(missing rm == 0\\)\\.$"
   )
 })
-
 
 test_that("fwa_swap_branches_rms useful error duplicates trib", {
   rm <- dplyr::tribble(

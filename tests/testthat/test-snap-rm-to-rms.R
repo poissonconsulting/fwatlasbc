@@ -255,6 +255,51 @@ test_that("fwa_snap_rm_to_rms new_rm errors if new_rm not in rm", {
   )
 })
 
+test_that("fwa_snap_rm_to_rms errors if rm has duplicate geometries within blk", {
+  rlang::local_options(nocache = TRUE)
+
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 5000), ]
+  rm <- rm[rm$rm %in% c(0, 5000), ]
+  sf::st_geometry(rm)[2] <- sf::st_geometry(rm)[1]
+
+  expect_error(
+    fwa_snap_rm_to_rms(x, rm),
+    "^Each `rm` in `blk` must have unique geometries\\.$"
+  )
+})
+
+test_that("fwa_snap_rm_to_rms errors if rm has duplicate rm values within blk", {
+  rlang::local_options(nocache = TRUE)
+
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(0, 2000, 5000), ]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 7000), ]
+  rm$rm[rm$rm == 7000] <- 2000L
+
+  expect_error(
+    fwa_snap_rm_to_rms(x, rm),
+    "^Columns 'blk' and 'rm' in `rm` must be a unique key\\.$"
+  )
+})
+
+test_that("fwa_snap_rm_to_rms snaps identical x geometries to same new_rm", {
+  rlang::local_options(nocache = TRUE)
+
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+  x <- rm[rm$rm %in% c(2000, 5000), ]
+  rm <- rm[rm$rm %in% c(0, 2000, 5000, 7000, 10000), ]
+  sf::st_geometry(x)[1] <- sf::st_geometry(x)[2]
+
+  x <- fwa_snap_rm_to_rms(x, rm)
+
+  expect_equal(x$new_rm[1], x$new_rm[2])
+  expect_equal(x$new_rm, c(5000L, 5000L))
+})
+
 test_that("fwa_snap_rm_to_rms new_rm errors if not sorted", {
   rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), nocache = FALSE)
 
@@ -372,6 +417,32 @@ test_that("fwa_snap_rm_to_rms respects new_rm and only allow increasing order", 
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
+test_that("fwa_snap_rm_to_rms respects new_rm and only allows increasing order when points are shifted away from the reference rms", {
+  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001), nocache = FALSE)
+
+  rm <- rm[rm$rm %in% c(15000, 16000, 17000, 18000, 19000), ]
+
+  x <- rm
+  crs <- sf::st_crs(x)
+  sf::st_geometry(x) <- sf::st_geometry(x) + c(1000, 1000)
+  sf::st_crs(x) <- crs
+
+  x$new_rm <- c(15000, rep(NA, 4))
+
+  x <- fwa_snap_rm_to_rms(x, rm)
+
+  expect_s3_class(x, "sf")
+  expect_identical(
+    colnames(x),
+    c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry")
+  )
+  expect_equal(x$blk, rep(356308001, 5))
+  expect_identical(x$new_blk, x$blk)
+  expect_equal(x$rm, c(15000, 16000, 17000, 18000, 19000))
+  expect_equal(x$new_rm, x$rm)
+  expect_s3_class(x$geometry, "sfc_POINT")
+})
+
 test_that("fwa_snap_rm_to_rms interpolates block", {
   rlang::local_options(nocache = TRUE)
 
@@ -390,25 +461,6 @@ test_that("fwa_snap_rm_to_rms interpolates block", {
   expect_equal(x$new_rm, c(0, 0, 1000, 2000, 3000, 8000))
   expect_equal(x$distance_to_new_rm, c(0, 873.50885850392, 1837.8850050135, 1333.22900356052, 812.482832175147, 0))
   expect_s3_class(x$geometry, "sfc_POINT")
-})
-
-test_that("fwa_snap_rm_to_rms interpolates blocks", {
-  rlang::local_options(nocache = TRUE)
-
-  rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
-
-  x <- rm[c(1:5, 1:5, 1:5), ]
-  x$rm <- c(c(1, 4, 7, 10, 13), c(2, 5, 8, 11, 14), c(3, 6, 9, 12, 15))
-  x <- x[order(x$rm), ]
-  x$new_rm <- c(1, rep(NA, 14))
-
-  rm <- x
-  x <- fwa_snap_rm_to_rms(x, rm)
-  ## FIXME issue #96
-  skip_on_os(c("linux", "windows"))
-
-  expect_s3_class(x, "sf")
-  expect_snapshot_data(x, "interp_blocks")
 })
 
 test_that("fwa_snap_rm_to_rms multiple blks to 1 blk", {
@@ -439,3 +491,14 @@ test_that("fwa_snap_rm_to_rms multiple blks to 1 blk", {
   expect_equal(x$distance_to_new_rm, c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
+
+
+rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
+
+x <- rm[c(1:5, 1:5, 1:5), ]
+x$rm <- c(c(1, 4, 7, 10, 13), c(2, 5, 8, 11, 14), c(3, 6, 9, 12, 15))
+x <- x[order(x$rm), ]
+x$new_rm <- c(1, rep(NA, 14))
+
+rm <- x
+
