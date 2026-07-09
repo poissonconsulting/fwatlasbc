@@ -17,7 +17,10 @@ fwa_mapview <- function(x, layer = NULL, zcol = NULL, legend = FALSE, ...) {
 
   x <- x |>
     dplyr::mutate(
-      dplyr::across(tidyselect::vars_select_helpers$where(hms::is_hms), as.character)
+      dplyr::across(
+        tidyselect::vars_select_helpers$where(hms::is_hms),
+        as.character
+      )
     )
 
   if (!is.null(layer)) {

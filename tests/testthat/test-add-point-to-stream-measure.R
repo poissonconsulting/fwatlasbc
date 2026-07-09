@@ -18,11 +18,17 @@ test_that("test fwa_add_point_to_stream_measure", {
 
   skip_on_os("linux")
 
-  x2 <- data.frame(blk = 356308001, stream_measure = c(0, 100, 10000, 20000, 40000))
+  x2 <- data.frame(
+    blk = 356308001,
+    stream_measure = c(0, 100, 10000, 20000, 40000)
+  )
   x2 <- fwa_add_point_to_stream_measure(x2, streams)
   expect_snapshot_data(x2, "add_point_x2")
 
-  x4 <- data.frame(blk = 356308001, stream_measure = c(0, 100, 10000, 20000, 40000))
+  x4 <- data.frame(
+    blk = 356308001,
+    stream_measure = c(0, 100, 10000, 20000, 40000)
+  )
   x4 <- fwa_add_point_to_stream_measure(x4, streams)
   expect_snapshot_data(x4, "add_point_x4")
 })

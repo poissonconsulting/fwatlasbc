@@ -32,7 +32,7 @@ start_end_elevation <- function(x, reverse) {
     sf::st_sf(sf_column_name = "start") |>
     fwa_add_gm_elevation_to_point() |>
     ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
-    as_tibble() |> 
+    as_tibble() |>
     dplyr::rename(start_elevation = "elevation") |>
     sf::st_sf(sf_column_name = "end") |>
     fwa_add_gm_elevation_to_point() |>
@@ -88,7 +88,11 @@ start_points <- function(x, elevation, reverse) {
 #' network <- select(network, blk = blue_line_key)
 #' fwa_join_stream_segments(network)
 #' }
-fwa_join_stream_segments <- function(x, elevation = FALSE, reverse = integer()) {
+fwa_join_stream_segments <- function(
+  x,
+  elevation = FALSE,
+  reverse = integer()
+) {
   chk_s3_class(x, "sf")
   check_names(x, "blk")
 

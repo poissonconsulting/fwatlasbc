@@ -7,7 +7,18 @@ test_that("fwa_snap_rm_to_rms works", {
   rm <- rm[rm$rm %in% c(0, 2000, 5000, 6000, 7000, 10000), ]
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 5))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000))
@@ -26,7 +37,18 @@ test_that("fwa_snap_rm_to_rms works new_blk", {
   x$new_blk <- x$blk
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 5))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000))
@@ -46,7 +68,18 @@ test_that("fwa_snap_rm_to_rms works new_blk different", {
   x$new_blk <- x$blk + 1L
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 5))
   expect_identical(x$new_blk, x$blk + 1L)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000))
@@ -73,11 +106,25 @@ test_that("fwa_snap_rm_to_rms works multiple blks", {
 
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, c(rep(1, 5), rep(356308001, 5)))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000))
-  expect_equal(x$new_rm, c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000))
+  expect_equal(
+    x$new_rm,
+    c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000)
+  )
   expect_equal(x$distance_to_new_rm, rep(0, 10))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
@@ -102,11 +149,25 @@ test_that("fwa_snap_rm_to_rms works multiple blks new_rms", {
 
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, c(rep(1, 5), rep(356308001, 5)))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000))
-  expect_equal(x$new_rm, c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000))
+  expect_equal(
+    x$new_rm,
+    c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000)
+  )
   expect_equal(x$distance_to_new_rm, rep(0, 10))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
@@ -132,7 +193,18 @@ test_that("fwa_snap_rm_to_rms works multiple blks to same new_blk", {
 
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, c(rep(1, 5), rep(356308001, 5)))
   expect_equal(x$new_blk, rep(356308001, 10))
   expect_equal(
@@ -157,7 +229,18 @@ test_that("fwa_snap_rm_to_rms doesn't snap mouth by default", {
   x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 3))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 3000, 6000))
@@ -178,7 +261,18 @@ test_that("fwa_snap_rm_to_rms does snap mouth using new_rm", {
   x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 3))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 3000, 6000))
@@ -197,7 +291,18 @@ test_that("fwa_snap_rm_to_rms no x", {
   x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, integer(0))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, numeric(0))
@@ -214,7 +319,18 @@ test_that("fwa_snap_rm_to_rms no rm", {
   x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 3))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 3000, 6000))
@@ -232,7 +348,18 @@ test_that("fwa_snap_rm_to_rms no x or rm", {
   x <- fwa_snap_rm_to_rms(x, rm)
 
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, integer(0))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, numeric(0))
@@ -322,12 +449,26 @@ test_that("fwa_snap_rm_to_rms not exceeds subsequent new_rm", {
 
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 5))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000))
   expect_equal(x$new_rm, c(1000, 4000, 5000, 7000, 7000))
-  expect_equal(x$distance_to_new_rm, c(873.50885850392, 1256.91656917142, 0, 392.512382032925, 0))
+  expect_equal(
+    x$distance_to_new_rm,
+    c(873.50885850392, 1256.91656917142, 0, 392.512382032925, 0)
+  )
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -343,12 +484,32 @@ test_that("fwa_snap_rm_to_rms snap new_rm to mouth", {
 
   x <- fwa_snap_rm_to_rms(x, rm, snap_mouths = TRUE)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 5))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000))
   expect_equal(x$new_rm, c(0, 4000, 7000, 7000, 8000))
-  expect_equal(x$distance_to_new_rm, c(3971.42036810618, 1256.91656917142, 1161.55661705109, 392.512382032925, 1161.55661705109))
+  expect_equal(
+    x$distance_to_new_rm,
+    c(
+      3971.42036810618,
+      1256.91656917142,
+      1161.55661705109,
+      392.512382032925,
+      1161.55661705109
+    )
+  )
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -364,12 +525,32 @@ test_that("fwa_snap_rm_to_rms snap new_rm to mouth already set", {
 
   x <- fwa_snap_rm_to_rms(x, rm, snap_mouths = TRUE)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 5))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000))
   expect_equal(x$new_rm, c(1000, 4000, 7000, 7000, 8000))
-  expect_equal(x$distance_to_new_rm, c(873.50885850392, 1256.91656917142, 1161.55661705109, 392.512382032925, 1161.55661705109))
+  expect_equal(
+    x$distance_to_new_rm,
+    c(
+      873.50885850392,
+      1256.91656917142,
+      1161.55661705109,
+      392.512382032925,
+      1161.55661705109
+    )
+  )
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -384,15 +565,32 @@ test_that("fwa_snap_rm_to_rms only allow increasing order", {
 
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 5))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000))
   expect_equal(x$new_rm, c(1000, 3000, 8000, 8000, 8000))
-  expect_equal(x$distance_to_new_rm, c(
-    873.50885850392, 2167.96002745135, 1455.35594246782, 1333.22900356052,
-    1377.43784259615
-  ))
+  expect_equal(
+    x$distance_to_new_rm,
+    c(
+      873.50885850392,
+      2167.96002745135,
+      1455.35594246782,
+      1333.22900356052,
+      1377.43784259615
+    )
+  )
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -408,12 +606,26 @@ test_that("fwa_snap_rm_to_rms respects new_rm and only allow increasing order", 
 
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 6))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 2000, 5000, 6000, 7000, 8000))
   expect_equal(x$new_rm, c(0, 2000, 6000, 7000, 7000, 8000))
-  expect_equal(x$distance_to_new_rm, c(0, 0, 772.26037010328, 772.26037010328, 1161.55661705109, 0))
+  expect_equal(
+    x$distance_to_new_rm,
+    c(0, 0, 772.26037010328, 772.26037010328, 1161.55661705109, 0)
+  )
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -434,7 +646,15 @@ test_that("fwa_snap_rm_to_rms respects new_rm and only allows increasing order w
   expect_s3_class(x, "sf")
   expect_identical(
     colnames(x),
-    c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry")
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
   )
   expect_equal(x$blk, rep(356308001, 5))
   expect_identical(x$new_blk, x$blk)
@@ -454,12 +674,33 @@ test_that("fwa_snap_rm_to_rms interpolates block", {
 
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, rep(356308001, 6))
   expect_identical(x$new_blk, x$blk)
   expect_equal(x$rm, c(0, 1000, 2000, 3000, 4000, 8000))
   expect_equal(x$new_rm, c(0, 0, 1000, 2000, 3000, 8000))
-  expect_equal(x$distance_to_new_rm, c(0, 873.50885850392, 1837.8850050135, 1333.22900356052, 812.482832175147, 0))
+  expect_equal(
+    x$distance_to_new_rm,
+    c(
+      0,
+      873.50885850392,
+      1837.8850050135,
+      1333.22900356052,
+      812.482832175147,
+      0
+    )
+  )
   expect_s3_class(x$geometry, "sfc_POINT")
 })
 
@@ -483,11 +724,28 @@ test_that("fwa_snap_rm_to_rms multiple blks to 1 blk", {
 
   x <- fwa_snap_rm_to_rms(x, rm)
   expect_s3_class(x, "sf")
-  expect_identical(colnames(x), c("blk", "new_blk", "rm", "new_rm", "distance_to_new_rm", "elevation", "geometry"))
+  expect_identical(
+    colnames(x),
+    c(
+      "blk",
+      "new_blk",
+      "rm",
+      "new_rm",
+      "distance_to_new_rm",
+      "elevation",
+      "geometry"
+    )
+  )
   expect_equal(x$blk, c(rep(2, 5), rep(356308001, 5)))
   expect_equal(x$new_blk, rep(356308001, 10))
-  expect_equal(x$rm, c(0L, 2000L, 5000L, 6000L, 7000L, 0L, 2000L, 5000L, 6000L, 7000L))
-  expect_equal(x$new_rm, c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000))
+  expect_equal(
+    x$rm,
+    c(0L, 2000L, 5000L, 6000L, 7000L, 0L, 2000L, 5000L, 6000L, 7000L)
+  )
+  expect_equal(
+    x$new_rm,
+    c(0, 2000, 5000, 6000, 7000, 0, 2000, 5000, 6000, 7000)
+  )
   expect_equal(x$distance_to_new_rm, c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
   expect_s3_class(x$geometry, "sfc_POINT")
 })
@@ -501,4 +759,3 @@ x <- x[order(x$rm), ]
 x$new_rm <- c(1, rep(NA, 14))
 
 rm <- x
-

@@ -13,15 +13,35 @@ test_that("fwa_add_collection_to_polygon functions work", {
   expect_identical(
     colnames(x),
     c(
-      "blk", "rm", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
-      "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
-      "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
-      "linear_feature_id", "local_watershed_code", "localcode_ltree",
-      "stream_magnitude", "stream_order",
+      "blk",
+      "rm",
+      "blue_line_key",
+      "blue_line_key_50k",
+      "downstream_route_measure",
+      "edge_type",
+      "feature_code",
+      "feature_source",
+      "fwa_watershed_code",
+      "gnis_id",
+      "gnis_name",
+      "gradient",
+      "left_right_tributary",
+      "length_metre",
+      "linear_feature_id",
+      "local_watershed_code",
+      "localcode_ltree",
+      "stream_magnitude",
+      "stream_order",
       "upstream_route_measure",
-      "waterbody_key", "watershed_code_50k", "watershed_group_code",
-      "watershed_group_code_50k", "watershed_group_id", "watershed_key",
-      "watershed_key_50k", "wscode_ltree", "geometry"
+      "waterbody_key",
+      "watershed_code_50k",
+      "watershed_group_code",
+      "watershed_group_code_50k",
+      "watershed_group_id",
+      "watershed_key",
+      "watershed_key_50k",
+      "wscode_ltree",
+      "geometry"
     )
   )
 })
@@ -38,15 +58,35 @@ test_that("fwa_add_collection_to_polygon function intersects work", {
   expect_identical(
     colnames(x),
     c(
-      "blk", "rm", "blue_line_key", "blue_line_key_50k", "downstream_route_measure",
-      "edge_type", "feature_code", "feature_source", "fwa_watershed_code",
-      "gnis_id", "gnis_name", "gradient", "left_right_tributary", "length_metre",
-      "linear_feature_id", "local_watershed_code", "localcode_ltree",
-      "stream_magnitude", "stream_order",
+      "blk",
+      "rm",
+      "blue_line_key",
+      "blue_line_key_50k",
+      "downstream_route_measure",
+      "edge_type",
+      "feature_code",
+      "feature_source",
+      "fwa_watershed_code",
+      "gnis_id",
+      "gnis_name",
+      "gradient",
+      "left_right_tributary",
+      "length_metre",
+      "linear_feature_id",
+      "local_watershed_code",
+      "localcode_ltree",
+      "stream_magnitude",
+      "stream_order",
       "upstream_route_measure",
-      "waterbody_key", "watershed_code_50k", "watershed_group_code",
-      "watershed_group_code_50k", "watershed_group_id", "watershed_key",
-      "watershed_key_50k", "wscode_ltree", "geometry"
+      "waterbody_key",
+      "watershed_code_50k",
+      "watershed_group_code",
+      "watershed_group_code_50k",
+      "watershed_group_id",
+      "watershed_key",
+      "watershed_key_50k",
+      "wscode_ltree",
+      "geometry"
     )
   )
 
@@ -58,7 +98,9 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
 
   wshed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, ExCol = "ex"))
   wshed <- sf::st_transform(wshed, 4326)
-  x <- fwa_add_collection_to_polygon(wshed, "whse_basemapping.fwa_named_streams",
+  x <- fwa_add_collection_to_polygon(
+    wshed,
+    "whse_basemapping.fwa_named_streams",
     limit = 1000,
     epsg = 32610
   )
@@ -68,8 +110,15 @@ test_that("fwa_add_collection_to_polygon function intersects works with named st
   expect_identical(
     colnames(x),
     c(
-      "blk", "ExCol", "rm", "blue_line_key",
-      "gnis_name", "named_streams_id", "stream_order", "watershed_group_code", "geometry"
+      "blk",
+      "ExCol",
+      "rm",
+      "blue_line_key",
+      "gnis_name",
+      "named_streams_id",
+      "stream_order",
+      "watershed_group_code",
+      "geometry"
     )
   )
 

@@ -20,7 +20,9 @@ distance_to_rm <- function(x, rms) {
 }
 
 prev_cummax <- function(x) {
-  if (!length(x)) return(x)
+  if (!length(x)) {
+    return(x)
+  }
   c(x[1], cummax(x)[-length(x)])
 }
 
@@ -49,10 +51,11 @@ reallocate_blocks <- function(x, rms) {
   df$end <- cumsum(df$length)
   df$start <- df$end - df$length + 1
 
-
   df <- df[!is.na(df$values) & df$length > 1, ]
 
-  if (!nrow(df)) return(x)
+  if (!nrow(df)) {
+    return(x)
+  }
 
   if (df$start[1] == 1) {
     df$start[1] <- 2
@@ -68,7 +71,9 @@ reallocate_blocks <- function(x, rms) {
 
   df <- df[df$length > 1, ]
 
-  if (!nrow(df)) return(x)
+  if (!nrow(df)) {
+    return(x)
+  }
 
   xrev <- x
   for (i in rev(seq_len(nrow(df)))) {
@@ -168,7 +173,16 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
 
   check_names(x, c("blk", "rm"))
   check_names(rm, c("blk", "rm"))
-  chk_not_subset(colnames(x), c("..fwa_id", "..fwa_blk", "..fwa_provided_new_rm", "..fwa_x_rm", "..fwa_mouth"))
+  chk_not_subset(
+    colnames(x),
+    c(
+      "..fwa_id",
+      "..fwa_blk",
+      "..fwa_provided_new_rm",
+      "..fwa_x_rm",
+      "..fwa_mouth"
+    )
+  )
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -189,7 +203,13 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
   check_key(rm, c("blk", "rm"))
 
   rm_coords <- sf::st_coordinates(rm)
-  if (anyDuplicated(data.frame(blk = rm$blk, x = rm_coords[, 1], y = rm_coords[, 2]))) {
+  if (
+    anyDuplicated(data.frame(
+      blk = rm$blk,
+      x = rm_coords[, 1],
+      y = rm_coords[, 2]
+    ))
+  ) {
     abort_chk("Each `rm` in `blk` must have unique geometries.")
   }
 
@@ -255,7 +275,10 @@ fwa_snap_rm_to_rms <- function(x, rm, snap_mouths = FALSE) {
 
     x <- x |>
       dplyr::left_join(mouths, by = c(rm = "rm", new_blk = "blk")) |>
-      tidyplus::coalesce_data(list(new_rm = c("new_rm", "..fwa_mouth")), quiet = TRUE)
+      tidyplus::coalesce_data(
+        list(new_rm = c("new_rm", "..fwa_mouth")),
+        quiet = TRUE
+      )
   }
 
   x |>

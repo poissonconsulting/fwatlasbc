@@ -9,3 +9,5 @@
 ^docs$
 ^pkgdown$
 ^scripts$
+^[.]?air[.]toml$
+^\.vscode$

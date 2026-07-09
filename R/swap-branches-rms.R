@@ -49,7 +49,11 @@ update_children_trib <- function(x, blk, parent_blk, parent_rm) {
 }
 
 update_children_main <- function(x, blk, parent_blk, parent_rm) {
-  is_main <- x$blk != blk & !is.na(x$parent_blk) & x$parent_blk == parent_blk & !is.na(x$parent_rm) & x$parent_rm >= parent_rm
+  is_main <- x$blk != blk &
+    !is.na(x$parent_blk) &
+    x$parent_blk == parent_blk &
+    !is.na(x$parent_rm) &
+    x$parent_rm >= parent_rm
 
   x$parent_blk[is_main] <- blk
   x$parent_rm[is_main] <- x$parent_rm[is_main] - parent_rm
@@ -96,14 +100,18 @@ swap_main <- function(x, blk) {
 
 adjust_points_blk <- function(x, blk) {
   y <- x[x$blk == blk, ]
-  if (nrow(y) < 2) return(x)
+  if (nrow(y) < 2) {
+    return(x)
+  }
 
   range <- range(y$rm)
   interval <- max(diff(sort(y$rm)))
   seq <- seq(0, range[2], by = interval)
   seq <- seq[seq >= range[1] & seq <= range[2]]
 
-  if (!length(seq)) return(x)
+  if (!length(seq)) {
+    return(x)
+  }
 
   x <- x[x$blk != blk, ]
 
@@ -134,7 +142,9 @@ adjust_points_blk <- function(x, blk) {
 }
 
 adjust_points <- function(x, blk, adjust_points) {
-  if (!adjust_points) return(x)
+  if (!adjust_points) {
+    return(x)
+  }
   parent_blk <- parent_blk(x, blk, TRUE)
   x |>
     adjust_points_blk(blk) |>
@@ -149,7 +159,11 @@ swap_branches <- function(x, blk, adjust_points) {
   }
 
   x <- x |>
-    fwa_add_upstream_split_to_rms(data.frame(blk = blk, rm = 0, name = "..fwa_trib")) |>
+    fwa_add_upstream_split_to_rms(data.frame(
+      blk = blk,
+      rm = 0,
+      name = "..fwa_trib"
+    )) |>
     dplyr::mutate(..fwa_original = TRUE) |>
     swap_main(blk) |>
     swap_trib(blk) |>
@@ -207,11 +221,15 @@ fwa_swap_branches_rms <- function(x, y, adjust_points = TRUE) {
 
   check_key(x, c("blk", "rm"))
 
-  if (!nrow(y)) return(x)
+  if (!nrow(y)) {
+    return(x)
+  }
 
   missing <- setdiff(y$blk, x$blk)
   if (length(missing)) {
-    abort_chk("The following %n blk%s %r missing from `x`:", cc(missing, conj = "and"),
+    abort_chk(
+      "The following %n blk%s %r missing from `x`:",
+      cc(missing, conj = "and"),
       n = length(missing)
     )
   }

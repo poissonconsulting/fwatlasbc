@@ -1,7 +1,13 @@
 downstream_split_blk <- function(x, blk, rm) {
   x$..fwa_split[x$blk == blk & x$rm <= rm] <- TRUE
-  if (is.na(x$parent_blk[x$blk == blk][1])) return(x)
-  downstream_split_blk(x, x$parent_blk[x$blk == blk][1], x$parent_rm[x$blk == blk][1])
+  if (is.na(x$parent_blk[x$blk == blk][1])) {
+    return(x)
+  }
+  downstream_split_blk(
+    x,
+    x$parent_blk[x$blk == blk][1],
+    x$parent_rm[x$blk == blk][1]
+  )
 }
 
 get_downstream_split_to_rms <- function(nm, x, y) {
@@ -65,7 +71,9 @@ fwa_add_downstream_split_to_rms <- function(x, y) {
   chk_unique(y$name)
   chk_valid_name(y$name)
 
-  if (!nrow(y)) return(x)
+  if (!nrow(y)) {
+    return(x)
+  }
 
   splits <- lapply(y$name, get_downstream_split_to_rms, x = x, y = y)
   names(splits) <- y$name

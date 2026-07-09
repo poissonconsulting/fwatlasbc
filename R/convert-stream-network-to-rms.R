@@ -17,7 +17,9 @@ add_parent_blk_rm <- function(x) {
   parent <- x |>
     dplyr::as_tibble() |>
     dplyr::filter(!str_detect(.data$fwa_watershed_code, "^999")) |>
-    dplyr::mutate(fwa_watershed_code = strip_trailing_0s(.data$fwa_watershed_code)) |>
+    dplyr::mutate(
+      fwa_watershed_code = strip_trailing_0s(.data$fwa_watershed_code)
+    ) |>
     dplyr::group_by(.data$blue_line_key, .data$fwa_watershed_code) |>
     dplyr::summarise(
       min_rm = min(.data$upstream_route_measure),
@@ -39,7 +41,9 @@ add_parent_blk_rm <- function(x) {
       parent_proportion = get_parent_proportion(.data$fwa_watershed_code)
     ) |>
     dplyr::select(
-      child_blk = "blue_line_key", "parent_code", "parent_proportion"
+      child_blk = "blue_line_key",
+      "parent_code",
+      "parent_proportion"
     )
 
   parent <- parent |>
@@ -48,7 +52,11 @@ add_parent_blk_rm <- function(x) {
   child <- child |>
     dplyr::inner_join(parent, by = c(parent_code = "fwa_watershed_code")) |>
     dplyr::mutate(parent_rm = .data$parent_proportion * .data$max_rm) |>
-    dplyr::select(blue_line_key = "child_blk", parent_blk = "blue_line_key", "parent_rm")
+    dplyr::select(
+      blue_line_key = "child_blk",
+      parent_blk = "blue_line_key",
+      "parent_rm"
+    )
 
   x |>
     dplyr::left_join(child, by = "blue_line_key") |>
@@ -73,11 +81,13 @@ convert_stream_segment_to_rms <- function(x, interval) {
   y <- x |>
     dplyr::as_tibble()
 
-  if ("geometry" %in% names(y))
+  if ("geometry" %in% names(y)) {
     y$geometry <- NULL
+  }
 
-  if ("rm" %in% names(y))
+  if ("rm" %in% names(y)) {
     y$rm <- NULL
+  }
 
   x <- x |>
     sf::st_line_sample(sample = sample) |>
@@ -110,17 +120,27 @@ convert_stream_segment_to_rms <- function(x, interval) {
 #' network <- fwa_add_collection_to_polygon(watershed)
 #' fwa_convert_stream_network_to_rms(network, interval = 100)
 #' }
-fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) {
+fwa_convert_stream_network_to_rms <- function(
+  x,
+  interval = 5,
+  tolerance = 0.1
+) {
   chk_s3_class(x, "sf")
   chk_whole_number(interval)
   chk_gt(interval)
   chk_number(tolerance)
   chk_gte(tolerance)
 
-  check_names(x, c(
-    "linear_feature_id", "blue_line_key", "downstream_route_measure",
-    "upstream_route_measure", "fwa_watershed_code"
-  ))
+  check_names(
+    x,
+    c(
+      "linear_feature_id",
+      "blue_line_key",
+      "downstream_route_measure",
+      "upstream_route_measure",
+      "fwa_watershed_code"
+    )
+  )
   chk_not_subset(colnames(x), "..fwa_id")
 
   x$id <- x$linear_feature_id
@@ -148,7 +168,9 @@ fwa_convert_stream_network_to_rms <- function(x, interval = 5, tolerance = 0.1) 
   diff <- abs(diff)
 
   if (any(diff > tolerance)) {
-    abort_chk("Difference between and upstream and down route measures and length of geometry exceeds tolerance in `x`")
+    abort_chk(
+      "Difference between and upstream and down route measures and length of geometry exceeds tolerance in `x`"
+    )
   }
 
   x |>

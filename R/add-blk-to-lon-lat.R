@@ -2,9 +2,12 @@ add_blk_to_lon_lat <- function(x, limit, tolerance, epsg, nocache) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
   rm <- fwapgr::fwa_index_point(
-    x = x$lon, y = x$lat,
-    limit = limit, tolerance = tolerance,
-    epsg = epsg, nocache = nocache
+    x = x$lon,
+    y = x$lat,
+    limit = limit,
+    tolerance = tolerance,
+    epsg = epsg,
+    nocache = nocache
   )
   if (!nrow(rm)) {
     rm <- rm |>
@@ -14,7 +17,9 @@ add_blk_to_lon_lat <- function(x, limit, tolerance, epsg, nocache) {
         distance_to_lon_lat = numeric(0)
       ) |>
       dplyr::select(
-        "blk", "rm", "distance_to_lon_lat",
+        "blk",
+        "rm",
+        "distance_to_lon_lat",
         "geometry"
       )
 
@@ -58,8 +63,13 @@ add_blk_to_lon_lat <- function(x, limit, tolerance, epsg, nocache) {
 #' \dontrun{
 #' fwa_add_blk_to_lon_lat(data.frame(lon = -132.26, lat = 53.36))
 #' }
-fwa_add_blk_to_lon_lat <- function(x, tolerance = 5000, limit = 1,
-                                   epsg = getOption("fwa.epsg", 3005), nocache = getOption("fwa.nocache", FALSE)) {
+fwa_add_blk_to_lon_lat <- function(
+  x,
+  tolerance = 5000,
+  limit = 1,
+  epsg = getOption("fwa.epsg", 3005),
+  nocache = getOption("fwa.nocache", FALSE)
+) {
   check_data(x, values = list(lon = c(-180, 180, NA), lat = c(-90, 90, NA)))
   check_dim(x, dim = nrow, values = TRUE)
   chk_not_subset(colnames(x), c("blk", "rm", "distance_to_lon_lat", "geometry"))
@@ -71,7 +81,13 @@ fwa_add_blk_to_lon_lat <- function(x, tolerance = 5000, limit = 1,
     dplyr::as_tibble() |>
     dplyr::mutate(..fwa_id = seq_len(dplyr::n())) |>
     group_split_sf(.data$..fwa_id) |>
-    lapply(add_blk_to_lon_lat, tolerance = tolerance, limit = limit, epsg = epsg, nocache = nocache) |>
+    lapply(
+      add_blk_to_lon_lat,
+      tolerance = tolerance,
+      limit = limit,
+      epsg = epsg,
+      nocache = nocache
+    ) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::select(!"..fwa_id")

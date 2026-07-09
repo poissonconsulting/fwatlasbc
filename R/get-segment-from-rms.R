@@ -30,7 +30,11 @@ fwa_get_segment_from_rms <- function(x, segment = "segment") {
     dplyr::filter(!is.na(.data[[segment]])) |>
     dplyr::group_by(.data[[segment]], .data$blk) |>
     dplyr::arrange(.data$rm) |>
-    dplyr::summarise(rm_start = min(.data$rm), rm_end = max(.data$rm), do_union = FALSE) |>
+    dplyr::summarise(
+      rm_start = min(.data$rm),
+      rm_end = max(.data$rm),
+      do_union = FALSE
+    ) |>
     sf::st_cast("LINESTRING") |>
     dplyr::arrange(.data$blk, .data$rm_start)
 }

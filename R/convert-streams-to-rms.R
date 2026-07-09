@@ -86,8 +86,14 @@ get_parent_stream <- function(x, y, gap) {
 #' network <- select(network, blk = blue_line_key)
 #' fwa_convert_streams_to_rms(network, interval = 100)
 #' }
-fwa_convert_streams_to_rms <- function(x, interval = 5, gap = 1, end = NULL, elevation = FALSE,
-                                       reverse = integer()) {
+fwa_convert_streams_to_rms <- function(
+  x,
+  interval = 5,
+  gap = 1,
+  end = NULL,
+  elevation = FALSE,
+  reverse = integer()
+) {
   chk_s3_class(x, "sf")
   chk_whole_number(interval)
   chk_gt(interval)

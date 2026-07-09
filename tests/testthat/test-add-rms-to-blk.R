@@ -1,11 +1,16 @@
 test_that("fwa_add_rms_to_blk works simple case", {
   rlang::local_options(nocache = TRUE)
 
-  x <- fwa_add_rms_to_blk(data.frame(blk = 356308001, extra_col = "extra"),
-    interval = 100, start = 10001
+  x <- fwa_add_rms_to_blk(
+    data.frame(blk = 356308001, extra_col = "extra"),
+    interval = 100,
+    start = 10001
   )
   expect_s3_class(x, "sf")
-  expect_identical(names(x), c("blk", "extra_col", "rm", "elevation", "geometry"))
+  expect_identical(
+    names(x),
+    c("blk", "extra_col", "rm", "elevation", "geometry")
+  )
   expect_identical(x$blk, rep(356308001, 93))
   expect_identical(x$extra_col, rep("extra", 93))
   expect_equal(x$rm, seq(10001L, 19201L, by = 100L))

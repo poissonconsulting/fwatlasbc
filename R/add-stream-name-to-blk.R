@@ -9,7 +9,10 @@
 #' @export
 #' @examples
 #' fwa_add_stream_names_to_blk(data.frame(blk = 360886335L))
-fwa_add_stream_names_to_blk <- function(x, stream_name = fwatlasbc::fwa_stream_name) {
+fwa_add_stream_names_to_blk <- function(
+  x,
+  stream_name = fwatlasbc::fwa_stream_name
+) {
   chk_data(x)
   check_names(x, "blk")
   chk_gt(x$blk)

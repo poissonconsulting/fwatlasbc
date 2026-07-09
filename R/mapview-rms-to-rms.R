@@ -23,9 +23,17 @@ join_points <- function(x, y) {
   z <- x |>
     dplyr::inner_join(y, by = c("blk" = "blk", "new_rm" = "rm"))
 
-  z$geometry <- sf::st_sfc(mapply(function(a, b) {
-    sf::st_cast(sf::st_union(a, b), "LINESTRING")
-  }, z$..fwa_geometry1, z$..fwa_geometry2, SIMPLIFY = FALSE), crs = crs)
+  z$geometry <- sf::st_sfc(
+    mapply(
+      function(a, b) {
+        sf::st_cast(sf::st_union(a, b), "LINESTRING")
+      },
+      z$..fwa_geometry1,
+      z$..fwa_geometry2,
+      SIMPLIFY = FALSE
+    ),
+    crs = crs
+  )
 
   z |>
     dplyr::select(-"..fwa_geometry1", -"..fwa_geometry2") |>
