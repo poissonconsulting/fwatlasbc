@@ -22,13 +22,17 @@
 #' @seealso `[fwa_add_new_rm_to_blk_rm()]`
 #' @export
 fwa_add_new_blk_rm_to_blk_rm <- function(
-    x, y,
-    blk = "blk", rm = "rm",
-    blk2 = "blk", rm2 = "rm",
-    new_blk = "new_blk",
-    new_rm = "new_rm",
-    new_blk_to = new_blk,
-    new_rm_to = new_rm) {
+  x,
+  y,
+  blk = "blk",
+  rm = "rm",
+  blk2 = "blk",
+  rm2 = "rm",
+  new_blk = "new_blk",
+  new_rm = "new_rm",
+  new_blk_to = new_blk,
+  new_rm_to = new_rm
+) {
   chk_data(x)
   chk_data(y)
 

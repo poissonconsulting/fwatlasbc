@@ -32,7 +32,6 @@
 #'  fwa_order_segments(df)
 #' }
 fwa_order_segments <- function(x) {
-
   chk_s3_class(x, "data.frame")
   chk_s3_class(x, "sf")
   chk_not_subset(colnames(x), "..geometry")
@@ -42,7 +41,7 @@ fwa_order_segments <- function(x) {
     sf::st_sf()
 
   ## if no rows then return
-  if (nrow(x) == 0){
+  if (nrow(x) == 0) {
     return(x)
   }
 
@@ -101,7 +100,6 @@ order_segs <- function(x) {
 }
 
 split_multilinestring <- function(geometry) {
-
   segments <- sf::st_cast(geometry, "LINESTRING")
   segments <- segments[!sf::st_is_empty(segments)]
 
@@ -109,15 +107,18 @@ split_multilinestring <- function(geometry) {
   keep <- lengths(coords) >= 2
 
   segments <- segments[keep]
-  coords   <- coords[keep]
+  coords <- coords[keep]
 
   starts <- lapply(coords, \(c) c[1, 1:2])
-  ends   <- lapply(coords, \(c) c[nrow(c), 1:2])
+  ends <- lapply(coords, \(c) c[nrow(c), 1:2])
 
   tibble::tibble(
     linestring = segments,
-    start_pt = sf::st_sfc(lapply(starts, sf::st_point), crs = sf::st_crs(geometry)),
-    end_pt   = sf::st_sfc(lapply(ends,   sf::st_point), crs = sf::st_crs(geometry))
+    start_pt = sf::st_sfc(
+      lapply(starts, sf::st_point),
+      crs = sf::st_crs(geometry)
+    ),
+    end_pt = sf::st_sfc(lapply(ends, sf::st_point), crs = sf::st_crs(geometry))
   )
 }
 
@@ -134,15 +135,15 @@ calculate_end_to_start_distances <- function(sfc) {
   tibble::as_tibble(dmat, rownames = "from") |>
     dplyr::mutate(across(dplyr::starts_with("V"), as.numeric)) |>
     tidyr::pivot_longer(
-    dplyr::starts_with("V"),
-    names_to = "to",
-    values_to = "distance"
-  ) |>
+      dplyr::starts_with("V"),
+      names_to = "to",
+      values_to = "distance"
+    ) |>
     dplyr::mutate(
-    from = as.integer(.data$from),
-    to = as.integer(stringr::str_extract(.data$to, "\\d")),
-    distance = as.numeric(.data$distance)
-  ) |>
+      from = as.integer(.data$from),
+      to = as.integer(stringr::str_extract(.data$to, "\\d")),
+      distance = as.numeric(.data$distance)
+    ) |>
     dplyr::filter(.data$from != .data$to)
 }
 
@@ -158,13 +159,14 @@ order_segments_dynamic <- function(segments, distance_df) {
   ## Copy of distance_df to filter each pass
   remaining_distances <- distance_df
 
-  while(length(orders_used) < number_of_segments) {
-
+  while (length(orders_used) < number_of_segments) {
     ## Find all distances involving any current segments
     current_search <- remaining_distances |>
       dplyr::filter(.data$from %in% orders_used | .data$to %in% orders_used)
 
-    if (nrow(current_search) == 0) break
+    if (nrow(current_search) == 0) {
+      break
+    }
 
     ## Pick the shortest distance
     next_df <- current_search |>
@@ -177,9 +179,9 @@ order_segments_dynamic <- function(segments, distance_df) {
 
     if (new_segment %in% next_df$from) {
       segment_order <- c(next_df$from, segment_order)
-    } else (
-      segment_order <- c(segment_order, next_df$to)
-    )
+    } else {
+      (segment_order <- c(segment_order, next_df$to))
+    }
 
     ## Track which segments have been used
     orders_used <- unique(c(orders_used, next_df$from, next_df$to))

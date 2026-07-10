@@ -1,7 +1,9 @@
 split_blk <- function(x, blk, rm = 0) {
   x$..fwa_split[x$blk == blk & x$rm >= rm] <- TRUE
 
-  blks <- x$blk[!is.na(x$parent_blk) & x$parent_blk == blk & x$parent_rm >= rm] |>
+  blks <- x$blk[
+    !is.na(x$parent_blk) & x$parent_blk == blk & x$parent_rm >= rm
+  ] |>
     unique()
 
   for (blk in blks) {
@@ -71,7 +73,9 @@ fwa_add_upstream_split_to_rms <- function(x, y) {
   chk_unique(y$name)
   chk_valid_name(y$name)
 
-  if (!nrow(y)) return(x)
+  if (!nrow(y)) {
+    return(x)
+  }
 
   splits <- lapply(y$name, get_split_to_rms, x = x, y = y)
   names(splits) <- y$name

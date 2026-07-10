@@ -40,7 +40,9 @@ adjust_streams <- function(streams, x) {
     as_tibble() |>
     dplyr::select(tidyselect::vars_select_helpers$all_of(cols)) |>
     dplyr::slice(1L) |>
-    dplyr::select(tidyselect::vars_select_helpers$where(function(x) !is.na(x[1]))) |>
+    dplyr::select(tidyselect::vars_select_helpers$where(function(x) {
+      !is.na(x[1])
+    })) |>
     colnames()
 
   if (!length(cols)) {
@@ -90,7 +92,9 @@ fwa_snap_stream_measure_to_point <- function(x, streams, ...) {
   chk::chk_s3_class(x, "sf")
   chk::chk_s3_class(streams, "sf")
 
-  if (!has_name(x, "blk")) x$blk <- NA_integer_
+  if (!has_name(x, "blk")) {
+    x$blk <- NA_integer_
+  }
 
   chk_whole_numeric(x$blk)
   chk_gt(x$blk)

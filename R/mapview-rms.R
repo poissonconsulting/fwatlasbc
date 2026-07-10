@@ -31,8 +31,14 @@ thin_points <- function(x, npoint) {
 #' @param npoint An indication of the total number of points to plot.
 #' @inheritParams fwa_mapview
 #' @export
-fwa_mapview_rms <- function(x, layer = NULL, zcol = "rm", legend = FALSE, npoint = 250,
-                            ...) {
+fwa_mapview_rms <- function(
+  x,
+  layer = NULL,
+  zcol = "rm",
+  legend = FALSE,
+  npoint = 250,
+  ...
+) {
   rlang::check_installed("mapview")
 
   chk_s3_class(x, "sf")

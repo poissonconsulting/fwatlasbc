@@ -29,6 +29,8 @@ test_that("fwa_find_stream_names works if same", {
 test_that("fwa_find_stream_names deals with multiple matches", {
   expect_identical(
     fwa_find_stream_names("adams"),
-    dplyr::tibble(stream_name = c("Adams Creek", "Adams River", "Marsh Adams Creek"))
+    dplyr::tibble(
+      stream_name = c("Adams Creek", "Adams River", "Marsh Adams Creek")
+    )
   )
 })

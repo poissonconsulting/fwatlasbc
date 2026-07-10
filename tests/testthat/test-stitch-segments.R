@@ -1,7 +1,8 @@
 test_that("stiches together one stream that is straight", {
   test_stream <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE))
       )
@@ -29,8 +30,16 @@ test_that("stiches together one stream that is zig zag", {
     sf::st_multilinestring(
       c(
         sf::st_linestring(matrix(c(0, 0, 1, 0.4), ncol = 2, byrow = TRUE)),
-        sf::st_linestring(matrix(c(1.05, 0.6, 1.05, 2), ncol = 2, byrow = TRUE)),
-        sf::st_linestring(matrix(c(1.05, 2.10, -1.0,  1), ncol = 2, byrow = TRUE)),
+        sf::st_linestring(matrix(
+          c(1.05, 0.6, 1.05, 2),
+          ncol = 2,
+          byrow = TRUE
+        )),
+        sf::st_linestring(matrix(
+          c(1.05, 2.10, -1.0, 1),
+          ncol = 2,
+          byrow = TRUE
+        )),
         sf::st_linestring(matrix(c(-1.5, 1, -1, 3), ncol = 2, byrow = TRUE))
       )
     ),
@@ -55,7 +64,8 @@ test_that("stiches together one stream that is zig zag", {
 test_that("stiches each individual stream", {
   test_stream_1 <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE))
       )
@@ -67,8 +77,16 @@ test_that("stiches each individual stream", {
     sf::st_multilinestring(
       c(
         sf::st_linestring(matrix(c(0, 0, 1, 0.4), ncol = 2, byrow = TRUE)),
-        sf::st_linestring(matrix(c(1.05, 0.6, 1.05, 2), ncol = 2, byrow = TRUE)),
-        sf::st_linestring(matrix(c(1.05, 2.10, -1.0,  1), ncol = 2, byrow = TRUE)),
+        sf::st_linestring(matrix(
+          c(1.05, 0.6, 1.05, 2),
+          ncol = 2,
+          byrow = TRUE
+        )),
+        sf::st_linestring(matrix(
+          c(1.05, 2.10, -1.0, 1),
+          ncol = 2,
+          byrow = TRUE
+        )),
         sf::st_linestring(matrix(c(-1.5, 1, -1, 3), ncol = 2, byrow = TRUE))
       )
     ),
@@ -93,7 +111,8 @@ test_that("stiches each individual stream", {
 test_that("geometry column has a different name", {
   test_stream <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE))
       )
@@ -120,7 +139,8 @@ test_that("geometry column has a different name", {
 test_that("errors if not active sf object", {
   test_stream <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE))
       )
     ),
@@ -139,7 +159,8 @@ test_that("errors if not active sf object", {
 test_that("errors if not a dataframe", {
   test_stream <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE))
       )
     ),
@@ -152,7 +173,8 @@ test_that("errors if not a dataframe", {
 test_that("errors if tolerance is negative", {
   test_stream <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE))
       )
     ),
@@ -172,7 +194,8 @@ test_that("errors if tolerance is negative", {
 test_that("errors if tolerance is 0", {
   test_stream <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE))
       )
     ),
@@ -192,7 +215,8 @@ test_that("errors if tolerance is 0", {
 test_that("returns empty dataframe if empty", {
   test_stream <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE))
       )
     ),
@@ -206,7 +230,7 @@ test_that("returns empty dataframe if empty", {
   ) |>
     sf::st_set_geometry("geometry")
 
-  df <- df[0,]
+  df <- df[0, ]
 
   output <- fwa_stitch_segments(df)
 
@@ -215,7 +239,7 @@ test_that("returns empty dataframe if empty", {
 
 test_that("early exit if only linestrings", {
   test_stream_1 <- sf::st_sfc(
-      sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+    sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
     crs = 26911
   )
 
@@ -239,7 +263,8 @@ test_that("early exit if only linestrings", {
 test_that("tolerance doesn't let one segment be created so returns multilinestring even if linestring present", {
   test_stream_1 <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE))
       )
@@ -264,14 +289,18 @@ test_that("tolerance doesn't let one segment be created so returns multilinestri
   expect_s3_class(output, "data.frame")
   expect_s3_class(output, "sf")
   expect_equal(colnames(output), c("name", "blk", "geometry"))
-  expect_equal(as.character(sf::st_geometry_type(output)), c("MULTILINESTRING", "LINESTRING"))
+  expect_equal(
+    as.character(sf::st_geometry_type(output)),
+    c("MULTILINESTRING", "LINESTRING")
+  )
   expect_equal(nrow(output), 2)
 })
 
 test_that("behaviour if nothing to stitch", {
   test_stream_1 <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1, 1, 2, 2), ncol = 2, byrow = TRUE))
       )
     ),
@@ -297,7 +326,8 @@ test_that("behaviour if nothing to stitch", {
 test_that("when geometry column is present but not your active sfc column it returns both", {
   test_stream_1 <- sf::st_sfc(
     sf::st_multilinestring(
-      c(sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
+      c(
+        sf::st_linestring(matrix(c(0, 0, 1, 1), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(1.05, 1.05, 2, 2), ncol = 2, byrow = TRUE)),
         sf::st_linestring(matrix(c(2.1, 2.1, 3, 3), ncol = 2, byrow = TRUE))
       )

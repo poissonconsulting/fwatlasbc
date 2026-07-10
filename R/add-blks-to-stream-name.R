@@ -9,7 +9,10 @@
 #' @export
 #' @examples
 #' fwa_add_blks_to_stream_name(data.frame(stream_name = "Sangan River"))
-fwa_add_blks_to_stream_name <- function(x, stream_name = fwatlasbc::fwa_stream_name) {
+fwa_add_blks_to_stream_name <- function(
+  x,
+  stream_name = fwatlasbc::fwa_stream_name
+) {
   check_data(x, values = list(stream_name = c("", NA)))
   chk_not_subset(colnames(x), "blk")
 

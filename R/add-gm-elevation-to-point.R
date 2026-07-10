@@ -4,7 +4,10 @@ add_gm_elevation_to_point <- function(x, digits, key) {
     sf::st_coordinates() |>
     dplyr::as_tibble() |>
     dplyr::select(lon = "X", lat = "Y") |>
-    dplyr::mutate(lon = round(.data$lon, digits), lat = round(.data$lat, digits))
+    dplyr::mutate(
+      lon = round(.data$lon, digits),
+      lat = round(.data$lat, digits)
+    )
 
   elevation <- googleway::google_elevation(coords, key = key)$results$elevation
   if (is.null(elevation)) {
@@ -28,9 +31,16 @@ add_gm_elevation_to_point <- function(x, digits, key) {
 #' rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))
 #' fwa_add_gm_elevation_to_point(rm)
 #' }
-fwa_add_gm_elevation_to_point <- function(x, chunk_size = 300L, digits = 7,
-                                          key = Sys.getenv("GOOGLE_MAPS_ELEVATION_API_KEY")) {
-  rlang::check_installed("googleway", reason = "to get elevations from Google Maps.")
+fwa_add_gm_elevation_to_point <- function(
+  x,
+  chunk_size = 300L,
+  digits = 7,
+  key = Sys.getenv("GOOGLE_MAPS_ELEVATION_API_KEY")
+) {
+  rlang::check_installed(
+    "googleway",
+    reason = "to get elevations from Google Maps."
+  )
 
   chk_s3_class(x, "sf")
   chk_s3_class(sf::st_geometry(x), "sfc_POINT")

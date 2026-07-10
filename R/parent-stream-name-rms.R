@@ -8,7 +8,11 @@
 #' @param stream_name A data frame with character column stream_name and integer column blk. There must be no more than one blk for the stream names specified.
 #' @return A character vector of the parent blue line keys.
 #' @export
-fwa_parent_stream_name_rms <- function(x, rms, stream_name = fwatlasbc::fwa_stream_name) {
+fwa_parent_stream_name_rms <- function(
+  x,
+  rms,
+  stream_name = fwatlasbc::fwa_stream_name
+) {
   chk_character_or_factor(x)
 
   check_names(rms, c("blk", "parent_blk"))
@@ -37,11 +41,17 @@ fwa_parent_stream_name_rms <- function(x, rms, stream_name = fwatlasbc::fwa_stre
     dplyr::filter(.data$stream_name %in% x)
 
   if (anyDuplicated(sname$stream_name)) {
-    abort_chk("Each `x` stream_name value must have one blk value in `stream_name`.")
+    abort_chk(
+      "Each `x` stream_name value must have one blk value in `stream_name`."
+    )
   }
 
-  if (!length(x)) return(character(0))
-  if (!nrow(rms)) return(rep(NA_character_, length(x)))
+  if (!length(x)) {
+    return(character(0))
+  }
+  if (!nrow(rms)) {
+    return(rep(NA_character_, length(x)))
+  }
 
   x <- x |>
     dplyr::tibble(stream_name = x) |>

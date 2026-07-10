@@ -33,7 +33,9 @@ fwa_add_intersection_to_geometry <- function(x, y) {
   chk_unique(y$name)
   chk_valid_name(y$name)
 
-  if (!nrow(y)) return(x)
+  if (!nrow(y)) {
+    return(x)
+  }
 
   splits <- lapply(y$name, get_intersection_geometry, x = x, y = y)
   names(splits) <- y$name

@@ -19,8 +19,17 @@ test_that("fwa_convert_stream_names_to_blks errors", {
 })
 
 test_that("fwa_convert_stream_names_to_blks factors", {
-  expect_identical(fwa_convert_stream_names_to_blks(factor("a name")), 576524986L)
-  expect_identical(fwa_convert_stream_names_to_blks(factor("a name", levels = c("a name0", "a name"))), 576524986L)
+  expect_identical(
+    fwa_convert_stream_names_to_blks(factor("a name")),
+    576524986L
+  )
+  expect_identical(
+    fwa_convert_stream_names_to_blks(factor(
+      "a name",
+      levels = c("a name0", "a name")
+    )),
+    576524986L
+  )
 })
 
 test_that("fwa_convert_stream_names_to_blks null", {

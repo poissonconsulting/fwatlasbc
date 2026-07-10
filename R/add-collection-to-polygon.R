@@ -2,19 +2,31 @@ rename_collection <- function(collection) {
   chk_string(collection) # +chk
 
   wch <- which(fwatlasbc::fwa_collection_name$collection_name == collection)
-  if (!length(wch)) return(collection)
+  if (!length(wch)) {
+    return(collection)
+  }
   fwatlasbc::fwa_collection_name$collection[wch]
 }
 
-add_collection_to_polygon <- function(x, collection, filter, limit, offset,
-                                      properties, transform, epsg, nocache) {
+add_collection_to_polygon <- function(
+  x,
+  collection,
+  filter,
+  limit,
+  offset,
+  properties,
+  transform,
+  epsg,
+  nocache
+) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
   polygon <- sf::st_geometry(x)
 
   bbox <- bbox(polygon)
 
-  coll <- fwapgr::fwa_query_collection(collection,
+  coll <- fwapgr::fwa_query_collection(
+    collection,
     filter = filter,
     limit = limit,
     offset = offset,
@@ -27,10 +39,14 @@ add_collection_to_polygon <- function(x, collection, filter, limit, offset,
 
   polygon <- sf::st_transform(polygon, epsg)
   polygon <- sf::st_make_valid(polygon)
-  suppressMessages(coll <- coll[sf::st_intersects(coll, polygon, sparse = FALSE)[, 1], ])
+  suppressMessages(
+    coll <- coll[sf::st_intersects(coll, polygon, sparse = FALSE)[, 1], ]
+  )
   coll <- sf::st_make_valid(coll)
   if (x$..fwa_intersect) {
-    suppressWarnings(coll <- sf::st_intersection(coll, polygon, validate = TRUE))
+    suppressWarnings(
+      coll <- sf::st_intersection(coll, polygon, validate = TRUE)
+    )
     coll <- sf::st_make_valid(coll)
   }
   coll <- coll |>
@@ -67,15 +83,17 @@ add_collection_to_polygon <- function(x, collection, filter, limit, offset,
 #' fwa_add_collection_to_polygon(watershed)
 #' }
 fwa_add_collection_to_polygon <- function(
-    x, collection = "stream_network",
-    intersect = FALSE,
-    filter = NULL,
-    limit = 10000,
-    offset = 0,
-    properties = NULL,
-    transform = NULL,
-    epsg = getOption("fwa.epsg", 3005),
-    nocache = getOption("fwa.nocache", FALSE)) {
+  x,
+  collection = "stream_network",
+  intersect = FALSE,
+  filter = NULL,
+  limit = 10000,
+  offset = 0,
+  properties = NULL,
+  transform = NULL,
+  epsg = getOption("fwa.epsg", 3005),
+  nocache = getOption("fwa.nocache", FALSE)
+) {
   chk_s3_class(x, "sf")
   chk_s3_class(sf::st_geometry(x), "sfc_POLYGON")
 
@@ -93,11 +111,16 @@ fwa_add_collection_to_polygon <- function(
       ..fwa_intersect = intersect
     ) |>
     group_split_sf(.data$..fwa_id) |>
-    lapply(add_collection_to_polygon,
+    lapply(
+      add_collection_to_polygon,
       collection = collection,
-      filter = filter, limit = limit,
-      offset = offset, properties = properties, transform = transform,
-      epsg = epsg, nocache = nocache
+      filter = filter,
+      limit = limit,
+      offset = offset,
+      properties = properties,
+      transform = transform,
+      epsg = epsg,
+      nocache = nocache
     ) |>
     dplyr::bind_rows()
 

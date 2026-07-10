@@ -9,9 +9,9 @@ adjust_watershed <- function(wshed, x, epsg, nocache) {
   fwshed <- fwa_watershed_hex(
     blue_line_key = x$blk,
     downstream_route_measure = x$rm,
-    epsg = epsg, nocache = nocache
+    epsg = epsg,
+    nocache = nocache
   )
-
 
   fgeometry <- sf::st_union(fwshed$geometry)
 
@@ -60,16 +60,20 @@ add_watershed_to_blk <- function(x, epsg, nocache) {
 #' \dontrun{
 #' fwa_add_watershed_to_blk(data.frame(blk = 356308001))
 #' }
-fwa_add_watershed_to_blk <- function(x,
-                                     exclude = FALSE,
-                                     epsg = getOption("fwa.epsg", 3005),
-                                     nocache = getOption("fwa.nocache", FALSE)) {
+fwa_add_watershed_to_blk <- function(
+  x,
+  exclude = FALSE,
+  epsg = getOption("fwa.epsg", 3005),
+  nocache = getOption("fwa.nocache", FALSE)
+) {
   check_data(x)
   check_dim(x, dim = nrow, values = TRUE)
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
   chk_gt(x$blk)
-  if (!"rm" %in% names(x)) x$rm <- NA_real_
+  if (!"rm" %in% names(x)) {
+    x$rm <- NA_real_
+  }
   chk_numeric(x$rm)
   chk_gte(x$rm)
   x$rm[is.na(x$rm)] <- 0

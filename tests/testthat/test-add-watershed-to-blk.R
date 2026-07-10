@@ -26,7 +26,8 @@ test_that("fwa_add_watershed_to_blk works 360883036 rm = 10", {
 test_that("fwa_add_watershed_to_blk exclude excludes", {
   rlang::local_options(nocache = TRUE)
 
-  x <- fwa_add_watershed_to_blk(data.frame(blk = 360883036, rm = 10),
+  x <- fwa_add_watershed_to_blk(
+    data.frame(blk = 360883036, rm = 10),
     exclude = TRUE
   )
   expect_s3_class(x, "sf")
@@ -40,5 +41,8 @@ test_that("fwa_add_watershed_to_blk exclude excludes", {
 test_that("fwa_add_watershed_to_blk doesn't work when rm = 0 for 360883036 even with exclude", {
   rlang::local_options(nocache = TRUE)
 
-  chk::expect_chk_error(fwa_add_watershed_to_blk(data.frame(blk = 360883036), exclude = TRUE))
+  chk::expect_chk_error(fwa_add_watershed_to_blk(
+    data.frame(blk = 360883036),
+    exclude = TRUE
+  ))
 })

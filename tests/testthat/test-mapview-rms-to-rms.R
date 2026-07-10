@@ -1,5 +1,8 @@
 test_that("fwa_mapview_rms works", {
-  x <- fwa_add_rms_to_blk(data.frame(blk = c(356391970L, 356562108L)), interval = 5)
+  x <- fwa_add_rms_to_blk(
+    data.frame(blk = c(356391970L, 356562108L)),
+    interval = 5
+  )
   y <- x
   x$new_rm <- x$rm + 5L
 

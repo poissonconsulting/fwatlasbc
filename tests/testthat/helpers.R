@@ -8,8 +8,12 @@ expect_snapshot_data <- function(x, name, digits = 4, tol = 1e-3) {
   x <- dplyr::as_tibble(x)
   x$geometry <- NULL
   fun <- function(x) {
-    if (!is.double(x)) return(x)
-    if (all(is.na(x) | x == round(x))) return(x)
+    if (!is.double(x)) {
+      return(x)
+    }
+    if (all(is.na(x) | x == round(x))) {
+      return(x)
+    }
     x[!is.na(x) & abs(x) < tol] <- 0
     signif(x, digits = digits)
   }
