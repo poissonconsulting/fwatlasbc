@@ -1,5 +1,9 @@
 # Changelog
 
+## fwatlasbc 0.0.1.9025
+
+- Same as previous version.
+
 ## fwatlasbc 0.0.1.9024
 
 - Same as previous version.
