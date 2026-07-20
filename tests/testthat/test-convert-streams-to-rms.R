@@ -1,3 +1,20 @@
+test_that("fwa_convert_streams_to_rms works with a single stream (no parent)", {
+  linestring <- sf::st_linestring(
+    matrix(c(0, 0, 0, 100, 0, 200), ncol = 2, byrow = TRUE)
+  )
+  streams <- sf::st_sf(
+    blk = 1L,
+    geometry = sf::st_sfc(linestring, crs = 3005)
+  )
+  x <- fwa_convert_streams_to_rms(streams, interval = 50)
+  expect_s3_class(x, "sf")
+  expect_identical(nrow(x), 5L)
+  expect_s3_class(x$geometry, "sfc_POINT")
+  expect_identical(x$rm, c(0L, 50L, 100L, 150L, 200L))
+  expect_true(all(is.na(x$parent_blk)))
+  expect_true(all(is.na(x$parent_rm)))
+})
+
 test_that("fwa_convert_streams_to_rms", {
   watershed <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 1000))
   network <- fwa_add_collection_to_polygon(watershed)
