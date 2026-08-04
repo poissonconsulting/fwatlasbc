@@ -2,6 +2,18 @@ get_parent_blk_rm <- function(x, y, gap) {
   y <- y |>
     dplyr::anti_join(as_tibble(x), by = "blk")
 
+  if (nrow(y) == 0) {
+    return(
+      x |>
+        as_tibble() |>
+        dplyr::mutate(
+          parent_blk = NA_integer_,
+          parent_rm = NA_real_
+        ) |>
+        dplyr::select("blk", "parent_blk", "parent_rm")
+    )
+  }
+
   x <- x |>
     dplyr::mutate(
       parent_blk = sf::st_nearest_feature(x, y),
