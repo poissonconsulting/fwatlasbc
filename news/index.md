@@ -1,5 +1,10 @@
 # Changelog
 
+## fwatlasbc 0.0.1.9026
+
+- Fixes error when convert_streams_to_rms() is used on a single stream
+  (#114).
+
 ## fwatlasbc 0.0.1.9025
 
 - Same as previous version.
