@@ -1,4 +1,9 @@
-<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+<!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
+
+# fwatlasbc 0.0.1.9026
+
+- Fixes error when convert_streams_to_rms() is used on a single stream (#114).
+
 
 # fwatlasbc 0.0.1.9025
 
