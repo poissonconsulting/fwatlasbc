@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 `fwatlasbc` is an R package for querying data from the [Freshwater Atlas](https://www2.gov.bc.ca/gov/content/data/geographic-data-services/topographic-data/freshwater) (FWA) of British Columbia. 
 Spatial data are returned as [simple features](https://github.com/r-spatial/sf).
 
-`fwatlasbc` wraps [`fwapgr`](https://github.com/poissonconsulting/fwapgr) an R package that uses the [fwapg API](https://www.hillcrestgeo.ca/fwapg/index.html).
+`fwatlasbc` wraps [`fwapgr`](https://github.com/poissonconsulting/fwapgr), an R package that uses the [fwapg API](https://www.hillcrestgeo.ca/fwapg/index.html).
 
 ## Installation
 

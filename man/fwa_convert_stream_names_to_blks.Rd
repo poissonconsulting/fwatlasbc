@@ -10,11 +10,11 @@ fwa_convert_stream_names_to_blks(names)
 \item{names}{A character vector of stream names.}
 }
 \value{
-An positive integer vector of blue line keys.
+A positive integer vector of blue line keys.
 }
 \description{
 Each stream name is converted to a blue line key
-by calculating it's integer hash.
+by calculating its integer hash.
 }
 \details{
 This function is only expected to be used when a blue line
