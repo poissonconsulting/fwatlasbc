@@ -25,7 +25,7 @@ mock_elevation <- function(x, ...) {
 test_that("fwa_flip_streams flips streams oriented downstream", {
   local_mocked_bindings(fwa_add_elevatr_elevation_to_point = mock_elevation)
   streams <- make_flip_streams()
-  x <- fwa_flip_streams(streams)
+  x <- fwa_flip_streams(streams, source = "elevatr")
   expect_s3_class(x, "sf")
   expect_identical(colnames(x), colnames(streams))
   expect_identical(x$id, streams$id)
@@ -41,7 +41,7 @@ test_that("fwa_flip_streams flips streams oriented downstream", {
 test_that("fwa_flip_streams no flips", {
   local_mocked_bindings(fwa_add_elevatr_elevation_to_point = mock_elevation)
   streams <- make_flip_streams()[c(1, 3), ]
-  x <- fwa_flip_streams(streams)
+  x <- fwa_flip_streams(streams, source = "elevatr")
   expect_identical(x, streams)
 })
 
@@ -49,9 +49,9 @@ test_that("fwa_flip_streams respects min_difference", {
   local_mocked_bindings(fwa_add_elevatr_elevation_to_point = mock_elevation)
   streams <- make_flip_streams()
   # stream 2 drops 100 m from start to end
-  x <- fwa_flip_streams(streams, min_difference = 100)
+  x <- fwa_flip_streams(streams, source = "elevatr", min_difference = 100)
   expect_identical(x, streams)
-  x <- fwa_flip_streams(streams, min_difference = 99)
+  x <- fwa_flip_streams(streams, source = "elevatr", min_difference = 99)
   expect_identical(
     sf::st_coordinates(x$geometry[[2]]),
     sf::st_coordinates(streams$geometry[[2]])[2:1, ]
@@ -78,7 +78,7 @@ test_that("fwa_flip_streams passes zoom", {
       mock_elevation(x)
     }
   )
-  fwa_flip_streams(make_flip_streams(), zoom = 10)
+  fwa_flip_streams(make_flip_streams(), source = "elevatr", zoom = 10)
 })
 
 test_that("fwa_flip_streams missing elevations not flipped", {
@@ -89,19 +89,33 @@ test_that("fwa_flip_streams missing elevations not flipped", {
     }
   )
   streams <- make_flip_streams()
-  expect_identical(fwa_flip_streams(streams), streams)
+  expect_identical(fwa_flip_streams(streams, source = "elevatr"), streams)
 })
 
 test_that("fwa_flip_streams errors with invalid arguments", {
   streams <- make_flip_streams()
   expect_error(fwa_flip_streams(streams, source = "other"))
-  expect_error(fwa_flip_streams(streams, min_difference = -1))
-  expect_error(fwa_flip_streams(streams, zoom = 15))
+  expect_error(fwa_flip_streams(streams, source = "elevatr", min_difference = -1))
+  expect_error(fwa_flip_streams(streams, source = "elevatr", zoom = 15))
+})
+
+test_that("fwa_flip_streams without source soft-deprecated and uses google", {
+  local_mocked_bindings(
+    fwa_add_gm_elevation_to_point = mock_elevation,
+    fwa_add_elevatr_elevation_to_point = function(...) stop("wrong source")
+  )
+  rlang::local_options(lifecycle_verbosity = "warning")
+  streams <- make_flip_streams()
+  expect_snapshot(x <- fwa_flip_streams(streams))
+  expect_identical(
+    sf::st_coordinates(x$geometry[[2]]),
+    sf::st_coordinates(streams$geometry[[2]])[2:1, ]
+  )
 })
 
 test_that("fwa_flip_streams zero rows", {
   streams <- make_flip_streams()[0, ]
-  expect_identical(fwa_flip_streams(streams), streams)
+  expect_identical(fwa_flip_streams(streams, source = "elevatr"), streams)
 })
 
 test_that("fwa_flip_streams errors with non-linestrings", {
@@ -124,7 +138,7 @@ test_that("fwa_flip_streams works with elevatr elevation", {
     dplyr::select("blk")
   upstream <- streams
   upstream$geometry[[1]] <- reverse_linestring(streams$geometry[[1]])
-  x <- fwa_flip_streams(upstream)
-  y <- fwa_flip_streams(streams)
+  x <- fwa_flip_streams(upstream, source = "elevatr")
+  y <- fwa_flip_streams(streams, source = "elevatr")
   expect_identical(sf::st_geometry(x), sf::st_geometry(y))
 })

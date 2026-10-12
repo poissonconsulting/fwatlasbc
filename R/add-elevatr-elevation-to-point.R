@@ -49,3 +49,28 @@ add_elevation_to_point <- function(x, source, zoom) {
   }
   fwa_add_gm_elevation_to_point(x)
 }
+
+check_source <- function(
+  source,
+  fun,
+  warn = TRUE,
+  user_env = rlang::caller_env(2)
+) {
+  if (is.null(source)) {
+    if (warn) {
+      lifecycle::deprecate_soft(
+        "0.0.2",
+        I(paste0("Calling `", fun, "()` without specifying `source`")),
+        details = paste0(
+          "The default `source = \"google\"` is being used. ",
+          "Please set `source = \"google\"` or `source = \"elevatr\"`."
+        ),
+        user_env = user_env
+      )
+    }
+    source <- "google"
+  }
+  chk_string(source)
+  chk_subset(source, c("elevatr", "google"))
+  source
+}

@@ -101,7 +101,7 @@ fwa_convert_streams_to_rms <- function(
   end = NULL,
   elevation = FALSE,
   reverse = integer(),
-  source = "elevatr",
+  source = NULL,
   zoom = 12
 ) {
   chk_s3_class(x, "sf")
@@ -121,14 +121,15 @@ fwa_convert_streams_to_rms <- function(
   }
   chk_gt(end)
 
+  chk_flag(elevation)
+
   chk_whole_numeric(reverse)
   chk_not_any_na(reverse)
   chk_gt(reverse)
   chk_unique(reverse)
   chk_subset(reverse, x$blk)
 
-  chk_string(source)
-  chk_subset(source, c("elevatr", "google"))
+  source <- check_source(source, "fwa_convert_streams_to_rms", warn = elevation)
 
   chk_whole_number(zoom)
   chk_range(zoom, c(1, 14))

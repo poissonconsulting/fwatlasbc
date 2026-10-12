@@ -4,7 +4,7 @@
 \alias{fwa_flip_streams}
 \title{Flip Streams}
 \usage{
-fwa_flip_streams(x, source = "elevatr", zoom = 12, min_difference = 5)
+fwa_flip_streams(x, source = NULL, zoom = 12, min_difference = 5)
 }
 \arguments{
 \item{x}{An sf tibble with a column blk and linestrings of streams
@@ -12,7 +12,9 @@ fwa_flip_streams(x, source = "elevatr", zoom = 12, min_difference = 5)
 
 \item{source}{A string of the source of the elevations.
 Possible values are \code{"elevatr"} (no API key required) and
-\code{"google"} (requires a Google Maps Elevation API key).}
+\code{"google"} (requires a Google Maps Elevation API key).
+If \code{NULL} (the default) \code{"google"} is used but this is
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} and \code{source} should be set explicitly.}
 
 \item{zoom}{A whole number between 1 and 14 of the zoom level of the
 Terrain Tiles.

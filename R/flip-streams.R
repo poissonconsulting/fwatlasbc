@@ -14,6 +14,8 @@
 #' @param source A string of the source of the elevations.
 #' Possible values are `"elevatr"` (no API key required) and
 #' `"google"` (requires a Google Maps Elevation API key).
+#' If `NULL` (the default) `"google"` is used but this is
+#' `r lifecycle::badge("deprecated")` and `source` should be set explicitly.
 #' @param min_difference A non-negative number of the minimum difference (m)
 #' between the elevations of the start and end of a linestring
 #' for it to be reversed.
@@ -34,7 +36,7 @@
 #' }
 fwa_flip_streams <- function(
   x,
-  source = "elevatr",
+  source = NULL,
   zoom = 12,
   min_difference = 5
 ) {
@@ -46,8 +48,7 @@ fwa_flip_streams <- function(
   chk_not_any_na(x$blk)
   chk_gt(x$blk)
 
-  chk_string(source)
-  chk_subset(source, c("elevatr", "google"))
+  source <- check_source(source, "fwa_flip_streams")
 
   chk_whole_number(zoom)
   chk_range(zoom, c(1, 14))

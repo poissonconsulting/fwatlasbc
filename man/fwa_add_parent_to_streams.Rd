@@ -9,7 +9,7 @@ fwa_add_parent_to_streams(
   gap = 1,
   elevation = FALSE,
   reverse = integer(),
-  source = "elevatr",
+  source = NULL,
   zoom = 12
 )
 }
@@ -30,7 +30,9 @@ ignoring elevation.}
 \item{source}{A string of the source of the elevations if
 \code{elevation = TRUE}.
 Possible values are \code{"elevatr"} (no API key required) and
-\code{"google"} (requires a Google Maps Elevation API key).}
+\code{"google"} (requires a Google Maps Elevation API key).
+If \code{NULL} (the default) and \code{elevation = TRUE} \code{"google"} is used but this
+is \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} and \code{source} should be set explicitly.}
 
 \item{zoom}{A whole number between 1 and 14 of the zoom level of the
 Terrain Tiles.

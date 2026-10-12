@@ -91,6 +91,8 @@ start_points <- function(x, elevation, reverse, source, zoom) {
 #' `elevation = TRUE`.
 #' Possible values are `"elevatr"` (no API key required) and
 #' `"google"` (requires a Google Maps Elevation API key).
+#' If `NULL` (the default) and `elevation = TRUE` `"google"` is used but this
+#' is `r lifecycle::badge("deprecated")` and `source` should be set explicitly.
 #' @param zoom A whole number between 1 and 14 of the zoom level of the
 #' Terrain Tiles.
 #' Higher zoom levels have a finer resolution but take longer to download.
@@ -109,7 +111,7 @@ fwa_join_stream_segments <- function(
   x,
   elevation = FALSE,
   reverse = integer(),
-  source = "elevatr",
+  source = NULL,
   zoom = 12
 ) {
   chk_s3_class(x, "sf")
@@ -129,8 +131,7 @@ fwa_join_stream_segments <- function(
   chk_unique(reverse)
   chk_subset(reverse, x$blk)
 
-  chk_string(source)
-  chk_subset(source, c("elevatr", "google"))
+  source <- check_source(source, "fwa_join_stream_segments", warn = elevation)
 
   chk_whole_number(zoom)
   chk_range(zoom, c(1, 14))

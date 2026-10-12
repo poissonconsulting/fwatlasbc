@@ -30,7 +30,7 @@ fwa_add_parent_to_streams <- function(
   gap = 1,
   elevation = FALSE,
   reverse = integer(),
-  source = "elevatr",
+  source = NULL,
   zoom = 12
 ) {
   chk_s3_class(x, "sf")
@@ -52,8 +52,7 @@ fwa_add_parent_to_streams <- function(
   chk_unique(reverse)
   chk_subset(reverse, x$blk)
 
-  chk_string(source)
-  chk_subset(source, c("elevatr", "google"))
+  source <- check_source(source, "fwa_add_parent_to_streams", warn = elevation)
 
   chk_whole_number(zoom)
   chk_range(zoom, c(1, 14))
