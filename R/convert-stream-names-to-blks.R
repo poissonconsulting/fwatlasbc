@@ -1,7 +1,7 @@
 #' Converts Stream Names to Blue Line Keys
 #'
 #' Each stream name is converted to a blue line key
-#' by calculating it's integer hash.
+#' by calculating its integer hash.
 #'
 #' This function is only expected to be used when a blue line
 #' key does not already exist.
