@@ -91,7 +91,10 @@ start_points <- function(x, elevation, reverse, source, zoom) {
 #' `elevation = TRUE`.
 #' Possible values are `"elevatr"` (no API key required) and
 #' `"google"` (requires a Google Maps Elevation API key).
-#' @inheritParams fwa_add_elevatr_elevation_to_point
+#' @param zoom A whole number between 1 and 14 of the zoom level of the
+#' Terrain Tiles.
+#' Higher zoom levels have a finer resolution but take longer to download.
+#' Ignored if `elevation = FALSE` or `source = "google"`.
 #' @return An sf tibble with the columns blk and sfc column point geometry.
 #' @export
 #' @seealso [`fwa_convert_streams_to_rms()`]

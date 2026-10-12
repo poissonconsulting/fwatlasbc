@@ -17,7 +17,10 @@
 #' @param min_difference A non-negative number of the minimum difference (m)
 #' between the elevations of the start and end of a linestring
 #' for it to be reversed.
-#' @inheritParams fwa_add_elevatr_elevation_to_point
+#' @param zoom A whole number between 1 and 14 of the zoom level of the
+#' Terrain Tiles.
+#' Higher zoom levels have a finer resolution but take longer to download.
+#' Ignored if `source = "google"`.
 #' @return A copy of `x` with the linestrings oriented upstream.
 #' @export
 #' @seealso [`fwa_add_elevatr_elevation_to_point()`],

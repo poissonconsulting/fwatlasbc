@@ -29,7 +29,8 @@ Possible values are \code{"elevatr"} (no API key required) and
 
 \item{zoom}{A whole number between 1 and 14 of the zoom level of the
 Terrain Tiles.
-Higher zoom levels have a finer resolution but take longer to download.}
+Higher zoom levels have a finer resolution but take longer to download.
+Ignored if \code{elevation = FALSE} or \code{source = "google"}.}
 }
 \value{
 An sf tibble with the columns blk and sfc column point geometry.

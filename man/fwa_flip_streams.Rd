@@ -16,7 +16,8 @@ Possible values are \code{"elevatr"} (no API key required) and
 
 \item{zoom}{A whole number between 1 and 14 of the zoom level of the
 Terrain Tiles.
-Higher zoom levels have a finer resolution but take longer to download.}
+Higher zoom levels have a finer resolution but take longer to download.
+Ignored if \code{source = "google"}.}
 
 \item{min_difference}{A non-negative number of the minimum difference (m)
 between the elevations of the start and end of a linestring
