@@ -20,34 +20,43 @@ join_strings <- function(x) {
     dplyr::filter(purrr::map_lgl(.data$geometry, is_linestring))
 }
 
-start_end_elevation <- function(x, reverse) {
+start_end_elevation <- function(x, elevation, reverse) {
   crs <- sf::st_crs(x)
 
   x_swap <- x |>
     dplyr::filter(.data$blk %in% reverse) |>
     dplyr::mutate(reverse = TRUE)
 
-  x <- x |>
-    dplyr::filter(!.data$blk %in% reverse) |>
-    sf::st_sf(sf_column_name = "start") |>
-    fwa_add_gm_elevation_to_point() |>
-    ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
-    as_tibble() |>
-    dplyr::rename(start_elevation = "elevation") |>
-    sf::st_sf(sf_column_name = "end") |>
-    fwa_add_gm_elevation_to_point() |>
-    ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
-    as_tibble() |>
-    dplyr::rename(end_elevation = "elevation") |>
-    dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
-    sf::st_sf() |>
-    dplyr::bind_rows(x_swap)
+  if (!elevation) {
+    x <- x |>
+      dplyr::filter(!.data$blk %in% reverse) |>
+      dplyr::mutate(reverse = FALSE) |>
+      dplyr::bind_rows(x_swap)
+  } else {
+    x <- x |>
+      dplyr::filter(!.data$blk %in% reverse) |>
+      sf::st_sf(sf_column_name = "start") |>
+      fwa_add_gm_elevation_to_point() |>
+      ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
+      as_tibble() |>
+      dplyr::rename(start_elevation = "elevation") |>
+      sf::st_sf(sf_column_name = "end") |>
+      fwa_add_gm_elevation_to_point() |>
+      ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
+      as_tibble() |>
+      dplyr::rename(end_elevation = "elevation") |>
+      dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
+      sf::st_sf() |>
+      dplyr::bind_rows(x_swap)
+  }
 
   x |>
     dplyr::filter(.data$reverse) |>
     reverse_linestrings() |>
     dplyr::bind_rows(dplyr::filter(x, !.data$reverse)) |>
-    dplyr::select(!c("start_elevation", "end_elevation", "reverse")) |>
+    dplyr::select(
+      !dplyr::any_of(c("start_elevation", "end_elevation", "reverse"))
+    ) |>
     sf::st_set_crs(crs)
 }
 
@@ -62,7 +71,7 @@ start_points <- function(x, elevation, reverse) {
 
   if (elevation || length(reverse)) {
     x <- x |>
-      start_end_elevation(reverse)
+      start_end_elevation(elevation, reverse)
   }
   x |>
     dplyr::select(!c("end", "start"))
