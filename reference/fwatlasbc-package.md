@@ -1,6 +1,10 @@
 # fwatlasbc: Freshwater Atlas British Columbia
 
-What the package does (one paragraph).
+Queries the Freshwater Atlas (FWA) of British Columbia through the
+'fwapg' API <https://www.hillcrestgeo.ca/fwapg/index.html> via the
+'fwapgr' package and returns spatial data as simple features ('sf').
+Also provides tools to convert streams to and from river meters, snap
+points to streams, and split, prune and join stream networks.
 
 ## See also
 

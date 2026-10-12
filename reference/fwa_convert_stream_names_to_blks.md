@@ -1,6 +1,6 @@
 # Converts Stream Names to Blue Line Keys
 
-Each stream name is converted to a blue line key by calculating it's
+Each stream name is converted to a blue line key by calculating its
 integer hash.
 
 ## Usage
@@ -17,7 +17,7 @@ fwa_convert_stream_names_to_blks(names)
 
 ## Value
 
-An positive integer vector of blue line keys.
+A positive integer vector of blue line keys.
 
 ## Details
 

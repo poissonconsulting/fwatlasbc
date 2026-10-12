@@ -6,7 +6,7 @@ Atlas](https://www2.gov.bc.ca/gov/content/data/geographic-data-services/topograp
 features](https://github.com/r-spatial/sf).
 
 `fwatlasbc` wraps
-[`fwapgr`](https://github.com/poissonconsulting/fwapgr) an R package
+[`fwapgr`](https://github.com/poissonconsulting/fwapgr), an R package
 that uses the [fwapg API](https://www.hillcrestgeo.ca/fwapg/index.html).
 
 ## Installation
