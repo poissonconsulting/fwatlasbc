@@ -20,7 +20,7 @@ join_strings <- function(x) {
     dplyr::filter(purrr::map_lgl(.data$geometry, is_linestring))
 }
 
-start_end_elevation <- function(x, elevation, reverse, source) {
+start_end_elevation <- function(x, elevation, reverse, source, zoom) {
   crs <- sf::st_crs(x)
 
   x_swap <- x |>
@@ -36,12 +36,12 @@ start_end_elevation <- function(x, elevation, reverse, source) {
     x <- x |>
       dplyr::filter(!.data$blk %in% reverse) |>
       sf::st_sf(sf_column_name = "start") |>
-      add_elevation_to_point(source) |>
+      add_elevation_to_point(source, zoom) |>
       ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
       as_tibble() |>
       dplyr::rename(start_elevation = "elevation") |>
       sf::st_sf(sf_column_name = "end") |>
-      add_elevation_to_point(source) |>
+      add_elevation_to_point(source, zoom) |>
       ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
       as_tibble() |>
       dplyr::rename(end_elevation = "elevation") |>
@@ -60,7 +60,7 @@ start_end_elevation <- function(x, elevation, reverse, source) {
     sf::st_set_crs(crs)
 }
 
-start_points <- function(x, elevation, reverse, source) {
+start_points <- function(x, elevation, reverse, source, zoom) {
   x <- x |>
     dplyr::mutate(
       start = sf::st_line_sample(x, sample = 0),
@@ -71,7 +71,7 @@ start_points <- function(x, elevation, reverse, source) {
 
   if (elevation || length(reverse)) {
     x <- x |>
-      start_end_elevation(elevation, reverse, source)
+      start_end_elevation(elevation, reverse, source, zoom)
   }
   x |>
     dplyr::select(!c("end", "start"))
@@ -91,6 +91,7 @@ start_points <- function(x, elevation, reverse, source) {
 #' `elevation = TRUE`.
 #' Possible values are `"elevatr"` (no API key required) and
 #' `"google"` (requires a Google Maps Elevation API key).
+#' @inheritParams fwa_add_elevatr_elevation_to_point
 #' @return An sf tibble with the columns blk and sfc column point geometry.
 #' @export
 #' @seealso [`fwa_convert_streams_to_rms()`]
@@ -105,7 +106,8 @@ fwa_join_stream_segments <- function(
   x,
   elevation = FALSE,
   reverse = integer(),
-  source = "elevatr"
+  source = "elevatr",
+  zoom = 12
 ) {
   chk_s3_class(x, "sf")
   check_names(x, "blk")
@@ -127,7 +129,10 @@ fwa_join_stream_segments <- function(
   chk_string(source)
   chk_subset(source, c("elevatr", "google"))
 
+  chk_whole_number(zoom)
+  chk_range(zoom, c(1, 14))
+
   x |>
     join_strings() |>
-    start_points(elevation, reverse, source)
+    start_points(elevation, reverse, source, zoom)
 }

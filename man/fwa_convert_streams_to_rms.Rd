@@ -11,7 +11,8 @@ fwa_convert_streams_to_rms(
   end = NULL,
   elevation = FALSE,
   reverse = integer(),
-  source = "elevatr"
+  source = "elevatr",
+  zoom = 12
 )
 }
 \arguments{
@@ -37,6 +38,10 @@ ignoring elevation.}
 \code{elevation = TRUE}.
 Possible values are \code{"elevatr"} (no API key required) and
 \code{"google"} (requires a Google Maps Elevation API key).}
+
+\item{zoom}{A whole number between 1 and 14 of the zoom level of the
+Terrain Tiles.
+Higher zoom levels have a finer resolution but take longer to download.}
 }
 \value{
 An sf tibble with the columns blk, integer column rm

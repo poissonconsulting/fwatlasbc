@@ -47,6 +47,7 @@ test_that("fwa_join_stream_segments errors with invalid source", {
     )
   )
   expect_error(fwa_join_stream_segments(streams, source = "other"))
+  expect_error(fwa_join_stream_segments(streams, zoom = 0))
 })
 
 test_that("fwa_join_stream_segments diff_name", {

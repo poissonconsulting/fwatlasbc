@@ -17,6 +17,7 @@
 #' @param min_difference A non-negative number of the minimum difference (m)
 #' between the elevations of the start and end of a linestring
 #' for it to be reversed.
+#' @inheritParams fwa_add_elevatr_elevation_to_point
 #' @return A copy of `x` with the linestrings oriented upstream.
 #' @export
 #' @seealso [`fwa_add_elevatr_elevation_to_point()`],
@@ -28,7 +29,12 @@
 #' network <- select(network, blk = blue_line_key)
 #' fwa_flip_streams(network)
 #' }
-fwa_flip_streams <- function(x, source = "elevatr", min_difference = 5) {
+fwa_flip_streams <- function(
+  x,
+  source = "elevatr",
+  zoom = 12,
+  min_difference = 5
+) {
   chk_s3_class(x, "sf")
   check_names(x, "blk")
   chk_s3_class(sf::st_geometry(x), "sfc_LINESTRING")
@@ -39,6 +45,9 @@ fwa_flip_streams <- function(x, source = "elevatr", min_difference = 5) {
 
   chk_string(source)
   chk_subset(source, c("elevatr", "google"))
+
+  chk_whole_number(zoom)
+  chk_range(zoom, c(1, 14))
 
   chk_number(min_difference)
   chk_gte(min_difference)
@@ -58,7 +67,7 @@ fwa_flip_streams <- function(x, source = "elevatr", min_difference = 5) {
       sf::st_cast("POINT")
   )
 
-  elevation <- add_elevation_to_point(points, source)$elevation
+  elevation <- add_elevation_to_point(points, source, zoom)$elevation
   flip <- elevation[seq_len(n)] - elevation[n + seq_len(n)] > min_difference
   flip <- flip & !is.na(flip)
 

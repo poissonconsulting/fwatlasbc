@@ -4,7 +4,7 @@
 \alias{fwa_flip_streams}
 \title{Flip Streams}
 \usage{
-fwa_flip_streams(x, source = "elevatr", min_difference = 5)
+fwa_flip_streams(x, source = "elevatr", zoom = 12, min_difference = 5)
 }
 \arguments{
 \item{x}{An sf tibble with a column blk and linestrings of streams
@@ -13,6 +13,10 @@ fwa_flip_streams(x, source = "elevatr", min_difference = 5)
 \item{source}{A string of the source of the elevations.
 Possible values are \code{"elevatr"} (no API key required) and
 \code{"google"} (requires a Google Maps Elevation API key).}
+
+\item{zoom}{A whole number between 1 and 14 of the zoom level of the
+Terrain Tiles.
+Higher zoom levels have a finer resolution but take longer to download.}
 
 \item{min_difference}{A non-negative number of the minimum difference (m)
 between the elevations of the start and end of a linestring

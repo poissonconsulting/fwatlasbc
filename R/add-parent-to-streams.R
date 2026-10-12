@@ -30,7 +30,8 @@ fwa_add_parent_to_streams <- function(
   gap = 1,
   elevation = FALSE,
   reverse = integer(),
-  source = "elevatr"
+  source = "elevatr",
+  zoom = 12
 ) {
   chk_s3_class(x, "sf")
   check_names(x, "blk")
@@ -54,10 +55,13 @@ fwa_add_parent_to_streams <- function(
   chk_string(source)
   chk_subset(source, c("elevatr", "google"))
 
+  chk_whole_number(zoom)
+  chk_range(zoom, c(1, 14))
+
   crs <- sf::st_crs(x)
 
   streams <- x |>
-    fwa_join_stream_segments(elevation, reverse, source) |>
+    fwa_join_stream_segments(elevation, reverse, source, zoom) |>
     sf::st_set_crs(crs)
 
   mouths <- streams |>

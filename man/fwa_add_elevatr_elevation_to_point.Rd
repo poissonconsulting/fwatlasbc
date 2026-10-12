@@ -4,12 +4,12 @@
 \alias{fwa_add_elevatr_elevation_to_point}
 \title{Add elevatr Elevation to Point}
 \usage{
-fwa_add_elevatr_elevation_to_point(x, z = 12)
+fwa_add_elevatr_elevation_to_point(x, zoom = 12)
 }
 \arguments{
 \item{x}{An sf object of spatial points.}
 
-\item{z}{A whole number between 1 and 14 of the zoom level of the
+\item{zoom}{A whole number between 1 and 14 of the zoom level of the
 Terrain Tiles.
 Higher zoom levels have a finer resolution but take longer to download.}
 }

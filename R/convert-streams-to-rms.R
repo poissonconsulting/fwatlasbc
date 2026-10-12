@@ -101,7 +101,8 @@ fwa_convert_streams_to_rms <- function(
   end = NULL,
   elevation = FALSE,
   reverse = integer(),
-  source = "elevatr"
+  source = "elevatr",
+  zoom = 12
 ) {
   chk_s3_class(x, "sf")
   chk_whole_number(interval)
@@ -129,10 +130,13 @@ fwa_convert_streams_to_rms <- function(
   chk_string(source)
   chk_subset(source, c("elevatr", "google"))
 
+  chk_whole_number(zoom)
+  chk_range(zoom, c(1, 14))
+
   crs <- sf::st_crs(x)
 
   x <- x |>
-    fwa_join_stream_segments(elevation, reverse, source)
+    fwa_join_stream_segments(elevation, reverse, source, zoom)
 
   x |>
     sample_linestrings(interval, end = end) |>

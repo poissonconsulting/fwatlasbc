@@ -71,6 +71,16 @@ test_that("fwa_flip_streams google source", {
   )
 })
 
+test_that("fwa_flip_streams passes zoom", {
+  local_mocked_bindings(
+    fwa_add_elevatr_elevation_to_point = function(x, zoom) {
+      expect_identical(zoom, 10)
+      mock_elevation(x)
+    }
+  )
+  fwa_flip_streams(make_flip_streams(), zoom = 10)
+})
+
 test_that("fwa_flip_streams missing elevations not flipped", {
   local_mocked_bindings(
     fwa_add_elevatr_elevation_to_point = function(x, ...) {
@@ -86,6 +96,7 @@ test_that("fwa_flip_streams errors with invalid arguments", {
   streams <- make_flip_streams()
   expect_error(fwa_flip_streams(streams, source = "other"))
   expect_error(fwa_flip_streams(streams, min_difference = -1))
+  expect_error(fwa_flip_streams(streams, zoom = 15))
 })
 
 test_that("fwa_flip_streams zero rows", {

@@ -41,7 +41,7 @@ test_that("fwa_add_elevatr_elevation_to_point passes zoom", {
   )
   expect_identical(fwa_add_elevatr_elevation_to_point(x)$elevation, c(12, 12))
   expect_identical(
-    fwa_add_elevatr_elevation_to_point(x, z = 10)$elevation,
+    fwa_add_elevatr_elevation_to_point(x, zoom = 10)$elevation,
     c(10, 10)
   )
 })
@@ -51,5 +51,5 @@ test_that("fwa_add_elevatr_elevation_to_point errors with invalid zoom", {
   x <- sf::st_sf(
     geometry = sf::st_sfc(sf::st_point(c(1000000, 500000)), crs = 3005)
   )
-  expect_error(fwa_add_elevatr_elevation_to_point(x, z = 15))
+  expect_error(fwa_add_elevatr_elevation_to_point(x, zoom = 15))
 })
