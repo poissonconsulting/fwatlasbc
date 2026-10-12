@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-What the package does (one paragraph).
+\code{fwatlasbc} is an R package for querying data from the Freshwater Atlas (FWA) of British Columbia (\url{https://www2.gov.bc.ca/gov/content/data/geographic-data-services/topographic-data/freshwater}). Spatial data are returned as simple features (\url{https://github.com/r-spatial/sf}). \code{fwatlasbc} wraps \code{fwapgr} (\url{https://github.com/poissonconsulting/fwapgr}); an R package that uses the fwapg API (\url{https://www.hillcrestgeo.ca/fwapg/index.html}).
 }
 \seealso{
 Useful links:

@@ -8,7 +8,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-3658-4517")),
     person("Poisson Consulting", role = c("cph", "fnd"))
   )
-Description: What the package does (one paragraph).
+Description: \code{fwatlasbc} is an R package for querying data from the Freshwater Atlas (FWA) of British Columbia (<https://www2.gov.bc.ca/gov/content/data/geographic-data-services/topographic-data/freshwater>). Spatial data are returned as simple features (<https://github.com/r-spatial/sf>). \code{fwatlasbc} wraps \code{fwapgr} (<https://github.com/poissonconsulting/fwapgr>); an R package that uses the fwapg API (<https://www.hillcrestgeo.ca/fwapg/index.html>).
 License: MIT + file LICENSE
 URL: https://poissonconsulting.github.io/fwatlasbc/
 Depends: 
