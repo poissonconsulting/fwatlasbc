@@ -1,15 +1,15 @@
 #' Flip Streams
 #'
-#' Ensures that stream linestrings flow in a downstream direction, i.e.,
-#' that the start of each linestring is higher than its end.
+#' Ensures that stream linestrings are oriented in an upstream direction, i.e.,
+#' that the start (mouth) of each linestring is lower than its end.
 #' The elevations of the start and end of each linestring are obtained
 #' from Google Maps using [`fwa_add_gm_elevation_to_point()`] and
-#' linestrings whose start is lower than their end are reversed.
+#' linestrings whose start is higher than their end are reversed.
 #' Linestrings whose start and end have the same elevation are not altered.
 #'
 #' @param x An sf tibble with a column blk and linestrings of streams
 #' (or stream segments).
-#' @return A copy of `x` with the linestrings flowing downstream.
+#' @return A copy of `x` with the linestrings oriented upstream.
 #' @export
 #' @seealso [`fwa_add_gm_elevation_to_point()`] and
 #' [`fwa_join_stream_segments()`]
@@ -45,7 +45,7 @@ fwa_flip_streams <- function(x) {
   )
 
   elevation <- fwa_add_gm_elevation_to_point(points)$elevation
-  flip <- elevation[seq_len(n)] < elevation[n + seq_len(n)]
+  flip <- elevation[seq_len(n)] > elevation[n + seq_len(n)]
 
   geometry[flip] <- geometry[flip] |>
     purrr::map(reverse_linestring) |>

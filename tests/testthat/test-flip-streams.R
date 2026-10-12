@@ -4,8 +4,8 @@ make_flip_streams <- function() {
     blk = c(1L, 2L, 3L),
     id = 1:3,
     geometry = sf::st_sfc(
-      ls(0, 0, 0, 500, 0, 1000), # flowing upstream
-      ls(100, 1000, 100, 0), # flowing downstream
+      ls(0, 0, 0, 500, 0, 1000), # oriented upstream
+      ls(100, 1000, 100, 0), # oriented downstream
       ls(200, 0, 200, 1000), # flat
       crs = 3005
     )
@@ -22,7 +22,7 @@ mock_elevation <- function(x, ...) {
   x
 }
 
-test_that("fwa_flip_streams flips streams flowing upstream", {
+test_that("fwa_flip_streams flips streams oriented downstream", {
   local_mocked_bindings(fwa_add_gm_elevation_to_point = mock_elevation)
   streams <- make_flip_streams()
   x <- fwa_flip_streams(streams)
@@ -30,17 +30,17 @@ test_that("fwa_flip_streams flips streams flowing upstream", {
   expect_identical(colnames(x), colnames(streams))
   expect_identical(x$id, streams$id)
   expect_identical(sf::st_crs(x), sf::st_crs(streams))
+  expect_identical(x$geometry[[1]], streams$geometry[[1]])
   expect_identical(
-    sf::st_coordinates(x$geometry[[1]]),
-    sf::st_coordinates(streams$geometry[[1]])[3:1, ]
+    sf::st_coordinates(x$geometry[[2]]),
+    sf::st_coordinates(streams$geometry[[2]])[2:1, ]
   )
-  expect_identical(x$geometry[[2]], streams$geometry[[2]])
   expect_identical(x$geometry[[3]], streams$geometry[[3]])
 })
 
 test_that("fwa_flip_streams no flips", {
   local_mocked_bindings(fwa_add_gm_elevation_to_point = mock_elevation)
-  streams <- make_flip_streams()[2:3, ]
+  streams <- make_flip_streams()[c(1, 3), ]
   x <- fwa_flip_streams(streams)
   expect_identical(x, streams)
 })
