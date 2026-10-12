@@ -8,7 +8,12 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-3658-4517")),
     person("Poisson Consulting", role = c("cph", "fnd"))
   )
-Description: \code{fwatlasbc} is an R package for querying data from the Freshwater Atlas (FWA) of British Columbia (<https://www2.gov.bc.ca/gov/content/data/geographic-data-services/topographic-data/freshwater>). Spatial data are returned as simple features (<https://github.com/r-spatial/sf>). \code{fwatlasbc} wraps \code{fwapgr} (<https://github.com/poissonconsulting/fwapgr>); an R package that uses the fwapg API (<https://www.hillcrestgeo.ca/fwapg/index.html>).
+Description: Queries the Freshwater Atlas (FWA) of British Columbia
+    through the 'fwapg' API <https://www.hillcrestgeo.ca/fwapg/index.html>
+    via the 'fwapgr' package and returns spatial data as simple features
+    ('sf'). Also provides tools to convert streams to and from river
+    meters, snap points to streams, and split, prune and join stream
+    networks.
 License: MIT + file LICENSE
 URL: https://poissonconsulting.github.io/fwatlasbc/
 Depends: 
@@ -40,10 +45,10 @@ Suggests:
     testthat (>= 3.0.0)
 Remotes:
     poissonconsulting/fwapgr
+Config/Needs/website: poissonconsulting/poissontemplate
+Config/roxygen2/version: 8.1.0.9000
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-Config/Needs/website: poissonconsulting/poissontemplate
-Config/roxygen2/version: 8.1.0.9000
