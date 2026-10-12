@@ -4,11 +4,19 @@
 \alias{fwa_flip_streams}
 \title{Flip Streams}
 \usage{
-fwa_flip_streams(x)
+fwa_flip_streams(x, source = "elevatr", min_difference = 5)
 }
 \arguments{
 \item{x}{An sf tibble with a column blk and linestrings of streams
 (or stream segments).}
+
+\item{source}{A string of the source of the elevations.
+Possible values are \code{"elevatr"} (no API key required) and
+\code{"google"} (requires a Google Maps Elevation API key).}
+
+\item{min_difference}{A non-negative number of the minimum difference (m)
+between the elevations of the start and end of a linestring
+for it to be reversed.}
 }
 \value{
 A copy of \code{x} with the linestrings oriented upstream.
@@ -17,9 +25,11 @@ A copy of \code{x} with the linestrings oriented upstream.
 Ensures that stream linestrings are oriented in an upstream direction, i.e.,
 that the start (mouth) of each linestring is lower than its end.
 The elevations of the start and end of each linestring are obtained
-from Google Maps using \code{\link[=fwa_add_gm_elevation_to_point]{fwa_add_gm_elevation_to_point()}} and
-linestrings whose start is higher than their end are reversed.
-Linestrings whose start and end have the same elevation are not altered.
+using \code{\link[=fwa_add_elevatr_elevation_to_point]{fwa_add_elevatr_elevation_to_point()}} or
+\code{\link[=fwa_add_gm_elevation_to_point]{fwa_add_gm_elevation_to_point()}} and
+linestrings whose start is more than \code{min_difference} m higher than their
+end are reversed.
+All other linestrings are not altered.
 }
 \examples{
 \dontrun{
@@ -30,6 +40,6 @@ fwa_flip_streams(network)
 }
 }
 \seealso{
-\code{\link[=fwa_add_gm_elevation_to_point]{fwa_add_gm_elevation_to_point()}} and
-\code{\link[=fwa_join_stream_segments]{fwa_join_stream_segments()}}
+\code{\link[=fwa_add_elevatr_elevation_to_point]{fwa_add_elevatr_elevation_to_point()}},
+\code{\link[=fwa_add_gm_elevation_to_point]{fwa_add_gm_elevation_to_point()}} and \code{\link[=fwa_join_stream_segments]{fwa_join_stream_segments()}}
 }

@@ -23,7 +23,7 @@ mock_elevation <- function(x, ...) {
 }
 
 test_that("fwa_flip_streams flips streams oriented downstream", {
-  local_mocked_bindings(fwa_add_gm_elevation_to_point = mock_elevation)
+  local_mocked_bindings(fwa_add_elevatr_elevation_to_point = mock_elevation)
   streams <- make_flip_streams()
   x <- fwa_flip_streams(streams)
   expect_s3_class(x, "sf")
@@ -39,10 +39,53 @@ test_that("fwa_flip_streams flips streams oriented downstream", {
 })
 
 test_that("fwa_flip_streams no flips", {
-  local_mocked_bindings(fwa_add_gm_elevation_to_point = mock_elevation)
+  local_mocked_bindings(fwa_add_elevatr_elevation_to_point = mock_elevation)
   streams <- make_flip_streams()[c(1, 3), ]
   x <- fwa_flip_streams(streams)
   expect_identical(x, streams)
+})
+
+test_that("fwa_flip_streams respects min_difference", {
+  local_mocked_bindings(fwa_add_elevatr_elevation_to_point = mock_elevation)
+  streams <- make_flip_streams()
+  # stream 2 drops 100 m from start to end
+  x <- fwa_flip_streams(streams, min_difference = 100)
+  expect_identical(x, streams)
+  x <- fwa_flip_streams(streams, min_difference = 99)
+  expect_identical(
+    sf::st_coordinates(x$geometry[[2]]),
+    sf::st_coordinates(streams$geometry[[2]])[2:1, ]
+  )
+})
+
+test_that("fwa_flip_streams google source", {
+  local_mocked_bindings(
+    fwa_add_gm_elevation_to_point = mock_elevation,
+    fwa_add_elevatr_elevation_to_point = function(...) stop("wrong source")
+  )
+  streams <- make_flip_streams()
+  x <- fwa_flip_streams(streams, source = "google")
+  expect_identical(
+    sf::st_coordinates(x$geometry[[2]]),
+    sf::st_coordinates(streams$geometry[[2]])[2:1, ]
+  )
+})
+
+test_that("fwa_flip_streams missing elevations not flipped", {
+  local_mocked_bindings(
+    fwa_add_elevatr_elevation_to_point = function(x, ...) {
+      x$elevation <- NA_real_
+      x
+    }
+  )
+  streams <- make_flip_streams()
+  expect_identical(fwa_flip_streams(streams), streams)
+})
+
+test_that("fwa_flip_streams errors with invalid arguments", {
+  streams <- make_flip_streams()
+  expect_error(fwa_flip_streams(streams, source = "other"))
+  expect_error(fwa_flip_streams(streams, min_difference = -1))
 })
 
 test_that("fwa_flip_streams zero rows", {
@@ -62,9 +105,9 @@ test_that("fwa_flip_streams errors without blk", {
   expect_error(fwa_flip_streams(streams))
 })
 
-test_that("fwa_flip_streams works with google elevation", {
+test_that("fwa_flip_streams works with elevatr elevation", {
   skip_on_runiverse()
-  skip_if(Sys.getenv("GOOGLE_MAPS_ELEVATION_API_KEY") == "")
+  skip_if_not_installed("elevatr")
   streams <- fwa_add_rms_to_blk(data.frame(blk = 356308001)) |>
     fwa_convert_rms_to_streams() |>
     dplyr::select("blk")

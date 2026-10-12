@@ -4,7 +4,13 @@
 \alias{fwa_add_parent_to_streams}
 \title{Add Parent to Streams}
 \usage{
-fwa_add_parent_to_streams(x, gap = 1, elevation = FALSE, reverse = integer())
+fwa_add_parent_to_streams(
+  x,
+  gap = 1,
+  elevation = FALSE,
+  reverse = integer(),
+  source = "elevatr"
+)
 }
 \arguments{
 \item{x}{An sf tibble with a column blk and linestrings of streams
@@ -14,11 +20,16 @@ fwa_add_parent_to_streams(x, gap = 1, elevation = FALSE, reverse = integer())
 the mouth of stream and its parent stream to be considered connected.}
 
 \item{elevation}{A flag specifying whether to use the elevation
-from Google Maps to determine stream direction (or use the
+to determine stream direction (or use the
 direction of the provided linestrings)}
 
 \item{reverse}{A whole numeric vector of streams to reverse direction
 ignoring elevation.}
+
+\item{source}{A string of the source of the elevations if
+\code{elevation = TRUE}.
+Possible values are \code{"elevatr"} (no API key required) and
+\code{"google"} (requires a Google Maps Elevation API key).}
 }
 \value{
 A copy of \code{x} with integer column \code{parent_blk} and

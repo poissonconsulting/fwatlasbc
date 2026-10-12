@@ -82,11 +82,7 @@ get_parent_stream <- function(x, y, gap) {
 #' @param end A positive whole number indicating how far (m) the end of
 #' the stream linestring has to be from the last interval to be included.
 #' To  default `end = NULL` (equivalent to `end = interval + 1`) excludes ends.
-#' @param elevation A flag specifying whether to use the elevation
-#' from Google Maps to determine stream direction (or use the
-#' direction of the provided linestrings)
-#' @param reverse A whole numeric vector of streams to reverse direction
-#' ignoring elevation.
+#' @inheritParams fwa_join_stream_segments
 #' @return An sf tibble with the columns blk, integer column rm
 #' and sf column point geometry.
 #' @export
@@ -104,7 +100,8 @@ fwa_convert_streams_to_rms <- function(
   gap = 1,
   end = NULL,
   elevation = FALSE,
-  reverse = integer()
+  reverse = integer(),
+  source = "elevatr"
 ) {
   chk_s3_class(x, "sf")
   chk_whole_number(interval)
@@ -129,10 +126,13 @@ fwa_convert_streams_to_rms <- function(
   chk_unique(reverse)
   chk_subset(reverse, x$blk)
 
+  chk_string(source)
+  chk_subset(source, c("elevatr", "google"))
+
   crs <- sf::st_crs(x)
 
   x <- x |>
-    fwa_join_stream_segments(elevation, reverse)
+    fwa_join_stream_segments(elevation, reverse, source)
 
   x |>
     sample_linestrings(interval, end = end) |>

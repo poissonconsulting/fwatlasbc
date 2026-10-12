@@ -4,17 +4,27 @@
 \alias{fwa_join_stream_segments}
 \title{Join Stream Segments}
 \usage{
-fwa_join_stream_segments(x, elevation = FALSE, reverse = integer())
+fwa_join_stream_segments(
+  x,
+  elevation = FALSE,
+  reverse = integer(),
+  source = "elevatr"
+)
 }
 \arguments{
 \item{x}{An sf tibble with a column blk and linestrings of stream segments.}
 
 \item{elevation}{A flag specifying whether to use the elevation
-from Google Maps to determine stream direction (or use the
+to determine stream direction (or use the
 direction of the provided linestrings)}
 
 \item{reverse}{A whole numeric vector of streams to reverse direction
 ignoring elevation.}
+
+\item{source}{A string of the source of the elevations if
+\code{elevation = TRUE}.
+Possible values are \code{"elevatr"} (no API key required) and
+\code{"google"} (requires a Google Maps Elevation API key).}
 }
 \value{
 An sf tibble with the columns blk and sfc column point geometry.
