@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-\code{fwatlasbc} is an R package for querying data from the Freshwater Atlas (FWA) of British Columbia (\url{https://www2.gov.bc.ca/gov/content/data/geographic-data-services/topographic-data/freshwater}). Spatial data are returned as simple features (\url{https://github.com/r-spatial/sf}). \code{fwatlasbc} wraps \code{fwapgr} (\url{https://github.com/poissonconsulting/fwapgr}); an R package that uses the fwapg API (\url{https://www.hillcrestgeo.ca/fwapg/index.html}).
+Queries the Freshwater Atlas (FWA) of British Columbia through the 'fwapg' API \url{https://www.hillcrestgeo.ca/fwapg/index.html} via the 'fwapgr' package and returns spatial data as simple features ('sf'). Also provides tools to convert streams to and from river meters, snap points to streams, and split, prune and join stream networks.
 }
 \seealso{
 Useful links:

@@ -8,7 +8,7 @@
 #'
 #' @param names A character vector of stream names.
 #'
-#' @return An positive integer vector of blue line keys.
+#' @return A positive integer vector of blue line keys.
 #' @export
 #'
 #' @examples
