@@ -1,12 +1,34 @@
+halve_linestrings <- function(x) {
+  geometry <- sf::st_geometry(x)
+  x <- sf::st_drop_geometry(x)
+
+  down <- x
+  down$streams <- "down"
+  down$geometry <- lwgeom::st_linesubstring(geometry, 0, 0.5)
+
+  up <- x
+  up$streams <- "up"
+  up$geometry <- lwgeom::st_linesubstring(geometry, 0.5, 1)
+
+  dplyr::bind_rows(down, up) |>
+    sf::st_sf()
+}
+
 #' Map View Streams
 #'
-#' Plots stream linestrings with the start of each linestring as a blue
-#' point and the end as a red point so that the direction of the streams
-#' can be seen.
+#' Plots stream linestrings in black together with the start of each
+#' linestring as a red point labelled "down" and the end as a
+#' blue point labelled "up", so that the direction of the streams can be seen.
+#' If `half_streams = TRUE` the downstream half (the start) of each linestring
+#' is instead colored red and the upstream half (the end) blue.
+#' Streams oriented upstream (as produced by [`fwa_flip_streams()`])
+#' have their "down" point at their mouth and "up" point at their source.
 #'
 #' @param x An sf data frame with a column blk and linestrings of streams
 #' (or stream segments).
 #' @inheritParams fwa_mapview
+#' @param half_streams A flag specifying whether to split each linestring
+#' into downstream (red) and upstream (blue) halves.
 #' @param ... Additional arguments passed to `mapview::mapview()` when
 #' plotting the linestrings.
 #' @export
@@ -21,8 +43,8 @@
 fwa_mapview_streams <- function(
   x,
   layer = NULL,
-  zcol = NULL,
   legend = FALSE,
+  half_streams = FALSE,
   ...
 ) {
   rlang::check_installed("mapview")
@@ -31,14 +53,14 @@ fwa_mapview_streams <- function(
   chk_s3_class(sf::st_geometry(x), "sfc_LINESTRING")
   check_names(x, "blk")
   chk_null_or(layer, vld = vld_string)
-  chk_null_or(zcol, vld = vld_string)
   chk_flag(legend)
+  chk_flag(half_streams)
+  if (half_streams) {
+    chk_not_subset(colnames(x), "streams")
+  }
 
   if (!is.null(layer)) {
     check_names(x, layer)
-  }
-  if (!is.null(zcol)) {
-    check_names(x, zcol)
   }
 
   chk_whole_numeric(x$blk)
@@ -47,21 +69,40 @@ fwa_mapview_streams <- function(
 
   geometry <- sf::st_geometry(x)
 
-  starts <- sf::st_set_geometry(
+  downs <- sf::st_set_geometry(
     x,
     sf::st_cast(sf::st_line_sample(geometry, sample = 0), "POINT")
   )
-  ends <- sf::st_set_geometry(
+  ups <- sf::st_set_geometry(
     x,
     sf::st_cast(sf::st_line_sample(geometry, sample = 1), "POINT")
   )
 
-  fwa_mapview(x, layer = layer, zcol = zcol, legend = legend, ...) +
+  if (half_streams) {
+    streams <- fwa_mapview(
+      halve_linestrings(x),
+      layer = layer,
+      zcol = "streams",
+      legend = legend,
+      color = c("red", "blue"),
+      ...
+    )
+  } else {
+    streams <- fwa_mapview(
+      x,
+      layer = layer,
+      legend = legend,
+      color = "black",
+      ...
+    )
+  }
+
+  streams +
     fwa_mapview(
-      starts,
-      col.regions = "blue",
-      layer.name = "start",
+      downs,
+      col.regions = "red",
+      layer.name = "down",
       legend = FALSE
     ) +
-    fwa_mapview(ends, col.regions = "red", layer.name = "end", legend = FALSE)
+    fwa_mapview(ups, col.regions = "blue", layer.name = "up", legend = FALSE)
 }
