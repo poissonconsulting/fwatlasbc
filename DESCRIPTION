@@ -1,6 +1,6 @@
 Package: fwatlasbc
 Title: Freshwater Atlas British Columbia
-Version: 0.0.1.9026
+Version: 0.0.1.9027
 Authors@R: c(
     person("Joe", "Thorley", , "joe@poissonconsulting.ca", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7683-4592")),
@@ -8,7 +8,12 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-3658-4517")),
     person("Poisson Consulting", role = c("cph", "fnd"))
   )
-Description: What the package does (one paragraph).
+Description: Queries the Freshwater Atlas (FWA) of British Columbia
+    through the 'fwapg' API <https://www.hillcrestgeo.ca/fwapg/index.html>
+    via the 'fwapgr' package and returns spatial data as simple features
+    ('sf'). Also provides tools to convert streams to and from river
+    meters, snap points to streams, and split, prune and join stream
+    networks.
 License: MIT + file LICENSE
 URL: https://poissonconsulting.github.io/fwatlasbc/
 Depends: 
@@ -42,7 +47,7 @@ Suggests:
 Remotes:
     poissonconsulting/fwapgr
 Config/Needs/website: poissonconsulting/poissontemplate
-Config/roxygen2/version: 8.0.0.9000
+Config/roxygen2/version: 8.1.0.9000
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
