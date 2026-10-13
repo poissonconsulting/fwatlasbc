@@ -4,7 +4,7 @@
 \alias{fwa_mapview_streams}
 \title{Map View Streams}
 \usage{
-fwa_mapview_streams(x, layer = NULL, legend = FALSE, ...)
+fwa_mapview_streams(x, layer = NULL, legend = FALSE, half_streams = FALSE, ...)
 }
 \arguments{
 \item{x}{An sf data frame with a column blk and linestrings of streams
@@ -14,16 +14,20 @@ fwa_mapview_streams(x, layer = NULL, legend = FALSE, ...)
 
 \item{legend}{A flag specifying whether to plot a legend.}
 
+\item{half_streams}{A flag specifying whether to split each linestring
+into downstream (red) and upstream (blue) halves.}
+
 \item{...}{Additional arguments passed to \code{mapview::mapview()} when
 plotting the linestrings.}
 }
 \description{
-Plots stream linestrings with the downstream half (the start) of each
-linestring in red and the upstream half (the end) in blue,
-together with the start as a red point labelled "down" and the end as a
+Plots stream linestrings in black together with the start of each
+linestring as a red point labelled "down" and the end as a
 blue point labelled "up", so that the direction of the streams can be seen.
+If \code{half_streams = TRUE} the downstream half (the start) of each linestring
+is instead colored red and the upstream half (the end) blue.
 Streams oriented upstream (as produced by \code{\link[=fwa_flip_streams]{fwa_flip_streams()}})
-are red at their mouth and blue at their source.
+have their "down" point at their mouth and "up" point at their source.
 }
 \examples{
 \dontrun{
