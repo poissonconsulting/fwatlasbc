@@ -118,7 +118,8 @@ test_that("fwa_convert_streams_to_rms elevation", {
     streams,
     interval = 100,
     elevation = TRUE,
-    end = 1
+    end = 1,
+    source = "google"
   )
   expect_s3_class(x, "sf")
   expect_identical(nrow(x), 903L)

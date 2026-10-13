@@ -4,7 +4,14 @@
 \alias{fwa_add_parent_to_streams}
 \title{Add Parent to Streams}
 \usage{
-fwa_add_parent_to_streams(x, gap = 1, elevation = FALSE, reverse = integer())
+fwa_add_parent_to_streams(
+  x,
+  gap = 1,
+  elevation = FALSE,
+  reverse = integer(),
+  source = NULL,
+  zoom = 12
+)
 }
 \arguments{
 \item{x}{An sf tibble with a column blk and linestrings of streams
@@ -14,11 +21,23 @@ fwa_add_parent_to_streams(x, gap = 1, elevation = FALSE, reverse = integer())
 the mouth of stream and its parent stream to be considered connected.}
 
 \item{elevation}{A flag specifying whether to use the elevation
-from Google Maps to determine stream direction (or use the
+to determine stream direction (or use the
 direction of the provided linestrings)}
 
 \item{reverse}{A whole numeric vector of streams to reverse direction
 ignoring elevation.}
+
+\item{source}{A string of the source of the elevations if
+\code{elevation = TRUE}.
+Possible values are \code{"elevatr"} (no API key required) and
+\code{"google"} (requires a Google Maps Elevation API key).
+If \code{NULL} (the default) and \code{elevation = TRUE} \code{"google"} is used but this
+is \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} and \code{source} should be set explicitly.}
+
+\item{zoom}{A whole number between 1 and 14 of the zoom level of the
+Terrain Tiles.
+Higher zoom levels have a finer resolution but take longer to download.
+Ignored if \code{elevation = FALSE} or \code{source = "google"}.}
 }
 \value{
 A copy of \code{x} with integer column \code{parent_blk} and
