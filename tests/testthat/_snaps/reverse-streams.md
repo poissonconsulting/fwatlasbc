@@ -4,5 +4,5 @@
       fwa_reverse_streams(streams, c(1L, 4L))
     Condition
       Error in `fwa_reverse_streams()`:
-      ! `blk` values must be in `x$blk` (missing: 4).
+      ! `blk` must have values matching 1, 2 or 3.
 

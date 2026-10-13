@@ -33,16 +33,7 @@ fwa_reverse_streams <- function(x, blk) {
   chk_not_any_na(blk)
   chk_gt(blk)
   chk_unique(blk)
-
-  missing <- setdiff(blk, x$blk)
-  if (length(missing)) {
-    err(
-      "`blk` values must be in `x$blk` (missing: ",
-      paste(missing, collapse = ", "),
-      ")",
-      call = rlang::current_call()
-    )
-  }
+  chk_subset(blk, x$blk)
 
   geometry <- sf::st_geometry(x)
   reverse <- x$blk %in% blk
