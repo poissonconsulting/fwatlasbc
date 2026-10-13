@@ -20,35 +20,28 @@ join_strings <- function(x) {
     dplyr::filter(purrr::map_lgl(.data$geometry, is_linestring))
 }
 
-start_end_elevation <- function(x, elevation, reverse, source, zoom) {
+start_end_elevation <- function(x, reverse, source, zoom) {
   crs <- sf::st_crs(x)
 
   x_swap <- x |>
     dplyr::filter(.data$blk %in% reverse) |>
-    dplyr::mutate(reverse = TRUE)
+    dplyr::mutate(reverse = FALSE)
 
-  if (!elevation) {
-    x <- x |>
-      dplyr::filter(!.data$blk %in% reverse) |>
-      dplyr::mutate(reverse = FALSE) |>
-      dplyr::bind_rows(x_swap)
-  } else {
-    x <- x |>
-      dplyr::filter(!.data$blk %in% reverse) |>
-      sf::st_sf(sf_column_name = "start") |>
-      add_elevation_to_point(source, zoom) |>
-      ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
-      as_tibble() |>
-      dplyr::rename(start_elevation = "elevation") |>
-      sf::st_sf(sf_column_name = "end") |>
-      add_elevation_to_point(source, zoom) |>
-      ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
-      as_tibble() |>
-      dplyr::rename(end_elevation = "elevation") |>
-      dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
-      sf::st_sf() |>
-      dplyr::bind_rows(x_swap)
-  }
+  x <- x |>
+    dplyr::filter(!.data$blk %in% reverse) |>
+    sf::st_sf(sf_column_name = "start") |>
+    add_elevation_to_point(source, zoom) |>
+    ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
+    as_tibble() |>
+    dplyr::rename(start_elevation = "elevation") |>
+    sf::st_sf(sf_column_name = "end") |>
+    add_elevation_to_point(source, zoom) |>
+    ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
+    as_tibble() |>
+    dplyr::rename(end_elevation = "elevation") |>
+    dplyr::mutate(reverse = .data$start_elevation > .data$end_elevation) |>
+    sf::st_sf() |>
+    dplyr::bind_rows(x_swap)
 
   x |>
     dplyr::filter(.data$reverse) |>
@@ -61,20 +54,20 @@ start_end_elevation <- function(x, elevation, reverse, source, zoom) {
 }
 
 start_points <- function(x, elevation, reverse, source, zoom) {
-  x <- x |>
-    dplyr::mutate(
-      start = sf::st_line_sample(x, sample = 0),
-      end = sf::st_line_sample(x, sample = 1),
-      start = sf::st_cast(.data$start, "POINT"),
-      end = sf::st_cast(.data$end, "POINT")
-    )
-
-  if (elevation || length(reverse)) {
+  if (elevation) {
     x <- x |>
-      start_end_elevation(elevation, reverse, source, zoom)
+      dplyr::mutate(
+        start = sf::st_line_sample(x, sample = 0),
+        end = sf::st_line_sample(x, sample = 1),
+        start = sf::st_cast(.data$start, "POINT"),
+        end = sf::st_cast(.data$end, "POINT")
+      ) |>
+      start_end_elevation(reverse, source, zoom) |>
+      dplyr::select(!c("end", "start"))
   }
-  x |>
-    dplyr::select(!c("end", "start"))
+  # streams that could not be joined into a single linestring are dropped
+  reverse <- reverse[reverse %in% x$blk]
+  fwa_reverse_streams(x, reverse)
 }
 
 #' Join Stream Segments
