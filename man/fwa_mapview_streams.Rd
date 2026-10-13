@@ -4,7 +4,7 @@
 \alias{fwa_mapview_streams}
 \title{Map View Streams}
 \usage{
-fwa_mapview_streams(x, layer = NULL, zcol = NULL, legend = FALSE, ...)
+fwa_mapview_streams(x, layer = NULL, legend = FALSE, ...)
 }
 \arguments{
 \item{x}{An sf data frame with a column blk and linestrings of streams
@@ -12,17 +12,18 @@ fwa_mapview_streams(x, layer = NULL, zcol = NULL, legend = FALSE, ...)
 
 \item{layer}{A string of the column to layer the points by.}
 
-\item{zcol}{A string of the column to color points by.}
-
 \item{legend}{A flag specifying whether to plot a legend.}
 
 \item{...}{Additional arguments passed to \code{mapview::mapview()} when
 plotting the linestrings.}
 }
 \description{
-Plots stream linestrings with the start of each linestring as a blue
-point and the end as a red point so that the direction of the streams
-can be seen.
+Plots stream linestrings colored as a gradient from blue at the start
+to red at the end of each linestring, with the start as a blue point
+labelled "down" and the end as a red point labelled "up",
+so that the direction of the streams can be seen.
+Streams oriented upstream (as produced by \code{\link[=fwa_flip_streams]{fwa_flip_streams()}})
+run from blue at their mouth to red at their source.
 }
 \examples{
 \dontrun{
