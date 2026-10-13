@@ -21,7 +21,7 @@ test_that("fwa_mapview_streams errors with points", {
   expect_error(fwa_mapview_streams(x))
 })
 
-test_that("split_linestrings splits into pieces with position", {
+test_that("halve_linestrings splits into down and up halves", {
   ls <- function(...) sf::st_linestring(matrix(c(...), ncol = 2, byrow = TRUE))
   x <- sf::st_sf(
     blk = c(1L, 2L),
@@ -31,13 +31,18 @@ test_that("split_linestrings splits into pieces with position", {
       crs = 3005
     )
   )
-  y <- split_linestrings(x)
+  y <- halve_linestrings(x)
   expect_s3_class(y, "sf")
-  expect_identical(y$blk, c(1L, 1L, 2L))
-  expect_equal(y$..fwa_position, c(50 / 400, 250 / 400, 0.5))
+  expect_identical(y$blk, c(1L, 2L, 1L, 2L))
+  expect_identical(y$..fwa_half, c("down", "down", "up", "up"))
   expect_identical(sf::st_crs(y), sf::st_crs(x))
-  expect_identical(
-    sf::st_coordinates(y$geometry[[2]])[, c("X", "Y")],
-    matrix(c(0, 0, 100, 400), ncol = 2, dimnames = list(NULL, c("X", "Y")))
+  expect_equal(as.numeric(sf::st_length(y)), c(200, 50, 200, 50))
+  expect_equal(
+    unname(sf::st_coordinates(y$geometry[[1]])[, c("X", "Y")]),
+    matrix(c(0, 0, 0, 0, 100, 200), ncol = 2)
+  )
+  expect_equal(
+    unname(sf::st_coordinates(y$geometry[[3]])[, c("X", "Y")]),
+    matrix(c(0, 0, 200, 400), ncol = 2)
   )
 })

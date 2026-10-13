@@ -18,12 +18,12 @@ fwa_mapview_streams(x, layer = NULL, legend = FALSE, ...)
 plotting the linestrings.}
 }
 \description{
-Plots stream linestrings colored as a gradient from blue at the start
-to red at the end of each linestring, with the start as a blue point
-labelled "down" and the end as a red point labelled "up",
-so that the direction of the streams can be seen.
+Plots stream linestrings with the downstream half (the start) of each
+linestring in red and the upstream half (the end) in blue,
+together with the start as a red point labelled "down" and the end as a
+blue point labelled "up", so that the direction of the streams can be seen.
 Streams oriented upstream (as produced by \code{\link[=fwa_flip_streams]{fwa_flip_streams()}})
-run from blue at their mouth to red at their source.
+are red at their mouth and blue at their source.
 }
 \examples{
 \dontrun{
