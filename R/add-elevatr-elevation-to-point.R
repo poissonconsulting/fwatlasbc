@@ -18,8 +18,9 @@
 #' fwa_add_elevatr_elevation_to_point(rm)
 #' }
 fwa_add_elevatr_elevation_to_point <- function(x, zoom = 12) {
+  # elevatr uses progress at runtime but only suggests it
   rlang::check_installed(
-    "elevatr",
+    c("elevatr", "progress"),
     reason = "to get elevations from the Terrain Tiles."
   )
 
