@@ -37,14 +37,16 @@ Ignored if \code{elevation = FALSE} or \code{source = "google"}.}
 }
 \value{
 A copy of \code{x} with integer column \code{parent_blk} and
-numeric column \code{parent_rm}.
+numeric columns \code{parent_rm} and \code{distance_to_parent}.
 }
 \description{
 Adds the parent blue line key (\code{parent_blk}) and the river meter on the
-parent where the stream joins it (\code{parent_rm}) to stream linestrings.
+parent where the stream joins it (\code{parent_rm}) to stream linestrings
+together with the distance (m) from the mouth to the parent
+(\code{distance_to_parent}).
 The parent is the nearest other stream to the mouth of each stream.
 If the mouth is more than \code{gap} m from the nearest other stream then
-\code{parent_blk} and \code{parent_rm} are \code{NA}.
+\code{parent_blk}, \code{parent_rm} and \code{distance_to_parent} are \code{NA}.
 }
 \details{
 The stream segments for each blk are first joined using

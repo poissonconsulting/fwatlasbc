@@ -8,9 +8,10 @@ get_parent_blk_rm <- function(x, y, gap) {
         as_tibble() |>
         dplyr::mutate(
           parent_blk = NA_integer_,
-          parent_rm = NA_real_
+          parent_rm = NA_real_,
+          distance_to_parent = NA_real_
         ) |>
-        dplyr::select("blk", "parent_blk", "parent_rm")
+        dplyr::select("blk", "parent_blk", "parent_rm", "distance_to_parent")
     )
   }
 
@@ -27,7 +28,9 @@ get_parent_blk_rm <- function(x, y, gap) {
   if (distance > gap) {
     x$parent_blk <- NA_integer_
     x$parent_rm <- NA_real_
+    x$distance_to_parent <- NA_real_
   } else {
+    x$distance_to_parent <- distance
     point <- sf::st_cast(span, "POINT") |>
       dplyr::nth(2)
 
@@ -51,10 +54,10 @@ get_parent_blk_rm <- function(x, y, gap) {
   }
   x |>
     as_tibble() |>
-    dplyr::select("blk", "parent_blk", "parent_rm")
+    dplyr::select("blk", "parent_blk", "parent_rm", "distance_to_parent")
 }
 
-get_parent_stream <- function(x, y, gap) {
+get_parent_stream <- function(x, y, gap, distance_to_parent = FALSE) {
   sf::st_geometry(y) <- "..fwa_linestring"
 
   mouth <- x |>
@@ -63,7 +66,11 @@ get_parent_stream <- function(x, y, gap) {
     purrr::map(get_parent_blk_rm, y, gap) |>
     dplyr::bind_rows() |>
     as_tibble() |>
-    dplyr::select("blk", "parent_blk", "parent_rm")
+    dplyr::select("blk", "parent_blk", "parent_rm", "distance_to_parent")
+
+  if (!distance_to_parent) {
+    mouth$distance_to_parent <- NULL
+  }
 
   x |>
     left_join(mouth, by = "blk")
