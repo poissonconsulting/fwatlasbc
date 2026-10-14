@@ -45,8 +45,8 @@ test_that("fwa_add_parent_to_streams parent_rm measured from parent mouth", {
         )
       )
     )
-  x <- fwa_add_parent_to_streams(streams, reverse = 1L)
-  expect_equal(x$parent_rm[x$blk == 2L], 400)
+  x <- fwa_add_parent_to_streams(streams)
+  expect_equal(x$parent_rm[x$blk == 2L], 600)
 })
 
 test_that("fwa_add_parent_to_streams single stream", {

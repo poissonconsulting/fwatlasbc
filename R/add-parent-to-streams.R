@@ -29,7 +29,6 @@ fwa_add_parent_to_streams <- function(
   x,
   gap = 1,
   elevation = FALSE,
-  reverse = integer(),
   source = NULL,
   zoom = 12
 ) {
@@ -46,12 +45,6 @@ fwa_add_parent_to_streams <- function(
 
   chk_flag(elevation)
 
-  chk_whole_numeric(reverse)
-  chk_not_any_na(reverse)
-  chk_gt(reverse)
-  chk_unique(reverse)
-  chk_subset(reverse, x$blk)
-
   source <- check_source(source, "fwa_add_parent_to_streams", warn = elevation)
 
   chk_whole_number(zoom)
@@ -60,7 +53,7 @@ fwa_add_parent_to_streams <- function(
   crs <- sf::st_crs(x)
 
   streams <- x |>
-    fwa_join_stream_segments(elevation, reverse, source, zoom) |>
+    fwa_join_stream_segments(elevation, source = source, zoom = zoom) |>
     sf::st_set_crs(crs)
 
   mouths <- streams |>

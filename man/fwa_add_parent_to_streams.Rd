@@ -8,7 +8,6 @@ fwa_add_parent_to_streams(
   x,
   gap = 1,
   elevation = FALSE,
-  reverse = integer(),
   source = NULL,
   zoom = 12
 )
@@ -23,9 +22,6 @@ the mouth of stream and its parent stream to be considered connected.}
 \item{elevation}{A flag specifying whether to use the elevation
 to determine stream direction (or use the
 direction of the provided linestrings)}
-
-\item{reverse}{A whole numeric vector of streams to reverse direction
-ignoring elevation.}
 
 \item{source}{A string of the source of the elevations if
 \code{elevation = TRUE}.
