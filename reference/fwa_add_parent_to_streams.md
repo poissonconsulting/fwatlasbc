@@ -13,7 +13,6 @@ fwa_add_parent_to_streams(
   x,
   gap = 1,
   elevation = FALSE,
-  reverse = integer(),
   source = NULL,
   zoom = 12
 )
@@ -35,11 +34,6 @@ fwa_add_parent_to_streams(
 
   A flag specifying whether to use the elevation to determine stream
   direction (or use the direction of the provided linestrings)
-
-- reverse:
-
-  A whole numeric vector of streams to reverse direction ignoring
-  elevation.
 
 - source:
 
