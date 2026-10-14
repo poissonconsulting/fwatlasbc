@@ -1,10 +1,12 @@
 #' Add Parent to Streams
 #'
 #' Adds the parent blue line key (`parent_blk`) and the river meter on the
-#' parent where the stream joins it (`parent_rm`) to stream linestrings.
+#' parent where the stream joins it (`parent_rm`) to stream linestrings
+#' together with the distance (m) from the mouth to the parent
+#' (`distance_to_parent`).
 #' The parent is the nearest other stream to the mouth of each stream.
 #' If the mouth is more than `gap` m from the nearest other stream then
-#' `parent_blk` and `parent_rm` are `NA`.
+#' `parent_blk`, `parent_rm` and `distance_to_parent` are `NA`.
 #'
 #' The stream segments for each blk are first joined using
 #' [`fwa_join_stream_segments()`].
@@ -18,7 +20,7 @@
 #' @param x An sf tibble with a column blk and linestrings of streams
 #' (or stream segments).
 #' @return A copy of `x` with integer column `parent_blk` and
-#' numeric column `parent_rm`.
+#' numeric columns `parent_rm` and `distance_to_parent`.
 #' @export
 #' @seealso [`fwa_convert_streams_to_rms()`]
 #' @examples
@@ -37,7 +39,10 @@ fwa_add_parent_to_streams <- function(
 ) {
   chk_s3_class(x, "sf")
   check_names(x, "blk")
-  chk_not_subset(colnames(x), c("parent_blk", "parent_rm"))
+  chk_not_subset(
+    colnames(x),
+    c("parent_blk", "parent_rm", "distance_to_parent")
+  )
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -69,9 +74,14 @@ fwa_add_parent_to_streams <- function(
   sf::st_geometry(mouths) <- "geometry"
 
   parents <- mouths |>
-    get_parent_stream(streams, gap = gap) |>
+    get_parent_stream(streams, gap = gap, distance_to_parent = TRUE) |>
     dplyr::as_tibble() |>
-    dplyr::distinct(.data$blk, .data$parent_blk, .data$parent_rm) |>
+    dplyr::distinct(
+      .data$blk,
+      .data$parent_blk,
+      .data$parent_rm,
+      .data$distance_to_parent
+    ) |>
     dplyr::mutate(parent_blk = as.integer(.data$parent_blk))
 
   x |>
