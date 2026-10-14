@@ -4,6 +4,9 @@
 #' [`elevatr::get_elev_point()`].
 #' Unlike [`fwa_add_gm_elevation_to_point()`] no API key is required.
 #'
+#' Only the tiles that contain points are downloaded with the elevations
+#' for the points in each tile retrieved separately.
+#'
 #' The connection timeout (s) and the number of attempts if the download
 #' times out are set by the options `fwa.elevatr_timeout` (by default 10) and
 #' `fwa.elevatr_tries` (by default 3).
@@ -73,10 +76,17 @@ wait_seconds <- function(seconds) {
   Sys.sleep(seconds)
 }
 
-get_elevatr_elevation <- function(points, zoom, timeout, tries, call) {
-  # with_config() covers the tile checks in elevatr that do not pass on `...`
-  # while `config` covers the downloads in parallel workers.
-  config <- httr::config(connecttimeout = timeout)
+# Terrain Tiles use the Web Mercator (EPSG:3857) slippy map tile scheme.
+point_tile <- function(points, zoom) {
+  xy <- sf::st_coordinates(points)
+  half <- 20037508.342789244
+  n <- 2^zoom
+  x <- floor((xy[, "X"] + half) / (2 * half) * n)
+  y <- floor((half - xy[, "Y"]) / (2 * half) * n)
+  paste(pmin(pmax(x, 0), n - 1), pmin(pmax(y, 0), n - 1), sep = "/")
+}
+
+get_elevatr_tile_elevation <- function(points, zoom, config, tries, call) {
   for (try in seq_len(tries)) {
     elevation <- tryCatch(
       httr::with_config(
@@ -86,6 +96,7 @@ get_elevatr_elevation <- function(points, zoom, timeout, tries, call) {
             points,
             src = "aws",
             z = zoom,
+            expand = 0,
             config = config
           )
         )
@@ -102,6 +113,7 @@ get_elevatr_elevation <- function(points, zoom, timeout, tries, call) {
       wait_seconds(2^try)
     }
   }
+  timeout <- config$options$connecttimeout
   rlang::abort(
     c(
       paste0(
@@ -125,6 +137,35 @@ get_elevatr_elevation <- function(points, zoom, timeout, tries, call) {
     parent = elevation,
     call = call
   )
+}
+
+get_elevatr_elevation <- function(points, zoom, timeout, tries, call) {
+  # with_config() covers the tile checks in elevatr that do not pass on `...`
+  # while `config` covers the downloads in parallel workers.
+  config <- httr::config(connecttimeout = timeout)
+  # Points are in the tile projection so that elevatr only downloads the
+  # tile containing each group and does not resample the elevations.
+  points <- sf::st_transform(points, 3857)
+  tiles <- split(seq_len(nrow(points)), point_tile(points, zoom))
+  # one progress bar for all tiles instead of one from elevatr per tile
+  rlang::local_options(progressr.enable = FALSE)
+  bar <- progress::progress_bar$new(
+    format = " Downloading Terrain Tiles [:bar] :current/:total",
+    total = length(tiles),
+    clear = FALSE
+  )
+  elevation <- rep(NA_real_, nrow(points))
+  for (index in tiles) {
+    elevation[index] <- get_elevatr_tile_elevation(
+      points[index, ],
+      zoom,
+      config = config,
+      tries = tries,
+      call = call
+    )
+    bar$tick()
+  }
+  elevation
 }
 
 add_elevation_to_point <- function(x, source, zoom) {

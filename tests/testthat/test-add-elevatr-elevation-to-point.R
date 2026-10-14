@@ -184,3 +184,75 @@ test_that("fwa_add_elevatr_elevation_to_point does not retry other errors", {
   )
   expect_identical(tries, 1L)
 })
+
+test_that("point_tile assigns slippy map tiles", {
+  half <- 20037508.342789244
+  points <- sf::st_sfc(
+    sf::st_point(c(-1, 1)),
+    sf::st_point(c(1, -1)),
+    sf::st_point(c(-half, half)),
+    sf::st_point(c(half, -half)),
+    crs = 3857
+  )
+  expect_identical(point_tile(points, 1), c("0/0", "1/1", "0/0", "1/1"))
+  expect_identical(point_tile(points, 2), c("1/1", "2/2", "0/0", "3/3"))
+})
+
+test_that("fwa_add_elevatr_elevation_to_point gets elevations by tile", {
+  skip_if_not_installed("elevatr")
+  skip_if_not_installed("httr")
+  calls <- list()
+  local_mocked_bindings(
+    get_elev_point = function(locations, src, z, expand, ...) {
+      calls[[length(calls) + 1L]] <<- list(n = nrow(locations), expand = expand)
+      locations$elevation <- sf::st_coordinates(locations)[, "X"]
+      locations
+    },
+    .package = "elevatr"
+  )
+  x <- sf::st_sf(
+    id = 1:4,
+    geometry = sf::st_sfc(
+      sf::st_point(c(1000000, 500000)),
+      sf::st_point(c(1100000, 500000)),
+      sf::st_point(c(1000100, 500000)),
+      sf::st_point(c(1100100, 500000)),
+      crs = 3005
+    )
+  )
+  x <- fwa_add_elevatr_elevation_to_point(x)
+  expect_length(calls, 2L)
+  expect_identical(purrr::map_int(calls, "n"), c(2L, 2L))
+  expect_identical(purrr::map_dbl(calls, "expand"), c(0, 0))
+  expected <- sf::st_coordinates(sf::st_transform(x, 3857))[, "X"]
+  expect_identical(x$elevation, unname(expected))
+  expect_identical(x$id, 1:4)
+})
+
+test_that("fwa_add_elevatr_elevation_to_point retries timeouts by tile", {
+  skip_if_not_installed("elevatr")
+  skip_if_not_installed("httr")
+  tries <- 0L
+  local_mocked_bindings(
+    get_elev_point = function(locations, ...) {
+      tries <<- tries + 1L
+      if (tries == 2L) {
+        stop("Timeout was reached [s3.amazonaws.com]")
+      }
+      locations$elevation <- rep(tries, nrow(locations))
+      locations
+    },
+    .package = "elevatr"
+  )
+  local_mocked_bindings(wait_seconds = function(seconds) NULL)
+  x <- sf::st_sf(
+    geometry = sf::st_sfc(
+      sf::st_point(c(1000000, 500000)),
+      sf::st_point(c(1100000, 500000)),
+      crs = 3005
+    )
+  )
+  x <- fwa_add_elevatr_elevation_to_point(x)
+  expect_identical(tries, 3L)
+  expect_identical(x$elevation, c(1, 3))
+})

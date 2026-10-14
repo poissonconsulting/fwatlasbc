@@ -22,6 +22,9 @@ Adds elevations from the Amazon Web Services Terrain Tiles using
 Unlike \code{\link[=fwa_add_gm_elevation_to_point]{fwa_add_gm_elevation_to_point()}} no API key is required.
 }
 \details{
+Only the tiles that contain points are downloaded with the elevations
+for the points in each tile retrieved separately.
+
 The connection timeout (s) and the number of attempts if the download
 times out are set by the options \code{fwa.elevatr_timeout} (by default 10) and
 \code{fwa.elevatr_tries} (by default 3).
