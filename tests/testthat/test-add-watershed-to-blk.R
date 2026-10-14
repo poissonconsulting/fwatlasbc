@@ -46,3 +46,23 @@ test_that("fwa_add_watershed_to_blk doesn't work when rm = 0 for 360883036 even 
     exclude = TRUE
   ))
 })
+
+test_that("fwa_add_watershed_to_blk errors when no watershed returned", {
+  local_mocked_bindings(
+    fwa_watershed_at_measure = function(...) {
+      sf::st_sf(geometry = sf::st_sfc(crs = 3005))
+    }
+  )
+  expect_snapshot(
+    fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 20000)),
+    error = TRUE
+  )
+})
+
+test_that("fwa_add_watershed_to_blk errors when rm beyond end of stream", {
+  rlang::local_options(nocache = TRUE)
+  expect_error(
+    fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 20000)),
+    "No watershed was returned for blk 356308001 at rm 20000"
+  )
+})

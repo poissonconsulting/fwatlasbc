@@ -23,7 +23,7 @@ adjust_watershed <- function(wshed, x, epsg, nocache) {
   wshed
 }
 
-add_watershed_to_blk <- function(x, epsg, nocache) {
+add_watershed_to_blk <- function(x, epsg, nocache, call) {
   check_dim(x, dim = nrow, values = 1L) # +chk
 
   wshed <- fwa_watershed_at_measure(
@@ -32,6 +32,22 @@ add_watershed_to_blk <- function(x, epsg, nocache) {
     epsg = epsg,
     nocache = nocache
   )
+
+  if (!nrow(wshed)) {
+    rlang::abort(
+      c(
+        paste0(
+          "No watershed was returned for blk ",
+          x$blk,
+          " at rm ",
+          x$rm,
+          "."
+        ),
+        i = "The rm may be beyond the upstream end of the stream or in its headwaters."
+      ),
+      call = call
+    )
+  }
 
   wshed <- adjust_watershed(wshed, x, epsg, nocache = nocache)
 
@@ -44,6 +60,8 @@ add_watershed_to_blk <- function(x, epsg, nocache) {
 #'
 #' Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (blk).
 #' The rm distances which is in meters is from the river mouth.
+#' An error is thrown if no watershed is returned, which can occur if the rm
+#' is beyond the upstream end of the stream or in its headwaters.
 #' @return An sf tibble with the columns of x plus
 #' sf column geometry.
 #'
@@ -92,7 +110,12 @@ fwa_add_watershed_to_blk <- function(
       ..fwa_id = seq_len(dplyr::n())
     ) |>
     group_split_sf(.data$blk) |>
-    lapply(add_watershed_to_blk, epsg = epsg, nocache = nocache) |>
+    lapply(
+      add_watershed_to_blk,
+      epsg = epsg,
+      nocache = nocache,
+      call = rlang::current_env()
+    ) |>
     dplyr::bind_rows() |>
     dplyr::arrange(.data$..fwa_id) |>
     dplyr::select(!c("..fwa_exclude", "..fwa_id"))
