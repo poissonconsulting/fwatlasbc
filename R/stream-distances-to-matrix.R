@@ -62,6 +62,9 @@ stream_junctions <- function(paths) {
 #' @param streams A data frame with whole numeric column blk, whole numeric
 #' column parent_blk and numeric column parent_rm.
 #' The stream network must not be circular.
+#' @param id A string of the name of a column in `x` with unique non-missing
+#' values that are converted to character and used as the row and column names
+#' of the matrix or `NULL`.
 #' @return A numeric matrix of the distances in m with one row and one column
 #' for each row in `x`.
 #' @export
@@ -72,13 +75,26 @@ stream_junctions <- function(paths) {
 #'   parent_blk = c(NA, 1, NA),
 #'   parent_rm = c(NA, 400, NA)
 #' )
-#' rms <- data.frame(blk = c(1, 1, 2, 3), rm = c(100, 500, 50, 10))
+#' rms <- data.frame(
+#'   site = c("a", "b", "c", "d"),
+#'   blk = c(1, 1, 2, 3),
+#'   rm = c(100, 500, 50, 10)
+#' )
 #' fwa_stream_distances_to_matrix(rms, streams)
-fwa_stream_distances_to_matrix <- function(x, streams) {
+#' fwa_stream_distances_to_matrix(rms, streams, id = "site")
+fwa_stream_distances_to_matrix <- function(x, streams, id = NULL) {
   chk_data(x)
   check_names(x, c("blk", "rm"))
   chk_data(streams)
   check_names(streams, c("blk", "parent_blk", "parent_rm"))
+
+  if (!is.null(id)) {
+    chk_string(id)
+    check_names(x, id)
+    names <- as.character(x[[id]])
+    chk_not_any_na(names, x_name = "`x[[id]]`")
+    chk_unique(names, x_name = "`x[[id]]`")
+  }
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -137,5 +153,9 @@ fwa_stream_distances_to_matrix <- function(x, streams) {
 
   distance <- distance_a + distance_b + abs(position_a - position_b)
   distance[is.infinite(junctions$distance[ab])] <- Inf
-  matrix(distance, nrow = n, ncol = n)
+  distance <- matrix(distance, nrow = n, ncol = n)
+  if (!is.null(id)) {
+    dimnames(distance) <- list(names, names)
+  }
+  distance
 }

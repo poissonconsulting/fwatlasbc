@@ -35,6 +35,54 @@ test_that("fwa_stream_distances_to_matrix calculates distances", {
   expect_identical(x, expected)
 })
 
+test_that("fwa_stream_distances_to_matrix id names rows and columns", {
+  rms <- make_distance_rms()
+  rms$site <- factor(c("f", "e", "d", "c", "b", "a"))
+  x <- fwa_stream_distances_to_matrix(rms, make_distance_streams(), id = "site")
+  expect_identical(dimnames(x), rep(list(c("f", "e", "d", "c", "b", "a")), 2))
+  expect_identical(
+    unname(x),
+    fwa_stream_distances_to_matrix(rms, make_distance_streams())
+  )
+  expect_identical(x["f", "e"], 400)
+})
+
+test_that("fwa_stream_distances_to_matrix id converts to character", {
+  rms <- make_distance_rms()
+  rms$site <- 11:16
+  x <- fwa_stream_distances_to_matrix(rms, make_distance_streams(), id = "site")
+  expect_identical(rownames(x), as.character(11:16))
+  expect_identical(colnames(x), as.character(11:16))
+})
+
+test_that("fwa_stream_distances_to_matrix id zero rows", {
+  rms <- data.frame(site = character(), blk = integer(), rm = numeric())
+  x <- fwa_stream_distances_to_matrix(rms, make_distance_streams(), id = "site")
+  expect_identical(dim(x), c(0L, 0L))
+})
+
+test_that("fwa_stream_distances_to_matrix errors invalid id", {
+  rms <- make_distance_rms()
+  rms$site <- c("a", "b", "c", "d", "e", "e")
+  expect_error(
+    fwa_stream_distances_to_matrix(rms, make_distance_streams(), id = 1),
+    "`id` must be a string"
+  )
+  expect_error(
+    fwa_stream_distances_to_matrix(rms, make_distance_streams(), id = "name"),
+    "name"
+  )
+  expect_error(
+    fwa_stream_distances_to_matrix(rms, make_distance_streams(), id = "site"),
+    "must be unique"
+  )
+  rms$site[6] <- NA
+  expect_error(
+    fwa_stream_distances_to_matrix(rms, make_distance_streams(), id = "site"),
+    "must not have any missing values"
+  )
+})
+
 test_that("fwa_stream_distances_to_matrix accepts data frames", {
   rms <- dplyr::as_tibble(make_distance_rms())[c("blk", "rm")]
   x <- fwa_stream_distances_to_matrix(rms, make_distance_streams())
