@@ -80,6 +80,9 @@ test_that("fwa_add_elevatr_elevation_to_point increases connect timeout", {
   )
   x <- fwa_add_elevatr_elevation_to_point(make_elevatr_points())
   expect_identical(x$elevation, c(60, 60))
+  rlang::local_options(fwa.elevatr_timeout = 120)
+  x <- fwa_add_elevatr_elevation_to_point(make_elevatr_points())
+  expect_identical(x$elevation, c(120, 120))
 })
 
 test_that("fwa_add_elevatr_elevation_to_point retries timeouts", {
@@ -124,6 +127,44 @@ test_that("fwa_add_elevatr_elevation_to_point errors after three timeouts", {
     error = TRUE
   )
   expect_identical(tries, 3L)
+})
+
+test_that("fwa_add_elevatr_elevation_to_point respects tries option", {
+  skip_if_not_installed("elevatr")
+  skip_if_not_installed("httr")
+  rlang::local_options(fwa.elevatr_tries = 1, fwa.elevatr_timeout = 30)
+  tries <- 0L
+  local_mocked_bindings(
+    get_elev_point = function(locations, ...) {
+      tries <<- tries + 1L
+      stop("Timeout was reached [s3.amazonaws.com]")
+    },
+    .package = "elevatr"
+  )
+  local_mocked_bindings(wait_seconds = function(seconds) NULL)
+  expect_snapshot(
+    fwa_add_elevatr_elevation_to_point(make_elevatr_points()),
+    error = TRUE
+  )
+  expect_identical(tries, 1L)
+})
+
+test_that("fwa_add_elevatr_elevation_to_point errors with invalid options", {
+  skip_if_not_installed("elevatr")
+  skip_if_not_installed("httr")
+  x <- make_elevatr_points()
+  local({
+    rlang::local_options(fwa.elevatr_timeout = 0)
+    expect_snapshot(fwa_add_elevatr_elevation_to_point(x), error = TRUE)
+  })
+  local({
+    rlang::local_options(fwa.elevatr_tries = 0)
+    expect_snapshot(fwa_add_elevatr_elevation_to_point(x), error = TRUE)
+  })
+  local({
+    rlang::local_options(fwa.elevatr_tries = 1.5)
+    expect_snapshot(fwa_add_elevatr_elevation_to_point(x), error = TRUE)
+  })
 })
 
 test_that("fwa_add_elevatr_elevation_to_point does not retry other errors", {

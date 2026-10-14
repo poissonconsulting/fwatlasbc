@@ -22,8 +22,10 @@ Adds elevations from the Amazon Web Services Terrain Tiles using
 Unlike \code{\link[=fwa_add_gm_elevation_to_point]{fwa_add_gm_elevation_to_point()}} no API key is required.
 }
 \details{
-The connection timeout is increased to 60 seconds and the download is
-attempted up to three times if it times out.
+The connection timeout (s) and the number of attempts if the download
+times out are set by the options \code{fwa.elevatr_timeout} (by default 60) and
+\code{fwa.elevatr_tries} (by default 3).
+For example \code{options(fwa.elevatr_timeout = 120, fwa.elevatr_tries = 5)}.
 }
 \examples{
 \dontrun{
