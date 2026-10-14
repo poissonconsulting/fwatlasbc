@@ -79,7 +79,7 @@ test_that("fwa_add_elevatr_elevation_to_point increases connect timeout", {
     .package = "elevatr"
   )
   x <- fwa_add_elevatr_elevation_to_point(make_elevatr_points())
-  expect_identical(x$elevation, c(60, 60))
+  expect_identical(x$elevation, c(10, 10))
   rlang::local_options(fwa.elevatr_timeout = 120)
   x <- fwa_add_elevatr_elevation_to_point(make_elevatr_points())
   expect_identical(x$elevation, c(120, 120))

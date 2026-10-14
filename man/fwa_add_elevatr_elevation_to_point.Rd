@@ -23,7 +23,7 @@ Unlike \code{\link[=fwa_add_gm_elevation_to_point]{fwa_add_gm_elevation_to_point
 }
 \details{
 The connection timeout (s) and the number of attempts if the download
-times out are set by the options \code{fwa.elevatr_timeout} (by default 60) and
+times out are set by the options \code{fwa.elevatr_timeout} (by default 10) and
 \code{fwa.elevatr_tries} (by default 3).
 For example \code{options(fwa.elevatr_timeout = 120, fwa.elevatr_tries = 5)}.
 }

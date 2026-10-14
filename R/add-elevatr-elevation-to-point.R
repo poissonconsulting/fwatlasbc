@@ -5,7 +5,7 @@
 #' Unlike [`fwa_add_gm_elevation_to_point()`] no API key is required.
 #'
 #' The connection timeout (s) and the number of attempts if the download
-#' times out are set by the options `fwa.elevatr_timeout` (by default 60) and
+#' times out are set by the options `fwa.elevatr_timeout` (by default 10) and
 #' `fwa.elevatr_tries` (by default 3).
 #' For example `options(fwa.elevatr_timeout = 120, fwa.elevatr_tries = 5)`.
 #'
@@ -34,7 +34,7 @@ fwa_add_elevatr_elevation_to_point <- function(x, zoom = 12) {
   chk_whole_number(zoom)
   chk_range(zoom, c(1, 14))
 
-  timeout <- getOption("fwa.elevatr_timeout", 60)
+  timeout <- getOption("fwa.elevatr_timeout", 10)
   chk_number(timeout, x_name = "`getOption(\"fwa.elevatr_timeout\")`")
   chk_gt(timeout, x_name = "`getOption(\"fwa.elevatr_timeout\")`")
 
@@ -74,7 +74,6 @@ wait_seconds <- function(seconds) {
 }
 
 get_elevatr_elevation <- function(points, zoom, timeout, tries, call) {
-  # httr's default connection timeout is 10 seconds.
   # with_config() covers the tile checks in elevatr that do not pass on `...`
   # while `config` covers the downloads in parallel workers.
   config <- httr::config(connecttimeout = timeout)

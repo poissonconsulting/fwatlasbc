@@ -4,8 +4,8 @@
       fwa_add_elevatr_elevation_to_point(make_elevatr_points())
     Condition
       Error in `fwa_add_elevatr_elevation_to_point()`:
-      ! Downloading the Terrain Tiles timed out after 3 attempt(s) with a connection timeout of 60 seconds.
-      i Increase the timeout or number of attempts using the options `fwa.elevatr_timeout` and `fwa.elevatr_tries`, e.g., `options(fwa.elevatr_timeout = 120, fwa.elevatr_tries = 5)`.
+      ! Downloading the Terrain Tiles timed out after 3 attempt(s) with a connection timeout of 10 seconds.
+      i Increase the timeout or number of attempts using the options `fwa.elevatr_timeout` and `fwa.elevatr_tries`, e.g., `options(fwa.elevatr_timeout = 20, fwa.elevatr_tries = 5)`.
       i Alternatively try again later, reduce `zoom` or use `source = "google"`.
       Caused by error in `elevatr::get_elev_point()`:
       ! Timeout was reached [s3.amazonaws.com]
