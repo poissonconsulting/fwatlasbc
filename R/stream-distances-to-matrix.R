@@ -5,13 +5,18 @@ stream_path <- function(blk, streams) {
   while (!is.na(index) && !is.na(streams$parent_blk[index])) {
     parent_blk <- streams$parent_blk[index]
     if (parent_blk %in% path) {
-      abort_chk("`streams` must not be circular (blk ", blk, ").")
+      abort_chk("`streams` must not be circular (blk ", parent_blk, ").")
     }
     path <- c(path, parent_blk)
     rm <- c(rm, streams$parent_rm[index])
     index <- match(parent_blk, streams$blk)
   }
   list(blk = path, rm = rm)
+}
+
+check_streams_not_circular <- function(streams) {
+  purrr::walk(streams$blk, stream_path, streams = streams)
+  invisible(streams)
 }
 
 # For stream i relative to stream j: whether i is on their lowest common
@@ -38,9 +43,10 @@ stream_junctions <- function(paths) {
   list(on = on, distance = distance, rm = rm)
 }
 
-#' Convert River Meters to Distance Matrix
+#' Stream Distances to Matrix
 #'
-#' Calculates the distances along the stream network between river meters.
+#' Calculates the distances along the stream network between stream distances
+#' (river meters).
 #' The distance is `Inf` if the river meters are on streams that are not
 #' connected.
 #'
@@ -55,9 +61,7 @@ stream_junctions <- function(paths) {
 #' non-negative.
 #' @param streams A data frame with whole numeric column blk, whole numeric
 #' column parent_blk and numeric column parent_rm.
-#' @param direction A flag specifying whether to return negative distances
-#' when the river meter in the row is upstream of the river meter in the
-#' column.
+#' The stream network must not be circular.
 #' @return A numeric matrix of the distances in m with one row and one column
 #' for each row in `x`.
 #' @export
@@ -69,14 +73,12 @@ stream_junctions <- function(paths) {
 #'   parent_rm = c(NA, 400, NA)
 #' )
 #' rms <- data.frame(blk = c(1, 1, 2, 3), rm = c(100, 500, 50, 10))
-#' fwa_convert_rms_to_distance_matrix(rms, streams)
-#' fwa_convert_rms_to_distance_matrix(rms, streams, direction = TRUE)
-fwa_convert_rms_to_distance_matrix <- function(x, streams, direction = FALSE) {
+#' fwa_stream_distances_to_matrix(rms, streams)
+fwa_stream_distances_to_matrix <- function(x, streams) {
   chk_data(x)
   check_names(x, c("blk", "rm"))
   chk_data(streams)
   check_names(streams, c("blk", "parent_blk", "parent_rm"))
-  chk_flag(direction)
 
   chk_whole_numeric(x$blk)
   chk_not_any_na(x$blk)
@@ -112,6 +114,7 @@ fwa_convert_rms_to_distance_matrix <- function(x, streams, direction = FALSE) {
       "`streams$parent_blk` is missing."
     )
   }
+  check_streams_not_circular(streams)
 
   blk <- unique(x$blk)
   paths <- purrr::map(blk, stream_path, streams = streams)
@@ -134,11 +137,5 @@ fwa_convert_rms_to_distance_matrix <- function(x, streams, direction = FALSE) {
 
   distance <- distance_a + distance_b + abs(position_a - position_b)
   distance[is.infinite(junctions$distance[ab])] <- Inf
-
-  if (direction) {
-    upstream <- on_b & position_a >= position_b
-    upstream <- upstream & !is.na(upstream)
-    distance[upstream] <- -distance[upstream]
-  }
   matrix(distance, nrow = n, ncol = n)
 }
