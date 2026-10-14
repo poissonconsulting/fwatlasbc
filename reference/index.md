@@ -85,6 +85,8 @@
   : Snap Stream Measure to Point
 - [`fwa_stitch_segments()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_stitch_segments.md)
   : Stitch Segments
+- [`fwa_stream_distances_to_matrix()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_stream_distances_to_matrix.md)
+  : Stream Distances to Matrix
 - [`fwa_stream_name`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_stream_name.md)
   : Stream Name
 - [`fwa_swap_branches_rms()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_swap_branches_rms.md)
