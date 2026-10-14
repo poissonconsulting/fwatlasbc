@@ -4,7 +4,7 @@
 \alias{fwa_stream_distances_to_matrix}
 \title{Stream Distances to Matrix}
 \usage{
-fwa_stream_distances_to_matrix(x, streams)
+fwa_stream_distances_to_matrix(x, streams, id = NULL)
 }
 \arguments{
 \item{x}{A data frame (including sf objects) with whole numeric column blk
@@ -15,6 +15,10 @@ non-negative.}
 \item{streams}{A data frame with whole numeric column blk, whole numeric
 column parent_blk and numeric column parent_rm.
 The stream network must not be circular.}
+
+\item{id}{A string of the name of a column in \code{x} with unique non-missing
+values that are converted to character and used as the row and column names
+of the matrix or \code{NULL}.}
 }
 \value{
 A numeric matrix of the distances in m with one row and one column
@@ -38,8 +42,13 @@ streams <- data.frame(
   parent_blk = c(NA, 1, NA),
   parent_rm = c(NA, 400, NA)
 )
-rms <- data.frame(blk = c(1, 1, 2, 3), rm = c(100, 500, 50, 10))
+rms <- data.frame(
+  site = c("a", "b", "c", "d"),
+  blk = c(1, 1, 2, 3),
+  rm = c(100, 500, 50, 10)
+)
 fwa_stream_distances_to_matrix(rms, streams)
+fwa_stream_distances_to_matrix(rms, streams, id = "site")
 }
 \seealso{
 \code{\link[=fwa_add_parent_to_streams]{fwa_add_parent_to_streams()}}
