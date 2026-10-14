@@ -6,9 +6,12 @@
 #' If the mouth is more than `gap` m from the nearest other stream then
 #' `parent_blk` and `parent_rm` are `NA`.
 #'
-#' The stream segments for each blk are first joined and oriented using
-#' [`fwa_join_stream_segments()`] so that the mouth is the start of each
-#' stream and river meters on the parent are measured from its mouth.
+#' The stream segments for each blk are first joined using
+#' [`fwa_join_stream_segments()`].
+#' The start of each joined stream is taken to be its mouth and river meters on
+#' the parent are measured from its start.
+#' Unless `elevation = TRUE`, streams digitized from source to mouth must first
+#' be reversed using [`fwa_reverse_streams()`].
 #' The geometry of `x` is not altered.
 #'
 #' @inheritParams fwa_convert_streams_to_rms
