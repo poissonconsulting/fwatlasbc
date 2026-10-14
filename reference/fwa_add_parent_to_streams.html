@@ -101,9 +101,12 @@ numeric column <code>parent_rm</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The stream segments for each blk are first joined and oriented using
-<code><a href="fwa_join_stream_segments.html">fwa_join_stream_segments()</a></code> so that the mouth is the start of each
-stream and river meters on the parent are measured from its mouth.
+    <p>The stream segments for each blk are first joined using
+<code><a href="fwa_join_stream_segments.html">fwa_join_stream_segments()</a></code>.
+The start of each joined stream is taken to be its mouth and river meters on
+the parent are measured from its start.
+Unless <code>elevation = TRUE</code>, streams digitized from source to mouth must first
+be reversed using <code><a href="fwa_reverse_streams.html">fwa_reverse_streams()</a></code>.
 The geometry of <code>x</code> is not altered.</p>
     </div>
     <div class="section level2">

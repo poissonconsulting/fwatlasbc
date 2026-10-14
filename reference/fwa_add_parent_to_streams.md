@@ -56,10 +56,14 @@ A copy of `x` with integer column `parent_blk` and numeric column
 
 ## Details
 
-The stream segments for each blk are first joined and oriented using
-[`fwa_join_stream_segments()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_join_stream_segments.md)
-so that the mouth is the start of each stream and river meters on the
-parent are measured from its mouth. The geometry of `x` is not altered.
+The stream segments for each blk are first joined using
+[`fwa_join_stream_segments()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_join_stream_segments.md).
+The start of each joined stream is taken to be its mouth and river
+meters on the parent are measured from its start. Unless
+`elevation = TRUE`, streams digitized from source to mouth must first be
+reversed using
+[`fwa_reverse_streams()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_reverse_streams.md).
+The geometry of `x` is not altered.
 
 ## See also
 
