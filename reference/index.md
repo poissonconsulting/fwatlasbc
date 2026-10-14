@@ -13,6 +13,8 @@
   : Add Cut to River Meter
 - [`fwa_add_downstream_split_to_rms()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_add_downstream_split_to_rms.md)
   : Add Split to River Meter
+- [`fwa_add_elevatr_elevation_to_point()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_add_elevatr_elevation_to_point.md)
+  : Add elevatr Elevation to Point
 - [`fwa_add_gm_elevation_to_point()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_add_gm_elevation_to_point.md)
   : Add Google Maps Elevation to Point
 - [`fwa_add_intersection_to_geometry()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_add_intersection_to_geometry.md)
@@ -20,6 +22,8 @@
 - [`fwa_add_new_blk_rm_to_blk_rm()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_add_new_blk_rm_to_blk_rm.md)
   : Add New Blue Line Key and River Meter to Blue Line Key and River
   Meter
+- [`fwa_add_parent_to_streams()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_add_parent_to_streams.md)
+  : Add Parent to Streams
 - [`fwa_add_point_to_stream_measure()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_add_point_to_stream_measure.md)
   : Add Point to Stream Measure
 - [`fwa_add_rms_to_blk()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_add_rms_to_blk.md)
@@ -45,6 +49,8 @@
   : Convert Streams to River Meters
 - [`fwa_find_stream_names()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_find_stream_names.md)
   : Find Stream Names
+- [`fwa_flip_streams()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_flip_streams.md)
+  : Flip Streams
 - [`fwa_get_section_from_rms()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_get_section_from_rms.md)
   : Get Section from River Meter
 - [`fwa_get_segment_from_rms()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_get_segment_from_rms.md)
@@ -57,6 +63,8 @@
   : Map View River Meters
 - [`fwa_mapview_rms_to_rms()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_mapview_rms_to_rms.md)
   : Map View River Meters
+- [`fwa_mapview_streams()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_mapview_streams.md)
+  : Map View Streams
 - [`fwa_order_segments()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_order_segments.md)
   : Get Stream Segments in Order
 - [`fwa_parent_blk_rms()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_parent_blk_rms.md)
@@ -65,6 +73,8 @@
   : Parent Stream Name
 - [`fwa_prune_rms()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_prune_rms.md)
   : Prune River Meter
+- [`fwa_reverse_streams()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_reverse_streams.md)
+  : Reverse Streams
 - [`fwa_snap_rm_to_point()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_snap_rm_to_point.md)
   : Snap River Meter to Point
 - [`fwa_snap_rm_to_rms()`](https://poissonconsulting.github.io/fwatlasbc/reference/fwa_snap_rm_to_rms.md)

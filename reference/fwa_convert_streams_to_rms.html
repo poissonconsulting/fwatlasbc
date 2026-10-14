@@ -49,7 +49,9 @@ the linestrings and the unique integer identifier for each stream.</p>
 <span>  gap <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  elevation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  reverse <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  reverse <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  source <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  zoom <span class="op">=</span> <span class="fl">12</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -78,13 +80,29 @@ To  default <code>end = NULL</code> (equivalent to <code>end = interval + 1</cod
 
 <dt id="arg-elevation">elevation<a class="anchor" aria-label="anchor" href="#arg-elevation"></a></dt>
 <dd><p>A flag specifying whether to use the elevation
-from Google Maps to determine stream direction (or use the
+to determine stream direction (or use the
 direction of the provided linestrings)</p></dd>
 
 
 <dt id="arg-reverse">reverse<a class="anchor" aria-label="anchor" href="#arg-reverse"></a></dt>
 <dd><p>A whole numeric vector of streams to reverse direction
 ignoring elevation.</p></dd>
+
+
+<dt id="arg-source">source<a class="anchor" aria-label="anchor" href="#arg-source"></a></dt>
+<dd><p>A string of the source of the elevations if
+<code>elevation = TRUE</code>.
+Possible values are <code>"elevatr"</code> (no API key required) and
+<code>"google"</code> (requires a Google Maps Elevation API key).
+If <code>NULL</code> (the default) and <code>elevation = TRUE</code> <code>"google"</code> is used but this
+is <a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> and <code>source</code> should be set explicitly.</p></dd>
+
+
+<dt id="arg-zoom">zoom<a class="anchor" aria-label="anchor" href="#arg-zoom"></a></dt>
+<dd><p>A whole number between 1 and 14 of the zoom level of the
+Terrain Tiles.
+Higher zoom levels have a finer resolution but take longer to download.
+Ignored if <code>elevation = FALSE</code> or <code>source = "google"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

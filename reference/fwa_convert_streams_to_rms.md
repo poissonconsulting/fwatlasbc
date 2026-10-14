@@ -14,7 +14,9 @@ fwa_convert_streams_to_rms(
   gap = 1,
   end = NULL,
   elevation = FALSE,
-  reverse = integer()
+  reverse = integer(),
+  source = NULL,
+  zoom = 12
 )
 ```
 
@@ -41,14 +43,27 @@ fwa_convert_streams_to_rms(
 
 - elevation:
 
-  A flag specifying whether to use the elevation from Google Maps to
-  determine stream direction (or use the direction of the provided
-  linestrings)
+  A flag specifying whether to use the elevation to determine stream
+  direction (or use the direction of the provided linestrings)
 
 - reverse:
 
   A whole numeric vector of streams to reverse direction ignoring
   elevation.
+
+- source:
+
+  A string of the source of the elevations if `elevation = TRUE`.
+  Possible values are `"elevatr"` (no API key required) and `"google"`
+  (requires a Google Maps Elevation API key). If `NULL` (the default)
+  and `elevation = TRUE` `"google"` is used but this is
+  **\[deprecated\]** and `source` should be set explicitly.
+
+- zoom:
+
+  A whole number between 1 and 14 of the zoom level of the Terrain
+  Tiles. Higher zoom levels have a finer resolution but take longer to
+  download. Ignored if `elevation = FALSE` or `source = "google"`.
 
 ## Value
 
