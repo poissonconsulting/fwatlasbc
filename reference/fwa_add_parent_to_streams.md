@@ -1,10 +1,12 @@
 # Add Parent to Streams
 
 Adds the parent blue line key (`parent_blk`) and the river meter on the
-parent where the stream joins it (`parent_rm`) to stream linestrings.
-The parent is the nearest other stream to the mouth of each stream. If
-the mouth is more than `gap` m from the nearest other stream then
-`parent_blk` and `parent_rm` are `NA`.
+parent where the stream joins it (`parent_rm`) to stream linestrings
+together with the distance (m) from the mouth to the parent
+(`distance_to_parent`). The parent is the nearest other stream to the
+mouth of each stream. If the mouth is more than `gap` m from the nearest
+other stream then `parent_blk`, `parent_rm` and `distance_to_parent` are
+`NA`.
 
 ## Usage
 
@@ -51,8 +53,8 @@ fwa_add_parent_to_streams(
 
 ## Value
 
-A copy of `x` with integer column `parent_blk` and numeric column
-`parent_rm`.
+A copy of `x` with integer column `parent_blk` and numeric columns
+`parent_rm` and `distance_to_parent`.
 
 ## Details
 
