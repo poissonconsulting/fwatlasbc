@@ -46,7 +46,7 @@ connected.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_stream_distances_to_matrix</span><span class="op">(</span><span class="va">x</span>, <span class="va">streams</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fwa_stream_distances_to_matrix</span><span class="op">(</span><span class="va">x</span>, <span class="va">streams</span>, id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -64,6 +64,12 @@ non-negative.</p></dd>
 <dd><p>A data frame with whole numeric column blk, whole numeric
 column parent_blk and numeric column parent_rm.
 The stream network must not be circular.</p></dd>
+
+
+<dt id="arg-id">id<a class="anchor" aria-label="anchor" href="#arg-id"></a></dt>
+<dd><p>A string of the name of a column in <code>x</code> with unique non-missing
+values that are converted to character and used as the row and column names
+of the matrix or <code>NULL</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -90,13 +96,23 @@ Parents that are not in <code>streams$blk</code> are treated as root streams.</p
 <span class="r-in"><span>  parent_blk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  parent_rm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">400</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">rms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>blk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, rm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">500</span>, <span class="fl">50</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  site <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  blk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  rm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">500</span>, <span class="fl">50</span>, <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">fwa_stream_distances_to_matrix</span><span class="op">(</span><span class="va">rms</span>, <span class="va">streams</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3] [,4]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    0  400  350  Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  400    0  150  Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  350  150    0  Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,]  Inf  Inf  Inf    0</span>
+<span class="r-in"><span><span class="fu">fwa_stream_distances_to_matrix</span><span class="op">(</span><span class="va">rms</span>, <span class="va">streams</span>, id <span class="op">=</span> <span class="st">"site"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     a   b   c   d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a   0 400 350 Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> b 400   0 150 Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> c 350 150   0 Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d Inf Inf Inf   0</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
