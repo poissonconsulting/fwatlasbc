@@ -23,6 +23,7 @@ test_that("fwa_add_parent_to_streams adds parents", {
   expect_identical(sf::st_geometry(x), sf::st_geometry(streams))
   expect_identical(x$parent_blk, c(NA, NA, 1L, NA, NA))
   expect_equal(x$parent_rm, c(NA, NA, 400, NA, NA))
+  expect_equal(x$distance_to_parent, c(NA, NA, 0, NA, NA))
 })
 
 test_that("fwa_add_parent_to_streams respects gap", {
@@ -30,6 +31,7 @@ test_that("fwa_add_parent_to_streams respects gap", {
   expect_identical(x$parent_blk, c(NA, NA, 1L, 1L, NA))
   # parent_rm is approximate (within gap) when the mouth is not on the parent
   expect_equal(x$parent_rm, c(NA, NA, 400, 700, NA), tolerance = 10 / 700)
+  expect_equal(x$distance_to_parent, c(NA, NA, 0, 5, NA))
 })
 
 test_that("fwa_add_parent_to_streams parent_rm measured from parent mouth", {
@@ -53,10 +55,17 @@ test_that("fwa_add_parent_to_streams single stream", {
   x <- fwa_add_parent_to_streams(make_streams()[1, ])
   expect_identical(x$parent_blk, NA_integer_)
   expect_identical(x$parent_rm, NA_real_)
+  expect_identical(x$distance_to_parent, NA_real_)
 })
 
 test_that("fwa_add_parent_to_streams errors with existing parent columns", {
   streams <- make_streams()
   streams$parent_blk <- 1L
+  expect_error(fwa_add_parent_to_streams(streams))
+})
+
+test_that("fwa_add_parent_to_streams errors with existing distance_to_parent", {
+  streams <- make_streams()
+  streams$distance_to_parent <- 1
   expect_error(fwa_add_parent_to_streams(streams))
 })
