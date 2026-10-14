@@ -28,6 +28,13 @@ fwa_add_elevatr_elevation_to_point(x, zoom = 12)
 
 An updated version of x with numeric column elevation.
 
+## Details
+
+The connection timeout (s) and the number of attempts if the download
+times out are set by the options `fwa.elevatr_timeout` (by default 10)
+and `fwa.elevatr_tries` (by default 3). For example
+`options(fwa.elevatr_timeout = 120, fwa.elevatr_tries = 5)`.
+
 ## See also
 
 [`elevatr::get_elev_point()`](https://rdrr.io/pkg/elevatr/man/get_elev_point.html)
