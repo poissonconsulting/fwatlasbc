@@ -21,6 +21,10 @@ Adds elevations from the Amazon Web Services Terrain Tiles using
 \code{\link[elevatr:get_elev_point]{elevatr::get_elev_point()}}.
 Unlike \code{\link[=fwa_add_gm_elevation_to_point]{fwa_add_gm_elevation_to_point()}} no API key is required.
 }
+\details{
+The connection timeout is increased to 60 seconds and the download is
+attempted up to three times if it times out.
+}
 \examples{
 \dontrun{
 rm <- fwa_add_rms_to_blk(data.frame(blk = 356308001))

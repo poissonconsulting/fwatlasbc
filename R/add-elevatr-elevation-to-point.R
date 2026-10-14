@@ -4,6 +4,9 @@
 #' [`elevatr::get_elev_point()`].
 #' Unlike [`fwa_add_gm_elevation_to_point()`] no API key is required.
 #'
+#' The connection timeout is increased to 60 seconds and the download is
+#' attempted up to three times if it times out.
+#'
 #' @param x An sf object of spatial points.
 #' @param zoom A whole number between 1 and 14 of the zoom level of the
 #' Terrain Tiles.
@@ -20,7 +23,7 @@
 fwa_add_elevatr_elevation_to_point <- function(x, zoom = 12) {
   # elevatr uses progress at runtime but only suggests it
   rlang::check_installed(
-    c("elevatr", "progress"),
+    c("elevatr", "httr", "progress"),
     reason = "to get elevations from the Terrain Tiles."
   )
 
@@ -36,12 +39,66 @@ fwa_add_elevatr_elevation_to_point <- function(x, zoom = 12) {
 
   points <- sf::st_sf(geometry = sf::st_geometry(x))
 
-  elevation <- suppressMessages(
-    elevatr::get_elev_point(points, src = "aws", z = zoom)$elevation
-  )
+  elevation <- get_elevatr_elevation(points, zoom, call = rlang::current_env())
 
   x$elevation <- as.numeric(elevation)
   x
+}
+
+is_timeout <- function(x) {
+  grepl(
+    "timeout was reached|timed out",
+    conditionMessage(x),
+    ignore.case = TRUE
+  )
+}
+
+wait_seconds <- function(seconds) {
+  Sys.sleep(seconds)
+}
+
+get_elevatr_elevation <- function(points, zoom, call, tries = 3L) {
+  # httr's default connection timeout is 10 seconds.
+  # with_config() covers the tile checks in elevatr that do not pass on `...`
+  # while `config` covers the downloads in parallel workers.
+  config <- httr::config(connecttimeout = 60)
+  for (try in seq_len(tries)) {
+    elevation <- tryCatch(
+      httr::with_config(
+        config,
+        suppressMessages(
+          elevatr::get_elev_point(
+            points,
+            src = "aws",
+            z = zoom,
+            config = config
+          )
+        )
+      )$elevation,
+      error = identity
+    )
+    if (!inherits(elevation, "error")) {
+      return(elevation)
+    }
+    if (!is_timeout(elevation)) {
+      rlang::cnd_signal(elevation)
+    }
+    if (try < tries) {
+      wait_seconds(2^try)
+    }
+  }
+  rlang::abort(
+    c(
+      paste0(
+        "Downloading the Terrain Tiles timed out after ",
+        tries,
+        " attempts."
+      ),
+      i = "Try again later, reduce `zoom` or use `source = \"google\"`."
+    ),
+    parent = elevation,
+    call = call
+  )
 }
 
 add_elevation_to_point <- function(x, source, zoom) {
