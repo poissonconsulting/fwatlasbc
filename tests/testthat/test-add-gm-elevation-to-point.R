@@ -63,3 +63,31 @@ test_that("fwa_add_gm_elevation_to_point errors with chunk size of 320", {
 
   expect_error(fwa_add_gm_elevation_to_point(rm, chunk_size = 320))
 })
+
+test_that("fwa_add_gm_elevation_to_point errors with google status and message", {
+  local_mocked_bindings(
+    google_elevation = function(...) {
+      list(
+        error_message = "The provided API key is invalid. ",
+        results = list(),
+        status = "REQUEST_DENIED"
+      )
+    },
+    .package = "googleway"
+  )
+  x <- sf::st_sf(
+    geometry = sf::st_sfc(sf::st_point(c(1000000, 500000)), crs = 3005)
+  )
+  expect_snapshot(fwa_add_gm_elevation_to_point(x, key = "x"), error = TRUE)
+})
+
+test_that("fwa_add_gm_elevation_to_point errors without google status", {
+  local_mocked_bindings(
+    google_elevation = function(...) list(),
+    .package = "googleway"
+  )
+  x <- sf::st_sf(
+    geometry = sf::st_sfc(sf::st_point(c(1000000, 500000)), crs = 3005)
+  )
+  expect_snapshot(fwa_add_gm_elevation_to_point(x, key = "x"), error = TRUE)
+})

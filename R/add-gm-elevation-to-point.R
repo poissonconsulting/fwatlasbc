@@ -9,9 +9,24 @@ add_gm_elevation_to_point <- function(x, digits, key) {
       lat = round(.data$lat, digits)
     )
 
-  elevation <- googleway::google_elevation(coords, key = key)$results$elevation
+  response <- googleway::google_elevation(coords, key = key)
+  elevation <- response$results$elevation
   if (is.null(elevation)) {
-    err("Invalid Google Maps Elevation API key.")
+    status <- response$status
+    if (is.null(status)) {
+      status <- "unknown"
+    }
+    message <- response$error_message
+    if (is.null(message)) {
+      message <- "no error message"
+    }
+    message <- str_replace(message, "\\.?\\s*$", "")
+    err(
+      "Google Maps Elevation API request failed with status '",
+      status,
+      "': ",
+      message
+    )
   }
   x$elevation <- elevation
   x

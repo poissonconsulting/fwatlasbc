@@ -20,22 +20,22 @@ join_strings <- function(x) {
     dplyr::filter(purrr::map_lgl(.data$geometry, is_linestring))
 }
 
-start_end_elevation <- function(x, reverse) {
+start_end_elevation <- function(x, reverse, source, zoom) {
   crs <- sf::st_crs(x)
 
   x_swap <- x |>
     dplyr::filter(.data$blk %in% reverse) |>
-    dplyr::mutate(reverse = TRUE)
+    dplyr::mutate(reverse = FALSE)
 
   x <- x |>
     dplyr::filter(!.data$blk %in% reverse) |>
     sf::st_sf(sf_column_name = "start") |>
-    fwa_add_gm_elevation_to_point() |>
+    add_elevation_to_point(source, zoom) |>
     ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
     as_tibble() |>
     dplyr::rename(start_elevation = "elevation") |>
     sf::st_sf(sf_column_name = "end") |>
-    fwa_add_gm_elevation_to_point() |>
+    add_elevation_to_point(source, zoom) |>
     ## as_tibble() necessary to avoid internal error: can't find `agr` columns on rename
     as_tibble() |>
     dplyr::rename(end_elevation = "elevation") |>
@@ -47,25 +47,27 @@ start_end_elevation <- function(x, reverse) {
     dplyr::filter(.data$reverse) |>
     reverse_linestrings() |>
     dplyr::bind_rows(dplyr::filter(x, !.data$reverse)) |>
-    dplyr::select(!c("start_elevation", "end_elevation", "reverse")) |>
+    dplyr::select(
+      !dplyr::any_of(c("start_elevation", "end_elevation", "reverse"))
+    ) |>
     sf::st_set_crs(crs)
 }
 
-start_points <- function(x, elevation, reverse) {
-  x <- x |>
-    dplyr::mutate(
-      start = sf::st_line_sample(x, sample = 0),
-      end = sf::st_line_sample(x, sample = 1),
-      start = sf::st_cast(.data$start, "POINT"),
-      end = sf::st_cast(.data$end, "POINT")
-    )
-
-  if (elevation || length(reverse)) {
+start_points <- function(x, elevation, reverse, source, zoom) {
+  if (elevation) {
     x <- x |>
-      start_end_elevation(reverse)
+      dplyr::mutate(
+        start = sf::st_line_sample(x, sample = 0),
+        end = sf::st_line_sample(x, sample = 1),
+        start = sf::st_cast(.data$start, "POINT"),
+        end = sf::st_cast(.data$end, "POINT")
+      ) |>
+      start_end_elevation(reverse, source, zoom) |>
+      dplyr::select(!c("end", "start"))
   }
-  x |>
-    dplyr::select(!c("end", "start"))
+  # streams that could not be joined into a single linestring are dropped
+  reverse <- reverse[reverse %in% x$blk]
+  fwa_reverse_streams(x, reverse)
 }
 
 #' Join Stream Segments
@@ -74,10 +76,20 @@ start_points <- function(x, elevation, reverse) {
 #'
 #' @param x An sf tibble with a column blk and linestrings of stream segments.
 #' @param elevation A flag specifying whether to use the elevation
-#' from Google Maps to determine stream direction (or use the
+#' to determine stream direction (or use the
 #' direction of the provided linestrings)
 #' @param reverse A whole numeric vector of streams to reverse direction
 #' ignoring elevation.
+#' @param source A string of the source of the elevations if
+#' `elevation = TRUE`.
+#' Possible values are `"elevatr"` (no API key required) and
+#' `"google"` (requires a Google Maps Elevation API key).
+#' If `NULL` (the default) and `elevation = TRUE` `"google"` is used but this
+#' is `r lifecycle::badge("deprecated")` and `source` should be set explicitly.
+#' @param zoom A whole number between 1 and 14 of the zoom level of the
+#' Terrain Tiles.
+#' Higher zoom levels have a finer resolution but take longer to download.
+#' Ignored if `elevation = FALSE` or `source = "google"`.
 #' @return An sf tibble with the columns blk and sfc column point geometry.
 #' @export
 #' @seealso [`fwa_convert_streams_to_rms()`]
@@ -91,7 +103,9 @@ start_points <- function(x, elevation, reverse) {
 fwa_join_stream_segments <- function(
   x,
   elevation = FALSE,
-  reverse = integer()
+  reverse = integer(),
+  source = NULL,
+  zoom = 12
 ) {
   chk_s3_class(x, "sf")
   check_names(x, "blk")
@@ -110,7 +124,12 @@ fwa_join_stream_segments <- function(
   chk_unique(reverse)
   chk_subset(reverse, x$blk)
 
+  source <- check_source(source, "fwa_join_stream_segments", warn = elevation)
+
+  chk_whole_number(zoom)
+  chk_range(zoom, c(1, 14))
+
   x |>
     join_strings() |>
-    start_points(elevation, reverse)
+    start_points(elevation, reverse, source, zoom)
 }

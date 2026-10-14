@@ -38,9 +38,11 @@ Imports:
     units
 Suggests: 
     covr,
+    elevatr,
     googleway,
     hms,
     mapview,
+    progress,
     readr,
     testthat (>= 3.0.0)
 Remotes:
