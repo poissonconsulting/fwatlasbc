@@ -32,6 +32,9 @@ A sf object
 \description{
 Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (blk).
 The rm distances which is in meters is from the river mouth.
+If no watershed is returned, which can occur if the rm is in the headwaters
+of the stream or beyond its upstream end, the geometry is an empty polygon
+and a warning is given with the number of empty watersheds.
 }
 \examples{
 \dontrun{
