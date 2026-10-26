@@ -33,10 +33,21 @@ add_watershed_to_blk <- function(x, epsg, nocache) {
     nocache = nocache
   )
 
+  if (!nrow(wshed)) {
+    return(
+      x |>
+        dplyr::mutate(
+          ..fwa_empty = TRUE,
+          geometry = sf::st_sfc(sf::st_polygon(), crs = epsg)
+        ) |>
+        sf::st_set_geometry("geometry")
+    )
+  }
+
   wshed <- adjust_watershed(wshed, x, epsg, nocache = nocache)
 
   x |>
-    dplyr::mutate(geometry = wshed$geometry) |>
+    dplyr::mutate(..fwa_empty = FALSE, geometry = wshed$geometry) |>
     sf::st_set_geometry("geometry")
 }
 
@@ -44,6 +55,9 @@ add_watershed_to_blk <- function(x, epsg, nocache) {
 #'
 #' Adds polygon (geometry) of aggregated fundamental watersheds to blue line key (blk).
 #' The rm distances which is in meters is from the river mouth.
+#' If no watershed is returned, which can occur if the rm is in the headwaters
+#' of the stream or beyond its upstream end, the geometry is an empty polygon
+#' and a warning is given with the number of empty watersheds.
 #' @return An sf tibble with the columns of x plus
 #' sf column geometry.
 #'
@@ -79,13 +93,13 @@ fwa_add_watershed_to_blk <- function(
   x$rm[is.na(x$rm)] <- 0
 
   chk_not_subset(colnames(x), "geometry")
-  chk_not_subset(colnames(x), c("..fwa_exclude", "..fwa_id"))
+  chk_not_subset(colnames(x), c("..fwa_exclude", "..fwa_id", "..fwa_empty"))
   chk_logical(exclude)
   chk_not_any_na(exclude)
   chk_whole_number(epsg)
   chk_gte(epsg)
 
-  x |>
+  x <- x |>
     dplyr::as_tibble() |>
     dplyr::mutate(
       ..fwa_exclude = exclude,
@@ -94,6 +108,17 @@ fwa_add_watershed_to_blk <- function(
     group_split_sf(.data$blk) |>
     lapply(add_watershed_to_blk, epsg = epsg, nocache = nocache) |>
     dplyr::bind_rows() |>
-    dplyr::arrange(.data$..fwa_id) |>
-    dplyr::select(!c("..fwa_exclude", "..fwa_id"))
+    dplyr::arrange(.data$..fwa_id)
+
+  n_empty <- sum(x$..fwa_empty)
+  if (n_empty) {
+    wrn(
+      "%n watershed%s %r empty as no watershed was returned ",
+      "(the rm may be in the headwaters or beyond the end of the stream).",
+      n = n_empty
+    )
+  }
+
+  x |>
+    dplyr::select(!c("..fwa_exclude", "..fwa_id", "..fwa_empty"))
 }

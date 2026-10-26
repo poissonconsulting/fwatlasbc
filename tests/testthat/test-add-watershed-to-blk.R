@@ -46,3 +46,40 @@ test_that("fwa_add_watershed_to_blk doesn't work when rm = 0 for 360883036 even 
     exclude = TRUE
   ))
 })
+
+test_that("fwa_add_watershed_to_blk empty polygon when no watershed returned", {
+  local_mocked_bindings(
+    fwa_watershed_at_measure = function(blue_line_key, ...) {
+      if (blue_line_key %in% c(1, 4)) {
+        return(sf::st_sf(geometry = sf::st_sfc(crs = 3005)))
+      }
+      sf::st_sf(
+        refine_method = "KEEP",
+        geometry = sf::st_sfc(
+          sf::st_polygon(list(rbind(c(0, 0), c(1, 0), c(1, 1), c(0, 0)))),
+          crs = 3005
+        )
+      )
+    }
+  )
+  expect_snapshot(
+    x <- fwa_add_watershed_to_blk(data.frame(blk = c(1, 2, 3), rm = 0))
+  )
+  expect_s3_class(x, "sf")
+  expect_identical(colnames(x), c("blk", "rm", "geometry"))
+  expect_identical(x$blk, c(1, 2, 3))
+  expect_s3_class(x$geometry, "sfc_POLYGON")
+  expect_identical(sf::st_is_empty(x), c(TRUE, FALSE, FALSE))
+  expect_snapshot(
+    x <- fwa_add_watershed_to_blk(data.frame(blk = c(1, 2, 4), rm = 0))
+  )
+})
+
+test_that("fwa_add_watershed_to_blk empty polygon when rm beyond end of stream", {
+  rlang::local_options(nocache = TRUE)
+  expect_warning(
+    x <- fwa_add_watershed_to_blk(data.frame(blk = 356308001, rm = 20000)),
+    "1 watershed is empty as no watershed was returned"
+  )
+  expect_true(sf::st_is_empty(x))
+})
