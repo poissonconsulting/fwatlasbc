@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# fwatlasbc 0.0.1.9029
+
+- Same as previous version.
+
+
 # fwatlasbc 0.0.1.9028
 
 - Internal changes only.
